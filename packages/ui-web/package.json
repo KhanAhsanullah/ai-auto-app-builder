@@ -1,0 +1,18 @@
+{
+  "name": "@ai-commerce/ui-web",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Web presentation component library built on ui-core. Applies theme-engine tokens for consistent branded storefront and admin experiences.",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "echo \"dev not configured yet\"",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  }
+}

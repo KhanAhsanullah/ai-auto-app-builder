@@ -1,0 +1,18 @@
+{
+  "name": "@ai-commerce/module-inventory",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Core domain module for stock levels, reservations, and multi-location inventory. Supports retail and capacity-based verticals.",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "echo \"dev not configured yet\"",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  }
+}

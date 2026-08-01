@@ -1,0 +1,8 @@
+{
+  "id": "ecommerce",
+  "name": "E-Commerce Vertical",
+  "version": "0.0.0",
+  "type": "vertical",
+  "extends": [],
+  "hooks": []
+}

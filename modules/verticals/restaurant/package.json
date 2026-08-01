@@ -1,0 +1,18 @@
+{
+  "name": "@ai-commerce/vertical-restaurant",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Vertical pack for menus, modifiers, kitchen routing, and table/delivery modes. Specialized order flow for food service.",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "echo \"dev not configured yet\"",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  }
+}

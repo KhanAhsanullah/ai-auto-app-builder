@@ -1,0 +1,8 @@
+{
+  "id": "inventory",
+  "name": "Inventory Module",
+  "version": "0.0.0",
+  "type": "core",
+  "hooks": [],
+  "configKeys": []
+}
