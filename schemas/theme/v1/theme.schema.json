@@ -9,8 +9,37 @@
   "properties": {
     "preset": {
       "type": "string",
-      "enum": ["minimal", "modern", "classic", "bold", "custom"],
+      "enum": ["default", "minimal", "modern", "luxury", "dark", "custom"],
       "description": "Base template family selected for the tenant."
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Theme versioning and compilation metadata.",
+      "additionalProperties": false,
+      "properties": {
+        "themeVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Incremented when tenant theme configuration changes."
+        },
+        "createdAt": {
+          "$ref": "../../shared/v1/common.schema.json#/$defs/isoDateTime",
+          "description": "ISO 8601 timestamp when the theme was first created."
+        },
+        "updatedAt": {
+          "$ref": "../../shared/v1/common.schema.json#/$defs/isoDateTime",
+          "description": "ISO 8601 timestamp when the theme was last modified."
+        },
+        "compiledAt": {
+          "$ref": "../../shared/v1/common.schema.json#/$defs/isoDateTime",
+          "description": "ISO 8601 timestamp when the Theme Engine last resolved tokens."
+        },
+        "hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "SHA-256 hash of the canonical resolved theme token payload."
+        }
+      }
     },
     "colors": {
       "type": "object",

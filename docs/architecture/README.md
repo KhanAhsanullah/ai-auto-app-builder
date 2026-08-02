@@ -12,6 +12,12 @@ The platform architecture was approved in Sprint 0. It defines:
 - Control plane (config, theme, AI, white-label) + data plane separation
 - Plugin extensibility and event-driven integration
 
+## Feature Architecture
+
+| Document                             | Scope                                                                   |
+| ------------------------------------ | ----------------------------------------------------------------------- |
+| [theme-engine.md](./theme-engine.md) | Theme Engine — presets, resolver, live preview, plugin extension points |
+
 ## Monorepo Layout
 
 ```
@@ -39,4 +45,4 @@ Significant decisions are recorded in [../adr/](../adr/).
 
 ## Status
 
-Sprint 1 — monorepo foundation established. Feature documentation added per sprint.
+Sprint 2 Task 1 — theme engine foundation established. Feature documentation added per sprint.

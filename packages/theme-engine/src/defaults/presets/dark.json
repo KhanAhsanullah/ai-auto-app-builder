@@ -1,0 +1,53 @@
+{
+  "preset": "dark",
+  "colors": {
+    "primary": "#818CF8",
+    "secondary": "#A78BFA",
+    "background": "#0F172A",
+    "surface": "#1E293B",
+    "text": "#F1F5F9",
+    "textMuted": "#94A3B8",
+    "border": "#334155",
+    "error": "#F87171",
+    "success": "#4ADE80",
+    "warning": "#FBBF24"
+  },
+  "typography": {
+    "fontFamily": {
+      "heading": "Inter",
+      "body": "Inter"
+    },
+    "scale": "default",
+    "baseFontSize": 16
+  },
+  "spacing": {
+    "unit": 4,
+    "density": "default"
+  },
+  "radius": {
+    "sm": 4,
+    "md": 8,
+    "lg": 12,
+    "full": 9999
+  },
+  "elevation": "subtle",
+  "motion": {
+    "enabled": true,
+    "durationMs": 200
+  },
+  "componentVariants": {
+    "button": "filled",
+    "input": "filled",
+    "card": "outlined"
+  },
+  "darkMode": {
+    "enabled": true,
+    "strategy": "manual",
+    "colors": {
+      "primary": "#818CF8",
+      "background": "#0F172A",
+      "surface": "#1E293B",
+      "text": "#F1F5F9"
+    }
+  }
+}

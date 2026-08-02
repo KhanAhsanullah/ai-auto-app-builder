@@ -11,7 +11,32 @@ export interface Theme {
   /**
    * Base template family selected for the tenant.
    */
-  preset: 'minimal' | 'modern' | 'classic' | 'bold' | 'custom';
+  preset: 'default' | 'minimal' | 'modern' | 'luxury' | 'dark' | 'custom';
+  /**
+   * Theme versioning and compilation metadata.
+   */
+  metadata?: {
+    /**
+     * Incremented when tenant theme configuration changes.
+     */
+    themeVersion?: number;
+    /**
+     * ISO 8601 timestamp when the theme was first created.
+     */
+    createdAt?: string;
+    /**
+     * ISO 8601 timestamp when the theme was last modified.
+     */
+    updatedAt?: string;
+    /**
+     * ISO 8601 timestamp when the Theme Engine last resolved tokens.
+     */
+    compiledAt?: string;
+    /**
+     * SHA-256 hash of the canonical resolved theme token payload.
+     */
+    hash?: string;
+  };
   colors: {
     /**
      * CSS hex color (#RGB, #RRGGBB, or #RRGGBBAA).

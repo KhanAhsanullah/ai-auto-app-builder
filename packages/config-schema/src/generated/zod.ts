@@ -189,8 +189,37 @@ export const tenantConfigurationSchema = z
     theme: z
       .object({
         preset: z
-          .enum(['minimal', 'modern', 'classic', 'bold', 'custom'])
+          .enum(['default', 'minimal', 'modern', 'luxury', 'dark', 'custom'])
           .describe('Base template family selected for the tenant.'),
+        metadata: z
+          .object({
+            themeVersion: z
+              .number()
+              .int()
+              .gte(0)
+              .describe('Incremented when tenant theme configuration changes.')
+              .optional(),
+            createdAt: z
+              .any()
+              .describe('ISO 8601 timestamp when the theme was first created.')
+              .optional(),
+            updatedAt: z
+              .any()
+              .describe('ISO 8601 timestamp when the theme was last modified.')
+              .optional(),
+            compiledAt: z
+              .any()
+              .describe('ISO 8601 timestamp when the Theme Engine last resolved tokens.')
+              .optional(),
+            hash: z
+              .string()
+              .regex(new RegExp('^[a-f0-9]{64}$'))
+              .describe('SHA-256 hash of the canonical resolved theme token payload.')
+              .optional(),
+          })
+          .strict()
+          .describe('Theme versioning and compilation metadata.')
+          .optional(),
         colors: z
           .object({
             primary: z.any(),
@@ -1205,8 +1234,38 @@ export const brandingSchema = z
 export const themeSchema = z
   .object({
     preset: z
-      .enum(['minimal', 'modern', 'classic', 'bold', 'custom'])
+      .enum(['default', 'minimal', 'modern', 'luxury', 'dark', 'custom'])
       .describe('Base template family selected for the tenant.'),
+    metadata: z
+      .object({
+        themeVersion: z
+          .number()
+          .int()
+          .gte(0)
+          .describe('Incremented when tenant theme configuration changes.')
+          .optional(),
+        createdAt: z
+          .string()
+          .datetime({ offset: true })
+          .describe('ISO 8601 timestamp when the theme was first created.')
+          .optional(),
+        updatedAt: z
+          .any()
+          .describe('ISO 8601 timestamp when the theme was last modified.')
+          .optional(),
+        compiledAt: z
+          .any()
+          .describe('ISO 8601 timestamp when the Theme Engine last resolved tokens.')
+          .optional(),
+        hash: z
+          .string()
+          .regex(new RegExp('^[a-f0-9]{64}$'))
+          .describe('SHA-256 hash of the canonical resolved theme token payload.')
+          .optional(),
+      })
+      .strict()
+      .describe('Theme versioning and compilation metadata.')
+      .optional(),
     colors: z
       .object({
         primary: z.any(),

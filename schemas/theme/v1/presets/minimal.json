@@ -1,0 +1,47 @@
+{
+  "preset": "minimal",
+  "colors": {
+    "primary": "#18181B",
+    "secondary": "#71717A",
+    "background": "#FFFFFF",
+    "surface": "#FFFFFF",
+    "text": "#18181B",
+    "textMuted": "#A1A1AA",
+    "border": "#E4E4E7",
+    "error": "#EF4444",
+    "success": "#22C55E",
+    "warning": "#EAB308"
+  },
+  "typography": {
+    "fontFamily": {
+      "heading": "Inter",
+      "body": "Inter"
+    },
+    "scale": "compact",
+    "baseFontSize": 15
+  },
+  "spacing": {
+    "unit": 4,
+    "density": "compact"
+  },
+  "radius": {
+    "sm": 2,
+    "md": 4,
+    "lg": 6,
+    "full": 9999
+  },
+  "elevation": "flat",
+  "motion": {
+    "enabled": false,
+    "durationMs": 150
+  },
+  "componentVariants": {
+    "button": "outline",
+    "input": "underline",
+    "card": "flat"
+  },
+  "darkMode": {
+    "enabled": true,
+    "strategy": "system"
+  }
+}

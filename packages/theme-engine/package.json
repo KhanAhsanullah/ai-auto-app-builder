@@ -10,9 +10,19 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.build.json",
     "dev": "echo \"dev not configured yet\"",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit -p tsconfig.json"
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@ai-commerce/config-schema": "workspace:*"
+  },
+  "devDependencies": {
+    "@ai-commerce/config-runtime": "workspace:*",
+    "@types/node": "^22.10.2",
+    "vitest": "^3.0.5"
   }
 }

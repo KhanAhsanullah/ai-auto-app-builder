@@ -1,0 +1,53 @@
+{
+  "preset": "luxury",
+  "colors": {
+    "primary": "#92400E",
+    "secondary": "#CA8A04",
+    "background": "#FFFBEB",
+    "surface": "#FEF3C7",
+    "text": "#1C1917",
+    "textMuted": "#78716C",
+    "border": "#D6D3D1",
+    "error": "#B91C1C",
+    "success": "#15803D",
+    "warning": "#B45309"
+  },
+  "typography": {
+    "fontFamily": {
+      "heading": "Playfair Display",
+      "body": "Lora"
+    },
+    "scale": "comfortable",
+    "baseFontSize": 17
+  },
+  "spacing": {
+    "unit": 8,
+    "density": "spacious"
+  },
+  "radius": {
+    "sm": 2,
+    "md": 6,
+    "lg": 16,
+    "full": 9999
+  },
+  "elevation": "raised",
+  "motion": {
+    "enabled": true,
+    "durationMs": 300
+  },
+  "componentVariants": {
+    "button": "filled",
+    "input": "outline",
+    "card": "elevated"
+  },
+  "darkMode": {
+    "enabled": true,
+    "strategy": "system",
+    "colors": {
+      "primary": "#D97706",
+      "background": "#1C1917",
+      "surface": "#292524",
+      "text": "#FAFAF9"
+    }
+  }
+}
