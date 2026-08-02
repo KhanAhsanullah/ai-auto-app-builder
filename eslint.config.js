@@ -12,6 +12,8 @@ export default tseslint.config(
       '**/.next/**',
       '**/.turbo/**',
       '**/coverage/**',
+      '**/src/generated/**',
+      'packages/config-schema/scripts/**',
       'eslint.config.js',
       'commitlint.config.js',
     ],

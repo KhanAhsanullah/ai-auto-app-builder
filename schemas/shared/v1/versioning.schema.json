@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://platform.ai-commerce.dev/schemas/shared/v1/versioning.schema.json",
+  "title": "VersioningDefinitions",
+  "description": "Schema and configuration version identifiers used for migration and compatibility checks.",
+  "$defs": {
+    "schemaVersion": {
+      "type": "string",
+      "enum": ["v1"],
+      "description": "Platform schema version. Increment on breaking schema changes."
+    },
+    "configVersion": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Monotonic tenant config revision. Incremented on every publish."
+    },
+    "migrationRecord": {
+      "type": "object",
+      "required": ["fromSchemaVersion", "toSchemaVersion", "migratedAt"],
+      "additionalProperties": false,
+      "properties": {
+        "fromSchemaVersion": {
+          "$ref": "#/$defs/schemaVersion"
+        },
+        "toSchemaVersion": {
+          "$ref": "#/$defs/schemaVersion"
+        },
+        "migratedAt": {
+          "$ref": "./common.schema.json#/$defs/isoDateTime"
+        },
+        "migrationId": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$",
+          "description": "Identifier of the migration script applied."
+        },
+        "notes": {
+          "type": "string",
+          "maxLength": 1024
+        }
+      }
+    }
+  }
+}

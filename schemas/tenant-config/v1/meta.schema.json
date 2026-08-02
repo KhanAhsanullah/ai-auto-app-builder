@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://platform.ai-commerce.dev/schemas/tenant-config/v1/meta.schema.json",
+  "title": "ConfigurationMeta",
+  "description": "Metadata for versioning, audit, and schema compatibility of a tenant configuration document.",
+  "type": "object",
+  "required": ["schemaVersion", "configVersion", "createdAt", "updatedAt"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "$ref": "../../shared/v1/versioning.schema.json#/$defs/schemaVersion"
+    },
+    "configVersion": {
+      "$ref": "../../shared/v1/versioning.schema.json#/$defs/configVersion"
+    },
+    "createdAt": {
+      "$ref": "../../shared/v1/common.schema.json#/$defs/isoDateTime"
+    },
+    "updatedAt": {
+      "$ref": "../../shared/v1/common.schema.json#/$defs/isoDateTime"
+    },
+    "publishedAt": {
+      "$ref": "../../shared/v1/common.schema.json#/$defs/isoDateTime"
+    },
+    "publishedBy": {
+      "$ref": "../../shared/v1/common.schema.json#/$defs/uuid",
+      "description": "User ID who published this configuration version."
+    },
+    "label": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "description": "Human-readable label for this config revision (e.g. 'Launch config')."
+    },
+    "migrationHistory": {
+      "type": "array",
+      "items": {
+        "$ref": "../../shared/v1/versioning.schema.json#/$defs/migrationRecord"
+      },
+      "description": "Audit trail of schema migrations applied to this configuration."
+    }
+  }
+}

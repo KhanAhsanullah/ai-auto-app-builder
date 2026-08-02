@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://platform.ai-commerce.dev/schemas/tenant-config/v1/payments.schema.json",
+  "title": "Payments",
+  "description": "Payment gateway configuration, accepted methods, and checkout payment policies.",
+  "type": "object",
+  "required": ["defaultGateway", "methods", "checkout"],
+  "additionalProperties": false,
+  "properties": {
+    "defaultGateway": {
+      "type": "string",
+      "enum": ["stripe", "paypal", "razorpay", "jazzcash", "easypaisa", "manual", "custom"],
+      "description": "Primary payment gateway for this tenant."
+    },
+    "methods": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "card",
+          "wallet",
+          "bank_transfer",
+          "cash_on_delivery",
+          "buy_now_pay_later",
+          "apple_pay",
+          "google_pay"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "gateways": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["provider", "enabled"],
+        "additionalProperties": false,
+        "properties": {
+          "provider": {
+            "type": "string",
+            "enum": ["stripe", "paypal", "razorpay", "jazzcash", "easypaisa", "manual", "custom"]
+          },
+          "enabled": { "type": "boolean" },
+          "mode": {
+            "type": "string",
+            "enum": ["sandbox", "live"],
+            "default": "sandbox"
+          },
+          "credentialsRef": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9/_-]+$",
+            "description": "Reference to encrypted credentials in secrets store (not inline secrets)."
+          },
+          "supportedMethods": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "checkout": {
+      "type": "object",
+      "required": ["captureStrategy"],
+      "additionalProperties": false,
+      "properties": {
+        "captureStrategy": {
+          "type": "string",
+          "enum": ["immediate", "authorize_then_capture", "manual"],
+          "default": "immediate"
+        },
+        "allowSplitPayment": { "type": "boolean", "default": false },
+        "minimumOrderAmount": {
+          "type": "number",
+          "minimum": 0
+        },
+        "codEnabled": { "type": "boolean", "default": false },
+        "codMaxAmount": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "refunds": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "autoApprove": { "type": "boolean", "default": false },
+        "windowDays": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 365,
+          "default": 30
+        }
+      }
+    }
+  }
+}

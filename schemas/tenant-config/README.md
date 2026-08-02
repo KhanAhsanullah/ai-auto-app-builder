@@ -1,25 +1,21 @@
 # Tenant Config Schema
 
-JSON Schema definitions for the master tenant configuration document.
+Master tenant configuration schema — the single source of truth for the entire platform.
 
-## Scope
+## Current Version
 
-Defines the top-level configuration structure:
+**v1** — see [v1/README.md](./v1/README.md)
 
-- `tenant` — identity, vertical, locales
-- `branding` — theme engine input
-- `features` — enabled modules and flags
-- `navigation` — cross-surface navigation
-- `catalog`, `commerce`, `payments`, `notifications`, `integrations`
-- `plugins`, `environments`
+## Quick Links
 
-## Consumers
+- [Root Schema (v1)](./v1/tenant-config.schema.json)
+- [Full Example](./v1/examples/full.example.json)
+- [Schema References](../docs/SCHEMA-REFERENCES.md)
+- [Versioning](../docs/VERSIONING.md)
+- [Migration Strategy](../docs/MIGRATION-STRATEGY.md)
 
-- Config Engine (validation on publish)
-- Config Runtime (resolution rules)
-- AI Orchestrator (generation output validation)
-- All generated app surfaces (runtime behavior)
+## Code Generation
 
-## Status
-
-Schema files will be added in a future sprint.
+```bash
+pnpm --filter @ai-commerce/config-schema generate
+```

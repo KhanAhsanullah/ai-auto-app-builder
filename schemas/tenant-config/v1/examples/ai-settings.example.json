@@ -1,0 +1,24 @@
+{
+  "enabled": true,
+  "provider": {
+    "name": "openai",
+    "model": "gpt-4o",
+    "credentialsRef": "secrets/openai"
+  },
+  "generation": {
+    "allowedTargets": ["config", "theme", "catalog", "menu_import"],
+    "autoApply": false,
+    "maxTokensPerRequest": 4096
+  },
+  "guardrails": {
+    "lockedFields": ["payments.checkout.captureStrategy", "company.legalName"],
+    "requireSchemaValidation": true,
+    "blockDirectDbWrites": true,
+    "auditAllSuggestions": true
+  },
+  "copilot": {
+    "adminEnabled": true,
+    "customerSupportEnabled": false,
+    "allowedActions": ["read_orders", "read_catalog", "update_catalog_draft"]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "modules": {
+    "catalog": true,
+    "cart": true,
+    "checkout": true,
+    "order": true,
+    "payment": true,
+    "customer": true,
+    "inventory": true,
+    "notification": true,
+    "media": true,
+    "reviews": false,
+    "wishlist": true
+  },
+  "flags": {
+    "grocery.substitutions": true,
+    "grocery.deliverySlots": true
+  }
+}

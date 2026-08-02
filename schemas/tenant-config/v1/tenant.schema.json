@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://platform.ai-commerce.dev/schemas/tenant-config/v1/tenant.schema.json",
+  "title": "Tenant",
+  "description": "Root tenant identity and operational settings. All platform data scopes from the tenant.",
+  "type": "object",
+  "required": ["id", "slug", "name", "vertical", "status", "defaultLocale", "defaultTimezone"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "$ref": "../../shared/v1/common.schema.json#/$defs/uuid"
+    },
+    "slug": {
+      "$ref": "../../shared/v1/common.schema.json#/$defs/slug"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "vertical": {
+      "type": "string",
+      "enum": ["ecommerce", "grocery", "restaurant", "pharmacy", "fashion", "electronics"],
+      "description": "Active business vertical pack for this tenant."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "active", "suspended", "archived"],
+      "description": "Tenant lifecycle status."
+    },
+    "defaultLocale": {
+      "$ref": "../../shared/v1/common.schema.json#/$defs/localeCode"
+    },
+    "defaultTimezone": {
+      "$ref": "../../shared/v1/common.schema.json#/$defs/timezone"
+    },
+    "defaultCountry": {
+      "$ref": "../../shared/v1/common.schema.json#/$defs/countryCode"
+    },
+    "subscriptionTier": {
+      "type": "string",
+      "enum": ["starter", "growth", "enterprise"],
+      "default": "starter"
+    },
+    "stores": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "slug", "name"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "../../shared/v1/common.schema.json#/$defs/uuid"
+          },
+          "slug": {
+            "$ref": "../../shared/v1/common.schema.json#/$defs/slug"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "isDefault": {
+            "type": "boolean",
+            "default": false
+          },
+          "channels": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["web", "mobile", "admin", "api"]
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          }
+        }
+      }
+    },
+    "metadata": {
+      "$ref": "../../shared/v1/common.schema.json#/$defs/metadata"
+    }
+  }
+}

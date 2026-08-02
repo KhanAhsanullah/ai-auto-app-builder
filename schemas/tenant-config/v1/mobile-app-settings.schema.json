@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://platform.ai-commerce.dev/schemas/tenant-config/v1/mobile-app-settings.schema.json",
+  "title": "MobileAppSettings",
+  "description": "React Native mobile application identity, store listing, and runtime settings.",
+  "type": "object",
+  "required": ["enabled", "identity", "runtime"],
+  "additionalProperties": false,
+  "properties": {
+    "enabled": {
+      "type": "boolean",
+      "default": true
+    },
+    "identity": {
+      "type": "object",
+      "required": ["bundleId", "appName", "version"],
+      "additionalProperties": false,
+      "properties": {
+        "bundleId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(\\.[a-z0-9]+)+$",
+          "maxLength": 256,
+          "description": "iOS/Android bundle identifier (e.g. com.merchant.shop)."
+        },
+        "appName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 30,
+          "description": "App Store display name."
+        },
+        "version": {
+          "$ref": "../../shared/v1/common.schema.json#/$defs/semver"
+        },
+        "buildNumber": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "storeListing": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "shortDescription": { "type": "string", "maxLength": 80 },
+        "fullDescription": { "type": "string", "maxLength": 4000 },
+        "keywords": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 64 },
+          "maxItems": 20
+        },
+        "category": { "type": "string", "maxLength": 64 },
+        "privacyPolicyUrl": {
+          "$ref": "../../shared/v1/common.schema.json#/$defs/url"
+        }
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "required": ["minOsVersion"],
+      "additionalProperties": false,
+      "properties": {
+        "minOsVersion": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "ios": { "type": "string", "pattern": "^\\d+(\\.\\d+)*$", "default": "15.0" },
+            "android": { "type": "integer", "minimum": 21, "default": 24 }
+          }
+        },
+        "otaUpdates": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "enabled": { "type": "boolean", "default": true },
+            "channel": {
+              "type": "string",
+              "enum": ["development", "staging", "production"],
+              "default": "production"
+            }
+          }
+        },
+        "pushNotifications": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "enabled": { "type": "boolean", "default": false },
+            "provider": {
+              "type": "string",
+              "enum": ["firebase", "apns", "onesignal", "custom"]
+            }
+          }
+        },
+        "deepLinking": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "enabled": { "type": "boolean", "default": true },
+            "scheme": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9+.-]*$",
+              "maxLength": 32
+            },
+            "universalLinksDomain": {
+              "type": "string",
+              "maxLength": 256
+            }
+          }
+        }
+      }
+    }
+  }
+}

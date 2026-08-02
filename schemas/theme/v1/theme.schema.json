@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://platform.ai-commerce.dev/schemas/theme/v1/theme.schema.json",
+  "title": "Theme",
+  "description": "Design tokens compiled by the Theme Engine into CSS, React Native, and Admin theme bundles.",
+  "type": "object",
+  "required": ["preset", "colors", "typography", "spacing", "radius"],
+  "additionalProperties": false,
+  "properties": {
+    "preset": {
+      "type": "string",
+      "enum": ["minimal", "modern", "classic", "bold", "custom"],
+      "description": "Base template family selected for the tenant."
+    },
+    "colors": {
+      "type": "object",
+      "required": [
+        "primary",
+        "secondary",
+        "background",
+        "surface",
+        "text",
+        "error",
+        "success",
+        "warning"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "primary": { "$ref": "../../shared/v1/common.schema.json#/$defs/hexColor" },
+        "secondary": { "$ref": "../../shared/v1/common.schema.json#/$defs/hexColor" },
+        "background": { "$ref": "../../shared/v1/common.schema.json#/$defs/hexColor" },
+        "surface": { "$ref": "../../shared/v1/common.schema.json#/$defs/hexColor" },
+        "text": { "$ref": "../../shared/v1/common.schema.json#/$defs/hexColor" },
+        "textMuted": { "$ref": "../../shared/v1/common.schema.json#/$defs/hexColor" },
+        "border": { "$ref": "../../shared/v1/common.schema.json#/$defs/hexColor" },
+        "error": { "$ref": "../../shared/v1/common.schema.json#/$defs/hexColor" },
+        "success": { "$ref": "../../shared/v1/common.schema.json#/$defs/hexColor" },
+        "warning": { "$ref": "../../shared/v1/common.schema.json#/$defs/hexColor" }
+      }
+    },
+    "typography": {
+      "type": "object",
+      "required": ["fontFamily", "scale"],
+      "additionalProperties": false,
+      "properties": {
+        "fontFamily": {
+          "type": "object",
+          "required": ["heading", "body"],
+          "additionalProperties": false,
+          "properties": {
+            "heading": { "type": "string", "minLength": 1, "maxLength": 128 },
+            "body": { "type": "string", "minLength": 1, "maxLength": 128 }
+          }
+        },
+        "scale": {
+          "type": "string",
+          "enum": ["compact", "default", "comfortable"]
+        },
+        "baseFontSize": {
+          "type": "integer",
+          "minimum": 12,
+          "maximum": 20,
+          "default": 16
+        }
+      }
+    },
+    "spacing": {
+      "type": "object",
+      "required": ["unit"],
+      "additionalProperties": false,
+      "properties": {
+        "unit": {
+          "type": "integer",
+          "enum": [4, 8],
+          "description": "Base spacing grid unit in pixels."
+        },
+        "density": {
+          "type": "string",
+          "enum": ["compact", "default", "spacious"],
+          "default": "default"
+        }
+      }
+    },
+    "radius": {
+      "type": "object",
+      "required": ["sm", "md", "lg"],
+      "additionalProperties": false,
+      "properties": {
+        "sm": { "type": "integer", "minimum": 0, "maximum": 16 },
+        "md": { "type": "integer", "minimum": 0, "maximum": 24 },
+        "lg": { "type": "integer", "minimum": 0, "maximum": 32 },
+        "full": { "type": "integer", "minimum": 0, "maximum": 9999, "default": 9999 }
+      }
+    },
+    "elevation": {
+      "type": "string",
+      "enum": ["flat", "subtle", "raised"],
+      "default": "subtle"
+    },
+    "motion": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": { "type": "boolean", "default": true },
+        "durationMs": { "type": "integer", "minimum": 0, "maximum": 1000, "default": 200 }
+      }
+    },
+    "componentVariants": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "button": { "type": "string", "enum": ["filled", "outline", "ghost"], "default": "filled" },
+        "input": {
+          "type": "string",
+          "enum": ["outline", "filled", "underline"],
+          "default": "outline"
+        },
+        "card": {
+          "type": "string",
+          "enum": ["elevated", "outlined", "flat"],
+          "default": "elevated"
+        }
+      }
+    },
+    "darkMode": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": { "type": "boolean", "default": false },
+        "strategy": {
+          "type": "string",
+          "enum": ["manual", "system", "scheduled"],
+          "default": "system"
+        },
+        "colors": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "primary": { "$ref": "../../shared/v1/common.schema.json#/$defs/hexColor" },
+            "background": { "$ref": "../../shared/v1/common.schema.json#/$defs/hexColor" },
+            "surface": { "$ref": "../../shared/v1/common.schema.json#/$defs/hexColor" },
+            "text": { "$ref": "../../shared/v1/common.schema.json#/$defs/hexColor" }
+          }
+        }
+      }
+    }
+  }
+}

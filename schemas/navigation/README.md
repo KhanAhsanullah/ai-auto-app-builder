@@ -1,20 +1,12 @@
 # Navigation Schema
 
-JSON Schema definitions for admin and consumer navigation structures.
+Cross-surface navigation schema for web, mobile, and admin.
 
-## Scope
+## Current Version
 
-Defines navigation manifests used by all generated surfaces:
+**v1** — see [v1/README.md](./v1/README.md)
 
-- Tab bars and drawer menus (mobile)
-- Header navigation and footer links (web)
-- Sidebar and breadcrumb structures (admin)
-- Deep link route mappings
+## Files
 
-## Configuration-Driven
-
-Navigation is never hardcoded in apps. Each tenant's effective navigation is resolved from config at runtime or baked into generated manifests at build time.
-
-## Status
-
-Schema files will be added in a future sprint.
+- [navigation.schema.json](./v1/navigation.schema.json)
+- [Example](./v1/examples/navigation.example.json)

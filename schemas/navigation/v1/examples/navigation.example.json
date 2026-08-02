@@ -1,0 +1,95 @@
+{
+  "web": {
+    "style": "top-bar",
+    "primary": [
+      {
+        "id": "home",
+        "label": "Home",
+        "route": "store.home",
+        "icon": "home"
+      },
+      {
+        "id": "shop",
+        "label": "Shop",
+        "route": "store.catalog",
+        "icon": "shopping-bag"
+      },
+      {
+        "id": "cart",
+        "label": "Cart",
+        "route": "store.cart",
+        "icon": "cart"
+      }
+    ],
+    "footer": [
+      {
+        "id": "about",
+        "label": "About",
+        "route": "store.about"
+      },
+      {
+        "id": "contact",
+        "label": "Contact",
+        "route": "store.contact"
+      }
+    ]
+  },
+  "mobile": {
+    "style": "bottom-bar",
+    "primary": [
+      {
+        "id": "home",
+        "label": "Home",
+        "route": "store.home",
+        "icon": "home"
+      },
+      {
+        "id": "shop",
+        "label": "Shop",
+        "route": "store.catalog",
+        "icon": "shopping-bag"
+      },
+      {
+        "id": "orders",
+        "label": "Orders",
+        "route": "store.orders",
+        "icon": "package"
+      },
+      {
+        "id": "profile",
+        "label": "Profile",
+        "route": "store.profile",
+        "icon": "user"
+      }
+    ]
+  },
+  "admin": {
+    "style": "sidebar",
+    "primary": [
+      {
+        "id": "dashboard",
+        "label": "Dashboard",
+        "route": "admin.dashboard",
+        "icon": "layout-dashboard"
+      },
+      {
+        "id": "orders",
+        "label": "Orders",
+        "route": "admin.orders",
+        "icon": "package"
+      },
+      {
+        "id": "catalog",
+        "label": "Catalog",
+        "route": "admin.catalog",
+        "icon": "tags"
+      },
+      {
+        "id": "settings",
+        "label": "Settings",
+        "route": "admin.settings",
+        "icon": "settings"
+      }
+    ]
+  }
+}

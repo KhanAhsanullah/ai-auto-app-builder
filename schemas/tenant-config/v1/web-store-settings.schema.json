@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://platform.ai-commerce.dev/schemas/tenant-config/v1/web-store-settings.schema.json",
+  "title": "WebStoreSettings",
+  "description": "Web storefront domain, SEO, PWA, and rendering configuration.",
+  "type": "object",
+  "required": ["enabled", "domain", "seo", "rendering"],
+  "additionalProperties": false,
+  "properties": {
+    "enabled": {
+      "type": "boolean",
+      "default": true
+    },
+    "domain": {
+      "type": "object",
+      "required": ["primary"],
+      "additionalProperties": false,
+      "properties": {
+        "primary": {
+          "type": "string",
+          "format": "hostname",
+          "maxLength": 256,
+          "description": "Primary custom domain (e.g. shop.merchant.com)."
+        },
+        "aliases": {
+          "type": "array",
+          "items": { "type": "string", "format": "hostname" },
+          "uniqueItems": true
+        },
+        "platformSubdomain": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+\\.[a-z0-9.-]+$",
+          "description": "Platform-provided subdomain for starter tier."
+        },
+        "ssl": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "autoProvision": { "type": "boolean", "default": true },
+            "forceHttps": { "type": "boolean", "default": true }
+          }
+        }
+      }
+    },
+    "seo": {
+      "type": "object",
+      "required": ["title", "description"],
+      "additionalProperties": false,
+      "properties": {
+        "title": { "type": "string", "minLength": 1, "maxLength": 70 },
+        "description": { "type": "string", "minLength": 1, "maxLength": 160 },
+        "keywords": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 64 },
+          "maxItems": 20
+        },
+        "robotsIndex": { "type": "boolean", "default": true },
+        "sitemapEnabled": { "type": "boolean", "default": true },
+        "structuredData": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "organization": { "type": "boolean", "default": true },
+            "product": { "type": "boolean", "default": true },
+            "breadcrumb": { "type": "boolean", "default": true }
+          }
+        }
+      }
+    },
+    "pwa": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": { "type": "boolean", "default": true },
+        "displayMode": {
+          "type": "string",
+          "enum": ["standalone", "minimal-ui", "browser"],
+          "default": "standalone"
+        },
+        "themeColor": {
+          "$ref": "../../shared/v1/common.schema.json#/$defs/hexColor"
+        },
+        "backgroundColor": {
+          "$ref": "../../shared/v1/common.schema.json#/$defs/hexColor"
+        }
+      }
+    },
+    "rendering": {
+      "type": "object",
+      "required": ["mode"],
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": ["ssr", "ssg", "isr", "spa"],
+          "default": "ssr"
+        },
+        "cacheTtlSeconds": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 86400,
+          "default": 60
+        }
+      }
+    },
+    "legal": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "termsOfServiceUrl": { "$ref": "../../shared/v1/common.schema.json#/$defs/url" },
+        "privacyPolicyUrl": { "$ref": "../../shared/v1/common.schema.json#/$defs/url" },
+        "refundPolicyUrl": { "$ref": "../../shared/v1/common.schema.json#/$defs/url" },
+        "cookieConsent": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "enabled": { "type": "boolean", "default": false },
+            "regions": {
+              "type": "array",
+              "items": { "$ref": "../../shared/v1/common.schema.json#/$defs/countryCode" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

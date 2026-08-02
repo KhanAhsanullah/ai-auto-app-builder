@@ -1,30 +1,39 @@
 # Schemas
 
-Canonical schema definitions that serve as the single contract across the platform.
+Canonical schema definitions — the **single contract** across the entire platform.
 
 ## Schema Domains
 
-| Domain           | Path                                    | Purpose                                    |
-| ---------------- | --------------------------------------- | ------------------------------------------ |
-| Tenant Config    | [tenant-config/](./tenant-config)       | Master tenant configuration document       |
-| Theme            | [theme/](./theme)                       | Design tokens and brand styling            |
-| Navigation       | [navigation/](./navigation)             | Admin and consumer navigation structures   |
-| Feature Manifest | [feature-manifest/](./feature-manifest) | Module and feature activation declarations |
-| Plugin Manifest  | [plugin-manifest/](./plugin-manifest)   | Third-party plugin registration contracts  |
+| Domain           | Path                                     | Purpose                                                   |
+| ---------------- | ---------------------------------------- | --------------------------------------------------------- |
+| Shared           | [shared/v1/](./shared/v1/)               | Common primitives (UUID, locale, currency) and versioning |
+| Tenant Config    | [tenant-config/v1/](./tenant-config/v1/) | Master tenant configuration document                      |
+| Theme            | [theme/v1/](./theme/v1/)                 | Design tokens and brand styling                           |
+| Navigation       | [navigation/v1/](./navigation/v1/)       | Admin and consumer navigation structures                  |
+| Feature Manifest | [feature-manifest/](./feature-manifest)  | Module and feature activation declarations                |
+| Plugin Manifest  | [plugin-manifest/](./plugin-manifest)    | Third-party plugin registration contracts                 |
 
-## Usage
+## Documentation
 
-Schemas are consumed by:
+| Document                                           | Description                                 |
+| -------------------------------------------------- | ------------------------------------------- |
+| [Schema References](./docs/SCHEMA-REFERENCES.md)   | How schemas reference each other via `$ref` |
+| [Versioning](./docs/VERSIONING.md)                 | Schema version vs config version            |
+| [Migration Strategy](./docs/MIGRATION-STRATEGY.md) | Future version migration pipeline           |
 
-- `packages/config-schema` — runtime validators
-- `platform/config-engine` — publish-time validation
-- `platform/ai-orchestrator` — AI output validation
-- `tooling/config-linter` — pre-deploy checks
+## Consumers
 
-## Versioning
+- `@ai-commerce/config-schema` — generated TypeScript types and Zod validators
+- `platform/config-engine` — publish-time validation (future sprint)
+- `platform/ai-orchestrator` — AI output validation (future sprint)
+- `tooling/config-linter` — pre-deploy checks (future sprint)
 
-Schema changes follow semantic versioning. Breaking changes require migration paths and config version bumps.
+## Code Generation
 
-## Status
+```bash
+pnpm --filter @ai-commerce/config-schema generate
+```
 
-Foundation scaffold — JSON Schema files in future sprints.
+## Version
+
+Current active schema version: **v1**

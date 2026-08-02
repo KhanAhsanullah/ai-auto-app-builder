@@ -1,0 +1,16 @@
+{
+  "legalName": "Fresh Grocery (Private) Limited",
+  "displayName": "Fresh Grocery",
+  "registrationNumber": "REG-123456",
+  "contactEmail": "support@freshgrocery.pk",
+  "contactPhone": "+923001234567",
+  "website": "https://freshgrocery.pk",
+  "address": {
+    "line1": "123 Main Boulevard",
+    "city": "Lahore",
+    "state": "Punjab",
+    "postalCode": "54000",
+    "country": "PK"
+  },
+  "supportHours": "Mon–Sat 9am–9pm PKT"
+}

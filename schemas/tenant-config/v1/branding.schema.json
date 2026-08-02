@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://platform.ai-commerce.dev/schemas/tenant-config/v1/branding.schema.json",
+  "title": "Branding",
+  "description": "Brand identity assets and copy used across all generated surfaces.",
+  "type": "object",
+  "required": ["appName", "tagline"],
+  "additionalProperties": false,
+  "properties": {
+    "appName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "description": "Application display name shown to end customers."
+    },
+    "tagline": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "logo": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "primary": {
+          "$ref": "../../shared/v1/common.schema.json#/$defs/url",
+          "description": "Primary logo URL (light background)."
+        },
+        "inverse": {
+          "$ref": "../../shared/v1/common.schema.json#/$defs/url",
+          "description": "Logo for dark backgrounds."
+        },
+        "favicon": {
+          "$ref": "../../shared/v1/common.schema.json#/$defs/url"
+        },
+        "appleTouchIcon": {
+          "$ref": "../../shared/v1/common.schema.json#/$defs/url"
+        }
+      }
+    },
+    "splashScreen": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "backgroundColor": {
+          "$ref": "../../shared/v1/common.schema.json#/$defs/hexColor"
+        },
+        "imageUrl": {
+          "$ref": "../../shared/v1/common.schema.json#/$defs/url"
+        }
+      }
+    },
+    "socialShare": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ogImageUrl": {
+          "$ref": "../../shared/v1/common.schema.json#/$defs/url"
+        },
+        "twitterHandle": {
+          "type": "string",
+          "pattern": "^@?[A-Za-z0-9_]{1,15}$"
+        }
+      }
+    },
+    "showPoweredBy": {
+      "type": "boolean",
+      "default": true,
+      "description": "Display platform attribution (tier-dependent)."
+    },
+    "copyrightText": {
+      "type": "string",
+      "maxLength": 512
+    },
+    "metadata": {
+      "$ref": "../../shared/v1/common.schema.json#/$defs/metadata"
+    }
+  }
+}

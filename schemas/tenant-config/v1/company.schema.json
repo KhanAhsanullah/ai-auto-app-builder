@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://platform.ai-commerce.dev/schemas/tenant-config/v1/company.schema.json",
+  "title": "Company",
+  "description": "Legal and business entity information for the merchant operating the tenant.",
+  "type": "object",
+  "required": ["legalName", "displayName", "contactEmail"],
+  "additionalProperties": false,
+  "properties": {
+    "legalName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "description": "Registered legal business name."
+    },
+    "displayName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256,
+      "description": "Public-facing business name."
+    },
+    "registrationNumber": {
+      "type": "string",
+      "maxLength": 128,
+      "description": "Business registration or tax ID."
+    },
+    "contactEmail": {
+      "$ref": "../../shared/v1/common.schema.json#/$defs/email"
+    },
+    "contactPhone": {
+      "type": "string",
+      "pattern": "^\\+[1-9]\\d{6,14}$",
+      "description": "E.164 international phone number."
+    },
+    "website": {
+      "$ref": "../../shared/v1/common.schema.json#/$defs/url"
+    },
+    "address": {
+      "type": "object",
+      "required": ["line1", "city", "country"],
+      "additionalProperties": false,
+      "properties": {
+        "line1": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "line2": {
+          "type": "string",
+          "maxLength": 256
+        },
+        "city": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "state": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "postalCode": {
+          "type": "string",
+          "maxLength": 32
+        },
+        "country": {
+          "$ref": "../../shared/v1/common.schema.json#/$defs/countryCode"
+        }
+      }
+    },
+    "supportHours": {
+      "type": "string",
+      "maxLength": 256,
+      "description": "Human-readable support availability (e.g. 'Mon–Fri 9am–6pm PKT')."
+    },
+    "metadata": {
+      "$ref": "../../shared/v1/common.schema.json#/$defs/metadata"
+    }
+  }
+}

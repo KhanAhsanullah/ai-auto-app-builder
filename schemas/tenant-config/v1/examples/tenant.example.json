@@ -1,0 +1,20 @@
+{
+  "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "slug": "fresh-grocery-pk",
+  "name": "Fresh Grocery PK",
+  "vertical": "grocery",
+  "status": "active",
+  "defaultLocale": "en-PK",
+  "defaultTimezone": "Asia/Karachi",
+  "defaultCountry": "PK",
+  "subscriptionTier": "growth",
+  "stores": [
+    {
+      "id": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+      "slug": "main",
+      "name": "Main Store",
+      "isDefault": true,
+      "channels": ["web", "mobile", "admin"]
+    }
+  ]
+}

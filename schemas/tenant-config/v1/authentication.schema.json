@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://platform.ai-commerce.dev/schemas/tenant-config/v1/authentication.schema.json",
+  "title": "Authentication",
+  "description": "Authentication methods, session policies, and RBAC defaults for the tenant.",
+  "type": "object",
+  "required": ["customer", "admin"],
+  "additionalProperties": false,
+  "properties": {
+    "customer": {
+      "type": "object",
+      "required": ["methods", "session"],
+      "additionalProperties": false,
+      "properties": {
+        "methods": {
+          "type": "object",
+          "required": ["email", "phone", "guestCheckout"],
+          "additionalProperties": false,
+          "properties": {
+            "email": { "type": "boolean", "default": true },
+            "phone": { "type": "boolean", "default": false },
+            "guestCheckout": { "type": "boolean", "default": true },
+            "social": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "google": { "type": "boolean", "default": false },
+                "apple": { "type": "boolean", "default": false },
+                "facebook": { "type": "boolean", "default": false }
+              }
+            }
+          }
+        },
+        "session": {
+          "type": "object",
+          "required": ["tokenTtlMinutes"],
+          "additionalProperties": false,
+          "properties": {
+            "tokenTtlMinutes": {
+              "type": "integer",
+              "minimum": 5,
+              "maximum": 43200,
+              "default": 10080
+            },
+            "refreshEnabled": { "type": "boolean", "default": true },
+            "maxDevices": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 5
+            }
+          }
+        },
+        "mfa": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "required": { "type": "boolean", "default": false },
+            "methods": {
+              "type": "array",
+              "items": { "type": "string", "enum": ["totp", "sms", "email"] },
+              "uniqueItems": true
+            }
+          }
+        }
+      }
+    },
+    "admin": {
+      "type": "object",
+      "required": ["methods", "session", "mfa"],
+      "additionalProperties": false,
+      "properties": {
+        "methods": {
+          "type": "object",
+          "required": ["email"],
+          "additionalProperties": false,
+          "properties": {
+            "email": { "type": "boolean", "default": true },
+            "sso": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "enabled": { "type": "boolean", "default": false },
+                "provider": {
+                  "type": "string",
+                  "enum": ["saml", "oidc"]
+                },
+                "issuerUrl": {
+                  "$ref": "../../shared/v1/common.schema.json#/$defs/url"
+                }
+              }
+            }
+          }
+        },
+        "session": {
+          "type": "object",
+          "required": ["tokenTtlMinutes"],
+          "additionalProperties": false,
+          "properties": {
+            "tokenTtlMinutes": {
+              "type": "integer",
+              "minimum": 5,
+              "maximum": 1440,
+              "default": 480
+            },
+            "idleTimeoutMinutes": {
+              "type": "integer",
+              "minimum": 5,
+              "maximum": 480,
+              "default": 30
+            }
+          }
+        },
+        "mfa": {
+          "type": "object",
+          "required": ["required"],
+          "additionalProperties": false,
+          "properties": {
+            "required": { "type": "boolean", "default": true },
+            "methods": {
+              "type": "array",
+              "items": { "type": "string", "enum": ["totp", "sms", "email"] },
+              "minItems": 1,
+              "uniqueItems": true,
+              "default": ["totp"]
+            }
+          }
+        },
+        "defaultRoles": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["owner", "admin", "manager", "staff", "support"]
+          },
+          "default": ["owner", "admin", "manager", "staff"]
+        }
+      }
+    },
+    "api": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": { "type": "boolean", "default": false },
+        "keyRotationDays": {
+          "type": "integer",
+          "minimum": 30,
+          "maximum": 365,
+          "default": 90
+        },
+        "oauthClientCredentials": { "type": "boolean", "default": false }
+      }
+    }
+  }
+}

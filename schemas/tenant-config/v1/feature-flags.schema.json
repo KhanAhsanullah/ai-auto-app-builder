@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://platform.ai-commerce.dev/schemas/tenant-config/v1/feature-flags.schema.json",
+  "title": "FeatureFlags",
+  "description": "Tenant-level feature toggles and module activation flags.",
+  "type": "object",
+  "required": ["modules", "flags"],
+  "additionalProperties": false,
+  "properties": {
+    "modules": {
+      "type": "object",
+      "description": "Core and vertical module activation map.",
+      "additionalProperties": false,
+      "properties": {
+        "catalog": { "type": "boolean", "default": true },
+        "cart": { "type": "boolean", "default": true },
+        "checkout": { "type": "boolean", "default": true },
+        "order": { "type": "boolean", "default": true },
+        "payment": { "type": "boolean", "default": true },
+        "customer": { "type": "boolean", "default": true },
+        "inventory": { "type": "boolean", "default": true },
+        "notification": { "type": "boolean", "default": true },
+        "media": { "type": "boolean", "default": true },
+        "reviews": { "type": "boolean", "default": false },
+        "wishlist": { "type": "boolean", "default": false },
+        "subscriptions": { "type": "boolean", "default": false },
+        "loyalty": { "type": "boolean", "default": false }
+      }
+    },
+    "flags": {
+      "type": "object",
+      "description": "Arbitrary feature flag key-value map.",
+      "additionalProperties": {
+        "type": "boolean"
+      },
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9]*(?:\\.[a-z][a-z0-9]*)*$",
+        "maxLength": 128
+      }
+    },
+    "experiments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["key", "enabled", "variants"],
+        "additionalProperties": false,
+        "properties": {
+          "key": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]*$",
+            "maxLength": 64
+          },
+          "enabled": { "type": "boolean" },
+          "variants": {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            }
+          }
+        }
+      }
+    }
+  }
+}

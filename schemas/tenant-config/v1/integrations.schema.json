@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://platform.ai-commerce.dev/schemas/tenant-config/v1/integrations.schema.json",
+  "title": "Integrations",
+  "description": "Third-party service integrations: analytics, ERP, POS, shipping, and webhooks.",
+  "type": "object",
+  "required": ["analytics"],
+  "additionalProperties": false,
+  "properties": {
+    "analytics": {
+      "type": "object",
+      "required": ["enabled"],
+      "additionalProperties": false,
+      "properties": {
+        "enabled": { "type": "boolean", "default": true },
+        "providers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "enabled"],
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "enum": ["google_analytics", "mixpanel", "segment", "amplitude", "custom"]
+              },
+              "enabled": { "type": "boolean" },
+              "trackingId": { "type": "string", "maxLength": 256 },
+              "credentialsRef": { "type": "string", "maxLength": 256 }
+            }
+          }
+        }
+      }
+    },
+    "erp": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": { "type": "boolean", "default": false },
+        "provider": {
+          "type": "string",
+          "enum": ["sap", "oracle", "dynamics", "custom"]
+        },
+        "syncIntervalMinutes": {
+          "type": "integer",
+          "minimum": 5,
+          "maximum": 1440,
+          "default": 60
+        },
+        "credentialsRef": { "type": "string" }
+      }
+    },
+    "pos": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": { "type": "boolean", "default": false },
+        "provider": { "type": "string", "maxLength": 128 },
+        "credentialsRef": { "type": "string" }
+      }
+    },
+    "shipping": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["provider", "enabled"],
+        "additionalProperties": false,
+        "properties": {
+          "provider": {
+            "type": "string",
+            "enum": ["manual", "fedex", "ups", "dhl", "tcs", "leopards", "custom"]
+          },
+          "enabled": { "type": "boolean" },
+          "credentialsRef": { "type": "string" },
+          "default": { "type": "boolean", "default": false }
+        }
+      }
+    },
+    "webhooks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "url", "events", "enabled"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "../../shared/v1/common.schema.json#/$defs/uuid"
+          },
+          "url": {
+            "$ref": "../../shared/v1/common.schema.json#/$defs/url"
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z]+\\.[a-z]+(?:\\.[a-z]+)?$"
+            },
+            "minItems": 1
+          },
+          "enabled": { "type": "boolean" },
+          "secretRef": {
+            "type": "string",
+            "description": "Reference to webhook signing secret."
+          }
+        }
+      }
+    },
+    "plugins": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "version", "enabled"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:\\.[a-z0-9]+)+$"
+          },
+          "version": {
+            "$ref": "../../shared/v1/common.schema.json#/$defs/semver"
+          },
+          "enabled": { "type": "boolean" },
+          "settings": {
+            "$ref": "../../shared/v1/common.schema.json#/$defs/metadata"
+          }
+        }
+      }
+    }
+  }
+}

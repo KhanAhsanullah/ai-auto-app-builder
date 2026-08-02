@@ -1,0 +1,22 @@
+{
+  "defaultGateway": "jazzcash",
+  "methods": ["card", "cash_on_delivery", "wallet"],
+  "gateways": [
+    {
+      "provider": "jazzcash",
+      "enabled": true,
+      "mode": "sandbox",
+      "credentialsRef": "secrets/jazzcash"
+    }
+  ],
+  "checkout": {
+    "captureStrategy": "immediate",
+    "codEnabled": true,
+    "codMaxAmount": 10000,
+    "minimumOrderAmount": 500
+  },
+  "refunds": {
+    "autoApprove": false,
+    "windowDays": 7
+  }
+}

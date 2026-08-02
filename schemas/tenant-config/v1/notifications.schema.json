@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://platform.ai-commerce.dev/schemas/tenant-config/v1/notifications.schema.json",
+  "title": "Notifications",
+  "description": "Notification channels, templates, and delivery policies for the tenant.",
+  "type": "object",
+  "required": ["channels", "sender", "events"],
+  "additionalProperties": false,
+  "properties": {
+    "channels": {
+      "type": "object",
+      "required": ["email"],
+      "additionalProperties": false,
+      "properties": {
+        "email": { "type": "boolean", "default": true },
+        "sms": { "type": "boolean", "default": false },
+        "push": { "type": "boolean", "default": false },
+        "whatsapp": { "type": "boolean", "default": false }
+      }
+    },
+    "sender": {
+      "type": "object",
+      "required": ["fromName", "fromEmail"],
+      "additionalProperties": false,
+      "properties": {
+        "fromName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "fromEmail": {
+          "$ref": "../../shared/v1/common.schema.json#/$defs/email"
+        },
+        "replyTo": {
+          "$ref": "../../shared/v1/common.schema.json#/$defs/email"
+        },
+        "smsSenderId": {
+          "type": "string",
+          "maxLength": 11,
+          "description": "Alphanumeric SMS sender ID where supported."
+        }
+      }
+    },
+    "events": {
+      "type": "object",
+      "description": "Per-event channel enablement.",
+      "additionalProperties": false,
+      "properties": {
+        "orderConfirmed": {
+          "$ref": "#/$defs/eventChannels"
+        },
+        "orderShipped": {
+          "$ref": "#/$defs/eventChannels"
+        },
+        "orderDelivered": {
+          "$ref": "#/$defs/eventChannels"
+        },
+        "orderCancelled": {
+          "$ref": "#/$defs/eventChannels"
+        },
+        "paymentFailed": {
+          "$ref": "#/$defs/eventChannels"
+        },
+        "passwordReset": {
+          "$ref": "#/$defs/eventChannels"
+        },
+        "welcomeCustomer": {
+          "$ref": "#/$defs/eventChannels"
+        }
+      }
+    },
+    "templates": {
+      "type": "object",
+      "description": "Template overrides keyed by event name.",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "subject": { "type": "string", "maxLength": 256 },
+          "bodyRef": {
+            "type": "string",
+            "description": "Reference to template asset ID."
+          }
+        }
+      }
+    },
+    "quietHours": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": { "type": "boolean", "default": false },
+        "start": {
+          "type": "string",
+          "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$",
+          "description": "24h time HH:MM in tenant timezone."
+        },
+        "end": {
+          "type": "string",
+          "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+        },
+        "channels": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["sms", "push", "whatsapp"] }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "eventChannels": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "email": { "type": "boolean", "default": true },
+        "sms": { "type": "boolean", "default": false },
+        "push": { "type": "boolean", "default": false },
+        "whatsapp": { "type": "boolean", "default": false }
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "appName": "Fresh Grocery",
+  "tagline": "Farm fresh delivered to your door",
+  "logo": {
+    "primary": "https://cdn.example.com/logo-primary.svg",
+    "inverse": "https://cdn.example.com/logo-inverse.svg",
+    "favicon": "https://cdn.example.com/favicon.ico"
+  },
+  "showPoweredBy": false,
+  "copyrightText": "© 2026 Fresh Grocery. All rights reserved."
+}

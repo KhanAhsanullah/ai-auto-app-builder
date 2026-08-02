@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://platform.ai-commerce.dev/schemas/tenant-config/v1/currency.schema.json",
+  "title": "Currency",
+  "description": "Currency display, formatting, and multi-currency commerce settings.",
+  "type": "object",
+  "required": ["default", "supported", "display"],
+  "additionalProperties": false,
+  "properties": {
+    "default": {
+      "$ref": "../../shared/v1/common.schema.json#/$defs/currencyCode"
+    },
+    "supported": {
+      "type": "array",
+      "items": {
+        "$ref": "../../shared/v1/common.schema.json#/$defs/currencyCode"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "display": {
+      "type": "object",
+      "required": ["symbolPosition", "decimalPlaces"],
+      "additionalProperties": false,
+      "properties": {
+        "symbolPosition": {
+          "type": "string",
+          "enum": ["before", "after"]
+        },
+        "decimalPlaces": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4,
+          "default": 2
+        },
+        "thousandsSeparator": {
+          "type": "string",
+          "enum": [",", ".", " ", "'"],
+          "default": ","
+        },
+        "decimalSeparator": {
+          "type": "string",
+          "enum": [".", ","],
+          "default": "."
+        }
+      }
+    },
+    "allowMultiCurrency": {
+      "type": "boolean",
+      "default": false,
+      "description": "Enable checkout in non-default currencies."
+    },
+    "exchangeRateProvider": {
+      "type": "string",
+      "enum": ["manual", "openexchangerates", "fixer", "none"],
+      "default": "none"
+    }
+  }
+}

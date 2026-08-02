@@ -4,15 +4,29 @@
   "private": true,
   "description": "Canonical JSON Schema definitions and validators for tenant configuration. Single contract used by Config Engine, AI Module, and all client surfaces.",
   "type": "module",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./src/index.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./schemas/*": "../../schemas/*"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "generate": "pnpm exec tsx scripts/generate.ts",
+    "build": "pnpm generate && tsc -p tsconfig.json",
     "dev": "echo \"dev not configured yet\"",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit -p tsconfig.json"
+    "typecheck": "pnpm generate && tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@apidevtools/json-schema-ref-parser": "^11.7.2",
+    "json-schema-to-typescript": "^15.0.4",
+    "json-schema-to-zod": "^2.6.0",
+    "tsx": "^4.19.2"
   }
 }

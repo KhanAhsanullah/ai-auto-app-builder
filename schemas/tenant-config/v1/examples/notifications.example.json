@@ -1,0 +1,28 @@
+{
+  "channels": {
+    "email": true,
+    "sms": true,
+    "push": true,
+    "whatsapp": false
+  },
+  "sender": {
+    "fromName": "Fresh Grocery",
+    "fromEmail": "noreply@freshgrocery.pk",
+    "replyTo": "support@freshgrocery.pk",
+    "smsSenderId": "FRESH"
+  },
+  "events": {
+    "orderConfirmed": {
+      "email": true,
+      "sms": true,
+      "push": true
+    },
+    "orderShipped": {
+      "email": true,
+      "push": true
+    },
+    "passwordReset": {
+      "email": true
+    }
+  }
+}

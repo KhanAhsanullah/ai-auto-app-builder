@@ -1,0 +1,38 @@
+{
+  "preset": "modern",
+  "colors": {
+    "primary": "#16A34A",
+    "secondary": "#F59E0B",
+    "background": "#FFFFFF",
+    "surface": "#F9FAFB",
+    "text": "#111827",
+    "textMuted": "#6B7280",
+    "border": "#E5E7EB",
+    "error": "#DC2626",
+    "success": "#16A34A",
+    "warning": "#F59E0B"
+  },
+  "typography": {
+    "fontFamily": {
+      "heading": "Inter",
+      "body": "Inter"
+    },
+    "scale": "default",
+    "baseFontSize": 16
+  },
+  "spacing": {
+    "unit": 4,
+    "density": "default"
+  },
+  "radius": {
+    "sm": 4,
+    "md": 8,
+    "lg": 12,
+    "full": 9999
+  },
+  "elevation": "subtle",
+  "darkMode": {
+    "enabled": true,
+    "strategy": "system"
+  }
+}

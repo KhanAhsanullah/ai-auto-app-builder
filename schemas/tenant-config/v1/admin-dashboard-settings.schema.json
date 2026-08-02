@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://platform.ai-commerce.dev/schemas/tenant-config/v1/admin-dashboard-settings.schema.json",
+  "title": "AdminDashboardSettings",
+  "description": "Admin dashboard layout, widgets, RBAC visibility, and operational preferences.",
+  "type": "object",
+  "required": ["enabled", "layout", "preferences"],
+  "additionalProperties": false,
+  "properties": {
+    "enabled": {
+      "type": "boolean",
+      "default": true
+    },
+    "domain": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "primary": {
+          "type": "string",
+          "format": "hostname",
+          "maxLength": 256,
+          "description": "Admin portal domain (e.g. admin.merchant.com)."
+        },
+        "platformSubdomain": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+\\.[a-z0-9.-]+$"
+        }
+      }
+    },
+    "layout": {
+      "type": "object",
+      "required": ["sidebarStyle", "defaultLandingRoute"],
+      "additionalProperties": false,
+      "properties": {
+        "sidebarStyle": {
+          "type": "string",
+          "enum": ["expanded", "collapsed", "mini"],
+          "default": "expanded"
+        },
+        "defaultLandingRoute": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "default": "dashboard.overview"
+        },
+        "widgets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "enabled"],
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z0-9-]+$",
+                "maxLength": 64
+              },
+              "enabled": { "type": "boolean" },
+              "position": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "requiredRole": {
+                "type": "string",
+                "enum": ["owner", "admin", "manager", "staff", "support"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "preferences": {
+      "type": "object",
+      "required": ["dateFormat", "timeFormat"],
+      "additionalProperties": false,
+      "properties": {
+        "dateFormat": {
+          "type": "string",
+          "enum": ["DD/MM/YYYY", "MM/DD/YYYY", "YYYY-MM-DD"],
+          "default": "DD/MM/YYYY"
+        },
+        "timeFormat": {
+          "type": "string",
+          "enum": ["12h", "24h"],
+          "default": "12h"
+        },
+        "rowsPerPage": {
+          "type": "integer",
+          "enum": [10, 25, 50, 100],
+          "default": 25
+        },
+        "enableBulkActions": { "type": "boolean", "default": true },
+        "enableExport": { "type": "boolean", "default": true }
+      }
+    },
+    "onboarding": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "showWizard": { "type": "boolean", "default": true },
+        "completedSteps": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["company_profile", "branding", "catalog", "payments", "shipping", "go_live"]
+          },
+          "uniqueItems": true
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "default": "PKR",
+  "supported": ["PKR"],
+  "display": {
+    "symbolPosition": "before",
+    "decimalPlaces": 0,
+    "thousandsSeparator": ",",
+    "decimalSeparator": "."
+  },
+  "allowMultiCurrency": false,
+  "exchangeRateProvider": "none"
+}

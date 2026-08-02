@@ -1,0 +1,35 @@
+{
+  "enabled": true,
+  "domain": {
+    "primary": "admin.freshgrocery.pk"
+  },
+  "layout": {
+    "sidebarStyle": "expanded",
+    "defaultLandingRoute": "admin.dashboard",
+    "widgets": [
+      {
+        "id": "orders-summary",
+        "enabled": true,
+        "position": 0,
+        "requiredRole": "staff"
+      },
+      {
+        "id": "revenue-chart",
+        "enabled": true,
+        "position": 1,
+        "requiredRole": "manager"
+      }
+    ]
+  },
+  "preferences": {
+    "dateFormat": "DD/MM/YYYY",
+    "timeFormat": "24h",
+    "rowsPerPage": 25,
+    "enableBulkActions": true,
+    "enableExport": true
+  },
+  "onboarding": {
+    "showWizard": true,
+    "completedSteps": ["company_profile", "branding"]
+  }
+}

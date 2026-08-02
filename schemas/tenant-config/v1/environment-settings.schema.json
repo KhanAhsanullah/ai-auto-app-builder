@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://platform.ai-commerce.dev/schemas/tenant-config/v1/environment-settings.schema.json",
+  "title": "EnvironmentSettings",
+  "description": "Environment-specific overrides and deployment target configuration.",
+  "type": "object",
+  "required": ["current", "targets"],
+  "additionalProperties": false,
+  "properties": {
+    "current": {
+      "type": "string",
+      "enum": ["development", "staging", "production"],
+      "description": "Active environment for this configuration document."
+    },
+    "targets": {
+      "type": "object",
+      "required": ["development", "staging", "production"],
+      "additionalProperties": false,
+      "properties": {
+        "development": {
+          "$ref": "#/$defs/environmentTarget"
+        },
+        "staging": {
+          "$ref": "#/$defs/environmentTarget"
+        },
+        "production": {
+          "$ref": "#/$defs/environmentTarget"
+        }
+      }
+    },
+    "overrides": {
+      "type": "object",
+      "description": "Partial config overrides applied per environment at resolution time.",
+      "additionalProperties": false,
+      "properties": {
+        "development": {
+          "$ref": "#/$defs/environmentOverrides"
+        },
+        "staging": {
+          "$ref": "#/$defs/environmentOverrides"
+        },
+        "production": {
+          "$ref": "#/$defs/environmentOverrides"
+        }
+      }
+    },
+    "promotionPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "requireApproval": { "type": "boolean", "default": true },
+        "allowedPaths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["development->staging", "staging->production"]
+          },
+          "default": ["development->staging", "staging->production"]
+        },
+        "runValidationOnPromote": { "type": "boolean", "default": true }
+      }
+    }
+  },
+  "$defs": {
+    "environmentTarget": {
+      "type": "object",
+      "required": ["apiBaseUrl"],
+      "additionalProperties": false,
+      "properties": {
+        "apiBaseUrl": {
+          "$ref": "../../shared/v1/common.schema.json#/$defs/url"
+        },
+        "cdnBaseUrl": {
+          "$ref": "../../shared/v1/common.schema.json#/$defs/url"
+        },
+        "debug": { "type": "boolean", "default": false },
+        "logLevel": {
+          "type": "string",
+          "enum": ["debug", "info", "warn", "error"],
+          "default": "info"
+        }
+      }
+    },
+    "environmentOverrides": {
+      "type": "object",
+      "description": "Shallow override keys matching top-level tenant config sections.",
+      "additionalProperties": true,
+      "properties": {
+        "payments": {
+          "type": "object",
+          "properties": {
+            "defaultGateway": { "type": "string" }
+          }
+        },
+        "integrations": { "type": "object" },
+        "aiSettings": { "type": "object" }
+      }
+    }
+  }
+}

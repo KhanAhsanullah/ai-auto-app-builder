@@ -1,0 +1,33 @@
+{
+  "enabled": true,
+  "identity": {
+    "bundleId": "pk.freshgrocery.app",
+    "appName": "Fresh Grocery",
+    "version": "1.0.0",
+    "buildNumber": 1
+  },
+  "storeListing": {
+    "shortDescription": "Fresh groceries delivered fast",
+    "category": "Shopping",
+    "privacyPolicyUrl": "https://freshgrocery.pk/privacy"
+  },
+  "runtime": {
+    "minOsVersion": {
+      "ios": "15.0",
+      "android": 24
+    },
+    "otaUpdates": {
+      "enabled": true,
+      "channel": "production"
+    },
+    "pushNotifications": {
+      "enabled": true,
+      "provider": "firebase"
+    },
+    "deepLinking": {
+      "enabled": true,
+      "scheme": "freshgrocery",
+      "universalLinksDomain": "freshgrocery.pk"
+    }
+  }
+}

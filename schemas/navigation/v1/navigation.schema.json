@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://platform.ai-commerce.dev/schemas/navigation/v1/navigation.schema.json",
+  "title": "Navigation",
+  "description": "Cross-surface navigation definitions for web store, mobile app, and admin dashboard.",
+  "type": "object",
+  "required": ["web", "mobile", "admin"],
+  "additionalProperties": false,
+  "properties": {
+    "web": {
+      "$ref": "#/$defs/surfaceNavigation"
+    },
+    "mobile": {
+      "$ref": "#/$defs/surfaceNavigation"
+    },
+    "admin": {
+      "$ref": "#/$defs/surfaceNavigation"
+    }
+  },
+  "$defs": {
+    "navItem": {
+      "type": "object",
+      "required": ["id", "label", "route"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "maxLength": 64
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "route": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "description": "Route key resolved by the screen-map registry."
+        },
+        "icon": {
+          "type": "string",
+          "maxLength": 64,
+          "description": "Icon identifier from the platform icon set."
+        },
+        "visible": {
+          "type": "boolean",
+          "default": true
+        },
+        "featureFlag": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "Optional feature flag key required for this item to appear."
+        },
+        "children": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/navItem" }
+        }
+      }
+    },
+    "surfaceNavigation": {
+      "type": "object",
+      "required": ["primary"],
+      "additionalProperties": false,
+      "properties": {
+        "primary": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/navItem" },
+          "minItems": 1
+        },
+        "secondary": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/navItem" }
+        },
+        "footer": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/navItem" }
+        },
+        "style": {
+          "type": "string",
+          "enum": ["tabs", "drawer", "sidebar", "bottom-bar", "top-bar"],
+          "description": "Layout style hint for the surface renderer."
+        }
+      }
+    }
+  }
+}

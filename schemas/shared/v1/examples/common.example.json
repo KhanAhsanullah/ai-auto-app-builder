@@ -1,0 +1,12 @@
+{
+  "uuid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "slug": "fresh-grocery-pk",
+  "localeCode": "en-PK",
+  "currencyCode": "PKR",
+  "countryCode": "PK",
+  "timezone": "Asia/Karachi",
+  "url": "https://shop.example.com",
+  "email": "hello@example.com",
+  "hexColor": "#2563EB",
+  "semver": "1.0.0"
+}

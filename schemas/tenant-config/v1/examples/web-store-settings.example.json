@@ -1,0 +1,33 @@
+{
+  "enabled": true,
+  "domain": {
+    "primary": "shop.freshgrocery.pk",
+    "ssl": {
+      "autoProvision": true,
+      "forceHttps": true
+    }
+  },
+  "seo": {
+    "title": "Fresh Grocery — Online Grocery Delivery",
+    "description": "Order fresh groceries online with fast delivery in Lahore.",
+    "robotsIndex": true,
+    "sitemapEnabled": true
+  },
+  "pwa": {
+    "enabled": true,
+    "displayMode": "standalone",
+    "themeColor": "#16A34A"
+  },
+  "rendering": {
+    "mode": "ssr",
+    "cacheTtlSeconds": 60
+  },
+  "legal": {
+    "termsOfServiceUrl": "https://freshgrocery.pk/terms",
+    "privacyPolicyUrl": "https://freshgrocery.pk/privacy",
+    "cookieConsent": {
+      "enabled": true,
+      "regions": ["PK"]
+    }
+  }
+}

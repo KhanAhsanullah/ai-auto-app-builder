@@ -1,0 +1,27 @@
+{
+  "current": "staging",
+  "targets": {
+    "development": {
+      "apiBaseUrl": "http://localhost:3000",
+      "cdnBaseUrl": "http://localhost:3001",
+      "debug": true,
+      "logLevel": "debug"
+    },
+    "staging": {
+      "apiBaseUrl": "https://api-staging.freshgrocery.pk",
+      "cdnBaseUrl": "https://cdn-staging.freshgrocery.pk",
+      "debug": false,
+      "logLevel": "info"
+    },
+    "production": {
+      "apiBaseUrl": "https://api.freshgrocery.pk",
+      "cdnBaseUrl": "https://cdn.freshgrocery.pk",
+      "debug": false,
+      "logLevel": "warn"
+    }
+  },
+  "promotionPolicy": {
+    "requireApproval": true,
+    "runValidationOnPromote": true
+  }
+}

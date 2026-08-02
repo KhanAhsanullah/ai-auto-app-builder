@@ -1,0 +1,44 @@
+{
+  "customer": {
+    "methods": {
+      "email": true,
+      "phone": true,
+      "guestCheckout": true,
+      "social": {
+        "google": true,
+        "apple": false,
+        "facebook": false
+      }
+    },
+    "session": {
+      "tokenTtlMinutes": 10080,
+      "refreshEnabled": true,
+      "maxDevices": 5
+    },
+    "mfa": {
+      "required": false,
+      "methods": ["sms"]
+    }
+  },
+  "admin": {
+    "methods": {
+      "email": true,
+      "sso": {
+        "enabled": false
+      }
+    },
+    "session": {
+      "tokenTtlMinutes": 480,
+      "idleTimeoutMinutes": 30
+    },
+    "mfa": {
+      "required": true,
+      "methods": ["totp"]
+    },
+    "defaultRoles": ["owner", "admin", "manager", "staff"]
+  },
+  "api": {
+    "enabled": false,
+    "keyRotationDays": 90
+  }
+}

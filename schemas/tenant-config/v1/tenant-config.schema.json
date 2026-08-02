@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://platform.ai-commerce.dev/schemas/tenant-config/v1/tenant-config.schema.json",
+  "title": "TenantConfiguration",
+  "description": "Root tenant configuration document — single source of truth for the entire platform.",
+  "type": "object",
+  "required": [
+    "meta",
+    "tenant",
+    "company",
+    "branding",
+    "theme",
+    "navigation",
+    "languages",
+    "currency",
+    "featureFlags",
+    "authentication",
+    "payments",
+    "notifications",
+    "integrations",
+    "aiSettings",
+    "mobileApp",
+    "webStore",
+    "adminDashboard",
+    "environment"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "meta": {
+      "$ref": "./meta.schema.json"
+    },
+    "tenant": {
+      "$ref": "./tenant.schema.json"
+    },
+    "company": {
+      "$ref": "./company.schema.json"
+    },
+    "branding": {
+      "$ref": "./branding.schema.json"
+    },
+    "theme": {
+      "$ref": "../../theme/v1/theme.schema.json"
+    },
+    "navigation": {
+      "$ref": "../../navigation/v1/navigation.schema.json"
+    },
+    "languages": {
+      "$ref": "./languages.schema.json"
+    },
+    "currency": {
+      "$ref": "./currency.schema.json"
+    },
+    "featureFlags": {
+      "$ref": "./feature-flags.schema.json"
+    },
+    "authentication": {
+      "$ref": "./authentication.schema.json"
+    },
+    "payments": {
+      "$ref": "./payments.schema.json"
+    },
+    "notifications": {
+      "$ref": "./notifications.schema.json"
+    },
+    "integrations": {
+      "$ref": "./integrations.schema.json"
+    },
+    "aiSettings": {
+      "$ref": "./ai-settings.schema.json"
+    },
+    "mobileApp": {
+      "$ref": "./mobile-app-settings.schema.json"
+    },
+    "webStore": {
+      "$ref": "./web-store-settings.schema.json"
+    },
+    "adminDashboard": {
+      "$ref": "./admin-dashboard-settings.schema.json"
+    },
+    "environment": {
+      "$ref": "./environment-settings.schema.json"
+    }
+  }
+}

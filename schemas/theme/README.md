@@ -1,29 +1,12 @@
 # Theme Schema
 
-JSON Schema definitions for design tokens and brand styling configuration.
+Design token schema for the Theme Engine.
 
-## Scope
+## Current Version
 
-Defines theme token categories:
+**v1** — see [v1/README.md](./v1/README.md)
 
-- Color palettes and semantic colors
-- Typography scale and font families
-- Spacing, radius, and density
-- Elevation and motion tokens
-- Component variant selections
+## Files
 
-## Pipeline
-
-```
-Theme JSON → validate against schema → compile → CSS / RN / Admin bundles
-```
-
-## Consumers
-
-- `packages/theme-engine` — token compiler
-- `platform/theme-engine-service` — compile orchestration
-- White-Label Engine — brand asset generation
-
-## Status
-
-Schema files will be added in a future sprint.
+- [theme.schema.json](./v1/theme.schema.json)
+- [Example](./v1/examples/theme.example.json)

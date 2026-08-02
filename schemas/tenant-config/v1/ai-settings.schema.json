@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://platform.ai-commerce.dev/schemas/tenant-config/v1/ai-settings.schema.json",
+  "title": "AiSettings",
+  "description": "AI orchestration settings, generation policies, and locked-field governance.",
+  "type": "object",
+  "required": ["enabled", "provider", "generation", "guardrails"],
+  "additionalProperties": false,
+  "properties": {
+    "enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Master switch for AI features on this tenant."
+    },
+    "provider": {
+      "type": "object",
+      "required": ["name"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "enum": ["openai", "anthropic", "google", "azure", "custom"]
+        },
+        "model": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "Model identifier (e.g. gpt-4o, claude-3-5-sonnet)."
+        },
+        "credentialsRef": {
+          "type": "string",
+          "description": "Reference to API credentials in secrets store."
+        }
+      }
+    },
+    "generation": {
+      "type": "object",
+      "required": ["allowedTargets"],
+      "additionalProperties": false,
+      "properties": {
+        "allowedTargets": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["config", "theme", "catalog", "navigation", "copy", "menu_import"]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "autoApply": {
+          "type": "boolean",
+          "default": false,
+          "description": "If false, AI output requires human review before publish."
+        },
+        "maxTokensPerRequest": {
+          "type": "integer",
+          "minimum": 256,
+          "maximum": 128000,
+          "default": 4096
+        }
+      }
+    },
+    "guardrails": {
+      "type": "object",
+      "required": ["lockedFields", "requireSchemaValidation"],
+      "additionalProperties": false,
+      "properties": {
+        "lockedFields": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-zA-Z][a-zA-Z0-9]*(\\.[a-zA-Z][a-zA-Z0-9]*)*$"
+          },
+          "description": "JSON Pointer paths AI cannot modify after publish (e.g. payments.checkout.captureStrategy)."
+        },
+        "requireSchemaValidation": {
+          "type": "boolean",
+          "default": true
+        },
+        "blockDirectDbWrites": {
+          "type": "boolean",
+          "default": true
+        },
+        "auditAllSuggestions": {
+          "type": "boolean",
+          "default": true
+        }
+      }
+    },
+    "copilot": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "adminEnabled": { "type": "boolean", "default": true },
+        "customerSupportEnabled": { "type": "boolean", "default": false },
+        "allowedActions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "read_orders",
+              "read_catalog",
+              "update_catalog_draft",
+              "generate_reports",
+              "answer_faq"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
