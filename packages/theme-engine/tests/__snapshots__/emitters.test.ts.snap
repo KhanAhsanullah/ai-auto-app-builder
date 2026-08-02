@@ -1,0 +1,490 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AdminDashboardTokenEmitter > matches snapshot for modern preset admin dashboard tokens 1`] = `
+{
+  "css": ":root {
+  --admin-content-bg: #FFFFFF;
+  --admin-header-bg: #FFFFFF;
+  --admin-sidebar-active: #16A34A;
+  --admin-sidebar-bg: #F9FAFB;
+  --admin-sidebar-text: #111827;
+  --color-background: #FFFFFF;
+  --color-border: #E5E7EB;
+  --color-error: #DC2626;
+  --color-primary: #16A34A;
+  --color-secondary: #F59E0B;
+  --color-success: #16A34A;
+  --color-surface: #F9FAFB;
+  --color-text: #111827;
+  --color-text-muted: #6B7280;
+  --color-warning: #F59E0B;
+  --component-button: filled;
+  --component-card: elevated;
+  --component-input: outline;
+  --elevation: subtle;
+  --font-family-body: Inter;
+  --font-family-heading: Inter;
+  --font-size-2xl: 30px;
+  --font-size-base: 16px;
+  --font-size-lg: 20px;
+  --font-size-sm: 14px;
+  --font-size-xl: 24px;
+  --font-size-xs: 12px;
+  --motion-duration: 200ms;
+  --motion-enabled: 1;
+  --radius-full: 9999px;
+  --radius-lg: 12px;
+  --radius-md: 8px;
+  --radius-sm: 4px;
+  --spacing-2xl: 48px;
+  --spacing-lg: 24px;
+  --spacing-md: 16px;
+  --spacing-sm: 8px;
+  --spacing-unit: 4px;
+  --spacing-xl: 32px;
+  --spacing-xs: 4px;
+}
+
+[data-theme="dark"] {
+  --admin-content-bg: #111827;
+  --admin-header-bg: #111827;
+  --admin-sidebar-active: #16A34A;
+  --admin-sidebar-bg: #1F2937;
+  --admin-sidebar-text: #F9FAFB;
+  --color-background: #111827;
+  --color-border: #374151;
+  --color-error: #DC2626;
+  --color-primary: #16A34A;
+  --color-secondary: #F59E0B;
+  --color-success: #16A34A;
+  --color-surface: #1F2937;
+  --color-text: #F9FAFB;
+  --color-text-muted: #9CA3AF;
+  --color-warning: #F59E0B;
+  --component-button: filled;
+  --component-card: elevated;
+  --component-input: outline;
+  --elevation: subtle;
+  --font-family-body: Inter;
+  --font-family-heading: Inter;
+  --font-size-2xl: 30px;
+  --font-size-base: 16px;
+  --font-size-lg: 20px;
+  --font-size-sm: 14px;
+  --font-size-xl: 24px;
+  --font-size-xs: 12px;
+  --motion-duration: 200ms;
+  --motion-enabled: 1;
+  --radius-full: 9999px;
+  --radius-lg: 12px;
+  --radius-md: 8px;
+  --radius-sm: 4px;
+  --spacing-2xl: 48px;
+  --spacing-lg: 24px;
+  --spacing-md: 16px;
+  --spacing-sm: 8px;
+  --spacing-unit: 4px;
+  --spacing-xl: 32px;
+  --spacing-xs: 4px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --admin-content-bg: #111827;
+    --admin-header-bg: #111827;
+    --admin-sidebar-active: #16A34A;
+    --admin-sidebar-bg: #1F2937;
+    --admin-sidebar-text: #F9FAFB;
+    --color-background: #111827;
+    --color-border: #374151;
+    --color-error: #DC2626;
+    --color-primary: #16A34A;
+    --color-secondary: #F59E0B;
+    --color-success: #16A34A;
+    --color-surface: #1F2937;
+    --color-text: #F9FAFB;
+    --color-text-muted: #9CA3AF;
+    --color-warning: #F59E0B;
+    --component-button: filled;
+    --component-card: elevated;
+    --component-input: outline;
+    --elevation: subtle;
+    --font-family-body: Inter;
+    --font-family-heading: Inter;
+    --font-size-2xl: 30px;
+    --font-size-base: 16px;
+    --font-size-lg: 20px;
+    --font-size-sm: 14px;
+    --font-size-xl: 24px;
+    --font-size-xs: 12px;
+    --motion-duration: 200ms;
+    --motion-enabled: 1;
+    --radius-full: 9999px;
+    --radius-lg: 12px;
+    --radius-md: 8px;
+    --radius-sm: 4px;
+    --spacing-2xl: 48px;
+    --spacing-lg: 24px;
+    --spacing-md: 16px;
+    --spacing-sm: 8px;
+    --spacing-unit: 4px;
+    --spacing-xl: 32px;
+    --spacing-xs: 4px;
+  }
+}",
+  "semantic": {
+    "dark": {
+      "actions": {
+        "destructive": "#DC2626",
+        "primary": "#16A34A",
+        "secondary": "#F59E0B",
+      },
+      "content": {
+        "background": "#111827",
+        "text": "#F9FAFB",
+        "textMuted": "#9CA3AF",
+      },
+      "feedback": {
+        "error": "#DC2626",
+        "success": "#16A34A",
+        "warning": "#F59E0B",
+      },
+      "layout": {
+        "background": "#111827",
+        "border": "#374151",
+        "surface": "#1F2937",
+      },
+      "navigation": {
+        "active": "#16A34A",
+        "background": "#1F2937",
+        "text": "#F9FAFB",
+        "textMuted": "#9CA3AF",
+      },
+    },
+    "light": {
+      "actions": {
+        "destructive": "#DC2626",
+        "primary": "#16A34A",
+        "secondary": "#F59E0B",
+      },
+      "content": {
+        "background": "#FFFFFF",
+        "text": "#111827",
+        "textMuted": "#6B7280",
+      },
+      "feedback": {
+        "error": "#DC2626",
+        "success": "#16A34A",
+        "warning": "#F59E0B",
+      },
+      "layout": {
+        "background": "#FFFFFF",
+        "border": "#E5E7EB",
+        "surface": "#F9FAFB",
+      },
+      "navigation": {
+        "active": "#16A34A",
+        "background": "#F9FAFB",
+        "text": "#111827",
+        "textMuted": "#6B7280",
+      },
+    },
+  },
+}
+`;
+
+exports[`CssVariablesEmitter > matches snapshot for modern preset CSS output 1`] = `
+":root {
+  --color-background: #FFFFFF;
+  --color-border: #E5E7EB;
+  --color-error: #DC2626;
+  --color-primary: #16A34A;
+  --color-secondary: #F59E0B;
+  --color-success: #16A34A;
+  --color-surface: #F9FAFB;
+  --color-text: #111827;
+  --color-text-muted: #6B7280;
+  --color-warning: #F59E0B;
+  --component-button: filled;
+  --component-card: elevated;
+  --component-input: outline;
+  --elevation: subtle;
+  --font-family-body: Inter;
+  --font-family-heading: Inter;
+  --font-size-2xl: 30px;
+  --font-size-base: 16px;
+  --font-size-lg: 20px;
+  --font-size-sm: 14px;
+  --font-size-xl: 24px;
+  --font-size-xs: 12px;
+  --motion-duration: 200ms;
+  --motion-enabled: 1;
+  --radius-full: 9999px;
+  --radius-lg: 12px;
+  --radius-md: 8px;
+  --radius-sm: 4px;
+  --spacing-2xl: 48px;
+  --spacing-lg: 24px;
+  --spacing-md: 16px;
+  --spacing-sm: 8px;
+  --spacing-unit: 4px;
+  --spacing-xl: 32px;
+  --spacing-xs: 4px;
+}
+
+[data-theme="dark"] {
+  --color-background: #111827;
+  --color-border: #374151;
+  --color-error: #DC2626;
+  --color-primary: #16A34A;
+  --color-secondary: #F59E0B;
+  --color-success: #16A34A;
+  --color-surface: #1F2937;
+  --color-text: #F9FAFB;
+  --color-text-muted: #9CA3AF;
+  --color-warning: #F59E0B;
+  --component-button: filled;
+  --component-card: elevated;
+  --component-input: outline;
+  --elevation: subtle;
+  --font-family-body: Inter;
+  --font-family-heading: Inter;
+  --font-size-2xl: 30px;
+  --font-size-base: 16px;
+  --font-size-lg: 20px;
+  --font-size-sm: 14px;
+  --font-size-xl: 24px;
+  --font-size-xs: 12px;
+  --motion-duration: 200ms;
+  --motion-enabled: 1;
+  --radius-full: 9999px;
+  --radius-lg: 12px;
+  --radius-md: 8px;
+  --radius-sm: 4px;
+  --spacing-2xl: 48px;
+  --spacing-lg: 24px;
+  --spacing-md: 16px;
+  --spacing-sm: 8px;
+  --spacing-unit: 4px;
+  --spacing-xl: 32px;
+  --spacing-xs: 4px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #111827;
+    --color-border: #374151;
+    --color-error: #DC2626;
+    --color-primary: #16A34A;
+    --color-secondary: #F59E0B;
+    --color-success: #16A34A;
+    --color-surface: #1F2937;
+    --color-text: #F9FAFB;
+    --color-text-muted: #9CA3AF;
+    --color-warning: #F59E0B;
+    --component-button: filled;
+    --component-card: elevated;
+    --component-input: outline;
+    --elevation: subtle;
+    --font-family-body: Inter;
+    --font-family-heading: Inter;
+    --font-size-2xl: 30px;
+    --font-size-base: 16px;
+    --font-size-lg: 20px;
+    --font-size-sm: 14px;
+    --font-size-xl: 24px;
+    --font-size-xs: 12px;
+    --motion-duration: 200ms;
+    --motion-enabled: 1;
+    --radius-full: 9999px;
+    --radius-lg: 12px;
+    --radius-md: 8px;
+    --radius-sm: 4px;
+    --spacing-2xl: 48px;
+    --spacing-lg: 24px;
+    --spacing-md: 16px;
+    --spacing-sm: 8px;
+    --spacing-unit: 4px;
+    --spacing-xl: 32px;
+    --spacing-xs: 4px;
+  }
+}"
+`;
+
+exports[`ReactNativeEmitter > matches snapshot for modern preset React Native theme 1`] = `
+{
+  "dark": {
+    "colors": {
+      "background": "#111827",
+      "border": "#374151",
+      "error": "#DC2626",
+      "primary": "#16A34A",
+      "secondary": "#F59E0B",
+      "success": "#16A34A",
+      "surface": "#1F2937",
+      "text": "#F9FAFB",
+      "textMuted": "#9CA3AF",
+      "warning": "#F59E0B",
+    },
+    "componentVariants": {
+      "button": "filled",
+      "card": "elevated",
+      "input": "outline",
+    },
+    "elevation": "subtle",
+    "motion": {
+      "durationMs": 200,
+      "enabled": true,
+    },
+    "radius": {
+      "full": "9999px",
+      "lg": "12px",
+      "md": "8px",
+      "sm": "4px",
+    },
+    "spacing": {
+      "density": "default",
+      "scale": {
+        "2xl": "48px",
+        "lg": "24px",
+        "md": "16px",
+        "sm": "8px",
+        "xl": "32px",
+        "xs": "4px",
+      },
+      "unit": 4,
+    },
+    "typography": {
+      "baseFontSize": 16,
+      "fontFamilyBody": "Inter",
+      "fontFamilyHeading": "Inter",
+      "fontSize": {
+        "2xl": "30px",
+        "base": "16px",
+        "lg": "20px",
+        "sm": "14px",
+        "xl": "24px",
+        "xs": "12px",
+      },
+      "scale": "default",
+    },
+  },
+  "darkModeEnabled": true,
+  "light": {
+    "colors": {
+      "background": "#FFFFFF",
+      "border": "#E5E7EB",
+      "error": "#DC2626",
+      "primary": "#16A34A",
+      "secondary": "#F59E0B",
+      "success": "#16A34A",
+      "surface": "#F9FAFB",
+      "text": "#111827",
+      "textMuted": "#6B7280",
+      "warning": "#F59E0B",
+    },
+    "componentVariants": {
+      "button": "filled",
+      "card": "elevated",
+      "input": "outline",
+    },
+    "elevation": "subtle",
+    "motion": {
+      "durationMs": 200,
+      "enabled": true,
+    },
+    "radius": {
+      "full": "9999px",
+      "lg": "12px",
+      "md": "8px",
+      "sm": "4px",
+    },
+    "spacing": {
+      "density": "default",
+      "scale": {
+        "2xl": "48px",
+        "lg": "24px",
+        "md": "16px",
+        "sm": "8px",
+        "xl": "32px",
+        "xs": "4px",
+      },
+      "unit": 4,
+    },
+    "typography": {
+      "baseFontSize": 16,
+      "fontFamilyBody": "Inter",
+      "fontFamilyHeading": "Inter",
+      "fontSize": {
+        "2xl": "30px",
+        "base": "16px",
+        "lg": "20px",
+        "sm": "14px",
+        "xl": "24px",
+        "xs": "12px",
+      },
+      "scale": "default",
+    },
+  },
+  "modeStrategy": "system",
+  "surface": "react-native",
+}
+`;
+
+exports[`TailwindEmitter > matches snapshot for modern preset Tailwind config 1`] = `
+{
+  "darkMode": "media",
+  "theme": {
+    "extend": {
+      "borderRadius": {
+        "full": "9999px",
+        "lg": "12px",
+        "md": "8px",
+        "sm": "4px",
+      },
+      "colors": {
+        "background": "var(--color-background)",
+        "border": "var(--color-border)",
+        "error": "var(--color-error)",
+        "primary": "var(--color-primary)",
+        "secondary": "var(--color-secondary)",
+        "success": "var(--color-success)",
+        "surface": "var(--color-surface)",
+        "text": "var(--color-text)",
+        "textMuted": "var(--color-text-muted)",
+        "warning": "var(--color-warning)",
+      },
+      "fontFamily": {
+        "body": [
+          "Inter",
+          "sans-serif",
+        ],
+        "heading": [
+          "Inter",
+          "sans-serif",
+        ],
+      },
+      "fontSize": {
+        "2xl": "30px",
+        "base": "16px",
+        "lg": "20px",
+        "sm": "14px",
+        "xl": "24px",
+        "xs": "12px",
+      },
+      "spacing": {
+        "2xl": "48px",
+        "lg": "24px",
+        "md": "16px",
+        "sm": "8px",
+        "unit": "4px",
+        "xl": "32px",
+        "xs": "4px",
+      },
+      "transitionDuration": {
+        "DEFAULT": "200ms",
+      },
+    },
+  },
+}
+`;

@@ -7,9 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Theme compiler & emitters** (Sprint 2 Task 2) — `@ai-commerce/theme-engine`
+  - `TokenNormalizer` — canonical normalized design tokens from resolved themes
+  - `ThemeCompiler` — orchestrates resolve → normalize → emit pipeline
+  - `ThemeCache` — in-memory LRU cache for compiled artifacts
+  - `CssVariablesEmitter` — CSS custom properties with light/dark mode support
+  - `TailwindEmitter` — Tailwind theme extension configuration
+  - `ReactNativeEmitter` — React Native theme objects per mode
+  - `AdminDashboardTokenEmitter` — admin semantic tokens and CSS variables
+  - Unit and snapshot tests for all compiler and emitter modules
+
 ### Planned
 
-- Sprint 2 — Theme Engine
+- Sprint 2 Task 3 — ThemeProvider facade
 - Sprint 3 — White Label Engine
 
 ---

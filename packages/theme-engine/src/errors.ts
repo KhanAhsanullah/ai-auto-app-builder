@@ -29,3 +29,11 @@ export class IncompleteCustomThemeException extends ThemeResolutionException {
     this.name = 'IncompleteCustomThemeException';
   }
 }
+
+/** Thrown when theme compilation fails. */
+export class ThemeCompilationException extends ThemeEngineException {
+  constructor(message: string) {
+    super(message);
+    this.name = 'ThemeCompilationException';
+  }
+}

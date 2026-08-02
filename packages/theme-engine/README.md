@@ -1,6 +1,6 @@
 # Theme Engine
 
-Design token resolver and compiler for CommerceOS AI. Transforms tenant theme configuration into resolved token sets with light/dark modes, metadata, and live preview support.
+Design token resolver and compiler for CommerceOS AI. Transforms tenant theme configuration into resolved token sets with light/dark modes, metadata, and surface-specific compiled artifacts.
 
 ## Package
 
@@ -8,18 +8,27 @@ Design token resolver and compiler for CommerceOS AI. Transforms tenant theme co
 
 ## Status
 
-Sprint 2 Task 1 — theme schema, presets, ThemeResolver, ModeResolver, Live Preview, plugin extension points.
+Sprint 2 Task 2 — TokenNormalizer, ThemeCompiler, ThemeCache, and surface emitters (CSS, Tailwind, React Native, Admin Dashboard).
 
 ## Modules
 
-| Module                   | Responsibility                                                   |
-| ------------------------ | ---------------------------------------------------------------- |
-| `ThemeResolver`          | Merge inheritance chain + preset templates                       |
-| `ModeResolver`           | Light / dark / auto (system) palette resolution                  |
-| `PresetRegistry`         | Built-in preset catalog (default, minimal, modern, luxury, dark) |
-| `PresetLoader`           | Load preset templates from bundled JSON                          |
-| `LivePreviewCoordinator` | In-memory preview for White-Label Builder                        |
-| `ThemePluginRegistry`    | Extension points for future Theme Plugins (Sprint 5+)            |
+| Module                        | Responsibility                                                   |
+| ----------------------------- | ---------------------------------------------------------------- |
+| `ThemeResolver`               | Merge inheritance chain + preset templates                       |
+| `ModeResolver`                | Light / dark / auto (system) palette resolution                  |
+| `TokenNormalizer`             | Canonical normalized design tokens for emitters                  |
+| `ThemeCompiler`               | Resolve, normalize, and emit surface artifacts                   |
+| `ThemeEmitterRegistry`        | Port for surface emitter lookup (dependency inversion)           |
+| `DefaultThemeEmitterRegistry` | Default wiring for all built-in surface emitters                 |
+| `ThemeCache`                  | In-memory LRU cache for compiled theme output                    |
+| `CssVariablesEmitter`         | CSS custom property bundles for web surfaces                     |
+| `TailwindEmitter`             | Tailwind theme extension configuration                           |
+| `ReactNativeEmitter`          | React Native theme objects for mobile                            |
+| `AdminDashboardTokenEmitter`  | Admin dashboard semantic tokens + CSS variables                  |
+| `PresetRegistry`              | Built-in preset catalog (default, minimal, modern, luxury, dark) |
+| `PresetLoader`                | Load preset templates from bundled JSON                          |
+| `LivePreviewCoordinator`      | In-memory preview for White-Label Builder                        |
+| `ThemePluginRegistry`         | Extension points for future Theme Plugins (Sprint 5+)            |
 
 ## Theme Inheritance
 
@@ -33,6 +42,8 @@ Preset Template
 Tenant Config theme section
   ↓
 Environment Overrides
+  ↓
+ThemeResolver → TokenNormalizer → Surface Emitters
 ```
 
 ## Scripts
@@ -47,24 +58,20 @@ pnpm build
 ## Usage
 
 ```typescript
-import { ThemeResolver, LivePreviewCoordinator } from '@ai-commerce/theme-engine';
+import { DefaultThemeEmitterRegistry, ThemeCompiler } from '@ai-commerce/theme-engine';
 
-const resolver = new ThemeResolver();
-const result = resolver.resolve({
-  vertical: 'grocery',
+const compiler = new ThemeCompiler({
+  emitterRegistry: new DefaultThemeEmitterRegistry(),
+});
+const compiled = compiler.compile({
   tenantTheme: { preset: 'modern', colors: { primary: '#FF0000' } },
 });
 
-console.log(result.theme.colors.primary); // #FF0000
-console.log(result.metadata.hash); // SHA-256 of resolved tokens
-console.log(result.modes.dark.background); // Dark palette
-
-// Live preview (White-Label Builder)
-const preview = new LivePreviewCoordinator();
-const draft = preview.preview(
-  { tenantTheme: { preset: 'modern' } },
-  { colors: { primary: '#00FF00' } },
-);
+console.log(compiled.artifacts.css.css); // CSS variables for light + dark
+console.log(compiled.artifacts.tailwind.config); // Tailwind theme.extend
+console.log(compiled.artifacts['react-native'].light.colors); // RN light palette
+console.log(compiled.artifacts['admin-dashboard'].semantic); // Admin semantic tokens
+console.log(compiled.metadata.hash); // Cache invalidation key
 ```
 
 ## Documentation
@@ -78,4 +85,4 @@ const draft = preview.preview(
 
 ## Version
 
-Sprint 2 Task 1 — preset foundation and theme resolution.
+Sprint 2 Task 2 — theme compiler and surface emitters.

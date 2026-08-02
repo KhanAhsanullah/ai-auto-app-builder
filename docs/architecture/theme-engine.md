@@ -10,14 +10,15 @@ The Theme Engine transforms resolved tenant configuration into design token arti
 
 ## Package Scope (Sprint 2)
 
-| In scope                       | Out of scope (later sprints)     |
-| ------------------------------ | -------------------------------- |
-| `packages/theme-engine`        | `platform/theme-engine-service`  |
-| Theme schema + presets         | `compiled-output.schema.json`    |
-| ThemeResolver, ModeResolver    | Emitters, ThemeCompiler (Task 2) |
-| Live Preview coordinator       | CDN artifact storage             |
-| Plugin extension points (stub) | Plugin implementation            |
-| Unit + integration tests       | Build Orchestrator artifacts     |
+| In scope                       | Out of scope (later sprints)       |
+| ------------------------------ | ---------------------------------- |
+| `packages/theme-engine`        | `platform/theme-engine-service`    |
+| Theme schema + presets         | `compiled-output.schema.json`      |
+| ThemeResolver, ModeResolver    | ThemeCompiler, ThemeCache (Task 2) |
+| Live Preview coordinator       | ThemeProvider facade (Task 3)      |
+| Plugin extension points (stub) | CDN artifact storage               |
+| TokenNormalizer, emitters      | Plugin implementation              |
+| Unit + integration tests       | Build Orchestrator artifacts       |
 
 ## Folder Structure
 
@@ -47,11 +48,19 @@ packages/theme-engine/
 │   ├── domain/
 │   │   ├── theme-resolver.ts
 │   │   ├── mode-resolver.ts
+│   │   ├── token-normalizer.ts
+│   │   ├── theme-compiler.ts
 │   │   ├── preset-registry.ts
 │   │   ├── live-preview.ts
 │   │   └── plugin-extensions.ts
 │   └── infrastructure/
-│       └── preset-loader.ts
+│       ├── preset-loader.ts
+│       ├── theme-cache.ts
+│       └── emitters/
+│           ├── css-variables-emitter.ts
+│           ├── tailwind-emitter.ts
+│           ├── react-native-emitter.ts
+│           └── admin-dashboard-emitter.ts
 └── tests/
 ```
 
@@ -92,6 +101,10 @@ ConfigProviderResult.config.theme
 ThemeResolver.resolveFromConfig()
         ↓
 ResolvedTheme (with metadata + light/dark modes)
+        ↓
+TokenNormalizer.normalize()
+        ↓
+Surface Emitters (CSS, Tailwind, React Native, Admin)
 ```
 
 Theme inheritance chain:
