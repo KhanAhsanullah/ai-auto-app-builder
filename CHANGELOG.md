@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **ThemeProvider facade** (Sprint 2 Task 3) — `@ai-commerce/theme-engine`
+  - `ThemeProvider` — public facade for resolve + compile pipeline
+  - `createThemeProvider` — factory with default resolver, compiler, cache, and emitters
+  - `ThemeConfigSource` — structural type for Config Runtime integration without re-resolution
+  - `toResolveThemeInput` — maps resolved config output to theme resolver input
+  - Public API cleanup — stable exports via main entry; internals via `./internal`
+  - Integration tests — ConfigProvider → ThemeProvider, cache, multi-tenant, presets, light/dark
+
 - **Theme compiler & emitters** (Sprint 2 Task 2) — `@ai-commerce/theme-engine`
   - `TokenNormalizer` — canonical normalized design tokens from resolved themes
   - `ThemeCompiler` — orchestrates resolve → normalize → emit pipeline
@@ -21,7 +29,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Planned
 
-- Sprint 2 Task 3 — ThemeProvider facade
 - Sprint 3 — White Label Engine
 
 ---

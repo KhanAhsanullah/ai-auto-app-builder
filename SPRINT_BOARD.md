@@ -18,11 +18,11 @@ CommerceOS AI development roadmap. Each sprint delivers a cohesive, tagged miles
 
 ## Sprint 2 — Theme Engine
 
-| Task   | Status  | Deliverable                                                                                       |
-| ------ | ------- | ------------------------------------------------------------------------------------------------- |
-| Task 1 | ✅      | Theme schema updates, presets, ThemeResolver, ModeResolver, Live Preview, plugin extension points |
-| Task 2 | ✅      | TokenNormalizer, emitters, ThemeCompiler, ThemeCache                                              |
-| Task 3 | Planned | ThemeProvider facade, integration tests, docs                                                     |
+| Task   | Status | Deliverable                                                                                       |
+| ------ | ------ | ------------------------------------------------------------------------------------------------- |
+| Task 1 | ✅     | Theme schema updates, presets, ThemeResolver, ModeResolver, Live Preview, plugin extension points |
+| Task 2 | ✅     | TokenNormalizer, emitters, ThemeCompiler, ThemeCache                                              |
+| Task 3 | ✅     | ThemeProvider facade, integration tests, docs                                                     |
 
 **Tag:** `sprint2-task1` (on Task 1 completion)
 

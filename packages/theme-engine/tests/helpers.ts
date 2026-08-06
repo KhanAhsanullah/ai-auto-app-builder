@@ -1,11 +1,13 @@
 import type { Theme } from '@ai-commerce/config-schema';
 
-import type { ThemeEmitterRegistry } from '../src/domain/theme-emitter-registry.js';
-import type { ThemeResolver } from '../src/domain/theme-resolver.js';
 import { ThemeCompiler } from '../src/domain/theme-compiler.js';
+import type { ThemeProvider } from '../src/domain/theme-provider.js';
 import type { TokenNormalizer } from '../src/domain/token-normalizer.js';
+import type { ThemeResolver } from '../src/domain/theme-resolver.js';
+import { createThemeProvider } from '../src/infrastructure/create-theme-provider.js';
 import { DefaultThemeEmitterRegistry } from '../src/infrastructure/theme-emitter-registry.js';
-import type { ThemeCacheOptions, ThemePatch } from '../src/types.js';
+import type { ThemeCacheOptions, ThemePatch, ThemeProviderOptions } from '../src/types.js';
+import type { ThemeEmitterRegistry } from '../src/domain/theme-emitter-registry.js';
 
 /** Minimal valid custom theme for testing. */
 export const CUSTOM_THEME_FIXTURE: Theme = {
@@ -44,4 +46,11 @@ export function createThemeCompiler(options?: {
     emitterRegistry: options?.emitterRegistry ?? new DefaultThemeEmitterRegistry(),
     ...options,
   });
+}
+
+/** ThemeProvider wired with default resolver, compiler, and emitter registry for tests. */
+export function createTestThemeProvider(
+  options?: ThemeProviderOptions & { emitterRegistry?: ThemeEmitterRegistry },
+): ThemeProvider {
+  return createThemeProvider(options);
 }

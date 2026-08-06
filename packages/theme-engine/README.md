@@ -8,42 +8,29 @@ Design token resolver and compiler for CommerceOS AI. Transforms tenant theme co
 
 ## Status
 
-Sprint 2 Task 2 — TokenNormalizer, ThemeCompiler, ThemeCache, and surface emitters (CSS, Tailwind, React Native, Admin Dashboard).
+Sprint 2 Task 3 — ThemeProvider facade, Config Runtime integration, public API cleanup.
 
 ## Modules
 
-| Module                        | Responsibility                                                   |
-| ----------------------------- | ---------------------------------------------------------------- |
-| `ThemeResolver`               | Merge inheritance chain + preset templates                       |
-| `ModeResolver`                | Light / dark / auto (system) palette resolution                  |
-| `TokenNormalizer`             | Canonical normalized design tokens for emitters                  |
-| `ThemeCompiler`               | Resolve, normalize, and emit surface artifacts                   |
-| `ThemeEmitterRegistry`        | Port for surface emitter lookup (dependency inversion)           |
-| `DefaultThemeEmitterRegistry` | Default wiring for all built-in surface emitters                 |
-| `ThemeCache`                  | In-memory LRU cache for compiled theme output                    |
-| `CssVariablesEmitter`         | CSS custom property bundles for web surfaces                     |
-| `TailwindEmitter`             | Tailwind theme extension configuration                           |
-| `ReactNativeEmitter`          | React Native theme objects for mobile                            |
-| `AdminDashboardTokenEmitter`  | Admin dashboard semantic tokens + CSS variables                  |
-| `PresetRegistry`              | Built-in preset catalog (default, minimal, modern, luxury, dark) |
-| `PresetLoader`                | Load preset templates from bundled JSON                          |
-| `LivePreviewCoordinator`      | In-memory preview for White-Label Builder                        |
-| `ThemePluginRegistry`         | Extension points for future Theme Plugins (Sprint 5+)            |
+| Module                   | Responsibility                                            |
+| ------------------------ | --------------------------------------------------------- |
+| `ThemeProvider`          | Public facade — resolve + compile from config or resolver |
+| `createThemeProvider`    | Factory wiring resolver, compiler, cache, and emitters    |
+| `ThemeResolver`          | Merge inheritance chain + preset templates                |
+| `ThemeCompiler`          | Normalize and emit surface artifacts                      |
+| `LivePreviewCoordinator` | In-memory preview for White-Label Builder                 |
+| `ThemePluginRegistry`    | Extension points for future Theme Plugins (Sprint 5+)     |
 
-## Theme Inheritance
+Internal modules (emitters, cache, normalizer) are available via `@ai-commerce/theme-engine/internal` for advanced use.
+
+## Pipeline
 
 ```
-Theme Platform Defaults
-  ↓
-Theme Vertical Presets
-  ↓
-Preset Template
-  ↓
-Tenant Config theme section
-  ↓
-Environment Overrides
-  ↓
-ThemeResolver → TokenNormalizer → Surface Emitters
+ConfigProvider.resolve()
+        ↓
+ThemeProvider.provideFromConfig()
+        ↓
+ThemeResolver → ThemeCompiler → Surface Artifacts
 ```
 
 ## Scripts
@@ -58,20 +45,28 @@ pnpm build
 ## Usage
 
 ```typescript
-import { DefaultThemeEmitterRegistry, ThemeCompiler } from '@ai-commerce/theme-engine';
+import { ConfigProvider } from '@ai-commerce/config-runtime';
+import { createThemeProvider } from '@ai-commerce/theme-engine';
 
-const compiler = new ThemeCompiler({
-  emitterRegistry: new DefaultThemeEmitterRegistry(),
-});
-const compiled = compiler.compile({
+const configProvider = new ConfigProvider();
+const themeProvider = createThemeProvider();
+
+const configResult = await configProvider.loadFromFile('./tenant-config.json');
+const theme = themeProvider.provideFromConfig({ source: configResult });
+
+console.log(theme.resolved.theme.colors.primary);
+console.log(theme.artifacts.css.css);
+console.log(theme.artifacts.tailwind.config);
+console.log(theme.fromCache);
+```
+
+Direct resolver input (without Config Runtime):
+
+```typescript
+const theme = themeProvider.provide({
   tenantTheme: { preset: 'modern', colors: { primary: '#FF0000' } },
+  surfaces: ['css', 'tailwind'],
 });
-
-console.log(compiled.artifacts.css.css); // CSS variables for light + dark
-console.log(compiled.artifacts.tailwind.config); // Tailwind theme.extend
-console.log(compiled.artifacts['react-native'].light.colors); // RN light palette
-console.log(compiled.artifacts['admin-dashboard'].semantic); // Admin semantic tokens
-console.log(compiled.metadata.hash); // Cache invalidation key
 ```
 
 ## Documentation
@@ -81,8 +76,9 @@ console.log(compiled.metadata.hash); // Cache invalidation key
 
 ## Dependencies
 
-- `@ai-commerce/config-schema` — `Theme` type and `themeSchema` validation
+- `@ai-commerce/config-schema` — `Theme` type and validation types
+- `@ai-commerce/config-runtime` — `ConfigProvider` integration (dev/tests)
 
 ## Version
 
-Sprint 2 Task 2 — theme compiler and surface emitters.
+Sprint 2 Task 3 — ThemeProvider facade and integration.

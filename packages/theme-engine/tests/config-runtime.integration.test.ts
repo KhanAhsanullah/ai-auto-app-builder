@@ -5,9 +5,8 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 
-import { ThemeResolver } from '../src/domain/theme-resolver.js';
+import { createTestThemeProvider } from './helpers.js';
 import { BUNDLED_PRESETS } from '../src/defaults/index.js';
-import type { ThemePatch } from '../src/types.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = join(__dirname, '../../..');
@@ -15,22 +14,17 @@ const FULL_EXAMPLE_PATH = join(REPO_ROOT, 'schemas/tenant-config/v1/examples/ful
 const SCHEMAS_PRESETS = join(REPO_ROOT, 'schemas/theme/v1/presets');
 
 describe('Config Runtime integration', () => {
-  const configProvider = new ConfigProvider();
-  const themeResolver = new ThemeResolver();
+  const configProvider = new ConfigProvider({ cache: false });
+  const themeProvider = createTestThemeProvider();
 
-  it('resolves theme from ConfigProvider result', async () => {
+  it('resolves theme from ConfigProvider result via ThemeProvider', async () => {
     const configResult = await configProvider.loadFromFile(FULL_EXAMPLE_PATH);
-    const themeResult = themeResolver.resolve({
-      tenantId: configResult.config.tenant?.id,
-      environment: configResult.environment,
-      vertical: configResult.vertical,
-      tenantTheme: configResult.config.theme as ThemePatch,
-      environmentTheme: configResult.layers.environment?.theme as ThemePatch | undefined,
-    });
+    const themeResult = themeProvider.provideFromProviderResult(configResult);
 
-    expect(themeResult.theme.preset).toBe('modern');
-    expect(themeResult.theme.colors.primary).toBe('#16A34A');
-    expect(themeResult.metadata.hash).toMatch(/^[a-f0-9]{64}$/);
+    expect(themeResult.resolved.theme.preset).toBe('modern');
+    expect(themeResult.resolved.theme.colors.primary).toBe('#16A34A');
+    expect(themeResult.resolved.metadata.hash).toMatch(/^[a-f0-9]{64}$/);
+    expect(themeResult.artifacts.css.surface).toBe('css');
   });
 
   it('validates schema preset files match bundled presets', () => {

@@ -1,4 +1,9 @@
-import type { Tenant, Theme } from '@ai-commerce/config-schema';
+import type {
+  EnvironmentSettings,
+  Tenant,
+  TenantConfiguration,
+  Theme,
+} from '@ai-commerce/config-schema';
 
 /** Resolved theme metadata populated by the Theme Engine. */
 export interface ThemeMetadata {
@@ -324,4 +329,45 @@ export type AnyThemeEmitter =
 export interface ThemeEmitter<TSurface extends ThemeSurface = ThemeSurface> {
   readonly surface: TSurface;
   emit(tokens: NormalizedDesignTokens): CompiledSurfaceArtifacts[TSurface];
+}
+
+/** Resolved configuration input for theme resolution (Config Runtime compatible). */
+export interface ThemeConfigSource {
+  config: Readonly<{
+    theme: Theme;
+    tenant?: TenantConfiguration['tenant'];
+  }>;
+  layers: Readonly<{
+    environment?: Readonly<{
+      theme?: ThemePatch;
+    }>;
+  }>;
+  environment: EnvironmentSettings['current'];
+  vertical: Tenant['vertical'];
+}
+
+/** Options for ThemeProvider initialization. */
+export interface ThemeProviderOptions {
+  cache?: ThemeCacheOptions | false;
+}
+
+/** Input for ThemeProvider.provide(). */
+export interface ProvideThemeInput extends ResolveThemeInput {
+  surfaces?: ThemeSurface[];
+  skipCache?: boolean;
+}
+
+/** Input for ThemeProvider.provideFromConfig(). */
+export interface ProvideThemeFromConfigInput {
+  source: ThemeConfigSource;
+  surfaces?: ThemeSurface[];
+  skipCache?: boolean;
+}
+
+/** Result from ThemeProvider including resolved and compiled theme output. */
+export interface ThemeProviderResult<
+  TSurfaces extends ThemeSurface = ThemeSurface,
+> extends CompiledThemeResult<TSurfaces> {
+  resolved: ResolvedThemeResult;
+  fromCache: boolean;
 }

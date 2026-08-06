@@ -10,15 +10,15 @@ The Theme Engine transforms resolved tenant configuration into design token arti
 
 ## Package Scope (Sprint 2)
 
-| In scope                       | Out of scope (later sprints)       |
-| ------------------------------ | ---------------------------------- |
-| `packages/theme-engine`        | `platform/theme-engine-service`    |
-| Theme schema + presets         | `compiled-output.schema.json`      |
-| ThemeResolver, ModeResolver    | ThemeCompiler, ThemeCache (Task 2) |
-| Live Preview coordinator       | ThemeProvider facade (Task 3)      |
-| Plugin extension points (stub) | CDN artifact storage               |
-| TokenNormalizer, emitters      | Plugin implementation              |
-| Unit + integration tests       | Build Orchestrator artifacts       |
+| In scope                         | Out of scope (later sprints)    |
+| -------------------------------- | ------------------------------- |
+| `packages/theme-engine`          | `platform/theme-engine-service` |
+| Theme schema + presets           | `compiled-output.schema.json`   |
+| ThemeResolver, ModeResolver      | ThemeProvider facade (Task 3)   |
+| Live Preview coordinator         | CDN artifact storage            |
+| TokenNormalizer, emitters        | Plugin implementation           |
+| ThemeCompiler, ThemeCache        | Build Orchestrator artifacts    |
+| ThemeProvider, integration tests | theme-engine-service            |
 
 ## Folder Structure
 
@@ -50,12 +50,15 @@ packages/theme-engine/
 │   │   ├── mode-resolver.ts
 │   │   ├── token-normalizer.ts
 │   │   ├── theme-compiler.ts
+│   │   ├── theme-provider.ts
+│   │   ├── map-config-theme-source.ts
 │   │   ├── preset-registry.ts
 │   │   ├── live-preview.ts
 │   │   └── plugin-extensions.ts
 │   └── infrastructure/
 │       ├── preset-loader.ts
 │       ├── theme-cache.ts
+│       ├── create-theme-provider.ts
 │       └── emitters/
 │           ├── css-variables-emitter.ts
 │           ├── tailwind-emitter.ts
@@ -96,11 +99,15 @@ Metadata is defined in `theme.schema.json` under `metadata` (optional on input; 
 ```
 ConfigProvider.resolve()
         ↓
-ConfigProviderResult.config.theme
+ConfigProviderResult (ThemeConfigSource)
         ↓
-ThemeResolver.resolveFromConfig()
+ThemeProvider.provideFromConfig()
+        ↓
+ThemeResolver.resolve()
         ↓
 ResolvedTheme (with metadata + light/dark modes)
+        ↓
+ThemeCompiler.compileFromResolved()
         ↓
 TokenNormalizer.normalize()
         ↓
