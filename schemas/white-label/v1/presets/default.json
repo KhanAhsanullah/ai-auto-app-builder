@@ -1,0 +1,10 @@
+{
+  "appName": "Commerce Store",
+  "tagline": "Your store, your brand",
+  "showPoweredBy": true,
+  "logo": {
+    "primary": "https://cdn.platform.local/branding/logo-primary.svg",
+    "inverse": "https://cdn.platform.local/branding/logo-inverse.svg",
+    "favicon": "https://cdn.platform.local/branding/favicon.ico"
+  }
+}

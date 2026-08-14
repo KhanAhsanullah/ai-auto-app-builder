@@ -14,9 +14,10 @@ The platform architecture was approved in Sprint 0. It defines:
 
 ## Feature Architecture
 
-| Document                             | Scope                                                                   |
-| ------------------------------------ | ----------------------------------------------------------------------- |
-| [theme-engine.md](./theme-engine.md) | Theme Engine — presets, resolver, live preview, plugin extension points |
+| Document                                         | Scope                                                                   |
+| ------------------------------------------------ | ----------------------------------------------------------------------- |
+| [theme-engine.md](./theme-engine.md)             | Theme Engine — presets, resolver, live preview, plugin extension points |
+| [white-label-engine.md](./white-label-engine.md) | White-Label Engine — BrandResolver, defaults, Config Runtime mapping    |
 
 ## Monorepo Layout
 
@@ -45,4 +46,4 @@ Significant decisions are recorded in [../adr/](../adr/).
 
 ## Status
 
-Sprint 2 Task 1 — theme engine foundation established. Feature documentation added per sprint.
+Sprint 3 Task 1 — white-label brand foundation established. Feature documentation added per sprint.

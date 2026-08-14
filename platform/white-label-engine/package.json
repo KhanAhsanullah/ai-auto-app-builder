@@ -1,5 +1,5 @@
 {
-  "name": "@ai-commerce/white-label-engine",
+  "name": "@ai-commerce/white-label-engine-service",
   "version": "0.0.0",
   "private": true,
   "description": "Control-plane service for custom domains, SSL provisioning, app identity (bundle IDs), and branded legal/comms templates.",

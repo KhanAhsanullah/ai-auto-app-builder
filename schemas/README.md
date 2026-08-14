@@ -12,6 +12,7 @@ Canonical schema definitions — the **single contract** across the entire platf
 | Navigation       | [navigation/v1/](./navigation/v1/)       | Admin and consumer navigation structures                  |
 | Feature Manifest | [feature-manifest/](./feature-manifest)  | Module and feature activation declarations                |
 | Plugin Manifest  | [plugin-manifest/](./plugin-manifest)    | Third-party plugin registration contracts                 |
+| White Label      | [white-label/v1/](./white-label/v1/)     | Brand resolver presets and resolved-brand documentation   |
 
 ## Documentation
 

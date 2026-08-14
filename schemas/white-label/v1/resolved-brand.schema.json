@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://platform.ai-commerce.dev/schemas/white-label/v1/resolved-brand.schema.json",
+  "title": "ResolvedBrand",
+  "description": "Documentation of BrandResolver output. Not a tenant-config input contract. The branding object matches schemas/tenant-config/v1/branding.schema.json.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["branding", "metadata", "layers"],
+  "properties": {
+    "branding": {
+      "$ref": "../../tenant-config/v1/branding.schema.json",
+      "description": "Resolved branding after inheritance merge and schema validation."
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["compiledAt", "hash"],
+      "properties": {
+        "brandVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Optional version copied from branding.metadata.brandVersion when present."
+        },
+        "compiledAt": {
+          "$ref": "../../shared/v1/common.schema.json#/$defs/isoDateTime",
+          "description": "ISO 8601 timestamp when BrandResolver produced this result."
+        },
+        "hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "SHA-256 of the canonical resolved branding payload."
+        }
+      }
+    },
+    "layers": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["platform", "vertical", "tenant", "environment"],
+      "properties": {
+        "platform": { "type": "object" },
+        "vertical": { "type": "object" },
+        "tenant": { "type": "object" },
+        "environment": { "type": "object" }
+      }
+    },
+    "tenantId": {
+      "$ref": "../../shared/v1/common.schema.json#/$defs/uuid"
+    },
+    "vertical": {
+      "type": "string",
+      "enum": ["ecommerce", "grocery", "restaurant", "pharmacy", "fashion", "electronics"]
+    },
+    "environment": {
+      "type": "string",
+      "enum": ["development", "staging", "production"]
+    }
+  }
+}

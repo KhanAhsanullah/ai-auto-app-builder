@@ -8,11 +8,11 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 2 — Theme Engine** ✅ Complete
+**Sprint 3 — White Label Engine** (Task 1 Complete)
 
-Latest completed task: **Sprint 2 Task 3** — ThemeProvider facade, Config Runtime integration, public API cleanup, and integration tests in `@ai-commerce/theme-engine`.
+Latest completed task: **Sprint 3 Task 1** — BrandResolver, platform/vertical defaults, and Config Runtime mapping in `@ai-commerce/white-label-engine`.
 
-Next sprint: **Sprint 3 — White Label Engine**.
+Next: Sprint 3 Task 2 — Asset pipeline.
 
 ## Completed Tasks
 
@@ -23,56 +23,59 @@ Next sprint: **Sprint 3 — White Label Engine**.
 | Sprint 1 Task 3 ✅ | Configuration runtime — load, resolve, validate, cache, and provider facade (`@ai-commerce/config-runtime`)                           | `sprint1-task3`           |
 | Sprint 2 Task 1 ✅ | Theme schema + presets, ThemeResolver, ModeResolver, Live Preview, plugin extension points (`@ai-commerce/theme-engine`)              | `sprint2-task1`           |
 | Sprint 2 Task 2 ✅ | TokenNormalizer, ThemeCompiler, ThemeCache, CSS/Tailwind/RN/Admin emitters (`@ai-commerce/theme-engine`)                              | `sprint2-task2`           |
-| Sprint 2 Task 3 ✅ | ThemeProvider facade, Config Runtime integration, public API cleanup, integration tests (`@ai-commerce/theme-engine`)                 | `sprint2-task3` (Pending) |
+| Sprint 2 Task 3 ✅ | ThemeProvider facade, Config Runtime integration, public API cleanup, integration tests (`@ai-commerce/theme-engine`)                 | `sprint2-task3`           |
+| Sprint 3 Task 1 ✅ | BrandResolver, platform/vertical defaults, Config Runtime mapping (`@ai-commerce/white-label-engine`)                                 | `sprint3-task1` (Pending) |
 
 ## Current Progress
 
 - **Monorepo structure** — Approved architecture in place: `apps/`, `packages/`, `modules/`, `platform/`, `schemas/`, `tooling/`, `infra/`, `docs/`
 - **Configuration contract** — Tenant configuration schema v1 with 18+ domain schemas and generated types/Zod validators
 - **Configuration runtime** — Inheritance chain (platform → vertical → tenant → environment) with deep merge, validation, and LRU cache
+- **White-label engine (Task 1)** — BrandResolver, platform/vertical brand defaults, Config Runtime mapping
 - **Theme engine (Task 3)** — ThemeProvider facade, Config Runtime integration, public API, integration tests
 - **Theme engine (Task 2)** — Token normalization, surface emitters (CSS, Tailwind, React Native, Admin), compiler orchestration, LRU cache
 - **Theme engine (Task 1)** — Presets (default, minimal, modern, luxury, dark, custom), theme resolution, light/dark modes, metadata hashing, live preview
-- **Control-plane scaffolds** — Platform services scaffolded; theme-engine-service deferred
+- **Control-plane scaffolds** — Platform services scaffolded; theme-engine-service and white-label-engine-service deferred
 - **Module scaffolds** — Core commerce modules and vertical presets scaffolded with manifests
 
-**Overall:** Sprint 2 complete (Tasks 1–3). Next: Sprint 3 (White Label Engine).
+**Overall:** Sprint 3 Task 1 complete. Next: Sprint 3 Task 2 (Asset pipeline).
 
 ## Next Tasks
 
-**Sprint 3 — White Label Engine**
+**Sprint 3 Task 2 — Asset Pipeline**
 
-- Custom domain management and SSL provisioning
-- App identity (bundle IDs, store listings)
-- Branded legal and communications templates
+- Logo, favicon, app icon, splash, and font transformers
+- BrandCompiler and BrandCache
+- Surface emitters for compiled brand artifacts
 
 See [SPRINT_BOARD.md](./SPRINT_BOARD.md) for the full roadmap through Sprint 10.
 
 ## Latest Commit
 
 ```
-Pending — Sprint 2 Task 3 commit not yet created
+Pending — Sprint 3 Task 1 commit not yet created
 ```
 
 ## Latest Tag
 
 ```
-sprint2-task3 (Pending)
+sprint3-task1 (Pending)
 ```
 
 ## Health Status
 
-| Area                  | Status        | Notes                                             |
-| --------------------- | ------------- | ------------------------------------------------- |
-| Repository            | 🟡 Pending    | Sprint 2 Task 3 changes staged for commit         |
-| Build tooling         | ✅ Healthy    | Turborepo, pnpm workspaces, TypeScript 5.7        |
-| Lint / format         | ✅ Healthy    | ESLint, Prettier, Husky pre-commit hooks          |
-| Commit conventions    | ✅ Healthy    | Commitlint with Conventional Commits              |
-| Configuration schema  | ✅ Complete   | Sprint 1 Task 2 — generated types and Zod         |
-| Configuration runtime | ✅ Complete   | Sprint 1 Task 3 — full resolver pipeline          |
-| Theme engine          | ✅ Complete   | Sprint 2 complete — provider facade + integration |
-| Platform services     | 🟡 Scaffolded | theme-engine-service deferred                     |
-| Apps / surfaces       | 🟡 Scaffolded | Admin, Web Store, Mobile, API Gateway             |
-| Tests                 | ✅ Passing    | Config runtime + theme engine test suites         |
+| Area                  | Status         | Notes                                             |
+| --------------------- | -------------- | ------------------------------------------------- |
+| Repository            | 🟡 Pending     | Sprint 3 Task 1 changes ready for commit          |
+| Build tooling         | ✅ Healthy     | Turborepo, pnpm workspaces, TypeScript 5.7        |
+| Lint / format         | ✅ Healthy     | ESLint, Prettier, Husky pre-commit hooks          |
+| Commit conventions    | ✅ Healthy     | Commitlint with Conventional Commits              |
+| Configuration schema  | ✅ Complete    | Sprint 1 Task 2 — generated types and Zod         |
+| Configuration runtime | ✅ Complete    | Sprint 1 Task 3 — full resolver pipeline          |
+| Theme engine          | ✅ Complete    | Sprint 2 complete — provider facade + integration |
+| White-label engine    | 🟡 In progress | Sprint 3 Task 1 complete — BrandResolver          |
+| Platform services     | 🟡 Scaffolded  | white-label-engine-service deferred               |
+| Apps / surfaces       | 🟡 Scaffolded  | Admin, Web Store, Mobile, API Gateway             |
+| Tests                 | ✅ Passing     | Config runtime + theme engine + white-label       |
 
-**Summary:** Sprint 2 (Theme Engine) is complete. Foundation and theme pipeline are stable; platform is ready to begin Sprint 3 (White Label Engine).
+**Summary:** Sprint 3 Task 1 (Brand Foundation) is complete. Theme engine remains stable; asset pipeline is next.

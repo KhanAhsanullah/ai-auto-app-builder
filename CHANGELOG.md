@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **White-label brand foundation** (Sprint 3 Task 1) — `@ai-commerce/white-label-engine`
+  - `BrandResolver` — platform → vertical → tenant → environment branding merge
+  - Platform and vertical brand defaults (all six verticals)
+  - `toResolveBrandInput` / `brandConfigSourceFromProviderResult` — Config Runtime mapping without re-resolution
+  - Deterministic SHA-256 brand hash and layer audit metadata
+  - Unit and Config Runtime integration tests
+  - Platform scaffold renamed to `@ai-commerce/white-label-engine-service`
+
 - **ThemeProvider facade** (Sprint 2 Task 3) — `@ai-commerce/theme-engine`
   - `ThemeProvider` — public facade for resolve + compile pipeline
   - `createThemeProvider` — factory with default resolver, compiler, cache, and emitters
@@ -29,7 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Planned
 
-- Sprint 3 — White Label Engine
+- Sprint 3 Task 2 — White-Label asset pipeline
 
 ---
 

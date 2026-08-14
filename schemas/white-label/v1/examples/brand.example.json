@@ -1,0 +1,25 @@
+{
+  "branding": {
+    "appName": "Commerce Store",
+    "tagline": "Fresh essentials, delivered",
+    "showPoweredBy": true,
+    "logo": {
+      "primary": "https://cdn.platform.local/branding/logo-primary.svg",
+      "inverse": "https://cdn.platform.local/branding/logo-inverse.svg",
+      "favicon": "https://cdn.platform.local/branding/favicon.ico"
+    }
+  },
+  "metadata": {
+    "brandVersion": 0,
+    "compiledAt": "2026-08-14T00:00:00.000Z",
+    "hash": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "layers": {
+    "platform": {},
+    "vertical": {},
+    "tenant": {},
+    "environment": {}
+  },
+  "vertical": "grocery",
+  "environment": "development"
+}

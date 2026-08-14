@@ -32,10 +32,15 @@ All Sprint 2 code lives in `@ai-commerce/theme-engine` only. Theme service defer
 
 ## Sprint 3 — White Label Engine
 
-- Custom domain management and SSL provisioning
-- App identity (bundle IDs, store listings)
-- Branded legal and communications templates
-- `@ai-commerce/white-label-engine`
+| Task   | Status | Deliverable                                                                                           |
+| ------ | ------ | ----------------------------------------------------------------------------------------------------- |
+| Task 1 | ✅     | BrandResolver, platform/vertical defaults, Config Runtime mapping (`@ai-commerce/white-label-engine`) |
+| Task 2 |        | Asset pipeline — logo, favicon, app icon, splash, fonts, BrandCompiler, cache                         |
+| Task 3 |        | WhiteLabelProvider facade, remaining identity surfaces, docs                                          |
+
+**Tag:** `sprint3-task1` (on Task 1 completion)
+
+All Sprint 3 Task 1 code lives in `@ai-commerce/white-label-engine` only. The HTTP service (`@ai-commerce/white-label-engine-service`) remains deferred.
 
 ---
 
