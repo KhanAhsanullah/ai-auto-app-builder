@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://platform.ai-commerce.dev/schemas/provisioning/v1/provisioning-request.schema.json",
+  "title": "ProvisioningRequest",
+  "description": "Input contract for creating a new tenant via the Tenant Provisioner.",
+  "type": "object",
+  "required": ["slug", "name", "vertical", "defaultLocale", "defaultTimezone"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "$ref": "../../shared/v1/common.schema.json#/$defs/uuid",
+      "description": "Optional tenant UUID. Generated when omitted."
+    },
+    "slug": {
+      "$ref": "../../shared/v1/common.schema.json#/$defs/slug"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "vertical": {
+      "type": "string",
+      "enum": ["ecommerce", "grocery", "restaurant", "pharmacy", "fashion", "electronics"]
+    },
+    "defaultLocale": {
+      "$ref": "../../shared/v1/common.schema.json#/$defs/localeCode"
+    },
+    "defaultTimezone": {
+      "$ref": "../../shared/v1/common.schema.json#/$defs/timezone"
+    },
+    "defaultCountry": {
+      "$ref": "../../shared/v1/common.schema.json#/$defs/countryCode"
+    },
+    "subscriptionTier": {
+      "type": "string",
+      "enum": ["starter", "growth", "enterprise"]
+    },
+    "configOverrides": {
+      "$ref": "#/$defs/configOverrides"
+    }
+  },
+  "$defs": {
+    "configOverrides": {
+      "type": "object",
+      "description": "Partial tenant-layer configuration overrides merged after base template construction. Does not replace platform or vertical defaults.",
+      "additionalProperties": false,
+      "properties": {
+        "company": {
+          "type": "object",
+          "description": "Partial company section override."
+        },
+        "branding": {
+          "type": "object",
+          "description": "Partial branding section override."
+        },
+        "theme": {
+          "type": "object",
+          "description": "Partial theme section override."
+        },
+        "navigation": {
+          "type": "object",
+          "description": "Partial navigation section override."
+        },
+        "languages": {
+          "type": "object",
+          "description": "Partial languages section override."
+        },
+        "currency": {
+          "type": "object",
+          "description": "Partial currency section override."
+        },
+        "featureFlags": {
+          "type": "object",
+          "description": "Partial feature flags section override."
+        },
+        "authentication": {
+          "type": "object",
+          "description": "Partial authentication section override."
+        },
+        "payments": {
+          "type": "object",
+          "description": "Partial payments section override."
+        },
+        "notifications": {
+          "type": "object",
+          "description": "Partial notifications section override."
+        },
+        "integrations": {
+          "type": "object",
+          "description": "Partial integrations section override."
+        },
+        "aiSettings": {
+          "type": "object",
+          "description": "Partial AI settings section override."
+        },
+        "mobileApp": {
+          "type": "object",
+          "description": "Partial mobile app settings section override."
+        },
+        "webStore": {
+          "type": "object",
+          "description": "Partial web store settings section override."
+        },
+        "adminDashboard": {
+          "type": "object",
+          "description": "Partial admin dashboard settings section override."
+        }
+      }
+    }
+  }
+}

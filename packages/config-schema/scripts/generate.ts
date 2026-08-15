@@ -128,6 +128,12 @@ const SCHEMA_ENTRIES = [
     exportType: 'EnvironmentSettings',
     exportZod: 'environmentSettingsSchema',
   },
+  {
+    name: 'ProvisioningRequest',
+    file: 'provisioning/v1/provisioning-request.schema.json',
+    exportType: 'ProvisioningRequest',
+    exportZod: 'provisioningRequestSchema',
+  },
 ] as const;
 
 const BANNER = `/**

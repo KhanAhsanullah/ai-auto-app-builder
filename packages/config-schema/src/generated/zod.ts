@@ -2085,3 +2085,35 @@ export const environmentSettingsSchema = z
   })
   .strict()
   .describe('Environment-specific overrides and deployment target configuration.');
+
+/** Validates `ProvisioningRequest` configuration. */
+export const provisioningRequestSchema = z
+  .object({
+    id: z.string().uuid().describe('Optional tenant UUID. Generated when omitted.').optional(),
+    slug: z
+      .string()
+      .regex(new RegExp('^[a-z0-9]+(?:-[a-z0-9]+)*$'))
+      .min(2)
+      .max(64)
+      .describe('URL-safe lowercase slug.'),
+    name: z.string().min(1).max(256),
+    vertical: z.enum(['ecommerce', 'grocery', 'restaurant', 'pharmacy', 'fashion', 'electronics']),
+    defaultLocale: z
+      .string()
+      .regex(new RegExp('^[a-z]{2}(-[A-Z]{2})?$'))
+      .describe('BCP 47 language tag (e.g. en, en-US, ur-PK).'),
+    defaultTimezone: z
+      .string()
+      .min(1)
+      .max(64)
+      .describe('IANA timezone identifier (e.g. Asia/Karachi).'),
+    defaultCountry: z
+      .string()
+      .regex(new RegExp('^[A-Z]{2}$'))
+      .describe('ISO 3166-1 alpha-2 country code.')
+      .optional(),
+    subscriptionTier: z.enum(['starter', 'growth', 'enterprise']).optional(),
+    configOverrides: z.any().optional(),
+  })
+  .strict()
+  .describe('Input contract for creating a new tenant via the Tenant Provisioner.');

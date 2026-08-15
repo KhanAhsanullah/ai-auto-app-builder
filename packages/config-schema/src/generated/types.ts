@@ -23,3 +23,4 @@ export type { MobileAppSettings } from './types/mobileAppSettings.js';
 export type { WebStoreSettings } from './types/webStoreSettings.js';
 export type { AdminDashboardSettings } from './types/adminDashboardSettings.js';
 export type { EnvironmentSettings } from './types/environmentSettings.js';
+export type { ProvisioningRequest } from './types/provisioningRequest.js';
