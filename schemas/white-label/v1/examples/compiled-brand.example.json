@@ -1,0 +1,115 @@
+{
+  "assets": {
+    "logos": {
+      "primary": {
+        "id": "logo-primary",
+        "url": "https://cdn.example.com/logo-primary.svg",
+        "kind": "logo",
+        "role": "primary",
+        "format": "svg"
+      },
+      "inverse": {
+        "id": "logo-inverse",
+        "url": "https://cdn.example.com/logo-inverse.svg",
+        "kind": "logo",
+        "role": "inverse",
+        "format": "svg"
+      },
+      "favicon": {
+        "id": "favicon",
+        "url": "https://cdn.example.com/favicon.ico",
+        "kind": "icon",
+        "role": "favicon",
+        "format": "ico"
+      },
+      "appIcon": {
+        "id": "app-icon",
+        "url": "https://cdn.example.com/app-icon.png",
+        "kind": "icon",
+        "role": "app-icon",
+        "format": "png"
+      }
+    },
+    "appIconSource": {
+      "source": {
+        "id": "app-icon-source",
+        "url": "https://cdn.example.com/app-icon.png",
+        "kind": "icon",
+        "role": "app-icon",
+        "format": "png"
+      },
+      "resolvedFrom": "appIcon"
+    },
+    "splash": {
+      "backgroundColor": "#FFFFFF",
+      "image": {
+        "id": "splash-image",
+        "url": "https://cdn.example.com/splash.png",
+        "kind": "splash",
+        "role": "splash",
+        "format": "png"
+      }
+    },
+    "social": {
+      "ogImage": {
+        "id": "og-image",
+        "url": "https://cdn.example.com/og.png",
+        "kind": "social",
+        "role": "og-image",
+        "format": "png"
+      }
+    },
+    "fonts": {
+      "heading": {
+        "id": "font-heading",
+        "url": "https://cdn.example.com/fonts/heading.woff2",
+        "kind": "font",
+        "role": "heading",
+        "format": "woff2",
+        "weight": 700
+      }
+    },
+    "metadata": {
+      "brandVersion": 0,
+      "compiledAt": "2026-08-15T00:00:00.000Z",
+      "hash": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  },
+  "metadata": {
+    "brandHash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "assetHash": "1111111111111111111111111111111111111111111111111111111111111111",
+    "compiledAt": "2026-08-15T00:00:00.000Z"
+  },
+  "manifest": {
+    "version": 1,
+    "brandHash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "assetHash": "1111111111111111111111111111111111111111111111111111111111111111",
+    "assets": [
+      {
+        "id": "app-icon",
+        "url": "https://cdn.example.com/app-icon.png",
+        "kind": "icon",
+        "role": "app-icon",
+        "format": "png"
+      }
+    ],
+    "splash": {
+      "backgroundColor": "#FFFFFF"
+    }
+  },
+  "artifacts": {
+    "web": {
+      "surface": "web",
+      "links": []
+    },
+    "mobile": {
+      "surface": "mobile",
+      "iconSizesSpec": [],
+      "splash": {}
+    },
+    "admin-dashboard": {
+      "surface": "admin-dashboard"
+    }
+  },
+  "compiledAt": "2026-08-15T00:00:00.000Z"
+}

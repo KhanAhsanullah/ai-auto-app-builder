@@ -176,4 +176,21 @@ describe('BrandResolver', () => {
 
     expect(result.metadata.brandVersion).toBe(4);
   });
+
+  it('includes optional fonts in deterministic brand hash when present', () => {
+    const withoutFonts = resolver.resolve({ tenantBranding: TENANT_BRANDING_FIXTURE });
+    const withFonts = resolver.resolve({
+      tenantBranding: {
+        ...TENANT_BRANDING_FIXTURE,
+        fonts: {
+          body: {
+            url: 'https://cdn.example.com/fonts/body.woff2',
+            format: 'woff2',
+          },
+        },
+      },
+    });
+
+    expect(withoutFonts.metadata.hash).not.toBe(withFonts.metadata.hash);
+  });
 });

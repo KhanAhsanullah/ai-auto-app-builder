@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **White-label asset pipeline** (Sprint 3 Task 2) — `@ai-commerce/white-label-engine`
+  - Backward-compatible branding schema additions — optional `logo.appIcon` and `branding.fonts`
+  - `AssetNormalizer` — canonical asset reference normalization with app icon fallback chain
+  - `BrandCompiler` — manifest/reference-only compilation for web, mobile, and admin-dashboard surfaces
+  - `BrandCache` — in-memory LRU cache keyed by asset hash and surfaces
+  - Surface emitters — web link descriptors, mobile icon metadata, admin header/favicon references
+  - Deterministic asset hash, extended brand hash for font assets, engine output schemas
+  - Unit and Config Runtime integration tests
+
 - **White-label brand foundation** (Sprint 3 Task 1) — `@ai-commerce/white-label-engine`
   - `BrandResolver` — platform → vertical → tenant → environment branding merge
   - Platform and vertical brand defaults (all six verticals)
@@ -37,7 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Planned
 
-- Sprint 3 Task 2 — White-Label asset pipeline
+- Sprint 3 Task 3 — WhiteLabelProvider facade
 
 ---
 

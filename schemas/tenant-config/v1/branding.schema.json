@@ -35,6 +35,23 @@
         },
         "appleTouchIcon": {
           "$ref": "../../shared/v1/common.schema.json#/$defs/url"
+        },
+        "appIcon": {
+          "$ref": "../../shared/v1/common.schema.json#/$defs/url",
+          "description": "Preferred mobile app icon source URL."
+        }
+      }
+    },
+    "fonts": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Optional brand font asset references (not theme typography tokens).",
+      "properties": {
+        "heading": {
+          "$ref": "#/$defs/fontAsset"
+        },
+        "body": {
+          "$ref": "#/$defs/fontAsset"
         }
       }
     },
@@ -74,6 +91,31 @@
     },
     "metadata": {
       "$ref": "../../shared/v1/common.schema.json#/$defs/metadata"
+    }
+  },
+  "$defs": {
+    "fontAsset": {
+      "type": "object",
+      "required": ["url"],
+      "additionalProperties": false,
+      "properties": {
+        "url": {
+          "$ref": "../../shared/v1/common.schema.json#/$defs/url"
+        },
+        "format": {
+          "type": "string",
+          "enum": ["woff2", "woff", "ttf", "otf"]
+        },
+        "weight": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 900
+        },
+        "style": {
+          "type": "string",
+          "enum": ["normal", "italic"]
+        }
+      }
     }
   }
 }

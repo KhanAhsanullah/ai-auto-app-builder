@@ -221,6 +221,17 @@ export interface Branding {
     inverse?: string;
     favicon?: string;
     appleTouchIcon?: string;
+    /**
+     * Preferred mobile app icon source URL.
+     */
+    appIcon?: string;
+  };
+  /**
+   * Optional brand font asset references (not theme typography tokens).
+   */
+  fonts?: {
+    heading?: FontAsset;
+    body?: FontAsset;
   };
   splashScreen?: {
     /**
@@ -239,6 +250,16 @@ export interface Branding {
   showPoweredBy?: boolean;
   copyrightText?: string;
   metadata?: Metadata;
+}
+/**
+ * This interface was referenced by `Branding`'s JSON-Schema
+ * via the `definition` "fontAsset".
+ */
+export interface FontAsset {
+  url: string;
+  format?: 'woff2' | 'woff' | 'ttf' | 'otf';
+  weight?: number;
+  style?: 'normal' | 'italic';
 }
 /**
  * Design tokens compiled by the Theme Engine into CSS, React Native, and Admin theme bundles.

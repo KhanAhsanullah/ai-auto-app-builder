@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://platform.ai-commerce.dev/schemas/white-label/v1/normalized-brand-assets.schema.json",
+  "title": "NormalizedBrandAssets",
+  "description": "Documentation of AssetNormalizer output. Not a tenant-config input contract.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["logos", "metadata"],
+  "properties": {
+    "logos": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "primary": { "$ref": "#/$defs/assetRef" },
+        "inverse": { "$ref": "#/$defs/assetRef" },
+        "favicon": { "$ref": "#/$defs/assetRef" },
+        "appIcon": { "$ref": "#/$defs/assetRef" },
+        "appleTouchIcon": { "$ref": "#/$defs/assetRef" }
+      }
+    },
+    "appIconSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "resolvedFrom"],
+      "properties": {
+        "source": { "$ref": "#/$defs/assetRef" },
+        "resolvedFrom": {
+          "type": "string",
+          "enum": ["appIcon", "appleTouchIcon", "primary"]
+        }
+      }
+    },
+    "splash": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "backgroundColor": {
+          "$ref": "../../shared/v1/common.schema.json#/$defs/hexColor"
+        },
+        "image": { "$ref": "#/$defs/assetRef" }
+      }
+    },
+    "social": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ogImage": { "$ref": "#/$defs/assetRef" }
+      }
+    },
+    "fonts": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "heading": { "$ref": "#/$defs/fontAsset" },
+        "body": { "$ref": "#/$defs/fontAsset" }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["brandVersion", "compiledAt", "hash"],
+      "properties": {
+        "brandVersion": { "type": "integer", "minimum": 0 },
+        "compiledAt": {
+          "$ref": "../../shared/v1/common.schema.json#/$defs/isoDateTime"
+        },
+        "hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "assetRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "url", "kind", "role", "format"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "url": { "$ref": "../../shared/v1/common.schema.json#/$defs/url" },
+        "kind": {
+          "type": "string",
+          "enum": ["logo", "icon", "splash", "social", "font"]
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "primary",
+            "inverse",
+            "favicon",
+            "app-icon",
+            "apple-touch",
+            "splash",
+            "og-image",
+            "heading",
+            "body"
+          ]
+        },
+        "format": { "type": "string", "minLength": 1 }
+      }
+    },
+    "fontAsset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "url", "kind", "role", "format"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "url": { "$ref": "../../shared/v1/common.schema.json#/$defs/url" },
+        "kind": { "const": "font" },
+        "role": { "type": "string", "enum": ["heading", "body"] },
+        "format": { "type": "string", "enum": ["woff2", "woff", "ttf", "otf"] },
+        "weight": { "type": "integer", "minimum": 100, "maximum": 900 },
+        "style": { "type": "string", "enum": ["normal", "italic"] }
+      }
+    }
+  }
+}

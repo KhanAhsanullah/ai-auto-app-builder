@@ -8,12 +8,15 @@ Tenant branding input remains:
 
 ## Layout
 
-| Path                                                         | Purpose                          |
-| ------------------------------------------------------------ | -------------------------------- |
-| [resolved-brand.schema.json](./resolved-brand.schema.json)   | Documents `BrandResolver` output |
-| [presets/default.json](./presets/default.json)               | Platform brand defaults          |
-| [presets/vertical/](./presets/vertical/)                     | Vertical brand defaults          |
-| [examples/brand.example.json](./examples/brand.example.json) | Example resolved-brand document  |
+| Path                                                                           | Purpose                            |
+| ------------------------------------------------------------------------------ | ---------------------------------- |
+| [resolved-brand.schema.json](./resolved-brand.schema.json)                     | Documents `BrandResolver` output   |
+| [normalized-brand-assets.schema.json](./normalized-brand-assets.schema.json)   | Documents `AssetNormalizer` output |
+| [compiled-brand.schema.json](./compiled-brand.schema.json)                     | Documents `BrandCompiler` output   |
+| [presets/default.json](./presets/default.json)                                 | Platform brand defaults            |
+| [presets/vertical/](./presets/vertical/)                                       | Vertical brand defaults            |
+| [examples/brand.example.json](./examples/brand.example.json)                   | Example resolved-brand document    |
+| [examples/compiled-brand.example.json](./examples/compiled-brand.example.json) | Example compiled-brand document    |
 
 ## Resolution precedence
 

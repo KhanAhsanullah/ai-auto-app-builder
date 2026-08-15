@@ -65,6 +65,7 @@ export class BrandResolver {
       appName: branding.appName,
       tagline: branding.tagline,
       logo: branding.logo,
+      fonts: branding.fonts,
       splashScreen: branding.splashScreen,
       socialShare: branding.socialShare,
       showPoweredBy: branding.showPoweredBy,

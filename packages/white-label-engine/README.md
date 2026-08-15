@@ -1,6 +1,6 @@
 # White-Label Engine
 
-Resolves tenant branding through platform → vertical → tenant → environment inheritance. Transforms the existing `Branding` config contract into a deterministic `ResolvedBrandResult` with layer audit data and a SHA-256 hash.
+Resolves tenant branding through platform → vertical → tenant → environment inheritance. Compiles resolved branding into deterministic asset manifests and surface-specific reference artifacts.
 
 ## Package
 
@@ -8,31 +8,36 @@ Resolves tenant branding through platform → vertical → tenant → environmen
 
 ## Status
 
-Sprint 3 Task 1 — BrandResolver, platform/vertical defaults, Config Runtime mapping.
+Sprint 3 Task 2 — AssetNormalizer, BrandCompiler, BrandCache, surface emitters, extended brand hashing.
 
-Asset pipeline, compiler, cache, and provider facade are deferred to later Sprint 3 tasks. The control-plane HTTP service remains `platform/white-label-engine` (`@ai-commerce/white-label-engine-service`).
+The `WhiteLabelProvider` facade and control-plane HTTP service remain deferred to Sprint 3 Task 3.
 
 ## Modules
 
 | Module                                | Responsibility                                             |
 | ------------------------------------- | ---------------------------------------------------------- |
 | `BrandResolver`                       | Merge inheritance chain and validate with `brandingSchema` |
+| `BrandCompiler`                       | Normalize assets and emit surface reference artifacts      |
 | `toResolveBrandInput`                 | Map resolved config output to resolver input               |
 | `brandConfigSourceFromProviderResult` | Normalize Config Runtime output without re-resolution      |
 
-## Resolution precedence
+Internal modules (normalizer, cache, emitters) are available via `@ai-commerce/white-label-engine/internal`.
+
+## Pipeline
 
 ```
-Platform brand defaults
-  ↓
-Vertical brand defaults
-  ↓
-Tenant branding
-  ↓
-Environment branding override (shallow section merge)
+ConfigProvider.resolve()
+        ↓
+BrandResolver.resolve()
+        ↓
+AssetNormalizer.normalize()
+        ↓
+BrandCompiler.compileFromResolved()
+        ↓
+Surface Artifacts (web, mobile, admin-dashboard)
 ```
 
-Tenant branding input is `schemas/tenant-config/v1/branding.schema.json`. Engine presets live in `schemas/white-label/v1/`.
+Tenant branding input is `schemas/tenant-config/v1/branding.schema.json`. Engine output contracts live in `schemas/white-label/v1/`.
 
 ## Scripts
 
@@ -48,6 +53,7 @@ pnpm build
 ```typescript
 import { ConfigProvider } from '@ai-commerce/config-runtime';
 import {
+  BrandCompiler,
   BrandResolver,
   brandConfigSourceFromProviderResult,
   toResolveBrandInput,
@@ -55,12 +61,15 @@ import {
 
 const configProvider = new ConfigProvider();
 const resolver = new BrandResolver();
+const compiler = new BrandCompiler();
 
 const configResult = await configProvider.loadFromFile('./tenant-config.json');
-const brand = resolver.resolve(
+const resolved = resolver.resolve(
   toResolveBrandInput(brandConfigSourceFromProviderResult(configResult)),
 );
+const compiled = compiler.compileFromResolved({ resolved });
 
-console.log(brand.branding.appName);
-console.log(brand.metadata.hash);
+console.log(compiled.manifest.assets);
+console.log(compiled.artifacts.web.links);
+console.log(compiled.metadata.assetHash);
 ```

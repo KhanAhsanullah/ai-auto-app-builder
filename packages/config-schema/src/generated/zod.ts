@@ -163,8 +163,14 @@ export const tenantConfigurationSchema = z
             inverse: z.any().describe('Logo for dark backgrounds.').optional(),
             favicon: z.any().optional(),
             appleTouchIcon: z.any().optional(),
+            appIcon: z.any().describe('Preferred mobile app icon source URL.').optional(),
           })
           .strict()
+          .optional(),
+        fonts: z
+          .object({ heading: z.any().optional(), body: z.any().optional() })
+          .strict()
+          .describe('Optional brand font asset references (not theme typography tokens).')
           .optional(),
         splashScreen: z
           .object({ backgroundColor: z.any().optional(), imageUrl: z.any().optional() })
@@ -1194,10 +1200,16 @@ export const brandingSchema = z
       .object({
         primary: z.any().describe('Primary logo URL (light background).').optional(),
         inverse: z.any().describe('Logo for dark backgrounds.').optional(),
-        favicon: z.string().url().max(2048).optional(),
+        favicon: z.any().optional(),
         appleTouchIcon: z.any().optional(),
+        appIcon: z.any().describe('Preferred mobile app icon source URL.').optional(),
       })
       .strict()
+      .optional(),
+    fonts: z
+      .object({ heading: z.any().optional(), body: z.any().optional() })
+      .strict()
+      .describe('Optional brand font asset references (not theme typography tokens).')
       .optional(),
     splashScreen: z
       .object({

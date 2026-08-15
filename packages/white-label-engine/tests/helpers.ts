@@ -1,7 +1,11 @@
 import type { Tenant } from '@ai-commerce/config-schema';
 
+import type { BrandEmitterRegistry } from '../src/domain/brand-emitter-registry.js';
+import { BrandCompiler } from '../src/domain/brand-compiler.js';
 import { BrandResolver } from '../src/domain/brand-resolver.js';
-import type { BrandPatch } from '../src/types.js';
+import type { AssetNormalizer } from '../src/domain/asset-normalizer.js';
+import { DefaultBrandEmitterRegistry } from '../src/infrastructure/brand-emitter-registry.js';
+import type { BrandCacheOptions, BrandPatch } from '../src/types.js';
 
 /** Minimal tenant branding overlay for tests. */
 export const TENANT_BRANDING_FIXTURE: BrandPatch = {
@@ -23,12 +27,56 @@ export const OTHER_TENANT_BRANDING_FIXTURE: BrandPatch = {
   },
 };
 
+/** Branding fixture with explicit app icon, fonts, splash, and OG image. */
+export const FULL_ASSET_BRANDING_FIXTURE: BrandPatch = {
+  appName: 'Asset Shop',
+  tagline: 'Full asset branding',
+  logo: {
+    primary: 'https://cdn.example.com/logo-primary.svg',
+    inverse: 'https://cdn.example.com/logo-inverse.svg',
+    favicon: 'https://cdn.example.com/favicon.ico',
+    appIcon: 'https://cdn.example.com/app-icon.png',
+    appleTouchIcon: 'https://cdn.example.com/apple-touch.png',
+  },
+  splashScreen: {
+    backgroundColor: '#112233',
+    imageUrl: 'https://cdn.example.com/splash.png',
+  },
+  socialShare: {
+    ogImageUrl: 'https://cdn.example.com/og-image.png',
+  },
+  fonts: {
+    heading: {
+      url: 'https://cdn.example.com/fonts/heading.woff2',
+      format: 'woff2',
+      weight: 700,
+    },
+    body: {
+      url: 'https://cdn.example.com/fonts/body.woff2',
+      format: 'woff2',
+    },
+  },
+};
+
 export const TENANT_A_ID = '11111111-1111-1111-1111-111111111111';
 export const TENANT_B_ID = '22222222-2222-2222-2222-222222222222';
 
 /** BrandResolver instance for tests. */
 export function createBrandResolver(): BrandResolver {
   return new BrandResolver();
+}
+
+/** BrandCompiler wired with the default emitter registry for tests. */
+export function createBrandCompiler(options?: {
+  emitterRegistry?: BrandEmitterRegistry;
+  resolver?: BrandResolver;
+  normalizer?: AssetNormalizer;
+  cache?: BrandCacheOptions | false;
+}): BrandCompiler {
+  return new BrandCompiler({
+    emitterRegistry: options?.emitterRegistry ?? new DefaultBrandEmitterRegistry(),
+    ...options,
+  });
 }
 
 export const VERTICAL_TAGLINES: Record<Tenant['vertical'], string> = {

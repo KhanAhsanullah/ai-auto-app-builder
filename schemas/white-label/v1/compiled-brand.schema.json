@@ -1,0 +1,199 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://platform.ai-commerce.dev/schemas/white-label/v1/compiled-brand.schema.json",
+  "title": "CompiledBrandResult",
+  "description": "Documentation of BrandCompiler output. Not a tenant-config input contract.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["assets", "metadata", "manifest", "artifacts", "compiledAt"],
+  "properties": {
+    "assets": {
+      "$ref": "./normalized-brand-assets.schema.json"
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["brandHash", "assetHash", "compiledAt"],
+      "properties": {
+        "brandHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "assetHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "compiledAt": {
+          "$ref": "../../shared/v1/common.schema.json#/$defs/isoDateTime"
+        }
+      }
+    },
+    "manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "brandHash", "assetHash", "assets"],
+      "properties": {
+        "version": { "const": 1 },
+        "brandHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "assetHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "assets": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/manifestEntry" }
+        },
+        "splash": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "backgroundColor": {
+              "$ref": "../../shared/v1/common.schema.json#/$defs/hexColor"
+            }
+          }
+        }
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "web": { "$ref": "#/$defs/webArtifacts" },
+        "mobile": { "$ref": "#/$defs/mobileArtifacts" },
+        "admin-dashboard": { "$ref": "#/$defs/adminArtifacts" }
+      }
+    },
+    "compiledAt": {
+      "$ref": "../../shared/v1/common.schema.json#/$defs/isoDateTime"
+    }
+  },
+  "$defs": {
+    "manifestEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "url", "kind", "role", "format"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "url": { "$ref": "../../shared/v1/common.schema.json#/$defs/url" },
+        "kind": {
+          "type": "string",
+          "enum": ["logo", "icon", "splash", "social", "font"]
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "primary",
+            "inverse",
+            "favicon",
+            "app-icon",
+            "apple-touch",
+            "splash",
+            "og-image",
+            "heading",
+            "body"
+          ]
+        },
+        "format": { "type": "string", "minLength": 1 }
+      }
+    },
+    "webArtifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["surface", "links"],
+      "properties": {
+        "surface": { "const": "web" },
+        "faviconHref": { "$ref": "../../shared/v1/common.schema.json#/$defs/url" },
+        "appleTouchIconHref": { "$ref": "../../shared/v1/common.schema.json#/$defs/url" },
+        "logoPrimaryHref": { "$ref": "../../shared/v1/common.schema.json#/$defs/url" },
+        "logoInverseHref": { "$ref": "../../shared/v1/common.schema.json#/$defs/url" },
+        "appIconSourceHref": { "$ref": "../../shared/v1/common.schema.json#/$defs/url" },
+        "appIconResolvedFrom": {
+          "type": "string",
+          "enum": ["appIcon", "appleTouchIcon", "primary"]
+        },
+        "splashBackgroundColor": {
+          "$ref": "../../shared/v1/common.schema.json#/$defs/hexColor"
+        },
+        "splashImageHref": { "$ref": "../../shared/v1/common.schema.json#/$defs/url" },
+        "ogImageHref": { "$ref": "../../shared/v1/common.schema.json#/$defs/url" },
+        "fontFaceCss": { "type": "string" },
+        "links": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["rel", "href"],
+            "properties": {
+              "rel": { "type": "string" },
+              "href": { "$ref": "../../shared/v1/common.schema.json#/$defs/url" },
+              "sizes": { "type": "string" },
+              "type": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "mobileArtifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["surface", "iconSizesSpec", "splash"],
+      "properties": {
+        "surface": { "const": "mobile" },
+        "appIconSourceUrl": { "$ref": "../../shared/v1/common.schema.json#/$defs/url" },
+        "appIconResolvedFrom": {
+          "type": "string",
+          "enum": ["appIcon", "appleTouchIcon", "primary"]
+        },
+        "iconSizesSpec": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["size", "purpose"],
+            "properties": {
+              "size": { "type": "integer", "minimum": 1 },
+              "purpose": {
+                "type": "string",
+                "enum": ["app-icon", "adaptive-icon", "notification"]
+              }
+            }
+          }
+        },
+        "splash": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "backgroundColor": {
+              "$ref": "../../shared/v1/common.schema.json#/$defs/hexColor"
+            },
+            "imageUrl": { "$ref": "../../shared/v1/common.schema.json#/$defs/url" }
+          }
+        },
+        "logoPrimaryUrl": { "$ref": "../../shared/v1/common.schema.json#/$defs/url" },
+        "fonts": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "heading": { "$ref": "./normalized-brand-assets.schema.json#/$defs/fontAsset" },
+            "body": { "$ref": "./normalized-brand-assets.schema.json#/$defs/fontAsset" }
+          }
+        }
+      }
+    },
+    "adminArtifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["surface"],
+      "properties": {
+        "surface": { "const": "admin-dashboard" },
+        "headerLogoUrl": { "$ref": "../../shared/v1/common.schema.json#/$defs/url" },
+        "headerLogoInverseUrl": { "$ref": "../../shared/v1/common.schema.json#/$defs/url" },
+        "faviconHref": { "$ref": "../../shared/v1/common.schema.json#/$defs/url" },
+        "appIconSourceHref": { "$ref": "../../shared/v1/common.schema.json#/$defs/url" }
+      }
+    }
+  }
+}
