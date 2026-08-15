@@ -25,3 +25,4 @@ export type { AdminDashboardSettings } from './types/adminDashboardSettings.js';
 export type { EnvironmentSettings } from './types/environmentSettings.js';
 export type { ProvisioningRequest } from './types/provisioningRequest.js';
 export type { ProvisioningResult } from './types/provisioningResult.js';
+export type { PluginManifest } from './types/pluginManifest.js';

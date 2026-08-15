@@ -2150,3 +2150,32 @@ export const provisioningResultSchema = z
   })
   .strict()
   .describe('Summary outcome of a tenant provisioning or activation operation.');
+
+/** Validates `PluginManifest` configuration. */
+export const pluginManifestSchema = z
+  .object({
+    id: z
+      .string()
+      .regex(new RegExp('^[a-z0-9]+(?:\\.[a-z0-9]+)+$'))
+      .describe('Reverse-DNS plugin identifier.'),
+    name: z.string().min(1).max(128),
+    description: z.string().min(1).max(512),
+    version: z
+      .string()
+      .regex(
+        new RegExp('^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[\\w.]+)?(?:\\+[\\w.]+)?$'),
+      )
+      .describe('Exact plugin release version (catalog key).'),
+    engineVersion: z.string().min(1).max(128).describe('Platform API compatibility semver range.'),
+    permissions: z
+      .array(z.string().regex(new RegExp('^[a-z][a-z0-9]*(?:\\.[a-z][a-z0-9]*)*$')))
+      .min(0),
+    hooks: z.array(z.any()),
+    dependencies: z.array(z.any()).optional(),
+    configSchema: z
+      .record(z.string(), z.any())
+      .describe('Embedded JSON Schema describing allowed plugin settings.')
+      .optional(),
+  })
+  .strict()
+  .describe('Registration contract for third-party plugins in the platform plugin catalog.');

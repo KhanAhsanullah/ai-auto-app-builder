@@ -1,0 +1,30 @@
+{
+  "id": "com.commerceos.theme.contrast",
+  "name": "Contrast Theme Extension",
+  "description": "Adds high-contrast preset extensions.",
+  "version": "1.0.0",
+  "engineVersion": "^5.0.0",
+  "permissions": ["theme.read"],
+  "hooks": [
+    {
+      "point": "theme.presets.extend",
+      "handler": "extendPresets",
+      "priority": 100
+    },
+    {
+      "point": "theme.resolve.after",
+      "handler": "adjustResolvedTheme"
+    }
+  ],
+  "dependencies": [],
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "contrastLevel": {
+        "type": "string",
+        "enum": ["normal", "high"]
+      }
+    }
+  }
+}

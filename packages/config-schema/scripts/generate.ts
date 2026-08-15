@@ -140,6 +140,12 @@ const SCHEMA_ENTRIES = [
     exportType: 'ProvisioningResult',
     exportZod: 'provisioningResultSchema',
   },
+  {
+    name: 'PluginManifest',
+    file: 'plugin-manifest/v1/plugin-manifest.schema.json',
+    exportType: 'PluginManifest',
+    exportZod: 'pluginManifestSchema',
+  },
 ] as const;
 
 const BANNER = `/**

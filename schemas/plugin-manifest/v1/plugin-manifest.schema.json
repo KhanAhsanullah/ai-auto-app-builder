@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://platform.ai-commerce.dev/schemas/plugin-manifest/v1/plugin-manifest.schema.json",
+  "title": "PluginManifest",
+  "description": "Registration contract for third-party plugins in the platform plugin catalog.",
+  "type": "object",
+  "required": ["id", "name", "description", "version", "engineVersion", "permissions", "hooks"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:\\.[a-z0-9]+)+$",
+      "description": "Reverse-DNS plugin identifier."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "version": {
+      "$ref": "../../shared/v1/common.schema.json#/$defs/semver",
+      "description": "Exact plugin release version (catalog key)."
+    },
+    "engineVersion": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "description": "Platform API compatibility semver range."
+    },
+    "permissions": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9]*(?:\\.[a-z][a-z0-9]*)*$"
+      }
+    },
+    "hooks": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/hookRegistration"
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/pluginDependency"
+      }
+    },
+    "configSchema": {
+      "type": "object",
+      "description": "Embedded JSON Schema describing allowed plugin settings."
+    }
+  },
+  "$defs": {
+    "hookRegistration": {
+      "type": "object",
+      "required": ["point", "handler"],
+      "additionalProperties": false,
+      "properties": {
+        "point": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "description": "Known hook point identifier validated against the platform catalog."
+        },
+        "handler": {
+          "type": "string",
+          "pattern": "^[a-zA-Z][a-zA-Z0-9._-]*$",
+          "description": "Logical handler identifier for in-process registration."
+        },
+        "priority": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "pluginDependency": {
+      "type": "object",
+      "required": ["id", "versionRange"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:\\.[a-z0-9]+)+$"
+        },
+        "versionRange": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "description": "Semver range for the required plugin version."
+        }
+      }
+    }
+  }
+}
