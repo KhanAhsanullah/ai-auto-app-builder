@@ -8,7 +8,7 @@ Guidelines for AI assistants working on CommerceOS AI. Read this file before mak
 
 **CommerceOS AI** (`ai-commerce-platform`) is a configuration-driven, multi-tenant white-label commerce SaaS platform. It enables agencies, enterprises, and vertical operators to launch branded commerce experiences — Admin Dashboard, Web Store, Mobile App, and API Backend — from a single JSON Schema configuration contract.
 
-**Current state:** Sprints 1–3 complete (monorepo foundation, config schema/runtime, theme engine, white-label engine). Next sprint: Tenant Provisioning (Sprint 4).
+**Current state:** Sprints 1–4 complete (monorepo foundation, config schema/runtime, theme engine, white-label engine, tenant provisioning). Next sprint: Plugin Engine (Sprint 5).
 
 **Key packages (Sprint 1 deliverables):**
 
@@ -152,8 +152,8 @@ Sprints are sequential and tagged. Each sprint delivers a cohesive milestone.
 | 1      | Monorepo Foundation | ✅ Complete |
 | 2      | Theme Engine        | ✅ Complete |
 | 3      | White Label Engine  | ✅ Complete |
-| 4      | Tenant Provisioning | Next        |
-| 5      | Plugin Engine       | Planned     |
+| 4      | Tenant Provisioning | ✅ Complete |
+| 5      | Plugin Engine       | Next        |
 | 6      | Authentication      | Planned     |
 | 7      | API Gateway         | Planned     |
 | 8      | Dashboard           | Planned     |
@@ -218,6 +218,6 @@ All four must pass.
 | [CHANGELOG.md](./CHANGELOG.md)                               | Version history                  |
 | [docs/architecture/README.md](./docs/architecture/README.md) | System architecture              |
 
-**Latest commit:** `16897fb`
-**Latest tag:** `sprint3-task3`
+**Latest commit:** `b309750`
+**Latest tag:** `sprint4-task3`
 **Schema version:** v1 (`SCHEMA_VERSION`)

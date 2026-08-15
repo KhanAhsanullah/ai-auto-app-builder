@@ -19,6 +19,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Integration tests — ConfigProvider validation gate; optional Theme/WhiteLabel consumability
   - Architecture doc — `docs/architecture/tenant-provisioning.md`
 
+- **Vertical onboarding seeds and environment initialization** (Sprint 4 Task 2) — `@ai-commerce/tenant-provisioner`
+  - Vertical seed templates at `modules/verticals/{vertical}/seeds/onboarding.template.json`
+  - `VerticalSeedLoader` — static import map with seed sanitization (internal)
+  - `EnvironmentBuilder` — slug-derived environment targets (internal)
+  - Extended `ConfigBuilder` pipeline — base → seed → overrides → environment → identity enforcement
+
+- **Tenant identity and repository foundation** (Sprint 4 Task 1) — `@ai-commerce/tenant-provisioner`
+  - `IdentityValidator`, `ConfigBuilder`, `TenantRepository`, `InMemoryTenantRepository`
+  - `provisioning-request.schema.json` with generated `ProvisioningRequest` type
+  - `computeRequestFingerprint` for idempotency preparation
+
 - **WhiteLabelProvider facade** (Sprint 3 Task 3) — `@ai-commerce/white-label-engine`
   - `WhiteLabelProvider` — public facade for resolve + compile pipeline
   - `createWhiteLabelProvider` — factory with default resolver, compiler, cache, and emitters

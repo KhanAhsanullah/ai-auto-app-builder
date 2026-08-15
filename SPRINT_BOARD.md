@@ -44,15 +44,15 @@ All Sprint 3 code lives in `@ai-commerce/white-label-engine` only. The HTTP serv
 
 ---
 
-## Sprint 4 — Tenant Provisioning
+## Sprint 4 — Tenant Provisioning ✅
 
 | Task   | Status | Deliverable                                                                                    |
 | ------ | ------ | ---------------------------------------------------------------------------------------------- |
 | Task 1 | ✅     | Tenant identity validation, config builder, repository port, in-memory adapter, request schema |
 | Task 2 | ✅     | Vertical onboarding seeds, environment initialization, extended config builder pipeline        |
-| Task 3 |        | TenantProvisioner facade, activation workflow, Config Runtime integration tests, result schema |
+| Task 3 | ✅     | TenantProvisioner facade, activation workflow, Config Runtime integration tests, result schema |
 
-**Tags:** `sprint4-task1`, `sprint4-task2`
+**Tags:** `sprint4-task1`, `sprint4-task2`, `sprint4-task3`
 
 All Sprint 4 code lives in `@ai-commerce/tenant-provisioner` (`platform/tenant-provisioner`). HTTP service deferred.
 
