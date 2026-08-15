@@ -10,7 +10,11 @@ Brand resolution lives in `@ai-commerce/white-label-engine` (`packages/white-lab
 
 ## Status
 
-Foundation scaffold — no business logic implemented yet. Sprint 3 Task 1 implements the library only.
+**Service scaffold only** — this directory is a placeholder for the future control-plane HTTP adapter. No HTTP endpoints or service business logic are implemented here.
+
+Sprint 3 library implementation is **complete** in `@ai-commerce/white-label-engine` (`packages/white-label-engine`): BrandResolver, asset pipeline, surface emitters, and WhiteLabelProvider facade.
+
+HTTP/service implementation for `@ai-commerce/white-label-engine-service` (custom domains, SSL, bundle IDs, branded templates) remains **intentionally deferred** to a later sprint.
 
 ## Scripts
 

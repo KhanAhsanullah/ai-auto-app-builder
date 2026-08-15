@@ -52,10 +52,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `AdminDashboardTokenEmitter` — admin semantic tokens and CSS variables
   - Unit and snapshot tests for all compiler and emitter modules
 
-### Planned
-
-- Sprint 3 Task 3 — WhiteLabelProvider facade
-
 ---
 
 ## [0.1.0] — 2026-08-02

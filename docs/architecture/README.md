@@ -14,10 +14,10 @@ The platform architecture was approved in Sprint 0. It defines:
 
 ## Feature Architecture
 
-| Document                                         | Scope                                                                   |
-| ------------------------------------------------ | ----------------------------------------------------------------------- |
-| [theme-engine.md](./theme-engine.md)             | Theme Engine — presets, resolver, live preview, plugin extension points |
-| [white-label-engine.md](./white-label-engine.md) | White-Label Engine — BrandResolver, defaults, Config Runtime mapping    |
+| Document                                         | Scope                                                                                                                    |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ |
+| [theme-engine.md](./theme-engine.md)             | Theme Engine — presets, resolver, live preview, plugin extension points                                                  |
+| [white-label-engine.md](./white-label-engine.md) | White-Label Engine — BrandResolver, asset pipeline, WhiteLabelProvider, web/mobile/admin surfaces; HTTP service deferred |
 
 ## Monorepo Layout
 
@@ -46,4 +46,4 @@ Significant decisions are recorded in [../adr/](../adr/).
 
 ## Status
 
-Sprint 3 Task 1 — white-label brand foundation established. Feature documentation added per sprint.
+Sprint 3 complete — White-Label Engine library deliverables in `@ai-commerce/white-label-engine`: BrandResolver, asset pipeline (AssetNormalizer, BrandCompiler, BrandCache), surface emitters (web, mobile, admin-dashboard), and WhiteLabelProvider facade with Config Runtime integration. Control-plane HTTP service (`platform/white-label-engine` / `@ai-commerce/white-label-engine-service`) remains intentionally deferred.
