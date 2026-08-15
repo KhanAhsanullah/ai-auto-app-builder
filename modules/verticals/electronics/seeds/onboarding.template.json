@@ -1,0 +1,42 @@
+{
+  "branding": {
+    "tagline": "The latest tech, ready to ship",
+    "showPoweredBy": true
+  },
+  "theme": {
+    "preset": "dark",
+    "colors": {
+      "primary": "#818CF8",
+      "secondary": "#A78BFA"
+    }
+  },
+  "navigation": {
+    "web": {
+      "primary": [
+        {
+          "id": "categories",
+          "label": "Categories",
+          "route": "store.categories"
+        },
+        {
+          "id": "deals",
+          "label": "Tech Deals",
+          "route": "store.deals"
+        }
+      ]
+    }
+  },
+  "webStore": {
+    "enabled": true,
+    "rendering": {
+      "mode": "ssr",
+      "cacheTtlSeconds": 120
+    }
+  },
+  "adminDashboard": {
+    "enabled": true,
+    "layout": {
+      "defaultLandingRoute": "admin.inventory"
+    }
+  }
+}

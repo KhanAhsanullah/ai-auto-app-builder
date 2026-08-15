@@ -8,14 +8,14 @@ Vertical pack for weighted items, delivery slots, and substitution rules. Extend
 
 ## Status
 
-Foundation scaffold — no business logic implemented yet.
+Foundation scaffold — onboarding seed available; business logic in future sprints.
 
 ## Vertical Structure
 
-| Path     | Responsibility                                       |
-| -------- | ---------------------------------------------------- |
-| `hooks/` | Checkout, catalog, and pricing extension hooks       |
-| `seeds/` | Demo data templates for onboarding and AI generation |
+| Path                             | Responsibility                                 |
+| -------------------------------- | ---------------------------------------------- |
+| `hooks/`                         | Checkout, catalog, and pricing extension hooks |
+| `seeds/onboarding.template.json` | Tenant provisioning onboarding config partial  |
 
 ## Manifests (future sprints)
 

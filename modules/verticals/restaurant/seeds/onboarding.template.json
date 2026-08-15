@@ -1,0 +1,41 @@
+{
+  "branding": {
+    "tagline": "Order from the menu you love",
+    "showPoweredBy": true
+  },
+  "theme": {
+    "preset": "modern",
+    "colors": {
+      "primary": "#DC2626",
+      "secondary": "#F59E0B"
+    }
+  },
+  "navigation": {
+    "web": {
+      "primary": [
+        {
+          "id": "menu",
+          "label": "Menu",
+          "route": "store.menu"
+        },
+        {
+          "id": "reservations",
+          "label": "Reservations",
+          "route": "store.reservations"
+        }
+      ]
+    }
+  },
+  "webStore": {
+    "enabled": true,
+    "rendering": {
+      "mode": "ssr"
+    }
+  },
+  "adminDashboard": {
+    "enabled": true,
+    "layout": {
+      "defaultLandingRoute": "admin.kitchen"
+    }
+  }
+}

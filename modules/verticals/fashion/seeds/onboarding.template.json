@@ -1,0 +1,41 @@
+{
+  "branding": {
+    "tagline": "Curated style for every season",
+    "showPoweredBy": true
+  },
+  "theme": {
+    "preset": "luxury",
+    "colors": {
+      "primary": "#18181B",
+      "secondary": "#71717A"
+    }
+  },
+  "navigation": {
+    "web": {
+      "primary": [
+        {
+          "id": "collections",
+          "label": "Collections",
+          "route": "store.collections"
+        },
+        {
+          "id": "lookbook",
+          "label": "Lookbook",
+          "route": "store.lookbook"
+        }
+      ]
+    }
+  },
+  "webStore": {
+    "enabled": true,
+    "seo": {
+      "robotsIndex": true
+    }
+  },
+  "adminDashboard": {
+    "enabled": true,
+    "layout": {
+      "defaultLandingRoute": "admin.catalog"
+    }
+  }
+}

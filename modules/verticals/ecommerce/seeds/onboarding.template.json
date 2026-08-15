@@ -1,0 +1,40 @@
+{
+  "branding": {
+    "tagline": "Shop quality products online",
+    "showPoweredBy": true
+  },
+  "theme": {
+    "colors": {
+      "primary": "#2563EB",
+      "secondary": "#64748B"
+    }
+  },
+  "navigation": {
+    "web": {
+      "primary": [
+        {
+          "id": "shop",
+          "label": "Shop",
+          "route": "store.catalog"
+        },
+        {
+          "id": "deals",
+          "label": "Deals",
+          "route": "store.deals"
+        }
+      ]
+    }
+  },
+  "webStore": {
+    "enabled": true,
+    "rendering": {
+      "mode": "ssr"
+    }
+  },
+  "adminDashboard": {
+    "enabled": true,
+    "layout": {
+      "defaultLandingRoute": "admin.dashboard"
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "branding": {
+    "tagline": "Trusted care, delivered with confidence",
+    "showPoweredBy": true
+  },
+  "theme": {
+    "preset": "minimal",
+    "colors": {
+      "primary": "#0284C7",
+      "secondary": "#64748B"
+    }
+  },
+  "navigation": {
+    "web": {
+      "primary": [
+        {
+          "id": "prescriptions",
+          "label": "Prescriptions",
+          "route": "store.prescriptions"
+        },
+        {
+          "id": "health",
+          "label": "Health",
+          "route": "store.health"
+        }
+      ]
+    }
+  },
+  "webStore": {
+    "enabled": true,
+    "legal": {
+      "cookieConsent": {
+        "enabled": true
+      }
+    }
+  },
+  "adminDashboard": {
+    "enabled": true,
+    "layout": {
+      "defaultLandingRoute": "admin.compliance"
+    }
+  }
+}

@@ -101,11 +101,18 @@ describe('ConfigBuilder', () => {
     const identity = validator.validate(VALID_PROVISIONING_REQUEST);
     const document = builder.build(identity);
 
-    for (const key of Object.keys(PLATFORM_DEFAULTS)) {
-      if (key === 'meta') {
-        continue;
-      }
+    const platformOnlyKeys = [
+      'featureFlags',
+      'authentication',
+      'payments',
+      'integrations',
+      'aiSettings',
+      'mobileApp',
+      'plugins',
+      'notifications',
+    ] as const;
 
+    for (const key of platformOnlyKeys) {
       expect(document[key as keyof typeof document]).toBeUndefined();
     }
   });
@@ -124,11 +131,35 @@ describe('ConfigBuilder', () => {
     }
   });
 
-  it('does not initialize environment configuration in the stored document', () => {
+  it('initializes environment configuration derived from tenant slug', () => {
     const identity = validator.validate(VALID_PROVISIONING_REQUEST);
     const document = builder.build(identity);
 
-    expect(document.environment).toBeUndefined();
+    expect(document.environment).toEqual({
+      current: 'development',
+      targets: {
+        development: {
+          apiBaseUrl: 'http://localhost:3000',
+          debug: true,
+          logLevel: 'debug',
+        },
+        staging: {
+          apiBaseUrl: `https://api-staging.${identity.slug}.platform.local`,
+          debug: false,
+          logLevel: 'info',
+        },
+        production: {
+          apiBaseUrl: `https://api.${identity.slug}.platform.local`,
+          debug: false,
+          logLevel: 'warn',
+        },
+      },
+      promotionPolicy: {
+        requireApproval: true,
+        runValidationOnPromote: true,
+      },
+    });
+    expect(document.environment?.overrides).toBeUndefined();
   });
 
   it('uses defaultLocale for languages defaults', () => {
@@ -143,5 +174,68 @@ describe('ConfigBuilder', () => {
       supported: ['en-GB'],
       fallback: 'en-GB',
     });
+  });
+
+  it('applies vertical seed values to the stored document', () => {
+    const identity = validator.validate({
+      ...VALID_PROVISIONING_REQUEST,
+      vertical: 'grocery',
+    });
+    const document = builder.build(identity);
+
+    expect(document.branding?.tagline).toBe('Fresh essentials, delivered');
+    expect(document.theme?.colors?.primary).toBe('#16A34A');
+  });
+
+  it('produces different stored config for ecommerce and grocery verticals', () => {
+    const ecommerceIdentity = validator.validate({
+      ...VALID_PROVISIONING_REQUEST,
+      slug: 'ecom-shop',
+      vertical: 'ecommerce',
+    });
+    const groceryIdentity = validator.validate({
+      ...VALID_PROVISIONING_REQUEST,
+      slug: 'grocery-shop',
+      vertical: 'grocery',
+    });
+
+    const ecommerceDocument = builder.build(ecommerceIdentity);
+    const groceryDocument = builder.build(groceryIdentity);
+
+    expect(ecommerceDocument.branding?.tagline).not.toBe(groceryDocument.branding?.tagline);
+    expect(ecommerceDocument.theme?.colors?.primary).not.toBe(
+      groceryDocument.theme?.colors?.primary,
+    );
+    expect(ecommerceDocument.navigation?.web?.primary).not.toEqual(
+      groceryDocument.navigation?.web?.primary,
+    );
+  });
+
+  it('lets configOverrides override vertical seed values', () => {
+    const identity = validator.validate({
+      ...VALID_PROVISIONING_REQUEST,
+      vertical: 'grocery',
+      configOverrides: {
+        branding: {
+          tagline: 'Override tagline from request',
+        },
+      },
+    });
+
+    const document = builder.build(identity);
+
+    expect(document.branding?.tagline).toBe('Override tagline from request');
+  });
+
+  it('stores tenant-specific environment URLs instead of platform placeholder URLs', () => {
+    const identity = validator.validate(VALID_PROVISIONING_REQUEST);
+    const document = builder.build(identity);
+
+    expect(document.environment?.targets?.staging?.apiBaseUrl).toBe(
+      `https://api-staging.${identity.slug}.platform.local`,
+    );
+    expect(document.environment?.targets?.staging?.apiBaseUrl).not.toBe(
+      PLATFORM_DEFAULTS.environment?.targets?.staging?.apiBaseUrl,
+    );
   });
 });

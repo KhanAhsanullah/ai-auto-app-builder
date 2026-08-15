@@ -29,8 +29,20 @@ Each vertical provides:
 - **Navigation manifest** — admin and consumer nav entries
 - **Screen map** — route definitions for generated apps
 - **Hooks** — extension points in checkout, catalog, pricing
-- **Seed templates** — demo data for onboarding
+- **Seed templates** — onboarding config partials for tenant provisioning
+
+## Onboarding Seeds (Sprint 4 Task 2)
+
+Each vertical exposes a static onboarding seed at:
+
+```
+modules/verticals/{vertical}/seeds/onboarding.template.json
+```
+
+Allowed seed sections: `branding`, `theme`, `navigation`, `webStore`, `adminDashboard`, `languages`, `currency`, `company`.
+
+Seeds must **not** include `meta`, `tenant`, `environment`, `featureFlags`, `payments`, or `authentication`. The Tenant Provisioner loads seeds via a static import map during provisioning (see `@ai-commerce/tenant-provisioner`).
 
 ## Status
 
-Foundation scaffold — vertical logic in future sprints.
+Foundation scaffold — onboarding seeds available; vertical runtime logic in future sprints.

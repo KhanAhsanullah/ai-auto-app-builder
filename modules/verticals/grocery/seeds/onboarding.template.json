@@ -1,0 +1,42 @@
+{
+  "branding": {
+    "tagline": "Fresh essentials, delivered",
+    "showPoweredBy": true
+  },
+  "theme": {
+    "preset": "modern",
+    "colors": {
+      "primary": "#16A34A",
+      "secondary": "#F59E0B"
+    }
+  },
+  "navigation": {
+    "web": {
+      "primary": [
+        {
+          "id": "departments",
+          "label": "Departments",
+          "route": "store.departments"
+        },
+        {
+          "id": "delivery",
+          "label": "Delivery",
+          "route": "store.delivery-slots"
+        }
+      ]
+    }
+  },
+  "webStore": {
+    "enabled": true,
+    "pwa": {
+      "enabled": true,
+      "themeColor": "#16A34A"
+    }
+  },
+  "adminDashboard": {
+    "enabled": true,
+    "layout": {
+      "defaultLandingRoute": "admin.orders"
+    }
+  }
+}
