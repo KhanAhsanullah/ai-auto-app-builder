@@ -42,3 +42,151 @@ export class PluginCatalogDuplicateException extends PluginRegistryException {
     this.version = version;
   }
 }
+
+/** Thrown when filesystem discovery fails at the root path. */
+export class PluginDiscoveryException extends PluginRegistryException {
+  constructor(message: string) {
+    super(message);
+    this.name = 'PluginDiscoveryException';
+  }
+}
+
+/** Thrown when a catalog lookup misses during install or dependency resolution. */
+export class PluginCatalogNotFoundException extends PluginRegistryException {
+  readonly pluginId: string;
+  readonly version: string;
+
+  constructor(pluginId: string, version: string) {
+    super(`Plugin catalog does not contain id '${pluginId}' at version '${version}'.`);
+    this.name = 'PluginCatalogNotFoundException';
+    this.pluginId = pluginId;
+    this.version = version;
+  }
+}
+
+/** Thrown when no catalog version satisfies a dependency range. */
+export class PluginDependencyUnresolvedException extends PluginRegistryException {
+  readonly pluginId: string;
+  readonly versionRange: string;
+
+  constructor(pluginId: string, versionRange: string) {
+    super(`No catalog version satisfies dependency '${pluginId}' with range '${versionRange}'.`);
+    this.name = 'PluginDependencyUnresolvedException';
+    this.pluginId = pluginId;
+    this.versionRange = versionRange;
+  }
+}
+
+/** Thrown when transitive dependency resolution detects a cycle. */
+export class PluginDependencyCycleException extends PluginRegistryException {
+  readonly pluginId: string;
+  readonly version: string;
+
+  constructor(pluginId: string, version: string) {
+    super(`Circular plugin dependency detected at '${pluginId}' version '${version}'.`);
+    this.name = 'PluginDependencyCycleException';
+    this.pluginId = pluginId;
+    this.version = version;
+  }
+}
+
+/** Thrown when tenant config declaration does not match the install request. */
+export class TenantPluginConfigMismatchException extends PluginRegistryException {
+  readonly tenantId: string;
+  readonly pluginId: string;
+  readonly version: string;
+
+  constructor(tenantId: string, pluginId: string, version: string, message?: string) {
+    super(
+      message ??
+        `Tenant config plugins declaration does not match install request for '${pluginId}' version '${version}' on tenant '${tenantId}'.`,
+    );
+    this.name = 'TenantPluginConfigMismatchException';
+    this.tenantId = tenantId;
+    this.pluginId = pluginId;
+    this.version = version;
+  }
+}
+
+/** Thrown when install input settings conflict with tenant config settings. */
+export class PluginSettingsConflictException extends PluginRegistryException {
+  readonly tenantId: string;
+  readonly pluginId: string;
+
+  constructor(tenantId: string, pluginId: string) {
+    super(
+      `Install settings conflict with tenant config settings for plugin '${pluginId}' on tenant '${tenantId}'.`,
+    );
+    this.name = 'PluginSettingsConflictException';
+    this.tenantId = tenantId;
+    this.pluginId = pluginId;
+  }
+}
+
+/** Thrown when plugin settings fail manifest configSchema validation. */
+export class PluginSettingsValidationException extends PluginRegistryException {
+  constructor(message: string) {
+    super(message);
+    this.name = 'PluginSettingsValidationException';
+  }
+}
+
+/** Thrown when a tenant plugin binding already exists with different install content. */
+export class TenantPluginAlreadyInstalledException extends PluginRegistryException {
+  readonly tenantId: string;
+  readonly pluginId: string;
+
+  constructor(tenantId: string, pluginId: string) {
+    super(
+      `Tenant '${tenantId}' already has plugin '${pluginId}' installed with different content.`,
+    );
+    this.name = 'TenantPluginAlreadyInstalledException';
+    this.tenantId = tenantId;
+    this.pluginId = pluginId;
+  }
+}
+
+/** Thrown when a tenant plugin binding is not found. */
+export class PluginNotInstalledException extends PluginRegistryException {
+  readonly tenantId: string;
+  readonly pluginId: string;
+
+  constructor(tenantId: string, pluginId: string) {
+    super(`Plugin '${pluginId}' is not installed for tenant '${tenantId}'.`);
+    this.name = 'PluginNotInstalledException';
+    this.tenantId = tenantId;
+    this.pluginId = pluginId;
+  }
+}
+
+/** Thrown when a tenant plugin lifecycle transition is not allowed. */
+export class InvalidPluginLifecycleTransitionException extends PluginRegistryException {
+  readonly tenantId: string;
+  readonly pluginId: string;
+  readonly fromStatus: string;
+  readonly toStatus: string;
+
+  constructor(tenantId: string, pluginId: string, fromStatus: string, toStatus: string) {
+    super(
+      `Invalid plugin lifecycle transition for tenant '${tenantId}' plugin '${pluginId}': ${fromStatus} -> ${toStatus}.`,
+    );
+    this.name = 'InvalidPluginLifecycleTransitionException';
+    this.tenantId = tenantId;
+    this.pluginId = pluginId;
+    this.fromStatus = fromStatus;
+    this.toStatus = toStatus;
+  }
+}
+
+/** Thrown when saving a duplicate tenant plugin binding through the repository port. */
+export class TenantPluginDuplicateException extends PluginRegistryException {
+  readonly tenantId: string;
+  readonly pluginId: string;
+
+  constructor(tenantId: string, pluginId: string) {
+    super(`Tenant '${tenantId}' already has a binding for plugin '${pluginId}'.`);
+    this.name = 'TenantPluginDuplicateException';
+    this.tenantId = tenantId;
+    this.pluginId = pluginId;
+  }
+}

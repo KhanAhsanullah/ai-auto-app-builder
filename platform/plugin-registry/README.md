@@ -1,6 +1,6 @@
 # Plugin Registry
 
-Control-plane service for plugin manifest validation and platform catalog registration.
+Control-plane service for plugin manifest validation, discovery, catalog registration, tenant installation, and lifecycle management.
 
 ## Package
 
@@ -8,47 +8,60 @@ Control-plane service for plugin manifest validation and platform catalog regist
 
 ## Status
 
-Sprint 5 Task 1 complete — manifest validation and in-memory platform catalog foundation.
+Sprint 5 Task 2 complete — discovery, tenant install/lifecycle, and ConfigProvider validation gates.
 
-Task 2 (discovery, tenant install/lifecycle) and Task 3 (hook dispatch, `PluginRegistry` facade) are not yet implemented.
+Task 3 (hook dispatch, `PluginRegistry` facade) is not yet implemented.
 
-## Task 1 modules
+## Modules
 
-| Module                                      | Purpose                                        |
-| ------------------------------------------- | ---------------------------------------------- |
-| `ManifestValidator`                         | Schema + semantic manifest validation          |
-| `CatalogService`                            | Validate and register manifests in the catalog |
-| `PluginCatalogRepository`                   | Catalog persistence port                       |
-| `InMemoryPluginCatalogRepository`           | Default in-memory adapter                      |
-| `HOOK_POINT_CATALOG` / `isKnownHookPoint()` | Known hook point registry                      |
-| `computeManifestFingerprint()`              | SHA-256 idempotency fingerprint                |
+| Module                            | Purpose                                           |
+| --------------------------------- | ------------------------------------------------- |
+| `ManifestValidator`               | Schema + semantic manifest validation             |
+| `CatalogService`                  | Register manifests in the platform catalog        |
+| `DiscoveryService`                | Scan filesystem and register discovered manifests |
+| `FilesystemManifestScanner`       | Recursive `*.plugin-manifest.json` scanner port   |
+| `DependencyResolver`              | Transitive semver dependency resolution           |
+| `PluginSettingsValidator`         | AJV validation against manifest `configSchema`    |
+| `InstallService`                  | Tenant plugin installation with config gate       |
+| `PluginLifecycleService`          | Enable / disable / uninstall lifecycle            |
+| `PluginCatalogRepository`         | Platform catalog persistence port                 |
+| `TenantPluginRepository`          | Tenant runtime binding persistence port           |
+| `InMemoryPluginCatalogRepository` | Default catalog adapter                           |
+| `InMemoryTenantPluginRepository`  | Default tenant binding adapter                    |
+
+## Lifecycle
+
+```
+Discover → catalog register → tenant install (installed) → enable → disable → uninstall
+```
+
+Install requires a matching `integrations.plugins[]` declaration in caller-supplied tenant config (exact `id` + `version`). The registry never writes tenant config.
 
 ## Usage
 
 ```typescript
 import {
   CatalogService,
+  DiscoveryService,
+  InstallService,
   InMemoryPluginCatalogRepository,
+  InMemoryTenantPluginRepository,
   ManifestValidator,
+  PluginLifecycleService,
 } from '@ai-commerce/plugin-registry';
+import { ConfigProvider } from '@ai-commerce/config-runtime';
+
+const catalogRepository = new InMemoryPluginCatalogRepository();
+const tenantPluginRepository = new InMemoryTenantPluginRepository();
+const configProvider = new ConfigProvider({ cache: false });
 
 const catalog = new CatalogService({
   validator: new ManifestValidator(),
-  repository: new InMemoryPluginCatalogRepository(),
+  repository: catalogRepository,
 });
 
-const result = await catalog.register({
-  id: 'com.commerceos.theme.contrast',
-  name: 'Contrast Theme Extension',
-  description: 'Adds high-contrast preset extensions.',
-  version: '1.0.0',
-  engineVersion: '^5.0.0',
-  permissions: ['theme.read'],
-  hooks: [{ point: 'theme.presets.extend', handler: 'extendPresets' }],
-});
+await new DiscoveryService({ catalogService: catalog }).discoverFromDirectory('./plugins');
 ```
-
-Registration is idempotent for identical `(id, version)` manifests. Re-registering the same manifest returns the existing record (`created: false`).
 
 ## Scripts
 
@@ -59,14 +72,9 @@ pnpm --filter @ai-commerce/plugin-registry lint
 pnpm --filter @ai-commerce/plugin-registry build
 ```
 
-## Platform API version
+## Out of scope (Task 2)
 
-Manifest `engineVersion` ranges are checked against `PLUGIN_ENGINE_API_VERSION` (`5.0.0`).
-
-## Out of scope (Task 1)
-
-- Discovery, tenant bindings, install/enable/disable/uninstall lifecycle
 - Hook dispatcher and handler execution
 - `PluginRegistry` facade / `createPluginRegistry()`
 - Config Engine integration and tenant config writes
-- Database or file persistence
+- Database or file persistence for bindings
