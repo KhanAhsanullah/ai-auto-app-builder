@@ -7,7 +7,8 @@
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./internal": "./src/internal.ts"
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
@@ -22,6 +23,8 @@
     "@ai-commerce/config-schema": "workspace:*"
   },
   "devDependencies": {
+    "@ai-commerce/theme-engine": "workspace:*",
+    "@ai-commerce/white-label-engine": "workspace:*",
     "@types/node": "^22.10.2",
     "vitest": "^3.0.5"
   }

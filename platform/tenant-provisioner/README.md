@@ -8,41 +8,52 @@ Control-plane service for tenant onboarding, seed data injection, and initial ve
 
 ## Status
 
-Sprint 4 Task 2 — vertical onboarding seeds, environment initialization, extended config builder pipeline.
+Sprint 4 Task 3 — `TenantProvisioner` facade, provisioning orchestration, activation workflow, Config Runtime integration tests.
 
 ## Modules
 
 | Module                      | Responsibility                                                      |
 | --------------------------- | ------------------------------------------------------------------- |
+| `TenantProvisioner`         | Public facade for provision + activate workflows                    |
+| `createTenantProvisioner`   | Factory with default repository and ConfigProvider wiring           |
 | `IdentityValidator`         | Validate provisioning request identity; generate UUID when omitted  |
 | `ConfigBuilder`             | Build initial tenant-layer configuration document (`status: draft`) |
+| `ProvisioningService`       | Create + idempotency + validation gate (internal via `./internal`)  |
+| `LifecycleService`          | Draft → active activation (internal via `./internal`)               |
 | `VerticalSeedLoader`        | Load and sanitize vertical onboarding seeds (internal)              |
 | `EnvironmentBuilder`        | Build slug-derived environment settings (internal)                  |
 | `TenantRepository`          | Persistence port for tenant registry records                        |
 | `InMemoryTenantRepository`  | Map-backed in-memory repository adapter                             |
-| `computeRequestFingerprint` | Deterministic request fingerprint for Task 3 idempotency            |
+| `computeRequestFingerprint` | Deterministic request fingerprint for idempotency                   |
 
-## Config Builder Pipeline (Task 2)
+## Provisioning Workflow
 
 ```
-base tenant config
-  → vertical seed (`modules/verticals/{vertical}/seeds/onboarding.template.json`)
-  → configOverrides
-  → environment assignment (slug-derived URLs)
-  → enforceIdentityOnDocument
+validate identity/request
+  → build tenant config (Task 2 pipeline)
+  → ConfigProvider validation boundary
+  → repository.save()
+  → return ProvisioningResult summary
 ```
 
-Identity fields always win over seed and override values. Platform and vertical runtime defaults are **not** copied into stored tenant config.
+Activation:
 
-## Environment URLs (Task 2)
+```
+find tenant by tenantId
+  → validate draft → active transition
+  → ConfigProvider validation boundary
+  → repository.update()
+  → return ProvisioningResult summary
+```
 
-| Environment | API base URL                                |
-| ----------- | ------------------------------------------- |
-| development | `http://localhost:3000`                     |
-| staging     | `https://api-staging.{slug}.platform.local` |
-| production  | `https://api.{slug}.platform.local`         |
+## Idempotency (D6)
 
-Provisioned tenants start with `environment.current = "development"`. Environment overrides are omitted during provisioning.
+| Scenario                               | Behavior                                                                       |
+| -------------------------------------- | ------------------------------------------------------------------------------ |
+| Same explicit `id` + identical request | Idempotent success (`created: false`)                                          |
+| Same `id` + different request          | `TenantAlreadyExistsException`                                                 |
+| Same `slug`, different `id`            | `TenantAlreadyExistsException`                                                 |
+| Retry without explicit `id`            | **Not guaranteed** — supply a stable explicit `id` for retry-safe provisioning |
 
 ## Scripts
 
@@ -56,18 +67,12 @@ pnpm build
 ## Usage
 
 ```typescript
-import {
-  ConfigBuilder,
-  IdentityValidator,
-  InMemoryTenantRepository,
-  computeRequestFingerprint,
-} from '@ai-commerce/tenant-provisioner';
+import { createTenantProvisioner } from '@ai-commerce/tenant-provisioner';
 
-const validator = new IdentityValidator();
-const builder = new ConfigBuilder();
-const repository = new InMemoryTenantRepository();
+const provisioner = createTenantProvisioner();
 
-const identity = validator.validate({
+const created = await provisioner.provision({
+  id: '11111111-1111-4111-8111-111111111111',
   slug: 'acme-market',
   name: 'Acme Market',
   vertical: 'ecommerce',
@@ -75,22 +80,15 @@ const identity = validator.validate({
   defaultTimezone: 'UTC',
 });
 
-const configDocument = builder.build(identity);
-const fingerprint = computeRequestFingerprint(identity);
-const timestamp = new Date().toISOString();
+const activated = await provisioner.activate({ tenantId: created.tenantId });
 
-await repository.save({
-  tenantId: identity.id,
-  slug: identity.slug,
-  status: 'draft',
-  configDocument,
-  requestFingerprint: fingerprint,
-  createdAt: timestamp,
-  updatedAt: timestamp,
-});
+const record = await provisioner.findById(created.tenantId);
 ```
+
+Retrieve the full stored tenant-layer document via `findById()` / `findBySlug()`. Resolve runtime configuration through `@ai-commerce/config-runtime` `ConfigProvider`.
 
 ## Documentation
 
+- [Tenant Provisioning Architecture](../../docs/architecture/tenant-provisioning.md)
 - [Provisioning Schemas](../../schemas/provisioning/v1/README.md)
 - [Vertical Seeds](../../modules/verticals/README.md)

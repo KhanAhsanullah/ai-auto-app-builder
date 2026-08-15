@@ -13,4 +13,10 @@ export interface TenantRepository {
    * Must reject duplicate tenant IDs and slugs without overwriting.
    */
   save(record: TenantRecord): Promise<void>;
+
+  /**
+   * Update an existing tenant record.
+   * Must reject unknown tenant IDs and immutable identity field changes.
+   */
+  update(record: TenantRecord): Promise<void>;
 }

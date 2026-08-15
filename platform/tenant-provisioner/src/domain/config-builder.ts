@@ -43,6 +43,7 @@ export class ConfigBuilder {
       },
       ...createBaseTenantConfigSections({
         name: identity.name,
+        slug: identity.slug,
         defaultLocale: identity.defaultLocale,
       }),
     };

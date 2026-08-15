@@ -4,9 +4,10 @@ JSON Schema contracts for the Tenant Provisioner control-plane.
 
 ## Schemas
 
-| Schema               | File                                                                   | Description                       |
-| -------------------- | ---------------------------------------------------------------------- | --------------------------------- |
-| Provisioning Request | [provisioning-request.schema.json](./provisioning-request.schema.json) | Input for initial tenant creation |
+| Schema               | File                                                                   | Description                           |
+| -------------------- | ---------------------------------------------------------------------- | ------------------------------------- |
+| Provisioning Request | [provisioning-request.schema.json](./provisioning-request.schema.json) | Input for initial tenant creation     |
+| Provisioning Result  | [provisioning-result.schema.json](./provisioning-result.schema.json)   | Summary output for provision/activate |
 
 ## Version
 
@@ -16,7 +17,11 @@ Current schema version: **v1**
 
 The provisioning request schema does not accept environment input. Environment targets are assigned during provisioning from the tenant slug (see `@ai-commerce/tenant-provisioner` Task 2).
 
+The provisioning result schema returns a summary only — not the full stored configuration document. Callers retrieve the tenant-layer document through the Tenant Provisioner repository lookup methods.
+
 Vertical onboarding seeds live at `modules/verticals/{vertical}/seeds/onboarding.template.json` and are merged into the tenant config document before environment assignment.
+
+Retry-safe provisioning requires a stable explicit tenant `id`. Retries without `id` are not guaranteed to be idempotent.
 
 ## Code Generation
 

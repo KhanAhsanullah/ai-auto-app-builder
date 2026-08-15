@@ -1,4 +1,8 @@
-import { TenantAlreadyExistsException } from '../errors.js';
+import {
+  TenantAlreadyExistsException,
+  TenantNotFoundException,
+  TenantProvisioningException,
+} from '../errors.js';
 import type { TenantRepository } from '../domain/tenant-repository.js';
 import type { TenantRecord } from '../types.js';
 
@@ -27,6 +31,21 @@ export class InMemoryTenantRepository implements TenantRepository {
       throw new TenantAlreadyExistsException(`Tenant already exists with slug '${record.slug}'.`, {
         slug: record.slug,
       });
+    }
+
+    this.byId.set(record.tenantId, record);
+    this.bySlug.set(record.slug, record);
+  }
+
+  async update(record: TenantRecord): Promise<void> {
+    const existing = this.byId.get(record.tenantId);
+
+    if (!existing) {
+      throw new TenantNotFoundException(record.tenantId);
+    }
+
+    if (existing.tenantId !== record.tenantId || existing.slug !== record.slug) {
+      throw new TenantProvisioningException('Tenant id and slug are immutable.');
     }
 
     this.byId.set(record.tenantId, record);

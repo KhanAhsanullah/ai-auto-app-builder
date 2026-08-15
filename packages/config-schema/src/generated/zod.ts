@@ -2117,3 +2117,36 @@ export const provisioningRequestSchema = z
   })
   .strict()
   .describe('Input contract for creating a new tenant via the Tenant Provisioner.');
+
+/** Validates `ProvisioningResult` configuration. */
+export const provisioningResultSchema = z
+  .object({
+    tenantId: z.string().uuid().describe('RFC 4122 UUID identifier.'),
+    slug: z
+      .string()
+      .regex(new RegExp('^[a-z0-9]+(?:-[a-z0-9]+)*$'))
+      .min(2)
+      .max(64)
+      .describe('URL-safe lowercase slug.'),
+    name: z.string().min(1).max(256),
+    vertical: z.enum(['ecommerce', 'grocery', 'restaurant', 'pharmacy', 'fashion', 'electronics']),
+    status: z.enum(['draft', 'active']).describe('Tenant lifecycle status after the operation.'),
+    configVersion: z
+      .number()
+      .int()
+      .gte(1)
+      .describe('Tenant configuration document version from meta.configVersion.'),
+    requestFingerprint: z
+      .string()
+      .regex(new RegExp('^[a-f0-9]{64}$'))
+      .describe('SHA-256 fingerprint of the canonical provisioning input.'),
+    created: z
+      .boolean()
+      .describe(
+        'True when a new registry record was created; false on idempotent replay or activation.',
+      ),
+    createdAt: z.string().datetime({ offset: true }).describe('ISO 8601 date-time in UTC.'),
+    updatedAt: z.string().datetime({ offset: true }).describe('ISO 8601 date-time in UTC.'),
+  })
+  .strict()
+  .describe('Summary outcome of a tenant provisioning or activation operation.');

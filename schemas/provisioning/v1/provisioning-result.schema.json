@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://platform.ai-commerce.dev/schemas/provisioning/v1/provisioning-result.schema.json",
+  "title": "ProvisioningResult",
+  "description": "Summary outcome of a tenant provisioning or activation operation.",
+  "type": "object",
+  "required": [
+    "tenantId",
+    "slug",
+    "name",
+    "vertical",
+    "status",
+    "configVersion",
+    "requestFingerprint",
+    "created",
+    "createdAt",
+    "updatedAt"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "tenantId": {
+      "$ref": "../../shared/v1/common.schema.json#/$defs/uuid"
+    },
+    "slug": {
+      "$ref": "../../shared/v1/common.schema.json#/$defs/slug"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "vertical": {
+      "type": "string",
+      "enum": ["ecommerce", "grocery", "restaurant", "pharmacy", "fashion", "electronics"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "active"],
+      "description": "Tenant lifecycle status after the operation."
+    },
+    "configVersion": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Tenant configuration document version from meta.configVersion."
+    },
+    "requestFingerprint": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "SHA-256 fingerprint of the canonical provisioning input."
+    },
+    "created": {
+      "type": "boolean",
+      "description": "True when a new registry record was created; false on idempotent replay or activation."
+    },
+    "createdAt": {
+      "$ref": "../../shared/v1/common.schema.json#/$defs/isoDateTime"
+    },
+    "updatedAt": {
+      "$ref": "../../shared/v1/common.schema.json#/$defs/isoDateTime"
+    }
+  }
+}

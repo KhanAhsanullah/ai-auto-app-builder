@@ -12,6 +12,7 @@ import type { ConfigLayer } from '@ai-commerce/config-runtime';
  */
 export interface BaseTenantConfigInput {
   name: string;
+  slug: string;
   defaultLocale: string;
 }
 
@@ -24,6 +25,8 @@ export function createBaseTenantConfigSections(input: BaseTenantConfigInput): Co
       .replace(/^-|-$/g, '')
       .slice(0, 48) || 'tenant'
   }.local`;
+
+  const bundleSuffix = input.slug.replace(/-/g, '');
 
   return {
     company: {
@@ -113,6 +116,41 @@ export function createBaseTenantConfigSections(input: BaseTenantConfigInput): Co
       display: {
         symbolPosition: 'before',
         decimalPlaces: 2,
+      },
+    },
+    webStore: {
+      enabled: true,
+      domain: {
+        primary: `shop.${input.slug}.platform.local`,
+      },
+      seo: {
+        title: input.name,
+        description: input.name,
+      },
+      rendering: {
+        mode: 'ssr',
+      },
+    },
+    mobileApp: {
+      enabled: false,
+      identity: {
+        bundleId: `com.platform.${bundleSuffix}`,
+        appName: input.name.slice(0, 30),
+        version: '1.0.0',
+      },
+      runtime: {
+        minOsVersion: {},
+      },
+    },
+    adminDashboard: {
+      enabled: true,
+      layout: {
+        sidebarStyle: 'expanded',
+        defaultLandingRoute: 'admin.dashboard',
+      },
+      preferences: {
+        dateFormat: 'YYYY-MM-DD',
+        timeFormat: '24h',
       },
     },
   };

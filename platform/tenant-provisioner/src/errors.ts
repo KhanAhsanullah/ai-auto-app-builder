@@ -26,3 +26,29 @@ export class TenantAlreadyExistsException extends TenantProvisioningException {
     this.slug = options?.slug;
   }
 }
+
+/** Thrown when a tenant lookup by ID fails. */
+export class TenantNotFoundException extends TenantProvisioningException {
+  readonly tenantId: string;
+
+  constructor(tenantId: string) {
+    super(`Tenant not found with id '${tenantId}'.`);
+    this.name = 'TenantNotFoundException';
+    this.tenantId = tenantId;
+  }
+}
+
+/** Thrown when a tenant lifecycle transition is not allowed. */
+export class InvalidLifecycleTransitionException extends TenantProvisioningException {
+  readonly tenantId: string;
+  readonly fromStatus: string;
+  readonly toStatus: string;
+
+  constructor(tenantId: string, fromStatus: string, toStatus: string) {
+    super(`Invalid lifecycle transition for tenant '${tenantId}': ${fromStatus} -> ${toStatus}.`);
+    this.name = 'InvalidLifecycleTransitionException';
+    this.tenantId = tenantId;
+    this.fromStatus = fromStatus;
+    this.toStatus = toStatus;
+  }
+}

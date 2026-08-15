@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **TenantProvisioner facade** (Sprint 4 Task 3) — `@ai-commerce/tenant-provisioner`
+  - `TenantProvisioner` — public facade for provision + activate workflows
+  - `createTenantProvisioner` — factory with default repository and ConfigProvider wiring
+  - `ProvisioningService` / `LifecycleService` — internal orchestration via `./internal`
+  - `provisioning-result.schema.json` — summary output contract with generated types/Zod
+  - `TenantRepository.update()` — activation persistence with immutable id/slug
+  - Idempotency — explicit-id retry support; D6 duplicate detection
+  - Integration tests — ConfigProvider validation gate; optional Theme/WhiteLabel consumability
+  - Architecture doc — `docs/architecture/tenant-provisioning.md`
+
 - **WhiteLabelProvider facade** (Sprint 3 Task 3) — `@ai-commerce/white-label-engine`
   - `WhiteLabelProvider` — public facade for resolve + compile pipeline
   - `createWhiteLabelProvider` — factory with default resolver, compiler, cache, and emitters

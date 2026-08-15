@@ -134,6 +134,12 @@ const SCHEMA_ENTRIES = [
     exportType: 'ProvisioningRequest',
     exportZod: 'provisioningRequestSchema',
   },
+  {
+    name: 'ProvisioningResult',
+    file: 'provisioning/v1/provisioning-result.schema.json',
+    exportType: 'ProvisioningResult',
+    exportZod: 'provisioningResultSchema',
+  },
 ] as const;
 
 const BANNER = `/**

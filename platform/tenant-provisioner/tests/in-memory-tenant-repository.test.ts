@@ -3,7 +3,11 @@ import { describe, expect, it } from 'vitest';
 import { ConfigBuilder } from '../src/domain/config-builder.js';
 import { IdentityValidator } from '../src/domain/identity-validator.js';
 import { InMemoryTenantRepository } from '../src/infrastructure/in-memory-tenant-repository.js';
-import { TenantAlreadyExistsException } from '../src/errors.js';
+import {
+  TenantAlreadyExistsException,
+  TenantNotFoundException,
+  TenantProvisioningException,
+} from '../src/errors.js';
 import { computeRequestFingerprint } from '../src/types.js';
 import {
   OTHER_TENANT_ID,
@@ -117,6 +121,53 @@ describe('InMemoryTenantRepository', () => {
 
     const found = await repository.findById(record.tenantId);
     expect(found?.configDocument.branding?.appName).toBe(record.configDocument.branding?.appName);
+  });
+
+  it('updates an existing tenant record without changing id or slug', async () => {
+    const repository = new InMemoryTenantRepository();
+    const record = createRecord();
+
+    await repository.save(record);
+
+    const updated = {
+      ...record,
+      status: 'active' as const,
+      updatedAt: '2026-08-16T01:00:00.000Z',
+      configDocument: {
+        ...record.configDocument,
+        tenant: {
+          ...record.configDocument.tenant,
+          status: 'active' as const,
+        },
+      },
+    };
+
+    await repository.update(updated);
+
+    const found = await repository.findById(record.tenantId);
+    expect(found?.status).toBe('active');
+    expect(found?.slug).toBe(record.slug);
+  });
+
+  it('rejects update when tenant does not exist', async () => {
+    const repository = new InMemoryTenantRepository();
+    const record = createRecord();
+
+    await expect(repository.update(record)).rejects.toThrow(TenantNotFoundException);
+  });
+
+  it('rejects update when slug is changed', async () => {
+    const repository = new InMemoryTenantRepository();
+    const record = createRecord();
+
+    await repository.save(record);
+
+    await expect(
+      repository.update({
+        ...record,
+        slug: OTHER_TENANT_SLUG,
+      }),
+    ).rejects.toThrow(TenantProvisioningException);
   });
 
   it('stores the request fingerprint on the saved record', async () => {

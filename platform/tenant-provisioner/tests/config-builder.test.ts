@@ -107,7 +107,6 @@ describe('ConfigBuilder', () => {
       'payments',
       'integrations',
       'aiSettings',
-      'mobileApp',
       'plugins',
       'notifications',
     ] as const;
