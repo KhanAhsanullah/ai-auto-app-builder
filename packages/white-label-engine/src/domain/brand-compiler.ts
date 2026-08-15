@@ -7,6 +7,7 @@ import type {
   BrandSurface,
   CompileBrandFromConfigInput,
   CompileBrandFromResolvedInput,
+  CompileBrandFromResolvedMetaResult,
   CompiledBrandResult,
   NormalizedBrandAssets,
 } from '../types.js';
@@ -48,26 +49,33 @@ export class BrandCompiler {
 
   /** Compile from an already-resolved brand result. */
   compileFromResolved(input: CompileBrandFromResolvedInput): CompiledBrandResult {
+    return this.compileFromResolvedWithMeta(input).result;
+  }
+
+  /** Compile from resolved brand output and report whether the result came from cache. */
+  compileFromResolvedWithMeta(
+    input: CompileBrandFromResolvedInput,
+  ): CompileBrandFromResolvedMetaResult {
     const surfaces = input.surfaces ?? DEFAULT_SURFACES;
     const assets = this.normalizer.normalize(input.resolved);
     const assetHash = computeAssetHash(this.buildAssetHashPayload(assets));
     const cacheKey = this.buildCacheKey(assetHash, surfaces);
 
-    if (this.cache) {
+    if (this.cache && !input.skipCache) {
       const cached = this.cache.get(cacheKey);
       if (cached) {
-        return cached;
+        return { result: cached, fromCache: true };
       }
     }
 
     const manifest = this.buildManifest(assets, input.resolved.metadata.hash, assetHash);
     const result = this.buildCompiledResult(assets, manifest, surfaces);
 
-    if (this.cache) {
+    if (this.cache && !input.skipCache) {
       this.cache.set(cacheKey, result);
     }
 
-    return result;
+    return { result, fromCache: false };
   }
 
   /** Retrieve a cached compiled result by asset hash and surfaces. */

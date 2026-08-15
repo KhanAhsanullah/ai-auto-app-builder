@@ -149,4 +149,46 @@ describe('BrandCompiler', () => {
       }),
     ).toThrow(BrandCompilationException);
   });
+
+  it('compileFromResolvedWithMeta reports fromCache false on first compilation', () => {
+    const cachedCompiler = createBrandCompiler({ cache: { maxEntries: 10 } });
+    const resolved = cachedCompiler
+      .getResolver()
+      .resolve({ tenantBranding: TENANT_BRANDING_FIXTURE });
+
+    const meta = cachedCompiler.compileFromResolvedWithMeta({ resolved });
+
+    expect(meta.fromCache).toBe(false);
+    expect(meta.result.metadata.assetHash).toMatch(/^[a-f0-9]{64}$/);
+  });
+
+  it('compileFromResolvedWithMeta reports fromCache true on cache hit', () => {
+    const cachedCompiler = createBrandCompiler({ cache: { maxEntries: 10 } });
+    const resolved = cachedCompiler
+      .getResolver()
+      .resolve({ tenantBranding: TENANT_BRANDING_FIXTURE });
+
+    cachedCompiler.compileFromResolvedWithMeta({ resolved });
+    const second = cachedCompiler.compileFromResolvedWithMeta({ resolved });
+
+    expect(second.fromCache).toBe(true);
+    expect(second.result).toBe(cachedCompiler.getCached(second.result.metadata.assetHash));
+  });
+
+  it('compileFromResolvedWithMeta honors skipCache', () => {
+    const cachedCompiler = createBrandCompiler({ cache: { maxEntries: 10 } });
+    const resolved = cachedCompiler
+      .getResolver()
+      .resolve({ tenantBranding: TENANT_BRANDING_FIXTURE });
+
+    const first = cachedCompiler.compileFromResolvedWithMeta({ resolved });
+    expect(cachedCompiler.getCached(first.result.metadata.assetHash)).toBeDefined();
+
+    const skipped = cachedCompiler.compileFromResolvedWithMeta({ resolved, skipCache: true });
+
+    expect(first.fromCache).toBe(false);
+    expect(skipped.fromCache).toBe(false);
+    expect(skipped.result).not.toBe(first.result);
+    expect(cachedCompiler.getCached(first.result.metadata.assetHash)).toBe(first.result);
+  });
 });

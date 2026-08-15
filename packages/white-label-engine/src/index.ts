@@ -6,6 +6,8 @@
 
 export { BrandCompiler } from './domain/brand-compiler.js';
 export { BrandResolver } from './domain/brand-resolver.js';
+export { WhiteLabelProvider } from './domain/white-label-provider.js';
+export { createWhiteLabelProvider } from './infrastructure/create-white-label-provider.js';
 export {
   brandConfigSourceFromProviderResult,
   toResolveBrandInput,
@@ -39,8 +41,12 @@ export type {
   NormalizedAssetRef,
   NormalizedBrandAssets,
   NormalizedFontAsset,
+  ProvideBrandFromConfigInput,
+  ProvideBrandInput,
   ResolveBrandInput,
   ResolvedAppIconSource,
   ResolvedBrandResult,
   WebBrandArtifacts,
+  WhiteLabelProviderOptions,
+  WhiteLabelProviderResult,
 } from './types.js';

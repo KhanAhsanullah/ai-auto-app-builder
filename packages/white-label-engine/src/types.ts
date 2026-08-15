@@ -269,6 +269,14 @@ export interface CompiledBrandResult<TSurfaces extends BrandSurface = BrandSurfa
 export interface CompileBrandFromResolvedInput {
   resolved: ResolvedBrandResult;
   surfaces?: BrandSurface[];
+  /** When true, bypass compiled artifact cache lookup and storage. */
+  skipCache?: boolean;
+}
+
+/** Compiled brand result with cache hit metadata from BrandCompiler. */
+export interface CompileBrandFromResolvedMetaResult {
+  result: CompiledBrandResult;
+  fromCache: boolean;
 }
 
 /** Input for BrandCompiler when starting from resolver input. */
@@ -299,3 +307,29 @@ export interface BrandEmitter<TSurface extends BrandSurface = BrandSurface> {
 export type AnyBrandEmitter = {
   [TSurface in BrandSurface]: BrandEmitter<TSurface>;
 }[BrandSurface];
+
+/** Options for WhiteLabelProvider initialization. */
+export interface WhiteLabelProviderOptions {
+  cache?: BrandCacheOptions | false;
+}
+
+/** Input for WhiteLabelProvider.provide(). */
+export interface ProvideBrandInput extends ResolveBrandInput {
+  surfaces?: BrandSurface[];
+  skipCache?: boolean;
+}
+
+/** Input for WhiteLabelProvider.provideFromConfig(). */
+export interface ProvideBrandFromConfigInput {
+  source: BrandConfigSource;
+  surfaces?: BrandSurface[];
+  skipCache?: boolean;
+}
+
+/** Result from WhiteLabelProvider including resolved and compiled brand output. */
+export interface WhiteLabelProviderResult<
+  TSurfaces extends BrandSurface = BrandSurface,
+> extends CompiledBrandResult<TSurfaces> {
+  resolved: ResolvedBrandResult;
+  fromCache: boolean;
+}

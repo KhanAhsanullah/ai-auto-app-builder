@@ -5,7 +5,9 @@ import { BrandCompiler } from '../src/domain/brand-compiler.js';
 import { BrandResolver } from '../src/domain/brand-resolver.js';
 import type { AssetNormalizer } from '../src/domain/asset-normalizer.js';
 import { DefaultBrandEmitterRegistry } from '../src/infrastructure/brand-emitter-registry.js';
-import type { BrandCacheOptions, BrandPatch } from '../src/types.js';
+import { createWhiteLabelProvider } from '../src/infrastructure/create-white-label-provider.js';
+import type { WhiteLabelProvider } from '../src/domain/white-label-provider.js';
+import type { BrandCacheOptions, BrandPatch, WhiteLabelProviderOptions } from '../src/types.js';
 
 /** Minimal tenant branding overlay for tests. */
 export const TENANT_BRANDING_FIXTURE: BrandPatch = {
@@ -77,6 +79,16 @@ export function createBrandCompiler(options?: {
     emitterRegistry: options?.emitterRegistry ?? new DefaultBrandEmitterRegistry(),
     ...options,
   });
+}
+
+/** WhiteLabelProvider wired with default resolver, compiler, and emitter registry for tests. */
+export function createTestWhiteLabelProvider(
+  options?: WhiteLabelProviderOptions & {
+    emitterRegistry?: BrandEmitterRegistry;
+    resolver?: BrandResolver;
+  },
+): WhiteLabelProvider {
+  return createWhiteLabelProvider(options);
 }
 
 export const VERTICAL_TAGLINES: Record<Tenant['vertical'], string> = {

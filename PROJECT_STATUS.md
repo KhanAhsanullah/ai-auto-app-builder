@@ -8,11 +8,11 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 3 — White Label Engine** (Task 2 Complete)
+**Sprint 3 — White Label Engine** (Task 3 Complete)
 
-Latest completed task: **Sprint 3 Task 2** — Asset pipeline, BrandCompiler, and surface emitters in `@ai-commerce/white-label-engine`.
+Latest completed task: **Sprint 3 Task 3** — WhiteLabelProvider facade in `@ai-commerce/white-label-engine`.
 
-Next: Sprint 3 Task 3 — WhiteLabelProvider facade.
+Next: Sprint 4 — Tenant Provisioning.
 
 ## Completed Tasks
 
@@ -26,12 +26,14 @@ Next: Sprint 3 Task 3 — WhiteLabelProvider facade.
 | Sprint 2 Task 3 ✅ | ThemeProvider facade, Config Runtime integration, public API cleanup, integration tests (`@ai-commerce/theme-engine`)                 | `sprint2-task3` |
 | Sprint 3 Task 1 ✅ | BrandResolver, platform/vertical defaults, Config Runtime mapping (`@ai-commerce/white-label-engine`)                                 | `sprint3-task1` |
 | Sprint 3 Task 2 ✅ | Asset pipeline — AssetNormalizer, BrandCompiler, BrandCache, surface emitters (`@ai-commerce/white-label-engine`)                     | `sprint3-task2` |
+| Sprint 3 Task 3 ✅ | WhiteLabelProvider facade, Config Runtime integration, public API cleanup (`@ai-commerce/white-label-engine`)                         | `sprint3-task3` |
 
 ## Current Progress
 
 - **Monorepo structure** — Approved architecture in place: `apps/`, `packages/`, `modules/`, `platform/`, `schemas/`, `tooling/`, `infra/`, `docs/`
 - **Configuration contract** — Tenant configuration schema v1 with 18+ domain schemas and generated types/Zod validators
 - **Configuration runtime** — Inheritance chain (platform → vertical → tenant → environment) with deep merge, validation, and LRU cache
+- **White-label engine (Task 3)** — WhiteLabelProvider facade, Config Runtime integration, public API
 - **White-label engine (Task 2)** — AssetNormalizer, BrandCompiler, BrandCache, web/mobile/admin emitters, asset manifest
 - **White-label engine (Task 1)** — BrandResolver, platform/vertical brand defaults, Config Runtime mapping
 - **Theme engine (Task 3)** — ThemeProvider facade, Config Runtime integration, public API, integration tests
@@ -40,43 +42,43 @@ Next: Sprint 3 Task 3 — WhiteLabelProvider facade.
 - **Control-plane scaffolds** — Platform services scaffolded; theme-engine-service and white-label-engine-service deferred
 - **Module scaffolds** — Core commerce modules and vertical presets scaffolded with manifests
 
-**Overall:** Sprint 3 Task 2 complete. Next: Sprint 3 Task 3 (WhiteLabelProvider facade).
+**Overall:** Sprint 3 Task 3 complete. Next: Sprint 4 (Tenant Provisioning).
 
 ## Next Tasks
 
-**Sprint 3 Task 3 — WhiteLabelProvider Facade**
+**Sprint 4 — Tenant Provisioning**
 
-- WhiteLabelProvider facade and factory wiring
-- Remaining identity surfaces and integration docs
+- Tenant onboarding workflows
+- Seed data and vertical preset application
 
 See [SPRINT_BOARD.md](./SPRINT_BOARD.md) for the full roadmap through Sprint 10.
 
 ## Latest Commit
 
 ```
-Pending — Sprint 3 Task 2 commit not yet created
+Pending — Sprint 3 Task 3 commit not yet created
 ```
 
 ## Latest Tag
 
 ```
-sprint3-task2 (Pending)
+sprint3-task3 (Pending)
 ```
 
 ## Health Status
 
-| Area                  | Status         | Notes                                             |
-| --------------------- | -------------- | ------------------------------------------------- |
-| Repository            | 🟡 Pending     | Sprint 3 Task 2 changes ready for commit          |
-| Build tooling         | ✅ Healthy     | Turborepo, pnpm workspaces, TypeScript 5.7        |
-| Lint / format         | ✅ Healthy     | ESLint, Prettier, Husky pre-commit hooks          |
-| Commit conventions    | ✅ Healthy     | Commitlint with Conventional Commits              |
-| Configuration schema  | ✅ Complete    | Sprint 1 Task 2 — generated types and Zod         |
-| Configuration runtime | ✅ Complete    | Sprint 1 Task 3 — full resolver pipeline          |
-| Theme engine          | ✅ Complete    | Sprint 2 complete — provider facade + integration |
-| White-label engine    | 🟡 In progress | Sprint 3 Task 2 complete — BrandCompiler pipeline |
-| Platform services     | 🟡 Scaffolded  | white-label-engine-service deferred               |
-| Apps / surfaces       | 🟡 Scaffolded  | Admin, Web Store, Mobile, API Gateway             |
-| Tests                 | ✅ Passing     | Config runtime + theme engine + white-label       |
+| Area                  | Status        | Notes                                                |
+| --------------------- | ------------- | ---------------------------------------------------- |
+| Repository            | 🟡 Pending    | Sprint 3 Task 3 changes ready for commit             |
+| Build tooling         | ✅ Healthy    | Turborepo, pnpm workspaces, TypeScript 5.7           |
+| Lint / format         | ✅ Healthy    | ESLint, Prettier, Husky pre-commit hooks             |
+| Commit conventions    | ✅ Healthy    | Commitlint with Conventional Commits                 |
+| Configuration schema  | ✅ Complete   | Sprint 1 Task 2 — generated types and Zod            |
+| Configuration runtime | ✅ Complete   | Sprint 1 Task 3 — full resolver pipeline             |
+| Theme engine          | ✅ Complete   | Sprint 2 complete — provider facade + integration    |
+| White-label engine    | ✅ Complete   | Sprint 3 complete — provider facade + asset pipeline |
+| Platform services     | 🟡 Scaffolded | white-label-engine-service deferred                  |
+| Apps / surfaces       | 🟡 Scaffolded | Admin, Web Store, Mobile, API Gateway                |
+| Tests                 | ✅ Passing    | Config runtime + theme engine + white-label          |
 
-**Summary:** Sprint 3 Task 2 (Asset Pipeline) is complete. Theme engine remains stable; WhiteLabelProvider facade is next.
+**Summary:** Sprint 3 Task 3 (WhiteLabelProvider facade) is complete. White Label Engine sprint deliverables are done; Tenant Provisioning is next.

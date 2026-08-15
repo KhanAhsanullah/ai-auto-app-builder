@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **WhiteLabelProvider facade** (Sprint 3 Task 3) — `@ai-commerce/white-label-engine`
+  - `WhiteLabelProvider` — public facade for resolve + compile pipeline
+  - `createWhiteLabelProvider` — factory with default resolver, compiler, cache, and emitters
+  - Provider types — `ProvideBrandInput`, `ProvideBrandFromConfigInput`, `WhiteLabelProviderResult`
+  - `compileFromResolvedWithMeta()` — cache-hit metadata on `BrandCompiler`
+  - Integration tests — ConfigProvider → WhiteLabelProvider, cache, multi-tenant, surface selection
+  - Public API cleanup — provider as primary integration point; internals via `./internal`
+
 - **White-label asset pipeline** (Sprint 3 Task 2) — `@ai-commerce/white-label-engine`
   - Backward-compatible branding schema additions — optional `logo.appIcon` and `branding.fonts`
   - `AssetNormalizer` — canonical asset reference normalization with app icon fallback chain
