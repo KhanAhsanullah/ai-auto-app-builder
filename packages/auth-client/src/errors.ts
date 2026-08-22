@@ -34,3 +34,19 @@ export class AuthMethodNotEnabledException extends AuthClientException {
     this.method = method;
   }
 }
+
+/** Thrown when an OAuth/PKCE/SSO/magic-link challenge is invalid or expired. */
+export class AuthChallengeException extends AuthClientException {
+  constructor(message: string) {
+    super(message);
+    this.name = 'AuthChallengeException';
+  }
+}
+
+/** Thrown when token exchange or refresh fails. */
+export class AuthTokenException extends AuthClientException {
+  constructor(message: string) {
+    super(message);
+    this.name = 'AuthTokenException';
+  }
+}

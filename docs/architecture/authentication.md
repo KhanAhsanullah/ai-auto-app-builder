@@ -1,36 +1,36 @@
 # Authentication Architecture
 
-Tenant-scoped authentication policy resolution and provider ports for CommerceOS AI.
+Tenant-scoped authentication policy resolution, interactive auth flows, and token lifecycle for CommerceOS AI.
 
 ## Overview
 
-`@ai-commerce/auth-client` turns the tenant `authentication` configuration section into surface-scoped policies (customer, admin, api) and exposes ports for auth providers and token storage.
+`@ai-commerce/auth-client` turns the tenant `authentication` configuration section into surface-scoped policies and provides adapters for OAuth/PKCE, magic link, SSO, token refresh, and storage.
 
-It does **not** own identity storage, HTTP middleware, or IdP integrations in Sprint 6 Task 1 — those arrive in later tasks / Sprint 7.
+It does **not** own HTTP middleware (Sprint 7) or the `AuthClient` facade (Task 3). Live IdP SDKs are optional — adapters use injectable `HttpJsonClient` / delivery ports.
 
 ## Boundaries
 
 ```
 Tenant config (authentication.*)
         ↓
-ConfigProvider.resolve()          ← inheritance + Zod (config-runtime)
-        ↓
-authConfigSourceFromProviderResult
+ConfigProvider.resolve()
         ↓
 AuthPolicyValidator + AuthPolicyResolver
         ↓
-ResolvedAuthPolicy (per surface)
+ResolvedAuthPolicy
         ↓
-AuthProviderRegistry → AuthProvider ports (Task 2+ adapters)
+OAuthPkceProvider / MagicLinkProvider / SsoChallengeProvider
+        ↓
+TokenRefreshService + TokenStore (InMemory / PrefixedSecure)
 ```
 
 | Concern                         | Owner                      |
 | ------------------------------- | -------------------------- |
 | Authentication JSON Schema      | Sprint 1 `config-schema`   |
 | Platform/vertical auth defaults | `config-runtime` defaults  |
-| Policy resolve + provider ports | `@ai-commerce/auth-client` |
+| Policy + auth flow adapters     | `@ai-commerce/auth-client` |
 | HTTP auth middleware            | API Gateway (Sprint 7)     |
-| Live IdP / OAuth adapters       | Auth-client Task 2+        |
+| AuthClient facade               | Sprint 6 Task 3            |
 
 ## Sprint 6 Task Breakdown
 
@@ -40,6 +40,16 @@ AuthProviderRegistry → AuthProvider ports (Task 2+ adapters)
 | Task 2 | OAuth/PKCE, magic link, SSO challenge adapters, token refresh, storage   |
 | Task 3 | `AuthClient` facade, multi-surface helpers, integration docs             |
 
+## Flows (Task 2)
+
+| Flow       | Method id(s)             | Notes                                      |
+| ---------- | ------------------------ | ------------------------------------------ |
+| OAuth+PKCE | google, apple, facebook  | Auth code + S256; injectable token HTTP    |
+| Magic link | email                    | Delivery port sends link; confirm by token |
+| SSO OIDC   | sso                      | Admin; PKCE against issuer endpoints       |
+| SSO SAML   | sso                      | Admin; RelayState + assertion handoff      |
+| Refresh    | (any with refresh_token) | Honors `session.refreshEnabled`            |
+
 ## Surfaces
 
 | Surface    | Methods (from config)                        |
@@ -48,11 +58,10 @@ AuthProviderRegistry → AuthProvider ports (Task 2+ adapters)
 | `admin`    | email, sso (saml/oidc)                       |
 | `api`      | api_key, client_credentials                  |
 
-Email method covers password and magic-link implementations in Task 2+.
-
 ## Deferred
 
-- Real IdP network calls
+- `AuthClient` facade (Task 3)
 - Permission/ACL enforcement beyond defaultRoles metadata
 - Session revocation service
 - Changes to authentication JSON Schema without versioning
+- Native Keychain / Web Crypto SubtleCrypto browser builds (Node crypto used server-side)

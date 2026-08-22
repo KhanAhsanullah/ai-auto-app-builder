@@ -8,13 +8,45 @@ export {
   toResolveAuthPolicyInput,
 } from './domain/map-config-auth-source.js';
 export type { ConfigProviderAuthInput } from './domain/map-config-auth-source.js';
+export { MagicLinkProvider } from './domain/magic-link-provider.js';
+export type { MagicLinkProviderOptions } from './domain/magic-link-provider.js';
+export { OAuthPkceProvider } from './domain/oauth-pkce-provider.js';
+export type { OAuthPkceProviderOptions } from './domain/oauth-pkce-provider.js';
 export {
+  base64UrlEncode,
+  buildAuthorizationUrl,
+  generateCodeChallenge,
+  generateCodeVerifier,
+  generateOAuthState,
+} from './domain/pkce.js';
+export { SsoChallengeProvider } from './domain/sso-challenge-provider.js';
+export type { SsoChallengeProviderOptions } from './domain/sso-challenge-provider.js';
+export { TokenRefreshService } from './domain/token-refresh-service.js';
+export type { TokenRefreshServiceOptions } from './domain/token-refresh-service.js';
+export type {
+  AuthChallengeStartResult,
+  AuthTokenSet,
+  MagicLinkChallengeRecord,
+  OAuthClientConfig,
+  PkceChallengeRecord,
+  SsoChallengeRecord,
+} from './domain/auth-flow-types.js';
+export type { HttpJsonClient, MagicLinkDeliveryPort, SyncKeyValueStore } from './domain/ports.js';
+export {
+  AuthChallengeException,
   AuthClientException,
   AuthMethodNotEnabledException,
   AuthPolicyResolutionException,
   AuthPolicyValidationException,
+  AuthTokenException,
 } from './errors.js';
+export { InMemoryPkceChallengeStore } from './infrastructure/in-memory-pkce-challenge-store.js';
 export { InMemoryTokenStore } from './infrastructure/in-memory-token-store.js';
+export {
+  InMemoryKeyValueStore,
+  PrefixedSecureTokenStore,
+} from './infrastructure/prefixed-secure-token-store.js';
+export { ScriptedHttpJsonClient } from './infrastructure/scripted-http-json-client.js';
 export { StubAuthProvider } from './infrastructure/stub-auth-provider.js';
 export type {
   AdminRoleId,

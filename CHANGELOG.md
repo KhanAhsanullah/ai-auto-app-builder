@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Auth flow adapters** (Sprint 6 Task 2) — `@ai-commerce/auth-client`
+  - PKCE helpers — verifier, S256 challenge, state, authorization URL builder
+  - `OAuthPkceProvider` — authorization-code + PKCE with injectable HTTP client
+  - `MagicLinkProvider` — email magic-link start/complete via delivery port
+  - `SsoChallengeProvider` — admin OIDC (PKCE) and SAML challenge flows
+  - `TokenRefreshService` — refresh-token grant + TokenStore persistence
+  - `PrefixedSecureTokenStore` / `InMemoryKeyValueStore` — localStorage-compatible storage
+  - Unit tests for PKCE, OAuth, magic link, SSO, refresh, and storage
+
 - **Auth policy foundation** (Sprint 6 Task 1) — `@ai-commerce/auth-client`
   - `AuthPolicyValidator` — semantic cross-field authentication config validation
   - `AuthPolicyResolver` — surface-scoped policies (customer / admin / api)
