@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **API Gateway foundation** (Sprint 7 Task 1) — `@ai-commerce/api-gateway`
+  - `TenantResolver` — header / subdomain tenant identity resolution
+  - `RouteMatcher` — method + `:param` path matching
+  - `InMemoryRateLimiter` — fixed-window rate limiting
+  - `ConfigInjector` — Config Runtime validation gate into request context
+  - `createGatewayPipeline` — core middleware stack with HTTP-like error mapping
+  - Architecture doc — `docs/architecture/api-gateway.md`
+  - Unit + integration tests
+
 - **AuthClient facade** (Sprint 6 Task 3) — `@ai-commerce/auth-client`
   - `AuthClient` / `createAuthClient` — public facade for policy, OAuth, magic link, SSO, sessions
   - Multi-surface helpers — `resolveAllSurfacePolicies`, `listEnabledMethodsBySurface`, `sessionStorageKey`
