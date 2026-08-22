@@ -41,6 +41,10 @@ export class TokenRefreshService {
     }
 
     if (!session.refreshEnabled) {
+      // Still usable until absolute expiry (admin sessions omit refresh by schema).
+      if (tokens.expiresAt > this.clock()) {
+        return tokens;
+      }
       throw new AuthTokenException(
         'Access token expired and refresh is disabled by session policy.',
       );

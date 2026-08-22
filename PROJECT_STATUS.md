@@ -8,11 +8,11 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 6 — Authentication** (in progress)
+**Sprint 6 — Authentication** ✅ Complete
 
-Sprint 6 Tasks 1–2 are complete. Latest deliverable: **Sprint 6 Task 2** — OAuth/PKCE, magic link, SSO, token refresh, and storage in `@ai-commerce/auth-client`.
+Sprint 6 Tasks 1–3 are complete. Latest deliverable: **Sprint 6 Task 3** — `AuthClient` facade in `@ai-commerce/auth-client`.
 
-**Next:** Sprint 6 Task 3 — `AuthClient` facade + multi-surface helpers.
+**Next:** Sprint 7 — API Gateway.
 
 ## Completed Tasks
 
@@ -34,58 +34,55 @@ Sprint 6 Tasks 1–2 are complete. Latest deliverable: **Sprint 6 Task 2** — O
 | Sprint 5 Task 2 ✅ | Discovery, install, dependency resolution, lifecycle, ConfigProvider gates (`@ai-commerce/plugin-registry`)                                     | `sprint5-task2` |
 | Sprint 5 Task 3 ✅ | Hook dispatch, handler activation, PluginRegistry facade (`@ai-commerce/plugin-registry`)                                                       | `sprint5-task3` |
 | Sprint 6 Task 1 ✅ | Auth policy validator/resolver, provider ports, Config Runtime mapping (`@ai-commerce/auth-client`)                                             | `sprint6-task1` |
-| Sprint 6 Task 2 ✅ | OAuth/PKCE, magic link, SSO adapters, token refresh, secure storage (`@ai-commerce/auth-client`)                                                | (pending tag)   |
+| Sprint 6 Task 2 ✅ | OAuth/PKCE, magic link, SSO adapters, token refresh, secure storage (`@ai-commerce/auth-client`)                                                | `sprint6-task2` |
+| Sprint 6 Task 3 ✅ | AuthClient facade, createAuthClient, multi-surface helpers (`@ai-commerce/auth-client`)                                                         | (pending tag)   |
 
 ## Current Progress
 
-- **Monorepo structure** — Approved architecture in place: `apps/`, `packages/`, `modules/`, `platform/`, `schemas/`, `tooling/`, `infra/`, `docs/`
-- **Configuration contract** — Tenant configuration schema v1 with 18+ domain schemas and generated types/Zod validators
-- **Configuration runtime** — Inheritance chain (platform → vertical → tenant → environment) with deep merge, validation, and LRU cache
-- **White-label engine** — BrandResolver, asset pipeline, WhiteLabelProvider facade, Config Runtime integration
-- **Theme engine** — ThemeProvider facade, Config Runtime integration, token normalization, surface emitters
-- **Tenant provisioner** — Provisioning facade, activation workflow, integration tests
-- **Plugin registry** — Catalog, discovery, install/lifecycle, hook dispatch, PluginRegistry facade
-- **Auth client** — Policy foundation + OAuth/PKCE, magic link, SSO, token refresh, secure storage adapters
+- **Monorepo structure** — Approved architecture in place
+- **Configuration contract + runtime** — Schema v1, inheritance, validation, cache
+- **Theme + white-label engines** — Provider facades and surface emitters
+- **Tenant provisioner** — Provisioning facade and activation workflow
+- **Plugin registry** — Catalog, lifecycle, hook dispatch facade
+- **Auth client** — Policy, OAuth/PKCE, magic link, SSO, token refresh, AuthClient facade
 
-**Overall:** Sprint 6 Task 2 implemented. Next: Sprint 6 Task 3 — AuthClient facade.
+**Overall:** Sprint 6 complete. Next: Sprint 7 — API Gateway.
 
 ## Next Tasks
 
-**Sprint 6 Task 3 — AuthClient facade**
+**Sprint 7 — API Gateway**
 
-- `AuthClient` / `createAuthClient()` public facade
-- Multi-surface helpers and integration docs
-- See [SPRINT_BOARD.md](./SPRINT_BOARD.md)
+See [SPRINT_BOARD.md](./SPRINT_BOARD.md) for the full roadmap through Sprint 10.
 
 ## Latest Commit
 
 ```
-9cc743a feat(auth-client): add auth policy foundation (Sprint 6 Task 1)
+34b02a4 feat(auth-client): add OAuth, magic link, SSO, and token refresh (Sprint 6 Task 2)
 ```
 
 ## Latest Tag
 
 ```
-sprint6-task1
+sprint6-task2
 ```
 
 ## Health Status
 
-| Area                  | Status         | Notes                                              |
-| --------------------- | -------------- | -------------------------------------------------- |
-| Repository            | ✅ Healthy     | Sprint 6 Task 2 implemented (commit when approved) |
-| Build tooling         | ✅ Healthy     | Turborepo, pnpm workspaces, TypeScript 5.7         |
-| Lint / format         | ✅ Healthy     | ESLint, Prettier, Husky pre-commit hooks           |
-| Commit conventions    | ✅ Healthy     | Commitlint with Conventional Commits               |
-| Configuration schema  | ✅ Complete    | Sprint 1 Task 2 — generated types and Zod          |
-| Configuration runtime | ✅ Complete    | Sprint 1 Task 3 — full resolver pipeline           |
-| Theme engine          | ✅ Complete    | Sprint 2 complete                                  |
-| White-label engine    | ✅ Complete    | Sprint 3 complete                                  |
-| Tenant provisioner    | ✅ Complete    | Sprint 4 complete                                  |
-| Plugin registry       | ✅ Complete    | Sprint 5 complete                                  |
-| Auth client           | 🟡 In progress | Sprint 6 Tasks 1–2 complete; Task 3 remaining      |
-| Platform services     | 🟡 Scaffolded  | white-label-engine-service deferred                |
-| Apps / surfaces       | 🟡 Scaffolded  | Admin, Web Store, Mobile, API Gateway              |
-| Tests                 | ✅ Passing     | Includes `@ai-commerce/auth-client` (39 tests)     |
+| Area                  | Status        | Notes                                              |
+| --------------------- | ------------- | -------------------------------------------------- |
+| Repository            | ✅ Healthy    | Sprint 6 Task 3 implemented (commit when approved) |
+| Build tooling         | ✅ Healthy    | Turborepo, pnpm workspaces, TypeScript 5.7         |
+| Lint / format         | ✅ Healthy    | ESLint, Prettier, Husky pre-commit hooks           |
+| Commit conventions    | ✅ Healthy    | Commitlint with Conventional Commits               |
+| Configuration schema  | ✅ Complete   | Sprint 1                                           |
+| Configuration runtime | ✅ Complete   | Sprint 1                                           |
+| Theme engine          | ✅ Complete   | Sprint 2                                           |
+| White-label engine    | ✅ Complete   | Sprint 3                                           |
+| Tenant provisioner    | ✅ Complete   | Sprint 4                                           |
+| Plugin registry       | ✅ Complete   | Sprint 5                                           |
+| Auth client           | ✅ Complete   | Sprint 6 — AuthClient facade                       |
+| Platform services     | 🟡 Scaffolded | Deferred HTTP services                             |
+| Apps / surfaces       | 🟡 Scaffolded | Admin, Web Store, Mobile, API Gateway              |
+| Tests                 | ✅ Passing    | Includes `@ai-commerce/auth-client` (49 tests)     |
 
-**Summary:** Sprint 6 Task 2 (auth flow adapters) is implemented. Task 3 (`AuthClient` facade) is next.
+**Summary:** Sprint 6 (Authentication) is complete. API Gateway (Sprint 7) is next.

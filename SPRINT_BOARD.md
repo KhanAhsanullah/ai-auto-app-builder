@@ -78,7 +78,9 @@ All Sprint 5 code lives in `@ai-commerce/plugin-registry` (`platform/plugin-regi
 | ------ | ------ | --------------------------------------------------------------------------------------------------- |
 | Task 1 | ✅     | Auth policy validator/resolver, provider ports, Config Runtime mapping (`@ai-commerce/auth-client`) |
 | Task 2 | ✅     | OAuth/PKCE, magic link, SSO adapters, token refresh, secure storage                                 |
-| Task 3 | ⬜     | `AuthClient` facade, multi-surface helpers, integration docs                                        |
+| Task 3 | ✅     | `AuthClient` facade, `createAuthClient`, multi-surface helpers, integration docs                    |
+
+**Tags:** `sprint6-task1`, `sprint6-task2`, `sprint6-task3`
 
 All Sprint 6 code lives in `@ai-commerce/auth-client` (`packages/auth-client`). Authentication JSON Schema remains owned by Sprint 1 `config-schema`.
 

@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **AuthClient facade** (Sprint 6 Task 3) — `@ai-commerce/auth-client`
+  - `AuthClient` / `createAuthClient` — public facade for policy, OAuth, magic link, SSO, sessions
+  - Multi-surface helpers — `resolveAllSurfacePolicies`, `listEnabledMethodsBySurface`, `sessionStorageKey`
+  - `./internal` export for advanced modules
+  - Facade unit + Config Runtime integration coverage
+  - Admin sessions without refresh remain usable until absolute expiry
+
 - **Auth flow adapters** (Sprint 6 Task 2) — `@ai-commerce/auth-client`
   - PKCE helpers — verifier, S256 challenge, state, authorization URL builder
   - `OAuthPkceProvider` — authorization-code + PKCE with injectable HTTP client

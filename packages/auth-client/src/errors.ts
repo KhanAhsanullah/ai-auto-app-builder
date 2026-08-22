@@ -50,3 +50,14 @@ export class AuthTokenException extends AuthClientException {
     this.name = 'AuthTokenException';
   }
 }
+
+/** Thrown when the AuthClient facade lacks a required flow adapter. */
+export class AuthProviderNotConfiguredException extends AuthClientException {
+  readonly method: string;
+
+  constructor(method: string, message?: string) {
+    super(message ?? `Auth provider '${method}' is not configured on AuthClient.`);
+    this.name = 'AuthProviderNotConfiguredException';
+    this.method = method;
+  }
+}

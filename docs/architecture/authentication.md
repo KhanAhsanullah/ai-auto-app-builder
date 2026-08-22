@@ -1,12 +1,12 @@
 # Authentication Architecture
 
-Tenant-scoped authentication policy resolution, interactive auth flows, and token lifecycle for CommerceOS AI.
+Tenant-scoped authentication policy resolution, interactive auth flows, token lifecycle, and the `AuthClient` facade for CommerceOS AI.
 
 ## Overview
 
-`@ai-commerce/auth-client` turns the tenant `authentication` configuration section into surface-scoped policies and provides adapters for OAuth/PKCE, magic link, SSO, token refresh, and storage.
+`@ai-commerce/auth-client` turns the tenant `authentication` configuration section into surface-scoped policies and provides adapters for OAuth/PKCE, magic link, SSO, token refresh, and storage — orchestrated by `AuthClient` / `createAuthClient()`.
 
-It does **not** own HTTP middleware (Sprint 7) or the `AuthClient` facade (Task 3). Live IdP SDKs are optional — adapters use injectable `HttpJsonClient` / delivery ports.
+It does **not** own HTTP middleware (Sprint 7). Live IdP SDKs are optional — adapters use injectable `HttpJsonClient` / delivery ports.
 
 ## Boundaries
 
@@ -15,22 +15,18 @@ Tenant config (authentication.*)
         ↓
 ConfigProvider.resolve()
         ↓
-AuthPolicyValidator + AuthPolicyResolver
-        ↓
-ResolvedAuthPolicy
-        ↓
-OAuthPkceProvider / MagicLinkProvider / SsoChallengeProvider
-        ↓
-TokenRefreshService + TokenStore (InMemory / PrefixedSecure)
+createAuthClient() → AuthClient facade
+        ├── AuthPolicyResolver (customer / admin / api)
+        ├── OAuthPkceProvider / MagicLinkProvider / SsoChallengeProvider
+        └── TokenRefreshService + TokenStore
 ```
 
 | Concern                         | Owner                      |
 | ------------------------------- | -------------------------- |
 | Authentication JSON Schema      | Sprint 1 `config-schema`   |
 | Platform/vertical auth defaults | `config-runtime` defaults  |
-| Policy + auth flow adapters     | `@ai-commerce/auth-client` |
+| Policy + auth flows + facade    | `@ai-commerce/auth-client` |
 | HTTP auth middleware            | API Gateway (Sprint 7)     |
-| AuthClient facade               | Sprint 6 Task 3            |
 
 ## Sprint 6 Task Breakdown
 
@@ -38,9 +34,9 @@ TokenRefreshService + TokenStore (InMemory / PrefixedSecure)
 | ------ | ------------------------------------------------------------------------ |
 | Task 1 | Policy validator/resolver, Config Runtime mapping, provider ports, stubs |
 | Task 2 | OAuth/PKCE, magic link, SSO challenge adapters, token refresh, storage   |
-| Task 3 | `AuthClient` facade, multi-surface helpers, integration docs             |
+| Task 3 | `AuthClient` facade, multi-surface helpers, `createAuthClient`, docs     |
 
-## Flows (Task 2)
+## Flows
 
 | Flow       | Method id(s)             | Notes                                      |
 | ---------- | ------------------------ | ------------------------------------------ |
@@ -58,10 +54,12 @@ TokenRefreshService + TokenStore (InMemory / PrefixedSecure)
 | `admin`    | email, sso (saml/oidc)                       |
 | `api`      | api_key, client_credentials                  |
 
+Session tokens are stored per surface under `session.{surface}.tokens`.
+
 ## Deferred
 
-- `AuthClient` facade (Task 3)
 - Permission/ACL enforcement beyond defaultRoles metadata
 - Session revocation service
 - Changes to authentication JSON Schema without versioning
 - Native Keychain / Web Crypto SubtleCrypto browser builds (Node crypto used server-side)
+- HTTP middleware (Sprint 7)

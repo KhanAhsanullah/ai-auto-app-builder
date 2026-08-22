@@ -1,3 +1,5 @@
+export { AuthClient } from './domain/auth-client.js';
+export type { AuthClientDeps } from './domain/auth-client.js';
 export { AuthPolicyResolver } from './domain/auth-policy-resolver.js';
 export type { AuthPolicyResolverDeps } from './domain/auth-policy-resolver.js';
 export { AuthPolicyValidator } from './domain/auth-policy-validator.js';
@@ -21,6 +23,12 @@ export {
 } from './domain/pkce.js';
 export { SsoChallengeProvider } from './domain/sso-challenge-provider.js';
 export type { SsoChallengeProviderOptions } from './domain/sso-challenge-provider.js';
+export {
+  listEnabledMethodsBySurface,
+  resolveAllSurfacePolicies,
+  sessionStorageKey,
+} from './domain/surface-auth-helpers.js';
+export type { MultiSurfaceAuthPolicies } from './domain/surface-auth-helpers.js';
 export { TokenRefreshService } from './domain/token-refresh-service.js';
 export type { TokenRefreshServiceOptions } from './domain/token-refresh-service.js';
 export type {
@@ -38,8 +46,14 @@ export {
   AuthMethodNotEnabledException,
   AuthPolicyResolutionException,
   AuthPolicyValidationException,
+  AuthProviderNotConfiguredException,
   AuthTokenException,
 } from './errors.js';
+export { createAuthClient } from './infrastructure/create-auth-client.js';
+export type {
+  CreateAuthClientOptions,
+  SocialOAuthMethod,
+} from './infrastructure/create-auth-client.js';
 export { InMemoryPkceChallengeStore } from './infrastructure/in-memory-pkce-challenge-store.js';
 export { InMemoryTokenStore } from './infrastructure/in-memory-token-store.js';
 export {

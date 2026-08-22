@@ -1,6 +1,6 @@
 # Auth Client
 
-Authentication client library for CommerceOS AI: tenant-scoped auth policy resolution, OAuth/PKCE, magic link, SSO challenges, token refresh, and secure storage adapters.
+Authentication client library for CommerceOS AI: tenant-scoped auth policy resolution, OAuth/PKCE, magic link, SSO, token refresh, secure storage, and the `AuthClient` facade.
 
 ## Package
 
@@ -8,50 +8,51 @@ Authentication client library for CommerceOS AI: tenant-scoped auth policy resol
 
 ## Status
 
-Sprint 6 Task 2 complete — OAuth/PKCE, magic link, SSO adapters, token refresh, and secure storage.
-
-Task 3 (`AuthClient` facade + multi-surface helpers) is not yet implemented.
+Sprint 6 complete — Task 3 delivers `AuthClient` / `createAuthClient()` and multi-surface helpers.
 
 ## Modules
 
-| Module                     | Purpose                                                   |
-| -------------------------- | --------------------------------------------------------- |
-| `AuthPolicyValidator`      | Semantic cross-field validation of authentication config  |
-| `AuthPolicyResolver`       | Surface-scoped policy resolution (customer / admin / api) |
-| `AuthProviderRegistry`     | In-process registry of auth provider ports                |
-| `OAuthPkceProvider`        | Authorization-code + PKCE for social/OIDC methods         |
-| `MagicLinkProvider`        | Email magic-link challenge + completion                   |
-| `SsoChallengeProvider`     | Admin SAML / OIDC SSO challenges                          |
-| `TokenRefreshService`      | Refresh-token grant + TokenStore persistence              |
-| `PrefixedSecureTokenStore` | localStorage-compatible secure token store                |
-| `pkce` helpers             | Verifier / S256 challenge / state / URL builders          |
+| Module                     | Purpose                                               |
+| -------------------------- | ----------------------------------------------------- |
+| `AuthClient`               | Public facade for policy, flows, and surface sessions |
+| `createAuthClient`         | Default wiring factory                                |
+| `AuthPolicyResolver`       | Surface-scoped policy resolution                      |
+| `OAuthPkceProvider`        | Authorization-code + PKCE                             |
+| `MagicLinkProvider`        | Email magic-link                                      |
+| `SsoChallengeProvider`     | Admin SAML / OIDC SSO                                 |
+| `TokenRefreshService`      | Refresh-token grant + TokenStore persistence          |
+| `PrefixedSecureTokenStore` | localStorage-compatible secure token store            |
+| Surface helpers            | `resolveAllSurfacePolicies`, `sessionStorageKey`, …   |
 
-HTTP and email delivery use injectable ports — no live IdP or mailer is required in unit tests.
+Advanced modules are also available via `@ai-commerce/auth-client/internal`.
 
 ## Usage
 
 ```typescript
-import {
-  AuthPolicyResolver,
-  OAuthPkceProvider,
-  InMemoryPkceChallengeStore,
-  ScriptedHttpJsonClient, // tests; use a real HttpJsonClient in apps
-} from '@ai-commerce/auth-client';
+import { createAuthClient } from '@ai-commerce/auth-client';
 
-const provider = new OAuthPkceProvider({
-  method: 'google',
-  surfaces: ['customer'],
-  client: {
-    clientId: '…',
-    authorizationEndpoint: 'https://accounts.google.com/o/oauth2/v2/auth',
-    tokenEndpoint: 'https://oauth2.googleapis.com/token',
-    scopes: ['openid', 'email'],
-  },
+const auth = createAuthClient({
   http,
-  challengeStore: new InMemoryPkceChallengeStore(),
+  oauth: {
+    clients: {
+      google: {
+        clientId: '…',
+        authorizationEndpoint: 'https://accounts.google.com/o/oauth2/v2/auth',
+        tokenEndpoint: 'https://oauth2.googleapis.com/token',
+        scopes: ['openid', 'email'],
+      },
+    },
+  },
+  magicLink: {
+    delivery,
+    magicLinkBaseUrl: 'https://app.example.com/auth/magic',
+  },
 });
 
-const { authorizationUrl, challengeId, state } = await provider.start({
+const policies = auth.resolveAllPolicies(authentication);
+const { authorizationUrl } = await auth.startOAuth({
+  authentication,
+  method: 'google',
   surface: 'customer',
   redirectUri: 'https://app.example.com/callback',
 });
@@ -66,9 +67,8 @@ pnpm --filter @ai-commerce/auth-client lint
 pnpm --filter @ai-commerce/auth-client build
 ```
 
-## Out of scope (Task 2)
+## Out of scope (Sprint 6)
 
-- `AuthClient` facade / `createAuthClient()` (Task 3)
 - HTTP auth middleware (Sprint 7 API Gateway)
 - Production IdP SDKs / React Native Keychain native modules
 - Changes to `authentication.schema.json`
