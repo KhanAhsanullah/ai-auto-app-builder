@@ -8,11 +8,11 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 5 — Plugin Engine** ✅ Complete
+**Sprint 6 — Authentication** (in progress)
 
-Sprint 5 Tasks 1–3 are complete. Latest deliverable: **Sprint 5 Task 3** — `PluginRegistry` facade, handler activation, and hook dispatch in `@ai-commerce/plugin-registry`.
+Sprint 5 is complete. Latest deliverable in progress: **Sprint 6 Task 1** — auth policy foundation in `@ai-commerce/auth-client`.
 
-**Next:** Sprint 6 — Authentication.
+**Next after Task 1:** Sprint 6 Task 2 — OAuth/PKCE, magic link, SSO adapters, token refresh.
 
 ## Completed Tasks
 
@@ -33,6 +33,7 @@ Sprint 5 Tasks 1–3 are complete. Latest deliverable: **Sprint 5 Task 3** — `
 | Sprint 5 Task 1 ✅ | Plugin manifest schema, hook point catalog, ManifestValidator, CatalogService (`@ai-commerce/plugin-registry`)                                  | `sprint5-task1` |
 | Sprint 5 Task 2 ✅ | Discovery, install, dependency resolution, lifecycle, ConfigProvider gates (`@ai-commerce/plugin-registry`)                                     | `sprint5-task2` |
 | Sprint 5 Task 3 ✅ | Hook dispatch, handler activation, PluginRegistry facade (`@ai-commerce/plugin-registry`)                                                       | `sprint5-task3` |
+| Sprint 6 Task 1 ✅ | Auth policy validator/resolver, provider ports, Config Runtime mapping (`@ai-commerce/auth-client`)                                             | (pending tag)   |
 
 ## Current Progress
 
@@ -45,43 +46,47 @@ Sprint 5 Tasks 1–3 are complete. Latest deliverable: **Sprint 5 Task 3** — `
 - **Module scaffolds** — Core commerce modules and vertical presets scaffolded with manifests
 - **Tenant provisioner** — Identity validation, config builder, repository port, vertical seeds, environment initialization, TenantProvisioner facade, activation workflow, integration tests
 - **Plugin registry** — Manifest catalog, discovery, install/lifecycle, handler activation, HookDispatcher, PluginRegistry facade
+- **Auth client** — AuthPolicyValidator, AuthPolicyResolver, provider ports, Config Runtime mapping, stubs
 
-**Overall:** Sprint 5 complete. Next: Sprint 6 — Authentication.
+**Overall:** Sprint 6 Task 1 implemented. Next: Sprint 6 Task 2 — provider adapters.
 
 ## Next Tasks
 
-**Sprint 6 — Authentication**
+**Sprint 6 Task 2 — Auth provider adapters**
 
-See [SPRINT_BOARD.md](./SPRINT_BOARD.md) for the full roadmap through Sprint 10.
+- OAuth/PKCE flows, magic link, SSO challenge adapters
+- Token refresh and secure storage adapters
+- See [SPRINT_BOARD.md](./SPRINT_BOARD.md)
 
 ## Latest Commit
 
 ```
-c202c0b feat(plugin-registry): add discovery, install, and lifecycle (Sprint 5 Task 2)
+860d8df feat(plugin-registry): add hook dispatch and PluginRegistry facade (Sprint 5 Task 3)
 ```
 
 ## Latest Tag
 
 ```
-sprint5-task2
+sprint5-task3
 ```
 
 ## Health Status
 
-| Area                  | Status        | Notes                                                     |
-| --------------------- | ------------- | --------------------------------------------------------- |
-| Repository            | ✅ Healthy    | Sprint 5 Task 3 implemented (commit/tag when you approve) |
-| Build tooling         | ✅ Healthy    | Turborepo, pnpm workspaces, TypeScript 5.7                |
-| Lint / format         | ✅ Healthy    | ESLint, Prettier, Husky pre-commit hooks                  |
-| Commit conventions    | ✅ Healthy    | Commitlint with Conventional Commits                      |
-| Configuration schema  | ✅ Complete   | Sprint 1 Task 2 — generated types and Zod                 |
-| Configuration runtime | ✅ Complete   | Sprint 1 Task 3 — full resolver pipeline                  |
-| Theme engine          | ✅ Complete   | Sprint 2 complete — provider facade + integration         |
-| White-label engine    | ✅ Complete   | Sprint 3 complete — provider facade + asset pipeline      |
-| Tenant provisioner    | ✅ Complete   | Sprint 4 complete — provisioning facade + lifecycle       |
-| Plugin registry       | ✅ Complete   | Sprint 5 complete — facade + hook dispatch                |
-| Platform services     | 🟡 Scaffolded | white-label-engine-service deferred                       |
-| Apps / surfaces       | 🟡 Scaffolded | Admin, Web Store, Mobile, API Gateway                     |
-| Tests                 | ✅ Passing    | Config runtime + theme + white-label + tenant + plugins   |
+| Area                  | Status         | Notes                                                |
+| --------------------- | -------------- | ---------------------------------------------------- |
+| Repository            | ✅ Healthy     | Sprint 6 Task 1 implemented (commit when approved)   |
+| Build tooling         | ✅ Healthy     | Turborepo, pnpm workspaces, TypeScript 5.7           |
+| Lint / format         | ✅ Healthy     | ESLint, Prettier, Husky pre-commit hooks             |
+| Commit conventions    | ✅ Healthy     | Commitlint with Conventional Commits                 |
+| Configuration schema  | ✅ Complete    | Sprint 1 Task 2 — generated types and Zod            |
+| Configuration runtime | ✅ Complete    | Sprint 1 Task 3 — full resolver pipeline             |
+| Theme engine          | ✅ Complete    | Sprint 2 complete — provider facade + integration    |
+| White-label engine    | ✅ Complete    | Sprint 3 complete — provider facade + asset pipeline |
+| Tenant provisioner    | ✅ Complete    | Sprint 4 complete — provisioning facade + lifecycle  |
+| Plugin registry       | ✅ Complete    | Sprint 5 complete — facade + hook dispatch           |
+| Auth client           | 🟡 In progress | Sprint 6 Task 1 — policy foundation complete         |
+| Platform services     | 🟡 Scaffolded  | white-label-engine-service deferred                  |
+| Apps / surfaces       | 🟡 Scaffolded  | Admin, Web Store, Mobile, API Gateway                |
+| Tests                 | ✅ Passing     | Includes `@ai-commerce/auth-client` (19 tests)       |
 
-**Summary:** Sprint 5 (Plugin Engine) is complete. Authentication (Sprint 6) is next.
+**Summary:** Sprint 6 Task 1 (auth policy foundation) is implemented. Task 2 (provider adapters) is next.

@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Auth policy foundation** (Sprint 6 Task 1) — `@ai-commerce/auth-client`
+  - `AuthPolicyValidator` — semantic cross-field authentication config validation
+  - `AuthPolicyResolver` — surface-scoped policies (customer / admin / api)
+  - `AuthProvider` / `TokenStore` / `AuthChallengePort` — provider ports
+  - `AuthProviderRegistry`, `StubAuthProvider`, `InMemoryTokenStore`
+  - Config Runtime mapping — `authConfigSourceFromProviderResult`, `toResolveAuthPolicyInput`
+  - Architecture doc — `docs/architecture/authentication.md`
+  - Unit + Config Runtime integration tests
+
 - **PluginRegistry facade and hook dispatch** (Sprint 5 Task 3) — `@ai-commerce/plugin-registry`
   - `PluginRegistry` / `createPluginRegistry` — public facade for catalog, install, lifecycle, handlers, dispatch
   - `PluginHandlerRegistry` — global in-process handler registration keyed by `(pluginId, handlerId)`

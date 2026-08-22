@@ -88,7 +88,21 @@ importers:
 
   packages/analytics: {}
 
-  packages/auth-client: {}
+  packages/auth-client:
+    dependencies:
+      '@ai-commerce/config-schema':
+        specifier: workspace:*
+        version: link:../config-schema
+    devDependencies:
+      '@ai-commerce/config-runtime':
+        specifier: workspace:*
+        version: link:../config-runtime
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.20.1
+      vitest:
+        specifier: ^3.0.5
+        version: 3.2.7(@types/node@22.20.1)(jiti@2.6.1)(tsx@4.23.1)(yaml@2.9.0)
 
   packages/config-runtime:
     dependencies:

@@ -20,6 +20,7 @@ The platform architecture was approved in Sprint 0. It defines:
 | [white-label-engine.md](./white-label-engine.md)   | White-Label Engine — BrandResolver, asset pipeline, WhiteLabelProvider, web/mobile/admin surfaces; HTTP service deferred |
 | [tenant-provisioning.md](./tenant-provisioning.md) | Tenant Provisioning — onboarding workflow, activation, Config Runtime validation boundary                                |
 | [plugin-engine.md](./plugin-engine.md)             | Plugin Engine — catalog, install/lifecycle, handler activation, hook dispatch, PluginRegistry facade                     |
+| [authentication.md](./authentication.md)           | Authentication — auth policy resolution, provider ports, Config Runtime mapping; OAuth adapters deferred to Task 2+      |
 
 ## Monorepo Layout
 
