@@ -19,6 +19,7 @@ The platform architecture was approved in Sprint 0. It defines:
 | [theme-engine.md](./theme-engine.md)               | Theme Engine — presets, resolver, live preview, plugin extension points                                                  |
 | [white-label-engine.md](./white-label-engine.md)   | White-Label Engine — BrandResolver, asset pipeline, WhiteLabelProvider, web/mobile/admin surfaces; HTTP service deferred |
 | [tenant-provisioning.md](./tenant-provisioning.md) | Tenant Provisioning — onboarding workflow, activation, Config Runtime validation boundary                                |
+| [plugin-engine.md](./plugin-engine.md)             | Plugin Engine — catalog, install/lifecycle, handler activation, hook dispatch, PluginRegistry facade                     |
 
 ## Monorepo Layout
 

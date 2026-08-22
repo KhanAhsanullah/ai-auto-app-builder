@@ -1,6 +1,6 @@
 # Plugin Registry
 
-Control-plane service for plugin manifest validation, discovery, catalog registration, tenant installation, and lifecycle management.
+Control-plane service for plugin manifest validation, discovery, catalog registration, tenant installation, lifecycle management, and in-process hook dispatch.
 
 ## Package
 
@@ -8,59 +8,71 @@ Control-plane service for plugin manifest validation, discovery, catalog registr
 
 ## Status
 
-Sprint 5 Task 2 complete — discovery, tenant install/lifecycle, and ConfigProvider validation gates.
-
-Task 3 (hook dispatch, `PluginRegistry` facade) is not yet implemented.
+Sprint 5 Task 3 complete — `PluginRegistry` facade, handler activation, and synchronous hook dispatch.
 
 ## Modules
 
-| Module                            | Purpose                                           |
-| --------------------------------- | ------------------------------------------------- |
-| `ManifestValidator`               | Schema + semantic manifest validation             |
-| `CatalogService`                  | Register manifests in the platform catalog        |
-| `DiscoveryService`                | Scan filesystem and register discovered manifests |
-| `FilesystemManifestScanner`       | Recursive `*.plugin-manifest.json` scanner port   |
-| `DependencyResolver`              | Transitive semver dependency resolution           |
-| `PluginSettingsValidator`         | AJV validation against manifest `configSchema`    |
-| `InstallService`                  | Tenant plugin installation with config gate       |
-| `PluginLifecycleService`          | Enable / disable / uninstall lifecycle            |
-| `PluginCatalogRepository`         | Platform catalog persistence port                 |
-| `TenantPluginRepository`          | Tenant runtime binding persistence port           |
-| `InMemoryPluginCatalogRepository` | Default catalog adapter                           |
-| `InMemoryTenantPluginRepository`  | Default tenant binding adapter                    |
+| Module                                 | Purpose                                                 |
+| -------------------------------------- | ------------------------------------------------------- |
+| `PluginRegistry`                       | Public facade for catalog → install → enable → dispatch |
+| `createPluginRegistry`                 | Default wiring factory                                  |
+| `ManifestValidator`                    | Schema + semantic manifest validation                   |
+| `CatalogService`                       | Register manifests in the platform catalog              |
+| `DiscoveryService`                     | Scan filesystem and register discovered manifests       |
+| `FilesystemManifestScanner`            | Recursive `*.plugin-manifest.json` scanner port         |
+| `DependencyResolver`                   | Transitive semver dependency resolution                 |
+| `PluginSettingsValidator`              | AJV validation against manifest `configSchema`          |
+| `InstallService`                       | Tenant plugin installation with config gate             |
+| `PluginLifecycleService`               | Enable / disable / uninstall lifecycle                  |
+| `PluginHandlerRegistry`                | Global in-process handler function registry             |
+| `PluginActivationService`              | Sync lifecycle ↔ tenant handler activations             |
+| `HookDispatcher`                       | Tenant-scoped ordered hook dispatch                     |
+| `TenantHandlerActivationStore`         | Active handler bindings port                            |
+| `PluginCatalogRepository`              | Platform catalog persistence port                       |
+| `TenantPluginRepository`               | Tenant runtime binding persistence port                 |
+| `InMemoryPluginCatalogRepository`      | Default catalog adapter                                 |
+| `InMemoryTenantPluginRepository`       | Default tenant binding adapter                          |
+| `InMemoryTenantHandlerActivationStore` | Default activation adapter                              |
+
+Advanced modules (`HookDispatcher`, `PluginHandlerRegistry`, `PluginActivationService`, activation store) are also available via `@ai-commerce/plugin-registry/internal`.
 
 ## Lifecycle
 
 ```
-Discover → catalog register → tenant install (installed) → enable → disable → uninstall
+Discover → catalog register → tenant install (installed)
+  → registerHandler (host) → enable (handlers active)
+  → dispatch → disable / uninstall
 ```
 
 Install requires a matching `integrations.plugins[]` declaration in caller-supplied tenant config (exact `id` + `version`). The registry never writes tenant config.
 
+Enable requires every manifest `hooks[].handler` to be registered globally via `registerHandler` before the binding becomes `enabled`.
+
 ## Usage
 
 ```typescript
-import {
-  CatalogService,
-  DiscoveryService,
-  InstallService,
-  InMemoryPluginCatalogRepository,
-  InMemoryTenantPluginRepository,
-  ManifestValidator,
-  PluginLifecycleService,
-} from '@ai-commerce/plugin-registry';
-import { ConfigProvider } from '@ai-commerce/config-runtime';
+import { createPluginRegistry } from '@ai-commerce/plugin-registry';
 
-const catalogRepository = new InMemoryPluginCatalogRepository();
-const tenantPluginRepository = new InMemoryTenantPluginRepository();
-const configProvider = new ConfigProvider({ cache: false });
+const registry = createPluginRegistry();
 
-const catalog = new CatalogService({
-  validator: new ManifestValidator(),
-  repository: catalogRepository,
+await registry.registerManifest(manifest);
+
+registry.registerHandler({
+  pluginId: manifest.id,
+  handlerId: 'extendPresets',
+  handler: (invocation) => {
+    // mutate invocation.context
+  },
 });
 
-await new DiscoveryService({ catalogService: catalog }).discoverFromDirectory('./plugins');
+await registry.install({ tenantId, pluginId, version, tenantConfig });
+await registry.enable({ tenantId, pluginId, tenantConfig });
+
+await registry.dispatch({
+  tenantId,
+  hookPoint: 'theme.presets.extend',
+  context: { presets: [] },
+});
 ```
 
 ## Scripts
@@ -72,9 +84,11 @@ pnpm --filter @ai-commerce/plugin-registry lint
 pnpm --filter @ai-commerce/plugin-registry build
 ```
 
-## Out of scope (Task 2)
+## Out of scope (Task 3)
 
-- Hook dispatcher and handler execution
-- `PluginRegistry` facade / `createPluginRegistry()`
+- Async worker / queue dispatch
+- Dynamic filesystem or WASM handler loading
+- Permission ACL enforcement (permissions are metadata only)
 - Config Engine integration and tenant config writes
-- Database or file persistence for bindings
+- Database or file persistence for bindings / activations
+- Theme-engine production wiring (dispatch contract only; D11)

@@ -8,12 +8,14 @@ import { describe, expect, it } from 'vitest';
 import { CatalogService } from '../src/domain/catalog-service.js';
 import { DiscoveryService } from '../src/domain/discovery-service.js';
 import { ManifestValidator } from '../src/domain/manifest-validator.js';
+import { createPluginRegistry } from '../src/infrastructure/create-plugin-registry.js';
 import { InMemoryPluginCatalogRepository } from '../src/infrastructure/in-memory-plugin-catalog-repository.js';
 import { InMemoryTenantPluginRepository } from '../src/infrastructure/in-memory-tenant-plugin-repository.js';
 import {
   createInstallService,
   createLifecycleService,
   createTenantConfigWithPlugin,
+  FIXED_CLOCK,
   PLUGIN_MANIFEST_WITH_DEPENDENCY,
   TENANT_ID,
   VALID_PLUGIN_MANIFEST,
@@ -143,6 +145,78 @@ describe('Plugin registry integration', () => {
           resolvedVersion: '1.0.0',
         },
       ]);
+    } finally {
+      await rm(root, { recursive: true, force: true });
+    }
+  });
+
+  it('facade discovers, enables, dispatches, and disables with hook activation', async () => {
+    const root = await mkdtemp(join(tmpdir(), 'plugin-facade-'));
+
+    try {
+      await writeFile(
+        join(root, 'contrast.plugin-manifest.json'),
+        `${JSON.stringify(VALID_PLUGIN_MANIFEST, null, 2)}\n`,
+        'utf8',
+      );
+
+      const registry = createPluginRegistry({ clock: () => FIXED_CLOCK });
+      const discovery = await registry.discoverFromDirectory(root);
+      expect(discovery.registered).toBe(1);
+
+      registry.registerHandler({
+        pluginId: VALID_PLUGIN_MANIFEST.id,
+        handlerId: 'extendPresets',
+        handler: (invocation) => {
+          const payload = invocation.context as { presets: string[] };
+          payload.presets.push('contrast');
+        },
+      });
+      registry.registerHandler({
+        pluginId: VALID_PLUGIN_MANIFEST.id,
+        handlerId: 'adjustResolvedTheme',
+        handler: () => undefined,
+      });
+
+      const tenantConfig = createTenantConfigWithPlugin({
+        settings: { contrastLevel: 'high' },
+      });
+
+      await registry.install({
+        tenantId: TENANT_ID,
+        pluginId: VALID_PLUGIN_MANIFEST.id,
+        version: VALID_PLUGIN_MANIFEST.version,
+        settings: { contrastLevel: 'high' },
+        tenantConfig,
+      });
+
+      await registry.enable({
+        tenantId: TENANT_ID,
+        pluginId: VALID_PLUGIN_MANIFEST.id,
+        tenantConfig,
+      });
+
+      const payload = { presets: [] as string[] };
+      const dispatched = await registry.dispatch({
+        tenantId: TENANT_ID,
+        hookPoint: 'theme.presets.extend',
+        context: payload,
+      });
+
+      expect(dispatched.invoked).toBe(1);
+      expect(payload.presets).toEqual(['contrast']);
+
+      await registry.disable({
+        tenantId: TENANT_ID,
+        pluginId: VALID_PLUGIN_MANIFEST.id,
+      });
+
+      const afterDisable = await registry.dispatch({
+        tenantId: TENANT_ID,
+        hookPoint: 'theme.presets.extend',
+        context: { presets: [] },
+      });
+      expect(afterDisable.invoked).toBe(0);
     } finally {
       await rm(root, { recursive: true, force: true });
     }

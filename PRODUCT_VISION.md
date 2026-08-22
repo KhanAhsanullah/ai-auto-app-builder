@@ -64,14 +64,14 @@ Principles:
 
 ## Long-term Roadmap
 
-| Phase             | Sprints     | Focus                                   |
-| ----------------- | ----------- | --------------------------------------- |
-| **Foundation**    | Sprint 1 ✅ | Monorepo, config schema, config runtime |
-| **Presentation**  | Sprint 2–3  | Theme Engine, White-Label Engine        |
-| **Platform core** | Sprint 4–5  | Tenant Provisioning, Plugin Engine      |
-| **Access & API**  | Sprint 6–7  | Authentication, API Gateway             |
-| **Surfaces**      | Sprint 8–9  | Admin Dashboard, Mobile App             |
-| **Intelligence**  | Sprint 10   | AI Commerce Engine                      |
+| Phase             | Sprints       | Focus                                   |
+| ----------------- | ------------- | --------------------------------------- |
+| **Foundation**    | Sprint 1 ✅   | Monorepo, config schema, config runtime |
+| **Presentation**  | Sprint 2–3    | Theme Engine, White-Label Engine        |
+| **Platform core** | Sprint 4–5 ✅ | Tenant Provisioning, Plugin Engine      |
+| **Access & API**  | Sprint 6–7    | Authentication, API Gateway             |
+| **Surfaces**      | Sprint 8–9    | Admin Dashboard, Mobile App             |
+| **Intelligence**  | Sprint 10     | AI Commerce Engine                      |
 
 Beyond Sprint 10:
 

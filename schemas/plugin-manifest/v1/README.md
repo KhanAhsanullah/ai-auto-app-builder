@@ -37,10 +37,12 @@ Manifest hook `point` values must match the platform hook point catalog validate
 ## Lifecycle
 
 ```
-Register → validate manifest → catalog persistence → (Task 2+) tenant install → (Task 3+) hook activation
+Register → validate manifest → catalog persistence → tenant install → handler registration → enable (hook activation) → dispatch
 ```
 
-Security scanning and signature verification are deferred beyond Sprint 5 Task 1.
+Install-time validation (Task 2) gates config alignment and dependencies. Handler activation at enable (Task 3) requires host-registered in-process handlers for every manifest `hooks[].handler`.
+
+Security scanning and signature verification are deferred beyond Sprint 5.
 
 ## Generated types
 

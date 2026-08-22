@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **PluginRegistry facade and hook dispatch** (Sprint 5 Task 3) — `@ai-commerce/plugin-registry`
+  - `PluginRegistry` / `createPluginRegistry` — public facade for catalog, install, lifecycle, handlers, dispatch
+  - `PluginHandlerRegistry` — global in-process handler registration keyed by `(pluginId, handlerId)`
+  - `PluginActivationService` + `TenantHandlerActivationStore` — enable activates; disable/uninstall deactivate
+  - `HookDispatcher` — tenant-scoped, priority-ordered, fail-fast sync dispatch (async handlers awaited)
+  - `./internal` export for advanced modules
+  - Architecture doc — `docs/architecture/plugin-engine.md`
+  - Unit and integration tests for handler registry, activation, dispatch, and facade E2E
+
 - **TenantProvisioner facade** (Sprint 4 Task 3) — `@ai-commerce/tenant-provisioner`
   - `TenantProvisioner` — public facade for provision + activate workflows
   - `createTenantProvisioner` — factory with default repository and ConfigProvider wiring

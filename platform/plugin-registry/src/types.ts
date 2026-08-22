@@ -145,3 +145,69 @@ export function computeInstallFingerprint(input: InstallFingerprintInput): strin
 
   return createHash('sha256').update(stableStringify(payload)).digest('hex');
 }
+
+/**
+ * Invocation envelope passed to in-process plugin handlers.
+ * Caller payload lives in `context`; permissions are metadata only (not enforced in Sprint 5).
+ */
+export interface HookInvocationContext<TContext = unknown> {
+  tenantId: string;
+  hookPoint: string;
+  pluginId: string;
+  handlerId: string;
+  version: string;
+  permissions: readonly string[];
+  context: TContext;
+}
+
+/** In-process handler function registered by the host (D5). */
+export type PluginHandlerFn<TContext = unknown> = (
+  invocation: HookInvocationContext<TContext>,
+) => void | Promise<void>;
+
+/** Input for global handler registration keyed by (pluginId, handlerId). */
+export interface RegisterHandlerInput<TContext = unknown> {
+  pluginId: string;
+  handlerId: string;
+  handler: PluginHandlerFn<TContext>;
+}
+
+/** Tenant-scoped active handler binding used by the dispatcher. */
+export interface TenantHandlerActivation {
+  tenantId: string;
+  pluginId: string;
+  version: string;
+  hookPoint: string;
+  handlerId: string;
+  priority: number;
+  permissions: readonly string[];
+}
+
+/** Input for tenant-scoped hook dispatch. */
+export interface HookDispatchInput<TContext = unknown> {
+  tenantId: string;
+  hookPoint: string;
+  context: TContext;
+}
+
+/** Per-handler outcome collected during dispatch. */
+export interface HookHandlerOutcome {
+  pluginId: string;
+  handlerId: string;
+  success: boolean;
+  error?: string;
+}
+
+/** Aggregated result of a hook dispatch invocation. */
+export interface HookDispatchResult {
+  tenantId: string;
+  hookPoint: string;
+  invoked: number;
+  outcomes: HookHandlerOutcome[];
+}
+
+/** Minimal typed payload aliases for known hook points (v1). */
+export type ThemePresetsExtendContext = unknown;
+export type ThemeResolveAfterContext = unknown;
+export type ConfigValidateAfterContext = unknown;
+export type TenantProvisionAfterContext = unknown;

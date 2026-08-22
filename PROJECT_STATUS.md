@@ -8,11 +8,11 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 4 — Tenant Provisioning** ✅ Complete
+**Sprint 5 — Plugin Engine** ✅ Complete
 
-Sprint 4 Tasks 1–3 are complete. Latest deliverable: **Sprint 4 Task 3** — `TenantProvisioner` facade in `@ai-commerce/tenant-provisioner`.
+Sprint 5 Tasks 1–3 are complete. Latest deliverable: **Sprint 5 Task 3** — `PluginRegistry` facade, handler activation, and hook dispatch in `@ai-commerce/plugin-registry`.
 
-**Next:** Sprint 5 — Plugin Engine.
+**Next:** Sprint 6 — Authentication.
 
 ## Completed Tasks
 
@@ -30,6 +30,9 @@ Sprint 4 Tasks 1–3 are complete. Latest deliverable: **Sprint 4 Task 3** — `
 | Sprint 4 Task 1 ✅ | Tenant identity validation, config builder, repository port, in-memory adapter, provisioning request schema (`@ai-commerce/tenant-provisioner`) | `sprint4-task1` |
 | Sprint 4 Task 2 ✅ | Vertical onboarding seeds, environment initialization, extended config builder pipeline (`@ai-commerce/tenant-provisioner`)                     | `sprint4-task2` |
 | Sprint 4 Task 3 ✅ | TenantProvisioner facade, activation workflow, Config Runtime integration tests, result schema (`@ai-commerce/tenant-provisioner`)              | `sprint4-task3` |
+| Sprint 5 Task 1 ✅ | Plugin manifest schema, hook point catalog, ManifestValidator, CatalogService (`@ai-commerce/plugin-registry`)                                  | `sprint5-task1` |
+| Sprint 5 Task 2 ✅ | Discovery, install, dependency resolution, lifecycle, ConfigProvider gates (`@ai-commerce/plugin-registry`)                                     | `sprint5-task2` |
+| Sprint 5 Task 3 ✅ | Hook dispatch, handler activation, PluginRegistry facade (`@ai-commerce/plugin-registry`)                                                       | `sprint5-task3` |
 
 ## Current Progress
 
@@ -41,32 +44,33 @@ Sprint 4 Tasks 1–3 are complete. Latest deliverable: **Sprint 4 Task 3** — `
 - **Control-plane scaffolds** — Platform services scaffolded; theme-engine-service and white-label-engine-service deferred
 - **Module scaffolds** — Core commerce modules and vertical presets scaffolded with manifests
 - **Tenant provisioner** — Identity validation, config builder, repository port, vertical seeds, environment initialization, TenantProvisioner facade, activation workflow, integration tests
+- **Plugin registry** — Manifest catalog, discovery, install/lifecycle, handler activation, HookDispatcher, PluginRegistry facade
 
-**Overall:** Sprint 4 complete. Working tree clean. Next: Sprint 5 — Plugin Engine.
+**Overall:** Sprint 5 complete. Next: Sprint 6 — Authentication.
 
 ## Next Tasks
 
-**Sprint 5 — Plugin Engine**
+**Sprint 6 — Authentication**
 
 See [SPRINT_BOARD.md](./SPRINT_BOARD.md) for the full roadmap through Sprint 10.
 
 ## Latest Commit
 
 ```
-b309750 feat(tenant-provisioner): complete provisioning facade and lifecycle (Sprint 4 Task 3)
+c202c0b feat(plugin-registry): add discovery, install, and lifecycle (Sprint 5 Task 2)
 ```
 
 ## Latest Tag
 
 ```
-sprint4-task3
+sprint5-task2
 ```
 
 ## Health Status
 
 | Area                  | Status        | Notes                                                     |
 | --------------------- | ------------- | --------------------------------------------------------- |
-| Repository            | ✅ Healthy    | Sprint 4 complete; working tree clean                     |
+| Repository            | ✅ Healthy    | Sprint 5 Task 3 implemented (commit/tag when you approve) |
 | Build tooling         | ✅ Healthy    | Turborepo, pnpm workspaces, TypeScript 5.7                |
 | Lint / format         | ✅ Healthy    | ESLint, Prettier, Husky pre-commit hooks                  |
 | Commit conventions    | ✅ Healthy    | Commitlint with Conventional Commits                      |
@@ -75,8 +79,9 @@ sprint4-task3
 | Theme engine          | ✅ Complete   | Sprint 2 complete — provider facade + integration         |
 | White-label engine    | ✅ Complete   | Sprint 3 complete — provider facade + asset pipeline      |
 | Tenant provisioner    | ✅ Complete   | Sprint 4 complete — provisioning facade + lifecycle       |
+| Plugin registry       | ✅ Complete   | Sprint 5 complete — facade + hook dispatch                |
 | Platform services     | 🟡 Scaffolded | white-label-engine-service deferred                       |
 | Apps / surfaces       | 🟡 Scaffolded | Admin, Web Store, Mobile, API Gateway                     |
-| Tests                 | ✅ Passing    | Config runtime + theme + white-label + tenant-provisioner |
+| Tests                 | ✅ Passing    | Config runtime + theme + white-label + tenant + plugins   |
 
-**Summary:** Sprint 4 (Tenant Provisioning) is complete. Plugin Engine (Sprint 5) is next.
+**Summary:** Sprint 5 (Plugin Engine) is complete. Authentication (Sprint 6) is next.

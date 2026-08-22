@@ -24,7 +24,7 @@ Defines plugin manifest structure:
 Register → validate manifest → catalog persistence → tenant install → hook activation
 ```
 
-Tenant install and hook activation are implemented in Sprint 5 Tasks 2–3. Task 2 delivers discovery, installation, dependency resolution, and lifecycle management in `@ai-commerce/plugin-registry`.
+Tenant install and hook activation are implemented in Sprint 5 Tasks 2–3. Task 2 delivers discovery, installation, dependency resolution, and lifecycle management. Task 3 delivers handler activation, hook dispatch, and the `PluginRegistry` facade in `@ai-commerce/plugin-registry`.
 
 ## Related packages
 

@@ -190,3 +190,78 @@ export class TenantPluginDuplicateException extends PluginRegistryException {
     this.pluginId = pluginId;
   }
 }
+
+/** Thrown when enable requires a host handler that was never registered. */
+export class PluginHandlerNotRegisteredException extends PluginRegistryException {
+  readonly pluginId: string;
+  readonly handlerId: string;
+
+  constructor(pluginId: string, handlerId: string) {
+    super(
+      `Handler '${handlerId}' is not registered for plugin '${pluginId}'. Register the in-process handler before enable.`,
+    );
+    this.name = 'PluginHandlerNotRegisteredException';
+    this.pluginId = pluginId;
+    this.handlerId = handlerId;
+  }
+}
+
+/** Thrown when dispatch targets a hook point outside the platform catalog. */
+export class UnknownHookPointException extends PluginRegistryException {
+  readonly hookPoint: string;
+
+  constructor(hookPoint: string) {
+    super(`Unknown hook point '${hookPoint}'.`);
+    this.name = 'UnknownHookPointException';
+    this.hookPoint = hookPoint;
+  }
+}
+
+/** Thrown when fail-fast dispatch aborts after a handler failure (T3-D4). */
+export class PluginHandlerDispatchException extends PluginRegistryException {
+  readonly tenantId: string;
+  readonly hookPoint: string;
+  readonly pluginId: string;
+  readonly handlerId: string;
+  readonly outcomes: readonly {
+    pluginId: string;
+    handlerId: string;
+    success: boolean;
+    error?: string;
+  }[];
+  override readonly cause: unknown;
+
+  constructor(
+    tenantId: string,
+    hookPoint: string,
+    pluginId: string,
+    handlerId: string,
+    outcomes: readonly {
+      pluginId: string;
+      handlerId: string;
+      success: boolean;
+      error?: string;
+    }[],
+    cause: unknown,
+  ) {
+    const detail = cause instanceof Error ? cause.message : String(cause);
+    super(
+      `Hook dispatch failed at '${hookPoint}' for tenant '${tenantId}' in handler '${pluginId}:${handlerId}': ${detail}`,
+    );
+    this.name = 'PluginHandlerDispatchException';
+    this.tenantId = tenantId;
+    this.hookPoint = hookPoint;
+    this.pluginId = pluginId;
+    this.handlerId = handlerId;
+    this.outcomes = outcomes;
+    this.cause = cause;
+  }
+}
+
+/** Thrown when tenant handler activation state is inconsistent. */
+export class PluginActivationException extends PluginRegistryException {
+  constructor(message: string) {
+    super(message);
+    this.name = 'PluginActivationException';
+  }
+}

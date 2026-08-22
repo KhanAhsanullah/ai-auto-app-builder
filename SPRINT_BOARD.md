@@ -58,12 +58,17 @@ All Sprint 4 code lives in `@ai-commerce/tenant-provisioner` (`platform/tenant-p
 
 ---
 
-## Sprint 5 — Plugin Engine
+## Sprint 5 — Plugin Engine ✅
 
-- Plugin manifest schema and registry
-- Plugin discovery, installation, and lifecycle
-- Event-driven plugin hooks
-- `@ai-commerce/plugin-registry`
+| Task   | Status | Deliverable                                                                                          |
+| ------ | ------ | ---------------------------------------------------------------------------------------------------- |
+| Task 1 | ✅     | Plugin manifest schema, hook point catalog, ManifestValidator, CatalogService                        |
+| Task 2 | ✅     | Discovery, install, dependency resolution, lifecycle, ConfigProvider gates                           |
+| Task 3 | ✅     | Handler activation, HookDispatcher, PluginRegistry facade, `createPluginRegistry`, architecture docs |
+
+**Tags:** `sprint5-task1`, `sprint5-task2`, `sprint5-task3`
+
+All Sprint 5 code lives in `@ai-commerce/plugin-registry` (`platform/plugin-registry`). HTTP service deferred.
 
 ---
 
