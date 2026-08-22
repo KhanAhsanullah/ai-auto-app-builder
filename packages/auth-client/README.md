@@ -69,6 +69,6 @@ pnpm --filter @ai-commerce/auth-client build
 
 ## Out of scope (Sprint 6)
 
-- HTTP auth middleware (Sprint 7 API Gateway)
+- HTTP auth middleware (owned by `@ai-commerce/api-gateway`, Sprint 7 Task 2)
 - Production IdP SDKs / React Native Keychain native modules
 - Changes to `authentication.schema.json`

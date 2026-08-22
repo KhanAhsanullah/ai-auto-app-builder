@@ -10,9 +10,9 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 **Sprint 7 — API Gateway** (in progress)
 
-Sprint 6 is complete. Latest deliverable: **Sprint 7 Task 1** — tenant routing, rate limiting, and config injection in `@ai-commerce/api-gateway`.
+Sprint 7 Task 2 complete — auth middleware (Bearer / session / API key) via `@ai-commerce/auth-client` in `@ai-commerce/api-gateway`.
 
-**Next:** Sprint 7 Task 2 — auth middleware.
+**Next:** Sprint 7 Task 3 — `createApiGateway` facade and Node HTTP adapter.
 
 ## Completed Tasks
 
@@ -26,41 +26,44 @@ Sprint 6 is complete. Latest deliverable: **Sprint 7 Task 1** — tenant routing
 | Sprint 4 Task 1–3 ✅ | Tenant provisioner                                                            | `sprint4-task*` |
 | Sprint 5 Task 1–3 ✅ | Plugin registry                                                               | `sprint5-task*` |
 | Sprint 6 Task 1–3 ✅ | Auth client (`AuthClient` facade)                                             | `sprint6-task*` |
-| Sprint 7 Task 1 ✅   | API Gateway foundation — tenant routing, routes, rate limit, config injection | (pending tag)   |
+| Sprint 7 Task 1 ✅   | API Gateway foundation — tenant routing, routes, rate limit, config injection | `sprint7-task1` |
+| Sprint 7 Task 2 ✅   | Auth middleware — Bearer / session / API key via auth-client                  | (pending tag)   |
 
 ## Current Progress
 
 - Sprints 1–6 complete (config, theme, white-label, provisioning, plugins, auth)
-- **API Gateway Task 1** — framework-agnostic pipeline with tenant resolution and Config Runtime injection
+- **API Gateway Task 1–2** — pipeline + auth middleware
 
-**Overall:** Sprint 7 Task 1 implemented. Next: auth middleware (Task 2).
+**Overall:** Sprint 7 Task 2 implemented. Next: facade / HTTP adapter (Task 3).
 
 ## Next Tasks
 
-**Sprint 7 Task 2 — Auth middleware**
+**Sprint 7 Task 3 — Gateway facade**
 
-- Bearer / session validation via `@ai-commerce/auth-client`
+- `createApiGateway` facade
+- Node HTTP adapter
+- Integration docs
 - See [SPRINT_BOARD.md](./SPRINT_BOARD.md)
 
 ## Latest Commit
 
 ```
-390e332 feat(auth-client): add AuthClient facade and multi-surface helpers (Sprint 6 Task 3)
+4489a68 feat(api-gateway): add tenant routing and config injection (Sprint 7 Task 1)
 ```
 
 ## Latest Tag
 
 ```
-sprint6-task3
+sprint7-task1
 ```
 
 ## Health Status
 
-| Area        | Status         | Notes                                              |
-| ----------- | -------------- | -------------------------------------------------- |
-| Repository  | ✅ Healthy     | Sprint 7 Task 1 implemented (commit when approved) |
-| Auth client | ✅ Complete    | Sprint 6                                           |
-| API gateway | 🟡 In progress | Sprint 7 Task 1 complete                           |
-| Tests       | ✅ Passing     | Includes `@ai-commerce/api-gateway` (12 tests)     |
+| Area        | Status         | Notes                                           |
+| ----------- | -------------- | ----------------------------------------------- |
+| Repository  | ✅ Healthy     | Sprint 7 Task 2 implemented (commit when asked) |
+| Auth client | ✅ Complete    | Sprint 6                                        |
+| API gateway | 🟡 In progress | Tasks 1–2 complete; Task 3 next                 |
+| Tests       | ✅ Passing     | `@ai-commerce/api-gateway` (27 tests)           |
 
-**Summary:** Sprint 7 Task 1 is implemented. Task 2 (auth middleware) is next.
+**Summary:** Sprint 7 Task 2 is implemented. Task 3 (HTTP adapter / facade) is next.

@@ -1,10 +1,12 @@
 import {
+  AuthUnauthorizedException,
   ConfigInjectionException,
   RateLimitExceededException,
   RouteNotFoundException,
   TenantResolutionException,
 } from '../errors.js';
 import type { GatewayContext, GatewayRequest, GatewayResponse } from '../types.js';
+import { createAuthMiddleware, type CreateAuthMiddlewareOptions } from './auth-middleware.js';
 import type { ConfigInjector } from './config-injector.js';
 import { composeGatewayPipeline, type GatewayMiddleware } from './middleware-pipeline.js';
 import type { RateLimiter } from './rate-limiter.js';
@@ -85,17 +87,26 @@ export function createCoreMiddlewares(options: CreateCoreMiddlewaresOptions): Ga
 }
 
 export interface GatewayPipelineOptions extends CreateCoreMiddlewaresOptions {
-  /** Additional middleware after the core stack (e.g. auth in Task 2). */
+  /**
+   * Auth middleware wiring (Sprint 7 Task 2).
+   * When set, runs after config injection for routes with `requireAuth: true`.
+   */
+  auth?: CreateAuthMiddlewareOptions;
+  /** Additional middleware after the core stack (and auth, when configured). */
   extraMiddlewares?: GatewayMiddleware[];
   /** Terminal handler after middleware. */
   handler: (context: GatewayContext) => Promise<GatewayResponse>;
 }
 
-/** Create a runnable gateway pipeline from core + optional extra middleware. */
+/** Create a runnable gateway pipeline from core + optional auth + extra middleware. */
 export function createGatewayPipeline(
   options: GatewayPipelineOptions,
 ): (request: GatewayRequest) => Promise<GatewayResponse> {
-  const middlewares = [...createCoreMiddlewares(options), ...(options.extraMiddlewares ?? [])];
+  const middlewares = [
+    ...createCoreMiddlewares(options),
+    ...(options.auth ? [createAuthMiddleware(options.auth)] : []),
+    ...(options.extraMiddlewares ?? []),
+  ];
 
   const run = composeGatewayPipeline(middlewares, options.handler);
 
@@ -143,6 +154,13 @@ function toErrorResponse(error: unknown): GatewayResponse {
   }
   if (error instanceof ConfigInjectionException) {
     return { status: 502, body: { error: 'config_injection_failed', message: error.message } };
+  }
+  if (error instanceof AuthUnauthorizedException) {
+    return {
+      status: 401,
+      headers: { 'www-authenticate': 'Bearer' },
+      body: { error: 'unauthorized', message: error.message },
+    };
   }
 
   const message = error instanceof Error ? error.message : String(error);

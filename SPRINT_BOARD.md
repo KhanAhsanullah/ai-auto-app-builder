@@ -91,7 +91,7 @@ All Sprint 6 code lives in `@ai-commerce/auth-client` (`packages/auth-client`). 
 | Task   | Status | Deliverable                                                                                  |
 | ------ | ------ | -------------------------------------------------------------------------------------------- |
 | Task 1 | ✅     | Tenant routing, route matching, rate limiting, config injection (`@ai-commerce/api-gateway`) |
-| Task 2 | ⬜     | Auth middleware via `@ai-commerce/auth-client`                                               |
+| Task 2 | ✅     | Auth middleware via `@ai-commerce/auth-client`                                               |
 | Task 3 | ⬜     | `createApiGateway` facade, Node HTTP adapter, integration docs                               |
 
 ---

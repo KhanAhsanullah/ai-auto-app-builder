@@ -21,7 +21,7 @@ The platform architecture was approved in Sprint 0. It defines:
 | [tenant-provisioning.md](./tenant-provisioning.md) | Tenant Provisioning — onboarding workflow, activation, Config Runtime validation boundary                                |
 | [plugin-engine.md](./plugin-engine.md)             | Plugin Engine — catalog, install/lifecycle, handler activation, hook dispatch, PluginRegistry facade                     |
 | [authentication.md](./authentication.md)           | Authentication — auth policy resolution, provider ports, Config Runtime mapping; OAuth adapters deferred to Task 2+      |
-| [api-gateway.md](./api-gateway.md)                 | API Gateway — tenant routing, rate limiting, config injection, middleware pipeline                                       |
+| [api-gateway.md](./api-gateway.md)                 | API Gateway — tenant routing, rate limiting, config injection, auth middleware, pipeline                                 |
 
 ## Monorepo Layout
 

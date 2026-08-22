@@ -1,7 +1,22 @@
+import type { AuthMethodId, AuthSurface } from '@ai-commerce/auth-client';
 import type { ConfigProviderResult } from '@ai-commerce/config-runtime';
 
 /** HTTP methods supported by the gateway route table. */
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'HEAD' | 'OPTIONS';
+
+/** How the principal authenticated to the gateway. */
+export type GatewayAuthTokenType = 'bearer' | 'session' | 'api_key';
+
+/** Authenticated principal attached after auth middleware succeeds. */
+export interface GatewayAuthPrincipal {
+  subject: string;
+  surface: AuthSurface;
+  method: AuthMethodId;
+  tokenType: GatewayAuthTokenType;
+  /** Absolute expiry in epoch milliseconds when known. */
+  expiresAt?: number;
+  roles?: readonly string[];
+}
 
 /** Framework-agnostic inbound gateway request. */
 export interface GatewayRequest {
@@ -35,6 +50,13 @@ export interface GatewayRoute {
   name?: string;
   /** When false, skip tenant resolution (health checks, public well-known). Default true. */
   requireTenant?: boolean;
+  /**
+   * When true, require Bearer / session / API-key validation (Task 2).
+   * Default false — routes opt in to auth.
+   */
+  requireAuth?: boolean;
+  /** Auth surface policy to enforce when `requireAuth` is true. Default from middleware (`api`). */
+  authSurface?: AuthSurface;
   /** Requests per window for this route (overrides default limiter). */
   rateLimitPerWindow?: number;
 }
@@ -52,6 +74,8 @@ export interface GatewayContext {
   route?: MatchedRoute;
   /** Resolved tenant configuration from Config Runtime (when injected). */
   config?: ConfigProviderResult;
+  /** Authenticated principal when auth middleware succeeds. */
+  auth?: GatewayAuthPrincipal;
   /** Mutable bag for middleware-shared state. */
   state: Record<string, unknown>;
 }

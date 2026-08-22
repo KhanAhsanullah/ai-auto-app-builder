@@ -1,6 +1,6 @@
 # API Gateway
 
-Backend-for-Frontend (BFF) and edge API gateway for CommerceOS AI. Framework-agnostic request pipeline with tenant routing, rate limiting, and Config Runtime injection.
+Backend-for-Frontend (BFF) and edge API gateway for CommerceOS AI. Framework-agnostic request pipeline with tenant routing, rate limiting, Config Runtime injection, and auth middleware.
 
 ## Package
 
@@ -8,20 +8,23 @@ Backend-for-Frontend (BFF) and edge API gateway for CommerceOS AI. Framework-agn
 
 ## Status
 
-Sprint 7 Task 1 complete — tenant routing, route matching, rate limiting, config injection, middleware pipeline.
+Sprint 7 Task 2 complete — auth middleware via `@ai-commerce/auth-client` (Bearer / session / API key).
 
-Task 2 (auth middleware) and Task 3 (HTTP adapter / gateway facade) are not yet implemented.
+Task 3 (`createApiGateway` facade / Node HTTP adapter) is not yet implemented.
 
 ## Modules
 
-| Module                   | Purpose                                             |
-| ------------------------ | --------------------------------------------------- |
-| `TenantResolver`         | Resolve tenant from headers / subdomain             |
-| `RouteMatcher`           | Method + `:param` path matching                     |
-| `InMemoryRateLimiter`    | Fixed-window rate limiting                          |
-| `ConfigInjector`         | ConfigProvider validation gate into request context |
-| `createGatewayPipeline`  | Core middleware stack + error mapping               |
-| `composeGatewayPipeline` | Onion middleware composition                        |
+| Module                        | Purpose                                             |
+| ----------------------------- | --------------------------------------------------- |
+| `TenantResolver`              | Resolve tenant from headers / subdomain             |
+| `RouteMatcher`                | Method + `:param` path matching                     |
+| `InMemoryRateLimiter`         | Fixed-window rate limiting                          |
+| `ConfigInjector`              | ConfigProvider validation gate into request context |
+| `createAuthMiddleware`        | Bearer / session / API-key validation               |
+| `GatewayCredentialValidator`  | Injectable credential introspection port            |
+| `InMemoryCredentialValidator` | Test / local credential map                         |
+| `createGatewayPipeline`       | Core middleware stack + auth + error mapping        |
+| `composeGatewayPipeline`      | Onion middleware composition                        |
 
 ## Usage
 
@@ -29,20 +32,36 @@ Task 2 (auth middleware) and Task 3 (HTTP adapter / gateway facade) are not yet 
 import {
   ConfigInjector,
   createGatewayPipeline,
+  InMemoryCredentialValidator,
   InMemoryRateLimiter,
-  InMemoryTenantConfigLoader,
-  InMemoryTenantDirectory,
   RouteMatcher,
   TenantResolver,
+  bearerPrincipal,
 } from '@ai-commerce/api-gateway';
+import { createAuthClient } from '@ai-commerce/auth-client';
 import { ConfigProvider } from '@ai-commerce/config-runtime';
 
-const directory = new InMemoryTenantDirectory();
-directory.seed([{ id: '…', slug: 'acme' }]);
+const authClient = createAuthClient();
+const validator = new InMemoryCredentialValidator();
+validator.seed({
+  kind: 'bearer',
+  credential: 'access-token',
+  principal: bearerPrincipal({
+    subject: 'user-1',
+    surface: 'customer',
+    method: 'email',
+    expiresAt: Date.now() + 60_000,
+  }),
+});
 
 const routes = new RouteMatcher();
 routes.register({ method: 'GET', path: '/health', requireTenant: false });
-routes.register({ method: 'GET', path: '/v1/catalog' });
+routes.register({
+  method: 'GET',
+  path: '/v1/me',
+  requireAuth: true,
+  authSurface: 'customer',
+});
 
 const pipeline = createGatewayPipeline({
   routeMatcher: routes,
@@ -52,11 +71,12 @@ const pipeline = createGatewayPipeline({
     configLoader,
   }),
   rateLimiter: new InMemoryRateLimiter(),
-  handler: async (ctx) => ({ status: 200, body: { tenantId: ctx.tenant?.id } }),
+  auth: { authClient, validator },
+  handler: async (ctx) => ({ status: 200, body: { subject: ctx.auth?.subject } }),
 });
-
-await pipeline({ method: 'GET', path: '/v1/catalog', headers: { 'x-tenant-id': '…' } });
 ```
+
+Routes opt in with `requireAuth: true`. Credentials: `Authorization: Bearer …`, session cookie `cos_session`, `x-session-token`, or `x-api-key` / `Authorization: ApiKey …`.
 
 ## Scripts
 
@@ -67,9 +87,9 @@ pnpm --filter @ai-commerce/api-gateway lint
 pnpm --filter @ai-commerce/api-gateway build
 ```
 
-## Out of scope (Task 1)
+## Out of scope (Task 2)
 
-- Auth middleware (`@ai-commerce/auth-client` integration) — Task 2
 - Node/HTTP server adapter / `createApiGateway` facade — Task 3
+- Production IdP token introspection adapters
 - Upstream service aggregation / proxy
 - Redis-backed rate limiting

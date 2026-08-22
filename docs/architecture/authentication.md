@@ -21,12 +21,12 @@ createAuthClient() → AuthClient facade
         └── TokenRefreshService + TokenStore
 ```
 
-| Concern                         | Owner                      |
-| ------------------------------- | -------------------------- |
-| Authentication JSON Schema      | Sprint 1 `config-schema`   |
-| Platform/vertical auth defaults | `config-runtime` defaults  |
-| Policy + auth flows + facade    | `@ai-commerce/auth-client` |
-| HTTP auth middleware            | API Gateway (Sprint 7)     |
+| Concern                         | Owner                         |
+| ------------------------------- | ----------------------------- |
+| Authentication JSON Schema      | Sprint 1 `config-schema`      |
+| Platform/vertical auth defaults | `config-runtime` defaults     |
+| Policy + auth flows + facade    | `@ai-commerce/auth-client`    |
+| HTTP auth middleware            | API Gateway (Sprint 7 Task 2) |
 
 ## Sprint 6 Task Breakdown
 
@@ -62,4 +62,3 @@ Session tokens are stored per surface under `session.{surface}.tokens`.
 - Session revocation service
 - Changes to authentication JSON Schema without versioning
 - Native Keychain / Web Crypto SubtleCrypto browser builds (Node crypto used server-side)
-- HTTP middleware (Sprint 7)

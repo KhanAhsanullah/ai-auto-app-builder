@@ -45,3 +45,11 @@ export class ConfigInjectionException extends ApiGatewayException {
     this.name = 'ConfigInjectionException';
   }
 }
+
+/** Thrown when authentication is required but missing or invalid. */
+export class AuthUnauthorizedException extends ApiGatewayException {
+  constructor(message: string) {
+    super(message);
+    this.name = 'AuthUnauthorizedException';
+  }
+}

@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **API Gateway auth middleware** (Sprint 7 Task 2) — `@ai-commerce/api-gateway`
+  - `createAuthMiddleware` — Bearer / session / API-key validation via `@ai-commerce/auth-client` policy resolution
+  - `GatewayCredentialValidator` port + `InMemoryCredentialValidator` for tests
+  - Route opt-in — `requireAuth` / `authSurface` on `GatewayRoute`
+  - Credential extraction — Authorization Bearer/ApiKey, `x-api-key`, `cos_session` cookie, `x-session-token`
+  - 401 mapping with `WWW-Authenticate: Bearer`
+  - Unit + pipeline auth coverage
+
 - **API Gateway foundation** (Sprint 7 Task 1) — `@ai-commerce/api-gateway`
   - `TenantResolver` — header / subdomain tenant identity resolution
   - `RouteMatcher` — method + `:param` path matching

@@ -18,6 +18,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@ai-commerce/auth-client": "workspace:*",
     "@ai-commerce/config-runtime": "workspace:*",
     "@ai-commerce/config-schema": "workspace:*"
   },

@@ -4,7 +4,7 @@ Framework-agnostic BFF / edge gateway for tenant-aware commerce API traffic.
 
 ## Overview
 
-`@ai-commerce/api-gateway` resolves tenant identity, matches routes, applies rate limits, and injects Config Runtime output into a request context. It does not yet bind to a specific HTTP framework (Task 3) or enforce auth sessions (Task 2).
+`@ai-commerce/api-gateway` resolves tenant identity, matches routes, applies rate limits, injects Config Runtime output, and enforces auth for opted-in routes via `@ai-commerce/auth-client` policy resolution plus an injectable credential validator.
 
 ## Boundaries
 
@@ -19,7 +19,9 @@ RateLimiter
         ↓
 ConfigInjector → ConfigProvider.resolve()
         ↓
-Handler / future auth middleware (Task 2) / HTTP adapter (Task 3)
+Auth middleware (requireAuth routes) → AuthClient policy + credential validator
+        ↓
+Handler / HTTP adapter (Task 3)
 ```
 
 | Concern                | Owner                         |
@@ -34,8 +36,20 @@ Handler / future auth middleware (Task 2) / HTTP adapter (Task 3)
 | Task   | Deliverable                                                    |
 | ------ | -------------------------------------------------------------- |
 | Task 1 | Tenant routing, routes, rate limit, config injection, pipeline |
-| Task 2 | Auth middleware (Bearer / session validation via auth-client)  |
+| Task 2 | Auth middleware (Bearer / session / API key via auth-client)   |
 | Task 3 | `createApiGateway` facade, Node HTTP adapter, integration docs |
+
+## Auth middleware (Task 2)
+
+- Routes opt in with `requireAuth: true` and optional `authSurface` (`customer` | `admin` | `api`)
+- Policy resolved with `AuthClient.resolvePolicyFromConfigProvider` from injected config
+- Credentials (preference order):
+  1. `Authorization: Bearer <token>`
+  2. `Authorization: ApiKey <key>`
+  3. `x-api-key`
+  4. Cookie `cos_session` (or `x-session-token`)
+- `GatewayCredentialValidator` port introspects opaque credentials; `InMemoryCredentialValidator` for tests
+- Failures map to HTTP 401 with `WWW-Authenticate: Bearer`
 
 ## Tenant resolution order
 
@@ -45,7 +59,7 @@ Handler / future auth middleware (Task 2) / HTTP adapter (Task 3)
 
 ## Deferred
 
-- Auth middleware (Task 2)
 - Production HTTP server binding (Task 3)
+- Production IdP / session-store introspection adapters
 - Distributed rate limiting
 - Request aggregation / BFF composition graphs
