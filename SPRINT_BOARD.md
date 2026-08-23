@@ -98,10 +98,11 @@ All Sprint 6 code lives in `@ai-commerce/auth-client` (`packages/auth-client`). 
 
 ## Sprint 8 — Dashboard
 
-- Admin Dashboard implementation
-- Config-driven navigation, feature flags, and branding
-- Merchant and operator workflows
-- `@ai-commerce/apps/admin-dashboard`
+| Task   | Status | Deliverable                                                                               |
+| ------ | ------ | ----------------------------------------------------------------------------------------- |
+| Task 1 | ✅     | Shell foundation — nav, feature flags, branding, widgets (`@ai-commerce/admin-dashboard`) |
+| Task 2 | ⬜     | Screen registry + React admin layout shell                                                |
+| Task 3 | ⬜     | `createAdminDashboard` facade, app entry, integration docs                                |
 
 ---
 

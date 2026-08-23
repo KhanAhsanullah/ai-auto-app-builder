@@ -8,48 +8,46 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 7 — API Gateway** (complete)
+**Sprint 8 — Admin Dashboard** (in progress)
 
-Sprint 7 Task 3 complete — `createApiGateway` / `ApiGateway` facade and Node HTTP adapter in `@ai-commerce/api-gateway`.
+Sprint 8 Task 1 complete — config-driven shell foundation (navigation, feature flags, branding, widgets) in `@ai-commerce/admin-dashboard`.
 
-**Next:** Sprint 8 — Admin Dashboard.
+**Next:** Sprint 8 Task 2 — screen registry + React admin layout.
 
 ## Completed Tasks
 
-| Task                 | Description                                                                   | Commit Tag      |
-| -------------------- | ----------------------------------------------------------------------------- | --------------- |
-| Sprint 1 Task 1 ✅   | Monorepo foundation                                                           | —               |
-| Sprint 1 Task 2 ✅   | Configuration schema foundation                                               | `sprint1-task2` |
-| Sprint 1 Task 3 ✅   | Configuration runtime                                                         | `sprint1-task3` |
-| Sprint 2 Task 1–3 ✅ | Theme engine                                                                  | `sprint2-task*` |
-| Sprint 3 Task 1–3 ✅ | White-label engine                                                            | `sprint3-task*` |
-| Sprint 4 Task 1–3 ✅ | Tenant provisioner                                                            | `sprint4-task*` |
-| Sprint 5 Task 1–3 ✅ | Plugin registry                                                               | `sprint5-task*` |
-| Sprint 6 Task 1–3 ✅ | Auth client (`AuthClient` facade)                                             | `sprint6-task*` |
-| Sprint 7 Task 1 ✅   | API Gateway foundation — tenant routing, routes, rate limit, config injection | `sprint7-task1` |
-| Sprint 7 Task 2 ✅   | Auth middleware — Bearer / session / API key via auth-client                  | `sprint7-task2` |
-| Sprint 7 Task 3 ✅   | `createApiGateway` facade + Node HTTP adapter                                 | `sprint7-task3` |
+| Task                 | Description                                                      | Commit Tag      |
+| -------------------- | ---------------------------------------------------------------- | --------------- |
+| Sprint 1 Task 1 ✅   | Monorepo foundation                                              | —               |
+| Sprint 1 Task 2 ✅   | Configuration schema foundation                                  | `sprint1-task2` |
+| Sprint 1 Task 3 ✅   | Configuration runtime                                            | `sprint1-task3` |
+| Sprint 2 Task 1–3 ✅ | Theme engine                                                     | `sprint2-task*` |
+| Sprint 3 Task 1–3 ✅ | White-label engine                                               | `sprint3-task*` |
+| Sprint 4 Task 1–3 ✅ | Tenant provisioner                                               | `sprint4-task*` |
+| Sprint 5 Task 1–3 ✅ | Plugin registry                                                  | `sprint5-task*` |
+| Sprint 6 Task 1–3 ✅ | Auth client (`AuthClient` facade)                                | `sprint6-task*` |
+| Sprint 7 Task 1–3 ✅ | API Gateway                                                      | `sprint7-task*` |
+| Sprint 8 Task 1 ✅   | Admin dashboard shell foundation — nav, flags, branding, widgets | (pending tag)   |
 
 ## Current Progress
 
-- Sprints 1–7 complete (config → theme → white-label → provisioning → plugins → auth → API gateway)
-- **API Gateway** — pipeline, auth middleware, facade, Node HTTP binding
+- Sprints 1–7 complete
+- **Admin Dashboard Task 1** — framework-agnostic shell resolution from Config Runtime
 
-**Overall:** Sprint 7 complete. Next: Sprint 8 Dashboard.
+**Overall:** Sprint 8 Task 1 implemented. Next: React layout / screen registry (Task 2).
 
 ## Next Tasks
 
-**Sprint 8 — Dashboard**
+**Sprint 8 Task 2 — React layout shell**
 
-- Admin Dashboard implementation
-- Config-driven navigation, feature flags, and branding
-- Merchant and operator workflows
+- Screen-map registry for admin routes
+- Sidebar / landing layout driven by resolved shell
 - See [SPRINT_BOARD.md](./SPRINT_BOARD.md)
 
 ## Latest Commit
 
 ```
-06b763c feat(api-gateway): add createApiGateway facade and Node HTTP adapter (Sprint 7 Task 3)
+d687bd6 docs: mark sprint7-task3 complete in PROJECT_STATUS
 ```
 
 ## Latest Tag
@@ -60,10 +58,11 @@ sprint7-task3
 
 ## Health Status
 
-| Area        | Status      | Notes                                 |
-| ----------- | ----------- | ------------------------------------- |
-| Repository  | ✅ Healthy  | Sprint 7 complete and tagged          |
-| Auth client | ✅ Complete | Sprint 6                              |
-| API gateway | ✅ Complete | Sprint 7 Tasks 1–3                    |
-| Tests       | ✅ Passing  | `@ai-commerce/api-gateway` (35 tests) |
-**Summary:** Sprint 7 is complete. Sprint 8 (Admin Dashboard) is next.
+| Area            | Status         | Notes                                           |
+| --------------- | -------------- | ----------------------------------------------- |
+| Repository      | ✅ Healthy     | Sprint 8 Task 1 implemented (commit when asked) |
+| API gateway     | ✅ Complete    | Sprint 7                                        |
+| Admin dashboard | 🟡 In progress | Task 1 complete                                 |
+| Tests           | ✅ Passing     | `@ai-commerce/admin-dashboard` (7 tests)        |
+
+**Summary:** Sprint 8 Task 1 is implemented. Task 2 (React layout) is next.
