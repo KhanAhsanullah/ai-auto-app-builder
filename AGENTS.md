@@ -218,6 +218,6 @@ All four must pass.
 | [CHANGELOG.md](./CHANGELOG.md)                               | Version history                  |
 | [docs/architecture/README.md](./docs/architecture/README.md) | System architecture              |
 
-**Latest commit:** `d98d5b2` (Sprint 7 Task 3 pending commit)
-**Latest tag:** `sprint7-task2`
+**Latest commit:** `06b763c`
+**Latest tag:** `sprint7-task3`
 **Schema version:** v1 (`SCHEMA_VERSION`)
