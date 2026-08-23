@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **API Gateway facade + Node HTTP adapter** (Sprint 7 Task 3) — `@ai-commerce/api-gateway`
+  - `ApiGateway` / `createApiGateway` — public facade for pipeline + listen
+  - `createNodeHttpServer` — Node `IncomingMessage` ↔ `GatewayRequest` / `GatewayResponse`
+  - JSON body + query parsing; optional `trustProxy` for `x-forwarded-for`
+  - Facade + adapter unit/integration tests (ephemeral port listen)
+
 - **API Gateway auth middleware** (Sprint 7 Task 2) — `@ai-commerce/api-gateway`
   - `createAuthMiddleware` — Bearer / session / API-key validation via `@ai-commerce/auth-client` policy resolution
   - `GatewayCredentialValidator` port + `InMemoryCredentialValidator` for tests

@@ -1,15 +1,17 @@
 # API Gateway Architecture
 
-Framework-agnostic BFF / edge gateway for tenant-aware commerce API traffic.
+Framework-agnostic BFF / edge gateway for tenant-aware commerce API traffic, with an optional Node.js HTTP binding.
 
 ## Overview
 
-`@ai-commerce/api-gateway` resolves tenant identity, matches routes, applies rate limits, injects Config Runtime output, and enforces auth for opted-in routes via `@ai-commerce/auth-client` policy resolution plus an injectable credential validator.
+`@ai-commerce/api-gateway` resolves tenant identity, matches routes, applies rate limits, injects Config Runtime output, and enforces auth for opted-in routes via `@ai-commerce/auth-client`. Sprint 7 Task 3 adds the `ApiGateway` facade and Node HTTP adapter.
 
 ## Boundaries
 
 ```
-Client request (headers / host)
+Client (HTTP or in-process)
+        ↓
+ApiGateway.handle / createNodeHttpServer
         ↓
 RouteMatcher
         ↓
@@ -19,17 +21,17 @@ RateLimiter
         ↓
 ConfigInjector → ConfigProvider.resolve()
         ↓
-Auth middleware (requireAuth routes) → AuthClient policy + credential validator
+Auth middleware (requireAuth routes)
         ↓
-Handler / HTTP adapter (Task 3)
+Handler
 ```
 
-| Concern                | Owner                         |
-| ---------------------- | ----------------------------- |
-| Tenant config merge    | `@ai-commerce/config-runtime` |
-| Auth sessions / tokens | `@ai-commerce/auth-client`    |
-| Gateway pipeline       | `@ai-commerce/api-gateway`    |
-| HTTP listen/serve      | Task 3 adapter                |
+| Concern                | Owner                                        |
+| ---------------------- | -------------------------------------------- |
+| Tenant config merge    | `@ai-commerce/config-runtime`                |
+| Auth sessions / tokens | `@ai-commerce/auth-client`                   |
+| Gateway pipeline       | `@ai-commerce/api-gateway`                   |
+| HTTP listen/serve      | `createNodeHttpServer` / `ApiGateway.listen` |
 
 ## Sprint 7 Task Breakdown
 
@@ -38,6 +40,14 @@ Handler / HTTP adapter (Task 3)
 | Task 1 | Tenant routing, routes, rate limit, config injection, pipeline |
 | Task 2 | Auth middleware (Bearer / session / API key via auth-client)   |
 | Task 3 | `createApiGateway` facade, Node HTTP adapter, integration docs |
+
+## Facade (Task 3)
+
+- `createApiGateway(options)` — wires directory, config loader, routes, rate limiter, optional auth
+- `ApiGateway.handle(request)` — in-process / test entry
+- `ApiGateway.createHttpServer()` — unbound `http.Server`
+- `ApiGateway.listen(port)` — bind + start; supports ephemeral port `0`
+- Adapter maps `IncomingMessage` → `GatewayRequest` (path, query, JSON body, client IP) and writes `GatewayResponse`
 
 ## Auth middleware (Task 2)
 
@@ -59,7 +69,7 @@ Handler / HTTP adapter (Task 3)
 
 ## Deferred
 
-- Production HTTP server binding (Task 3)
 - Production IdP / session-store introspection adapters
 - Distributed rate limiting
 - Request aggregation / BFF composition graphs
+- Built-in TLS (terminate at reverse proxy or wrap the Node server)

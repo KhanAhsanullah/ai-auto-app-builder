@@ -1,3 +1,9 @@
+export { ApiGateway } from './domain/api-gateway.js';
+export type {
+  ApiGatewayDeps,
+  ApiGatewayListenOptions,
+  ApiGatewayListenResult,
+} from './domain/api-gateway.js';
 export { createAuthMiddleware } from './domain/auth-middleware.js';
 export type {
   CreateAuthMiddlewareOptions,
@@ -33,6 +39,8 @@ export {
   RouteNotFoundException,
   TenantResolutionException,
 } from './errors.js';
+export { createApiGateway } from './infrastructure/create-api-gateway.js';
+export type { CreateApiGatewayOptions } from './infrastructure/create-api-gateway.js';
 export {
   bearerPrincipal,
   InMemoryCredentialValidator,
@@ -40,6 +48,12 @@ export {
 export type { InMemoryCredentialRecord } from './infrastructure/in-memory-credential-validator.js';
 export { InMemoryTenantConfigLoader } from './infrastructure/in-memory-tenant-config-loader.js';
 export { InMemoryTenantDirectory } from './infrastructure/in-memory-tenant-directory.js';
+export {
+  createNodeHttpServer,
+  toGatewayRequest,
+  writeGatewayResponse,
+} from './infrastructure/node-http-adapter.js';
+export type { NodeHttpAdapterOptions } from './infrastructure/node-http-adapter.js';
 export type {
   GatewayAuthPrincipal,
   GatewayAuthTokenType,
