@@ -4,7 +4,7 @@ Config-driven merchant admin surface for CommerceOS AI.
 
 ## Overview
 
-`@ai-commerce/admin-dashboard` turns tenant configuration (navigation, feature flags, branding, `adminDashboard` settings) into a resolved shell model. React presentation and HTTP/app hosting are deferred to later Sprint 8 tasks.
+`@ai-commerce/admin-dashboard` turns tenant configuration into a resolved shell model, maps navigation routes through an `AdminScreenRegistry`, and renders a React layout (`AdminShellLayout`) with sidebar, header, and content.
 
 ## Boundaries
 
@@ -21,18 +21,22 @@ AdminDashboardShellResolver
         ↓
 ResolvedAdminDashboardShell
         ↓
-(Task 2) Screen registry + React layout
-(Task 3) createAdminDashboard facade
+AdminScreenRegistry + buildAdminShellViewModel
+        ↓
+AdminShellLayout (React) — sidebar / header / content
+        ↓
+(Task 3) createAdminDashboard facade + app entry
 ```
 
-| Concern                          | Owner                             |
-| -------------------------------- | --------------------------------- |
-| Navigation / feature flag schema | Sprint 1 `config-schema`          |
-| Config merge / validation        | `@ai-commerce/config-runtime`     |
-| Theme tokens (admin-dashboard)   | `@ai-commerce/theme-engine`       |
-| Brand assets                     | `@ai-commerce/white-label-engine` |
-| Shell resolution                 | `@ai-commerce/admin-dashboard`    |
-| React UI                         | Sprint 8 Task 2–3                 |
+| Concern                          | Owner                                |
+| -------------------------------- | ------------------------------------ |
+| Navigation / feature flag schema | Sprint 1 `config-schema`             |
+| Config merge / validation        | `@ai-commerce/config-runtime`        |
+| Theme tokens (admin-dashboard)   | `@ai-commerce/theme-engine`          |
+| Brand assets                     | `@ai-commerce/white-label-engine`    |
+| Shell + screen registry          | `@ai-commerce/admin-dashboard`       |
+| React layout                     | `@ai-commerce/admin-dashboard/react` |
+| App hosting facade               | Sprint 8 Task 3                      |
 
 ## Sprint 8 Task Breakdown
 
@@ -52,6 +56,6 @@ Unknown keys evaluate to disabled (item hidden).
 
 ## Deferred
 
-- React components / Vite or Next.js hosting
+- Vite / Next.js app entry (`createAdminDashboard`) — Task 3
 - Live IdP session binding (consume auth-client in later tasks)
-- Full white-label compile at render time
+- Full white-label / theme compile at render time

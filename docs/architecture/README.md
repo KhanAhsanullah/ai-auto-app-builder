@@ -22,7 +22,7 @@ The platform architecture was approved in Sprint 0. It defines:
 | [plugin-engine.md](./plugin-engine.md)             | Plugin Engine — catalog, install/lifecycle, handler activation, hook dispatch, PluginRegistry facade                     |
 | [authentication.md](./authentication.md)           | Authentication — auth policy resolution, provider ports, Config Runtime mapping; OAuth adapters deferred to Task 2+      |
 | [api-gateway.md](./api-gateway.md)                 | API Gateway — tenant routing, rate limiting, config injection, auth middleware, Node HTTP facade                         |
-| [admin-dashboard.md](./admin-dashboard.md)         | Admin Dashboard — config-driven shell (nav, feature flags, branding, widgets)                                            |
+| [admin-dashboard.md](./admin-dashboard.md)         | Admin Dashboard — shell resolution, screen registry, React layout                                                        |
 
 ## Monorepo Layout
 

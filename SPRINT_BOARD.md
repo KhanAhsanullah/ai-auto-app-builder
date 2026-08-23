@@ -101,7 +101,7 @@ All Sprint 6 code lives in `@ai-commerce/auth-client` (`packages/auth-client`). 
 | Task   | Status | Deliverable                                                                               |
 | ------ | ------ | ----------------------------------------------------------------------------------------- |
 | Task 1 | ✅     | Shell foundation — nav, feature flags, branding, widgets (`@ai-commerce/admin-dashboard`) |
-| Task 2 | ⬜     | Screen registry + React admin layout shell                                                |
+| Task 2 | ✅     | Screen registry + React admin layout shell                                                |
 | Task 3 | ⬜     | `createAdminDashboard` facade, app entry, integration docs                                |
 
 ---

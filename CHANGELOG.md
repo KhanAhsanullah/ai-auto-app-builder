@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Admin dashboard screen registry + React layout** (Sprint 8 Task 2) — `@ai-commerce/admin-dashboard`
+  - `AdminScreenRegistry` / `createDefaultAdminScreenRegistry` — route → screen map
+  - `buildAdminShellViewModel` — shell + registry view-model for layout
+  - React shell — `AdminShellLayout`, `AdminSidebar`, `AdminHeader` via `./react`
+  - Vitest + Testing Library coverage for registry and layout
+
 - **Admin dashboard shell foundation** (Sprint 8 Task 1) — `@ai-commerce/admin-dashboard`
   - `FeatureFlagEvaluator` — `flags.*` and `modules.*` evaluation
   - `AdminNavigationResolver` — visibility + feature-flag gated admin nav
