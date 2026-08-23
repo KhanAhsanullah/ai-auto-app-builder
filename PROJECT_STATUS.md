@@ -28,7 +28,7 @@ Sprint 7 Task 3 complete — `createApiGateway` / `ApiGateway` facade and Node H
 | Sprint 6 Task 1–3 ✅ | Auth client (`AuthClient` facade)                                             | `sprint6-task*` |
 | Sprint 7 Task 1 ✅   | API Gateway foundation — tenant routing, routes, rate limit, config injection | `sprint7-task1` |
 | Sprint 7 Task 2 ✅   | Auth middleware — Bearer / session / API key via auth-client                  | `sprint7-task2` |
-| Sprint 7 Task 3 ✅   | `createApiGateway` facade + Node HTTP adapter                                 | (pending tag)   |
+| Sprint 7 Task 3 ✅   | `createApiGateway` facade + Node HTTP adapter                                 | `sprint7-task3` |
 
 ## Current Progress
 
@@ -49,22 +49,21 @@ Sprint 7 Task 3 complete — `createApiGateway` / `ApiGateway` facade and Node H
 ## Latest Commit
 
 ```
-d98d5b2 feat(api-gateway): add auth middleware via auth-client (Sprint 7 Task 2)
+06b763c feat(api-gateway): add createApiGateway facade and Node HTTP adapter (Sprint 7 Task 3)
 ```
 
 ## Latest Tag
 
 ```
-sprint7-task2
+sprint7-task3
 ```
 
 ## Health Status
 
-| Area        | Status      | Notes                                           |
-| ----------- | ----------- | ----------------------------------------------- |
-| Repository  | ✅ Healthy  | Sprint 7 Task 3 implemented (commit when asked) |
-| Auth client | ✅ Complete | Sprint 6                                        |
-| API gateway | ✅ Complete | Sprint 7 Tasks 1–3                              |
-| Tests       | ✅ Passing  | `@ai-commerce/api-gateway` (35 tests)           |
-
+| Area        | Status      | Notes                                 |
+| ----------- | ----------- | ------------------------------------- |
+| Repository  | ✅ Healthy  | Sprint 7 complete and tagged          |
+| Auth client | ✅ Complete | Sprint 6                              |
+| API gateway | ✅ Complete | Sprint 7 Tasks 1–3                    |
+| Tests       | ✅ Passing  | `@ai-commerce/api-gateway` (35 tests) |
 **Summary:** Sprint 7 is complete. Sprint 8 (Admin Dashboard) is next.
