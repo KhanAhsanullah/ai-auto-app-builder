@@ -8,54 +8,52 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 8 — Admin Dashboard** (complete)
+**Sprint 9 — Mobile App** (in progress)
 
-Sprint 8 Task 3 complete — `createAdminDashboard` facade, `AdminDashboardApp`, and `mountAdminDashboard` in `@ai-commerce/admin-dashboard`.
+Sprint 9 Task 1 complete — config-driven mobile shell foundation in `@ai-commerce/mobile-app`.
 
-**Next:** Sprint 9 — Mobile App (React Native).
+**Next:** Sprint 9 Task 2 — screen registry + React Native bottom-bar layout.
 
 ## Completed Tasks
 
-| Task               | Description                                                            | Commit Tag      |
-| ------------------ | ---------------------------------------------------------------------- | --------------- |
-| Sprint 1–7 ✅      | Config → theme → white-label → provisioning → plugins → auth → gateway | `sprint*-task*` |
-| Sprint 8 Task 1 ✅ | Admin dashboard shell foundation                                       | `sprint8-task1` |
-| Sprint 8 Task 2 ✅ | Screen registry + React admin layout shell                             | `sprint8-task2` |
-| Sprint 8 Task 3 ✅ | `createAdminDashboard` facade + app entry                              | (pending tag)   |
+| Task               | Description                                   | Commit Tag      |
+| ------------------ | --------------------------------------------- | --------------- |
+| Sprint 1–8 ✅      | Foundation through Admin Dashboard            | `sprint*-task*` |
+| Sprint 9 Task 1 ✅ | Mobile shell — nav, flags, branding, identity | (pending tag)   |
 
 ## Current Progress
 
 - Sprints 1–8 complete
-- **Admin Dashboard** — shell, screens, React app, facade
+- **Mobile App Task 1** — framework-agnostic shell resolution from Config Runtime
 
-**Overall:** Sprint 8 complete. Next: Sprint 9 Mobile App.
+**Overall:** Sprint 9 Task 1 implemented. Next: RN layout / screen registry (Task 2).
 
 ## Next Tasks
 
-**Sprint 9 — Mobile App**
+**Sprint 9 Task 2 — React Native layout**
 
-- React Native commerce surface
-- Config-driven screens, theme, and navigation
+- Screen-map registry for `store.*` routes
+- Bottom-bar shell driven by resolved mobile navigation
 - See [SPRINT_BOARD.md](./SPRINT_BOARD.md)
 
 ## Latest Commit
 
 ```
-f34e443 feat(admin-dashboard): add screen registry and React layout shell (Sprint 8 Task 2)
+98be1a4 feat(admin-dashboard): add createAdminDashboard facade and app entry (Sprint 8 Task 3)
 ```
 
 ## Latest Tag
 
 ```
-sprint8-task2
+sprint8-task3
 ```
 
 ## Health Status
 
-| Area            | Status      | Notes                                           |
-| --------------- | ----------- | ----------------------------------------------- |
-| Repository      | ✅ Healthy  | Sprint 8 Task 3 implemented (commit when asked) |
-| Admin dashboard | ✅ Complete | Sprint 8 Tasks 1–3                              |
-| Tests           | ✅ Passing  | `@ai-commerce/admin-dashboard` (20 tests)       |
+| Area       | Status         | Notes                                           |
+| ---------- | -------------- | ----------------------------------------------- |
+| Repository | ✅ Healthy     | Sprint 9 Task 1 implemented (commit when asked) |
+| Mobile app | 🟡 In progress | Task 1 complete                                 |
+| Tests      | ✅ Passing     | `@ai-commerce/mobile-app` (5 tests)             |
 
-**Summary:** Sprint 8 is complete. Sprint 9 (Mobile App) is next.
+**Summary:** Sprint 9 Task 1 is implemented. Task 2 (RN layout) is next.

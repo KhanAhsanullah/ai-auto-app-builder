@@ -108,9 +108,11 @@ All Sprint 6 code lives in `@ai-commerce/auth-client` (`packages/auth-client`). 
 
 ## Sprint 9 — Mobile App
 
-- Mobile commerce surface
-- Config-driven screens, theme, and navigation
-- `@ai-commerce/apps/mobile-app`, `@ai-commerce/ui-mobile`
+| Task   | Status | Deliverable                                                                   |
+| ------ | ------ | ----------------------------------------------------------------------------- |
+| Task 1 | ✅     | Shell foundation — nav, flags, branding, identity (`@ai-commerce/mobile-app`) |
+| Task 2 | ⬜     | Screen registry + React Native bottom-bar layout                              |
+| Task 3 | ⬜     | `createMobileApp` facade, app entry helpers, integration docs                 |
 
 ---
 

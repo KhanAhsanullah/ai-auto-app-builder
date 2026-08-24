@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Mobile app shell foundation** (Sprint 9 Task 1) — `@ai-commerce/mobile-app`
+  - `FeatureFlagEvaluator` — `flags.*` and `modules.*` evaluation
+  - `MobileNavigationResolver` — visibility + feature-flag gated mobile nav
+  - `MobileBrandingResolver` — branding / splash / app icon slice
+  - `MobileAppShellResolver` — composed shell (nav, identity, runtime, landing route)
+  - Config Runtime mapping — `toResolveMobileAppShellInput`
+  - Architecture doc — `docs/architecture/mobile-app.md`
+  - Unit + Config Runtime integration tests
+
 - **Admin dashboard facade + app entry** (Sprint 8 Task 3) — `@ai-commerce/admin-dashboard`
   - `AdminDashboard` / `createAdminDashboard` — config → shell + registry facade
   - `AdminDashboardApp` — stateful React entry with branded default screens
