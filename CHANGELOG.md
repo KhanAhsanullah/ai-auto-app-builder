@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Admin dashboard facade + app entry** (Sprint 8 Task 3) — `@ai-commerce/admin-dashboard`
+  - `AdminDashboard` / `createAdminDashboard` — config → shell + registry facade
+  - `AdminDashboardApp` — stateful React entry with branded default screens
+  - `mountAdminDashboard` — DOM mount helper for SPA / embed hosts
+  - Facade + app unit/integration tests
+
 - **Admin dashboard screen registry + React layout** (Sprint 8 Task 2) — `@ai-commerce/admin-dashboard`
   - `AdminScreenRegistry` / `createDefaultAdminScreenRegistry` — route → screen map
   - `buildAdminShellViewModel` — shell + registry view-model for layout

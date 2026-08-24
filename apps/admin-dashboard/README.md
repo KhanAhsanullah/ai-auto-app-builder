@@ -1,6 +1,6 @@
 # Admin Dashboard
 
-Merchant admin dashboard for CommerceOS AI. Resolves config-driven navigation, feature flags, and branding into a shell model, maps routes via a screen registry, and renders a React sidebar layout.
+Config-driven merchant admin for CommerceOS AI — resolve tenant config into a branded shell, map screens, and mount a React app from one facade call.
 
 ## Package
 
@@ -8,43 +8,40 @@ Merchant admin dashboard for CommerceOS AI. Resolves config-driven navigation, f
 
 ## Status
 
-Sprint 8 Task 2 complete — screen registry + React admin layout shell.
-
-Task 3 (`createAdminDashboard` facade / app entry) is not yet implemented.
+Sprint 8 complete — Task 3 delivers `createAdminDashboard` / `AdminDashboard` facade, `AdminDashboardApp`, and `mountAdminDashboard`.
 
 ## Modules
 
-| Module                         | Purpose                                        |
-| ------------------------------ | ---------------------------------------------- |
-| `FeatureFlagEvaluator`         | Evaluate `flags.*` and `modules.*` keys        |
-| `AdminNavigationResolver`      | Filter admin nav by visibility + feature flags |
-| `AdminBrandingResolver`        | Map branding for the shell                     |
-| `AdminDashboardShellResolver`  | Compose the resolved admin shell model         |
-| `AdminScreenRegistry`          | Route key → screen definition map              |
-| `buildAdminShellViewModel`     | Shell + registry → layout view-model           |
-| `AdminShellLayout` (`./react`) | React sidebar + header + content shell         |
+| Module                          | Purpose                                           |
+| ------------------------------- | ------------------------------------------------- |
+| `createAdminDashboard`          | Config → shell + registry facade                  |
+| `AdminDashboard`                | `getViewModel`, screen registration               |
+| `AdminDashboardApp` (`./react`) | Stateful React entry with branded default screens |
+| `mountAdminDashboard`           | DOM mount helper for SPA / embed hosts            |
+| `AdminScreenRegistry`           | Route → screen map                                |
+| `AdminShellLayout`              | Sidebar + header + content                        |
 
 ## Usage
 
 ```typescript
-import {
-  AdminDashboardShellResolver,
-  buildAdminShellViewModel,
-  createDefaultAdminScreenRegistry,
-  toResolveAdminDashboardShellInput,
-} from '@ai-commerce/admin-dashboard';
-import { AdminShellLayout } from '@ai-commerce/admin-dashboard/react';
+import { createAdminDashboard } from '@ai-commerce/admin-dashboard';
+import { AdminDashboardApp, mountAdminDashboard } from '@ai-commerce/admin-dashboard/react';
 import { ConfigProvider } from '@ai-commerce/config-runtime';
 
 const result = new ConfigProvider({ cache: false }).resolve({ tenantConfig });
-const shell = new AdminDashboardShellResolver().resolve(
-  toResolveAdminDashboardShellInput(result, { roles: ['manager'] }),
-);
-const viewModel = buildAdminShellViewModel(shell, createDefaultAdminScreenRegistry());
+const dashboard = createAdminDashboard({
+  config: result,
+  roles: ['manager'],
+});
 
-// React
-<AdminShellLayout viewModel={viewModel} onNavigate={(route) => { /* set active route */ }} />
+// React tree
+<AdminDashboardApp dashboard={dashboard} />
+
+// Or mount into the DOM
+mountAdminDashboard({ dashboard, container: '#root' });
 ```
+
+Navigation, feature flags, branding, and widgets all come from tenant config — change config, not forks.
 
 ## Scripts
 
@@ -55,8 +52,8 @@ pnpm --filter @ai-commerce/admin-dashboard lint
 pnpm --filter @ai-commerce/admin-dashboard build
 ```
 
-## Out of scope (Task 2)
+## Out of scope
 
-- `createAdminDashboard` facade / Vite or Next.js app entry — Task 3
-- Live IdP session binding
-- Full theme CSS injection from Theme Engine at runtime
+- Full Vite/Next app scaffold (host with `mountAdminDashboard` or embed `AdminDashboardApp`)
+- Live IdP session binding (`@ai-commerce/auth-client`)
+- Runtime Theme Engine CSS injection

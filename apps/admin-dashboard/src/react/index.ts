@@ -1,6 +1,10 @@
 export { AdminHeader } from './admin-header.js';
 export type { AdminHeaderProps } from './admin-header.js';
+export { AdminDashboardApp } from './admin-dashboard-app.js';
+export type { AdminDashboardAppProps } from './admin-dashboard-app.js';
 export { AdminShellLayout } from './admin-shell-layout.js';
 export type { AdminShellLayoutProps } from './admin-shell-layout.js';
 export { AdminSidebar } from './admin-sidebar.js';
 export type { AdminSidebarProps } from './admin-sidebar.js';
+export { mountAdminDashboard } from './mount-admin-dashboard.js';
+export type { MountAdminDashboardOptions, MountedAdminDashboard } from './mount-admin-dashboard.js';

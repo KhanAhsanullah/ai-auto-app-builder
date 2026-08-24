@@ -4,39 +4,30 @@ Config-driven merchant admin surface for CommerceOS AI.
 
 ## Overview
 
-`@ai-commerce/admin-dashboard` turns tenant configuration into a resolved shell model, maps navigation routes through an `AdminScreenRegistry`, and renders a React layout (`AdminShellLayout`) with sidebar, header, and content.
+`@ai-commerce/admin-dashboard` resolves tenant configuration into a shell model, maps routes through `AdminScreenRegistry`, and exposes a React app via `createAdminDashboard` → `AdminDashboardApp` / `mountAdminDashboard`.
 
 ## Boundaries
 
 ```
 Tenant config (ConfigProvider.resolve)
         ↓
-toResolveAdminDashboardShellInput
+createAdminDashboard()
+        ├── AdminDashboardShellResolver
+        └── AdminScreenRegistry (defaults + extras)
         ↓
-AdminDashboardShellResolver
-        ├── FeatureFlagEvaluator
-        ├── AdminNavigationResolver
-        ├── AdminBrandingResolver
-        └── Widget / layout preferences
+AdminDashboard facade (getViewModel / registerScreen)
         ↓
-ResolvedAdminDashboardShell
-        ↓
-AdminScreenRegistry + buildAdminShellViewModel
-        ↓
-AdminShellLayout (React) — sidebar / header / content
-        ↓
-(Task 3) createAdminDashboard facade + app entry
+AdminDashboardApp / mountAdminDashboard
+        └── AdminShellLayout (sidebar / header / content)
 ```
 
-| Concern                          | Owner                                |
-| -------------------------------- | ------------------------------------ |
-| Navigation / feature flag schema | Sprint 1 `config-schema`             |
-| Config merge / validation        | `@ai-commerce/config-runtime`        |
-| Theme tokens (admin-dashboard)   | `@ai-commerce/theme-engine`          |
-| Brand assets                     | `@ai-commerce/white-label-engine`    |
-| Shell + screen registry          | `@ai-commerce/admin-dashboard`       |
-| React layout                     | `@ai-commerce/admin-dashboard/react` |
-| App hosting facade               | Sprint 8 Task 3                      |
+| Concern                          | Owner                             |
+| -------------------------------- | --------------------------------- |
+| Navigation / feature flag schema | Sprint 1 `config-schema`          |
+| Config merge / validation        | `@ai-commerce/config-runtime`     |
+| Theme tokens (admin-dashboard)   | `@ai-commerce/theme-engine`       |
+| Brand assets                     | `@ai-commerce/white-label-engine` |
+| Shell + facade + React app       | `@ai-commerce/admin-dashboard`    |
 
 ## Sprint 8 Task Breakdown
 
@@ -44,7 +35,7 @@ AdminShellLayout (React) — sidebar / header / content
 | ------ | ------------------------------------------------------------------------ |
 | Task 1 | Shell foundation — nav, feature flags, branding, widgets, Config mapping |
 | Task 2 | Screen registry + React admin layout shell (sidebar / landing)           |
-| Task 3 | `createAdminDashboard` facade, app entry, integration docs               |
+| Task 3 | `createAdminDashboard` facade, `AdminDashboardApp`, mount helper, docs   |
 
 ## Feature flag keys on nav items
 
@@ -56,6 +47,6 @@ Unknown keys evaluate to disabled (item hidden).
 
 ## Deferred
 
-- Vite / Next.js app entry (`createAdminDashboard`) — Task 3
-- Live IdP session binding (consume auth-client in later tasks)
+- Dedicated Vite/Next host app (embed via `mountAdminDashboard`)
+- Live IdP session binding (consume auth-client)
 - Full white-label / theme compile at render time
