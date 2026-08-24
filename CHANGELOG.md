@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Mobile app screen registry + RN layout** (Sprint 9 Task 2) — `@ai-commerce/mobile-app`
+  - `MobileScreenRegistry` / `createDefaultMobileScreenRegistry` — `store.*` route map
+  - `buildMobileShellViewModel` — shell + registry view-model for layout
+  - React Native shell — `MobileShellLayout`, `MobileBottomBar`, `MobileHeader` via `./native`
+  - Vitest coverage with RN host mocks
+
 - **Mobile app shell foundation** (Sprint 9 Task 1) — `@ai-commerce/mobile-app`
   - `FeatureFlagEvaluator` — `flags.*` and `modules.*` evaluation
   - `MobileNavigationResolver` — visibility + feature-flag gated mobile nav

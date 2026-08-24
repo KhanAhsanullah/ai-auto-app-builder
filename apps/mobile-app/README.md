@@ -1,6 +1,6 @@
 # Mobile App
 
-Config-driven React Native consumer shell for CommerceOS AI. Resolves navigation, feature flags, branding, and mobile identity from tenant configuration.
+Config-driven React Native consumer shell for CommerceOS AI. Resolves navigation, feature flags, and branding, then maps screens and renders a bottom-bar layout.
 
 ## Package
 
@@ -8,32 +8,36 @@ Config-driven React Native consumer shell for CommerceOS AI. Resolves navigation
 
 ## Status
 
-Sprint 9 Task 1 complete — mobile shell foundation (nav, flags, branding, identity/runtime).
+Sprint 9 Task 2 complete — screen registry + React Native bottom-bar layout shell.
 
-Task 2 (screen registry + RN bottom-bar layout) and Task 3 (`createMobileApp` facade) are not yet implemented.
+Task 3 (`createMobileApp` facade) is not yet implemented.
 
 ## Modules
 
-| Module                         | Purpose                                             |
-| ------------------------------ | --------------------------------------------------- |
-| `FeatureFlagEvaluator`         | Evaluate `flags.*` and `modules.*` keys             |
-| `MobileNavigationResolver`     | Filter mobile nav by visibility + feature flags     |
-| `MobileBrandingResolver`       | Map branding (+ splash / app icon) for the shell    |
-| `MobileAppShellResolver`       | Compose the full resolved mobile shell model        |
-| `toResolveMobileAppShellInput` | Map Config Runtime / tenant config → resolver input |
+| Module                           | Purpose                                   |
+| -------------------------------- | ----------------------------------------- |
+| `MobileAppShellResolver`         | Compose resolved mobile shell from config |
+| `MobileScreenRegistry`           | Route key → screen definition map         |
+| `buildMobileShellViewModel`      | Shell + registry → layout view-model      |
+| `MobileShellLayout` (`./native`) | Header + content + bottom tab bar         |
 
 ## Usage
 
 ```typescript
-import { MobileAppShellResolver, toResolveMobileAppShellInput } from '@ai-commerce/mobile-app';
+import {
+  buildMobileShellViewModel,
+  createDefaultMobileScreenRegistry,
+  MobileAppShellResolver,
+  toResolveMobileAppShellInput,
+} from '@ai-commerce/mobile-app';
+import { MobileShellLayout } from '@ai-commerce/mobile-app/native';
 import { ConfigProvider } from '@ai-commerce/config-runtime';
 
 const result = new ConfigProvider({ cache: false }).resolve({ tenantConfig });
 const shell = new MobileAppShellResolver().resolve(toResolveMobileAppShellInput(result));
+const viewModel = buildMobileShellViewModel(shell, createDefaultMobileScreenRegistry());
 
-shell.navigation.primary; // bottom-bar items
-shell.identity.bundleId;
-shell.defaultLandingRoute; // e.g. store.home
+<MobileShellLayout viewModel={viewModel} onNavigate={(route) => { /* set active route */ }} />
 ```
 
 ## Scripts
@@ -45,9 +49,8 @@ pnpm --filter @ai-commerce/mobile-app lint
 pnpm --filter @ai-commerce/mobile-app build
 ```
 
-## Out of scope (Task 1)
+## Out of scope (Task 2)
 
-- React Native UI / bottom-bar layout — Task 2
-- Screen-map registry — Task 2
-- `createMobileApp` facade / Expo entry — Task 3
-- Native builds / store submission
+- `createMobileApp` facade / Expo app entry — Task 3
+- Native store builds / OTA channels
+- Live IdP session binding

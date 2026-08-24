@@ -4,7 +4,7 @@ Config-driven consumer mobile surface for CommerceOS AI (React Native).
 
 ## Overview
 
-`@ai-commerce/mobile-app` turns tenant configuration (`navigation.mobile`, `featureFlags`, `branding`, `mobileApp`) into a resolved shell model. React Native presentation is deferred to Sprint 9 Task 2–3.
+`@ai-commerce/mobile-app` resolves tenant configuration into a shell model, maps `store.*` routes through `MobileScreenRegistry`, and renders a React Native layout with header + bottom tab bar.
 
 ## Boundaries
 
@@ -14,13 +14,11 @@ Tenant config (ConfigProvider.resolve)
 toResolveMobileAppShellInput
         ↓
 MobileAppShellResolver
-        ├── FeatureFlagEvaluator
-        ├── MobileNavigationResolver
-        └── MobileBrandingResolver
         ↓
-ResolvedMobileAppShell
+MobileScreenRegistry + buildMobileShellViewModel
         ↓
-(Task 2) Screen registry + RN bottom-bar layout
+MobileShellLayout (RN) — header / content / bottom bar
+        ↓
 (Task 3) createMobileApp facade
 ```
 
@@ -30,20 +28,20 @@ ResolvedMobileAppShell
 | Config merge / validation        | `@ai-commerce/config-runtime`     |
 | RN theme tokens                  | `@ai-commerce/theme-engine`       |
 | Mobile brand assets              | `@ai-commerce/white-label-engine` |
-| Shell resolution                 | `@ai-commerce/mobile-app`         |
-| RN UI / `@ai-commerce/ui-mobile` | Sprint 9 Task 2–3                 |
+| Shell + screen registry + layout | `@ai-commerce/mobile-app`         |
+| App facade                       | Sprint 9 Task 3                   |
 
 ## Sprint 9 Task Breakdown
 
-| Task   | Deliverable                                                       |
-| ------ | ----------------------------------------------------------------- |
-| Task 1 | Shell foundation — nav, feature flags, branding, identity/runtime |
-| Task 2 | Screen registry + React Native bottom-bar layout shell            |
-| Task 3 | `createMobileApp` facade, app entry helpers, integration docs     |
+| Task   | Deliverable                                                   |
+| ------ | ------------------------------------------------------------- |
+| Task 1 | Shell foundation — nav, feature flags, branding, identity     |
+| Task 2 | Screen registry + React Native bottom-bar layout shell        |
+| Task 3 | `createMobileApp` facade, app entry helpers, integration docs |
 
 ## Deferred
 
-- Expo / RN CLI host project
+- Expo / RN CLI host project (`createMobileApp` Task 3)
 - Native store builds
 - Push notification provider wiring
 - Live IdP session binding

@@ -23,7 +23,7 @@ The platform architecture was approved in Sprint 0. It defines:
 | [authentication.md](./authentication.md)           | Authentication — auth policy resolution, provider ports, Config Runtime mapping; OAuth adapters deferred to Task 2+      |
 | [api-gateway.md](./api-gateway.md)                 | API Gateway — tenant routing, rate limiting, config injection, auth middleware, Node HTTP facade                         |
 | [admin-dashboard.md](./admin-dashboard.md)         | Admin Dashboard — shell, screen registry, React app facade                                                               |
-| [mobile-app.md](./mobile-app.md)                   | Mobile App — config-driven shell (nav, feature flags, branding, identity)                                                |
+| [mobile-app.md](./mobile-app.md)                   | Mobile App — shell, screen registry, React Native bottom-bar layout                                                      |
 
 ## Monorepo Layout
 
