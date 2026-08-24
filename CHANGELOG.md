@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Mobile app facade + RN app entry** (Sprint 9 Task 3) — `@ai-commerce/mobile-app`
+  - `MobileApp` / `createMobileApp` — config → shell + registry facade
+  - `MobileAppRoot` — stateful React Native entry with branded default screens
+  - Facade + root unit/integration tests
+
 - **Mobile app screen registry + RN layout** (Sprint 9 Task 2) — `@ai-commerce/mobile-app`
   - `MobileScreenRegistry` / `createDefaultMobileScreenRegistry` — `store.*` route map
   - `buildMobileShellViewModel` — shell + registry view-model for layout

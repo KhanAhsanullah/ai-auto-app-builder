@@ -112,7 +112,7 @@ All Sprint 6 code lives in `@ai-commerce/auth-client` (`packages/auth-client`). 
 | ------ | ------ | ----------------------------------------------------------------------------- |
 | Task 1 | ✅     | Shell foundation — nav, flags, branding, identity (`@ai-commerce/mobile-app`) |
 | Task 2 | ✅     | Screen registry + React Native bottom-bar layout                              |
-| Task 3 | ⬜     | `createMobileApp` facade, app entry helpers, integration docs                 |
+| Task 3 | ✅     | `createMobileApp` facade, app entry helpers, integration docs                 |
 
 ---
 

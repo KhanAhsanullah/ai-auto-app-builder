@@ -1,6 +1,6 @@
 # Mobile App
 
-Config-driven React Native consumer shell for CommerceOS AI. Resolves navigation, feature flags, and branding, then maps screens and renders a bottom-bar layout.
+Config-driven React Native consumer app for CommerceOS AI — resolve tenant config into a branded shell, map screens, and mount a bottom-bar experience from one facade call.
 
 ## Package
 
@@ -8,37 +8,32 @@ Config-driven React Native consumer shell for CommerceOS AI. Resolves navigation
 
 ## Status
 
-Sprint 9 Task 2 complete — screen registry + React Native bottom-bar layout shell.
-
-Task 3 (`createMobileApp` facade) is not yet implemented.
+Sprint 9 complete — Task 3 delivers `createMobileApp` / `MobileApp` facade and `MobileAppRoot`.
 
 ## Modules
 
-| Module                           | Purpose                                   |
-| -------------------------------- | ----------------------------------------- |
-| `MobileAppShellResolver`         | Compose resolved mobile shell from config |
-| `MobileScreenRegistry`           | Route key → screen definition map         |
-| `buildMobileShellViewModel`      | Shell + registry → layout view-model      |
-| `MobileShellLayout` (`./native`) | Header + content + bottom tab bar         |
+| Module                       | Purpose                                        |
+| ---------------------------- | ---------------------------------------------- |
+| `createMobileApp`            | Config → shell + registry facade               |
+| `MobileApp`                  | `getViewModel`, screen registration            |
+| `MobileAppRoot` (`./native`) | Stateful RN entry with branded default screens |
+| `MobileScreenRegistry`       | Route → screen map                             |
+| `MobileShellLayout`          | Header + content + bottom tab bar              |
 
 ## Usage
 
 ```typescript
-import {
-  buildMobileShellViewModel,
-  createDefaultMobileScreenRegistry,
-  MobileAppShellResolver,
-  toResolveMobileAppShellInput,
-} from '@ai-commerce/mobile-app';
-import { MobileShellLayout } from '@ai-commerce/mobile-app/native';
+import { createMobileApp } from '@ai-commerce/mobile-app';
+import { MobileAppRoot } from '@ai-commerce/mobile-app/native';
 import { ConfigProvider } from '@ai-commerce/config-runtime';
 
 const result = new ConfigProvider({ cache: false }).resolve({ tenantConfig });
-const shell = new MobileAppShellResolver().resolve(toResolveMobileAppShellInput(result));
-const viewModel = buildMobileShellViewModel(shell, createDefaultMobileScreenRegistry());
+const app = createMobileApp({ config: result });
 
-<MobileShellLayout viewModel={viewModel} onNavigate={(route) => { /* set active route */ }} />
+<MobileAppRoot app={app} />
 ```
+
+Navigation, branding, and identity all come from tenant config — change config, not forks.
 
 ## Scripts
 
@@ -49,8 +44,9 @@ pnpm --filter @ai-commerce/mobile-app lint
 pnpm --filter @ai-commerce/mobile-app build
 ```
 
-## Out of scope (Task 2)
+## Out of scope
 
-- `createMobileApp` facade / Expo app entry — Task 3
+- Full Expo / RN CLI host project (embed `MobileAppRoot` in your host)
 - Native store builds / OTA channels
 - Live IdP session binding
+- Runtime Theme Engine token injection

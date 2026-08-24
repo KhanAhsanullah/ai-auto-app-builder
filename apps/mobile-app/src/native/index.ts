@@ -1,3 +1,5 @@
+export { MobileAppRoot } from './mobile-app-root.js';
+export type { MobileAppRootProps } from './mobile-app-root.js';
 export { MobileBottomBar } from './mobile-bottom-bar.js';
 export type { MobileBottomBarProps } from './mobile-bottom-bar.js';
 export { MobileHeader } from './mobile-header.js';
