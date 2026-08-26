@@ -8,11 +8,11 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 14 — Core Catalog** (in progress)
+**Sprint 14 — Core Catalog** ✅ complete
 
-Sprint 14 Task 2 complete — product queries (by category, active-only) and search in `@ai-commerce/module-catalog`.
+Sprint 14 Task 3 complete — `CatalogModule` / `createCatalogModule` facade in `@ai-commerce/module-catalog`.
 
-**Next:** Sprint 14 Task 3 — `CatalogModule` / `createCatalogModule` facade.
+**Next:** Sprint 15 (proposed) — Core Cart + thin Checkout slice, then wire Web/Admin catalog screens to `createCatalogModule`.
 
 ## Completed Tasks
 
@@ -21,38 +21,39 @@ Sprint 14 Task 2 complete — product queries (by category, active-only) and sea
 | Sprint 1–13 ✅      | Foundation through Config Engine      | `sprint*-task*`  |
 | Sprint 14 Task 1 ✅ | Catalog domain + in-memory repository | `sprint14-task1` |
 | Sprint 14 Task 2 ✅ | Catalog queries + search              | `sprint14-task2` |
+| Sprint 14 Task 3 ✅ | `CatalogModule` facade                | `sprint14-task3` |
 
 ## Current Progress
 
-- Sprints 1–13 complete
-- **Core Catalog** — CRUD + queries (Tasks 1–2)
+- Sprints 1–14 complete
+- **Core Catalog** — domain, queries, facade
 
-**Overall:** Sprint 14 Task 2 complete. Next: Task 3 facade.
+**Overall:** Sprint 14 complete. Next: Cart/Checkout or surface wiring.
 
 ## Next Tasks
 
-**Sprint 14 Task 3 — Facade**
+**Sprint 15 (proposed) — Core Cart**
 
-- `CatalogModule` / `createCatalogModule`
-- Surface wiring guidance for Web / Admin / Mobile
-- See [SPRINT_BOARD.md](./SPRINT_BOARD.md)
+- Cart line items scoped by tenant + customer/session
+- Wire Web Store cart screens
+- See [PRODUCT_VISION.md](./PRODUCT_VISION.md)
 
 ## Latest Commit
 
 ```
-feat(module-catalog): add product queries and search helpers (Sprint 14 Task 2)
+feat(module-catalog): add CatalogModule facade (Sprint 14 Task 3)
 ```
 
 ## Latest Tag
 
 ```
-sprint14-task2
+sprint14-task3
 ```
 
 ## Health Status
 
-| Area       | Status         | Notes                                    |
-| ---------- | -------------- | ---------------------------------------- |
-| Repository | ✅ Healthy     | Sprint 14 Task 2 ready                   |
-| Catalog    | 🟡 In progress | Tasks 1–2 done; Task 3 remaining         |
-| Tests      | ✅ Passing     | `@ai-commerce/module-catalog` unit tests |
+| Area       | Status      | Notes                                    |
+| ---------- | ----------- | ---------------------------------------- |
+| Repository | ✅ Healthy  | Sprint 14 complete                       |
+| Catalog    | ✅ Complete | Tasks 1–3 done                           |
+| Tests      | ✅ Passing  | `@ai-commerce/module-catalog` unit tests |

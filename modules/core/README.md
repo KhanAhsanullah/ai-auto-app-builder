@@ -23,4 +23,4 @@ These modules represent the **80% shared behavior** across e-commerce, grocery, 
 
 ## Status
 
-Sprint 14 Task 2 — queries and search on `@ai-commerce/module-catalog`. Facade in Task 3.
+Sprint 14 complete — `CatalogModule` / `createCatalogModule` in `@ai-commerce/module-catalog`.

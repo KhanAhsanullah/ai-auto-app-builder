@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Core catalog facade** (Sprint 14 Task 3) — `@ai-commerce/module-catalog`
+  - `CatalogModule` / `createCatalogModule` — unified CRUD + query entrypoints
+  - Surface wiring guidance (Web / Admin / Mobile) in architecture docs
+
 - **Core catalog queries** (Sprint 14 Task 2) — `@ai-commerce/module-catalog`
   - `listProducts` filters: category, status / activeOnly, search
   - `listProductsByCategory`, `listActiveProducts`, `searchProducts`, `getCategoryBySlug`

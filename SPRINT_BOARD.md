@@ -178,11 +178,11 @@ All Sprint 13 code lives in `@ai-commerce/config-engine` (`platform/config-engin
 | ------ | ------ | -------------------------------------------------------------------- |
 | Task 1 | ✅     | Domain model, `CatalogService`, in-memory repository                 |
 | Task 2 | ✅     | Queries (by category, active-only), search helpers                   |
-| Task 3 | ⬜     | `CatalogModule` / `createCatalogModule` facade + surface wiring docs |
+| Task 3 | ✅     | `CatalogModule` / `createCatalogModule` facade + surface wiring docs |
 
 All Sprint 14 code lives in `@ai-commerce/module-catalog` (`modules/core/catalog`). HTTP / DB deferred.
 
-**Tags:** `sprint14-task1`, `sprint14-task2`
+**Tags:** `sprint14-task1`, `sprint14-task2`, `sprint14-task3`
 
 ---
 

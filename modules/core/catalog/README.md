@@ -8,24 +8,24 @@ Core domain module for products, variants, categories, and media associations. U
 
 ## Status
 
-**Sprint 14 Task 2** — Product queries (by category, active-only) and search helpers.
+**Sprint 14 complete** — Task 3 delivers `CatalogModule` / `createCatalogModule` facade + surface wiring docs.
 
 ## Modules
 
-| Module                      | Purpose                                    |
-| --------------------------- | ------------------------------------------ |
-| `CatalogService`            | CRUD + list/search queries (tenant-scoped) |
-| `CatalogRepository`         | Persistence port                           |
-| `InMemoryCatalogRepository` | In-memory store for tests / local          |
+| Module                      | Purpose                             |
+| --------------------------- | ----------------------------------- |
+| `createCatalogModule`       | Wire service + in-memory repository |
+| `CatalogModule`             | Facade: CRUD + storefront queries   |
+| `CatalogService`            | Domain service (used by the facade) |
+| `CatalogRepository`         | Persistence port                    |
+| `InMemoryCatalogRepository` | In-memory store for tests / local   |
 
 ## Usage
 
 ```ts
-import { CatalogService, InMemoryCatalogRepository } from '@ai-commerce/module-catalog';
+import { createCatalogModule } from '@ai-commerce/module-catalog';
 
-const catalog = new CatalogService({
-  repository: new InMemoryCatalogRepository(),
-});
+const catalog = createCatalogModule();
 
 await catalog.createCategory({
   tenantId: 'tenant-fresh',
@@ -43,13 +43,12 @@ await catalog.createProduct({
   variants: [{ sku: 'APL-1', title: 'Default', price: { amount: 2.5, currency: 'USD' } }],
 });
 
-// Storefront queries
+// Web / Mobile storefront
 await catalog.listActiveProducts('tenant-fresh');
-await catalog.listProductsByCategory('tenant-fresh', 'cat-fruit', { activeOnly: true });
-await catalog.searchProducts('tenant-fresh', 'apple', { activeOnly: true });
+await catalog.getProductBySlug('tenant-fresh', 'organic-apple');
 ```
 
-All reads/writes are **tenant-scoped**. Slugs are unique per tenant; SKUs are unique per tenant across products.
+Surface wiring guidance: [docs/architecture/catalog.md](../../../docs/architecture/catalog.md#surface-wiring).
 
 ## Scripts
 
@@ -58,10 +57,6 @@ pnpm --filter @ai-commerce/module-catalog test
 pnpm --filter @ai-commerce/module-catalog typecheck
 pnpm --filter @ai-commerce/module-catalog lint
 ```
-
-## Architecture
-
-See [docs/architecture/catalog.md](../../../docs/architecture/catalog.md).
 
 ## Manifest
 
