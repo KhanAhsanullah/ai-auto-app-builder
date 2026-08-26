@@ -8,11 +8,11 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 12 — Build Orchestrator** (in progress)
+**Sprint 12 — Build Orchestrator** ✅ Complete
 
-Sprint 12 Task 2 complete — in-process executor + artifact descriptors in `@ai-commerce/build-orchestrator`.
+Sprint 12 Task 3 complete — `BuildOrchestrator` / `createBuildOrchestrator` facade with `onConfigPublish`.
 
-**Next:** Sprint 12 Task 3 — `BuildOrchestrator` / `createBuildOrchestrator` facade.
+**Next:** AI host wiring, Config Engine publish events, or core commerce modules.
 
 ## Completed Tasks
 
@@ -21,38 +21,38 @@ Sprint 12 Task 2 complete — in-process executor + artifact descriptors in `@ai
 | Sprint 1–11 ✅      | Foundation through Web Store                | `sprint*-task*`  |
 | Sprint 12 Task 1 ✅ | Build planner + job status + in-memory repo | `sprint12-task1` |
 | Sprint 12 Task 2 ✅ | Executor + artifact descriptors             | `sprint12-task2` |
+| Sprint 12 Task 3 ✅ | `BuildOrchestrator` facade                  | `sprint12-task3` |
 
 ## Current Progress
 
-- Sprints 1–11 complete
-- **Build Orchestrator** — plan, execute, artifact metadata (Tasks 1–2)
+- Sprints 1–12 complete
+- **Build Orchestrator** — plan, execute, publish-trigger facade
 
-**Overall:** Sprint 12 Task 2 complete. Next: Task 3 facade.
+**Overall:** Sprint 12 complete.
 
 ## Next Tasks
 
-**Sprint 12 Task 3 — Facade**
-
-- `BuildOrchestrator` / `createBuildOrchestrator`
-- `onConfigPublish` → enqueue + execute
-- See [SPRINT_BOARD.md](./SPRINT_BOARD.md)
+- Wire `onConfigPublish` from Config Engine / worker
+- Live LLM providers + admin AI host wiring
+- Core catalog / cart / checkout modules
+- See [PRODUCT_VISION.md](./PRODUCT_VISION.md)
 
 ## Latest Commit
 
 ```
-feat(build-orchestrator): add in-process executor and artifact store (Sprint 12 Task 2)
+feat(build-orchestrator): add BuildOrchestrator facade (Sprint 12 Task 3)
 ```
 
 ## Latest Tag
 
 ```
-sprint12-task2
+sprint12-task3
 ```
 
 ## Health Status
 
-| Area               | Status         | Notes                                        |
-| ------------------ | -------------- | -------------------------------------------- |
-| Repository         | ✅ Healthy     | Sprint 12 Task 2 ready                       |
-| Build orchestrator | 🟡 In progress | Tasks 1–2 done; Task 3 remaining             |
-| Tests              | ✅ Passing     | `@ai-commerce/build-orchestrator` unit tests |
+| Area               | Status      | Notes                                        |
+| ------------------ | ----------- | -------------------------------------------- |
+| Repository         | ✅ Healthy  | Sprint 12 complete                           |
+| Build orchestrator | ✅ Complete | Tasks 1–3; HTTP/worker/CI deferred           |
+| Tests              | ✅ Passing  | `@ai-commerce/build-orchestrator` unit tests |

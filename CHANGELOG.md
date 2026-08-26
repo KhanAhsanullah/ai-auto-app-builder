@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Build orchestrator facade** (Sprint 12 Task 3) — `@ai-commerce/build-orchestrator`
+  - `BuildOrchestrator` / `createBuildOrchestrator` — enqueue, execute, `onConfigPublish`
+  - Config publish event contract + facade unit tests
+
 - **Build orchestrator executor** (Sprint 12 Task 2) — `@ai-commerce/build-orchestrator`
   - `BuildExecutor` — queued job → plan → simulated steps → terminal status
   - `BuildArtifactRef` + `ArtifactStore` / `InMemoryArtifactStore`
