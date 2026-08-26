@@ -10,9 +10,9 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 **Sprint 13 — Config Engine** (in progress)
 
-Sprint 13 Task 1 complete — draft CRUD + Config Runtime validation in `@ai-commerce/config-engine`.
+Sprint 13 Task 2 complete — publish workflow + `ConfigPublishEvent` in `@ai-commerce/config-engine`.
 
-**Next:** Sprint 13 Task 2 — publish workflow + `ConfigPublishEvent`.
+**Next:** Sprint 13 Task 3 — `ConfigEngine` / `createConfigEngine` facade.
 
 ## Completed Tasks
 
@@ -20,38 +20,39 @@ Sprint 13 Task 1 complete — draft CRUD + Config Runtime validation in `@ai-com
 | ------------------- | ------------------------------------- | ---------------- |
 | Sprint 1–12 ✅      | Foundation through Build Orchestrator | `sprint*-task*`  |
 | Sprint 13 Task 1 ✅ | Config draft CRUD + validation        | `sprint13-task1` |
+| Sprint 13 Task 2 ✅ | Publish + `ConfigPublishEvent`        | `sprint13-task2` |
 
 ## Current Progress
 
 - Sprints 1–12 complete
-- **Config Engine** — draft revisions (Task 1)
+- **Config Engine** — drafts + publish events (Tasks 1–2)
 
-**Overall:** Sprint 13 Task 1 complete. Next: Task 2 publish.
+**Overall:** Sprint 13 Task 2 complete. Next: Task 3 facade.
 
 ## Next Tasks
 
-**Sprint 13 Task 2 — Publish**
+**Sprint 13 Task 3 — Facade**
 
-- Promote draft → published
-- Emit `ConfigPublishEvent` for Build Orchestrator
+- `ConfigEngine` / `createConfigEngine`
+- Unified draft + publish entrypoints
 - See [SPRINT_BOARD.md](./SPRINT_BOARD.md)
 
 ## Latest Commit
 
 ```
-feat(config-engine): add draft CRUD and Config Runtime validation (Sprint 13 Task 1)
+feat(config-engine): add publish workflow and ConfigPublishEvent (Sprint 13 Task 2)
 ```
 
 ## Latest Tag
 
 ```
-sprint13-task1
+sprint13-task2
 ```
 
 ## Health Status
 
 | Area          | Status         | Notes                                   |
 | ------------- | -------------- | --------------------------------------- |
-| Repository    | ✅ Healthy     | Sprint 13 Task 1 ready                  |
-| Config engine | 🟡 In progress | Task 1 done; Tasks 2–3 remaining        |
+| Repository    | ✅ Healthy     | Sprint 13 Task 2 ready                  |
+| Config engine | 🟡 In progress | Tasks 1–2 done; Task 3 remaining        |
 | Tests         | ✅ Passing     | `@ai-commerce/config-engine` unit tests |

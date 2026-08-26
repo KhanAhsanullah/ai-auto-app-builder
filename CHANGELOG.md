@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Config engine publish workflow** (Sprint 13 Task 2) — `@ai-commerce/config-engine`
+  - `PublishConfigService` — draft → published, stamp `meta.configVersion`
+  - `ConfigPublishEvent` + `InMemoryConfigPublishEmitter` (Build Orchestrator–aligned)
+  - Repository `update` + latest draft/published lookups
+
 - **Config engine draft foundation** (Sprint 13 Task 1) — `@ai-commerce/config-engine`
   - `ConfigValidationService` — validate via `@ai-commerce/config-runtime` ConfigProvider
   - `DraftConfigService` — monotonic draft revisions (save / get / list)

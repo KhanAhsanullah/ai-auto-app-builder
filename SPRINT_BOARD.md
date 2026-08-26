@@ -163,12 +163,12 @@ All Sprint 12 code lives in `@ai-commerce/build-orchestrator` (`platform/build-o
 | Task   | Status | Deliverable                                                            |
 | ------ | ------ | ---------------------------------------------------------------------- |
 | Task 1 | ✅     | Draft CRUD, Config Runtime validation, in-memory repository            |
-| Task 2 | ⬜     | Publish workflow + `ConfigPublishEvent` (Build Orchestrator alignment) |
+| Task 2 | ✅     | Publish workflow + `ConfigPublishEvent` (Build Orchestrator alignment) |
 | Task 3 | ⬜     | `ConfigEngine` / `createConfigEngine` facade, docs                     |
 
 All Sprint 13 code lives in `@ai-commerce/config-engine` (`platform/config-engine`). HTTP / DB deferred.
 
-**Tags:** `sprint13-task1` (on Task 1 completion)
+**Tags:** `sprint13-task1`, `sprint13-task2`
 
 ---
 

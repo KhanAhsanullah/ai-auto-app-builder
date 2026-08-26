@@ -1,6 +1,6 @@
 # Config Engine
 
-Control-plane service for tenant configuration CRUD, versioning, validation, and (later) publish events that trigger build rebuilds.
+Control-plane service for tenant configuration CRUD, versioning, validation, and publish events that trigger build rebuilds.
 
 ## Package
 
@@ -8,17 +8,19 @@ Control-plane service for tenant configuration CRUD, versioning, validation, and
 
 ## Status
 
-**Sprint 13 Task 1** — Draft CRUD foundation: validation via Config Runtime, versioned documents, in-memory repository.
+**Sprint 13 Task 2** — Publish workflow + `ConfigPublishEvent` (Build Orchestrator–aligned).
 
-Task 2 (publish + `ConfigPublishEvent`) and Task 3 (facade) are not yet implemented.
+Task 1 (draft CRUD) is complete. Task 3 (`createConfigEngine` facade) is next.
 
 ## Modules
 
-| Module                                          | Purpose                                         |
-| ----------------------------------------------- | ----------------------------------------------- |
-| `ConfigValidationService`                       | Validate config layers through `ConfigProvider` |
-| `DraftConfigService`                            | Save/get/list draft revisions                   |
-| `ConfigRepository` / `InMemoryConfigRepository` | Versioned document store                        |
+| Module                         | Purpose                                |
+| ------------------------------ | -------------------------------------- |
+| `DraftConfigService`           | Save/get/list draft revisions          |
+| `PublishConfigService`         | Promote draft → published + emit event |
+| `ConfigValidationService`      | Validate via Config Runtime            |
+| `InMemoryConfigPublishEmitter` | Collect/fan-out publish events         |
+| `InMemoryConfigRepository`     | Versioned document store               |
 
 ## Usage
 
@@ -27,19 +29,26 @@ import { ConfigProvider } from '@ai-commerce/config-runtime';
 import {
   ConfigValidationService,
   DraftConfigService,
+  PublishConfigService,
   InMemoryConfigRepository,
+  InMemoryConfigPublishEmitter,
 } from '@ai-commerce/config-engine';
 
 const repository = new InMemoryConfigRepository();
 const validation = new ConfigValidationService({
   configProvider: new ConfigProvider({ cache: false }),
 });
-const drafts = new DraftConfigService({ repository, validation });
+const emitter = new InMemoryConfigPublishEmitter([
+  async (event) => {
+    // e.g. await builds.onConfigPublish(event)
+  },
+]);
 
-const saved = await drafts.saveDraft({
-  tenantId: 'tenant-fresh',
-  document: tenantConfigLayer,
-});
+const drafts = new DraftConfigService({ repository, validation });
+const publish = new PublishConfigService({ repository, validation, emitter });
+
+await drafts.saveDraft({ tenantId: 'tenant-fresh', document });
+const { event } = await publish.publish({ tenantId: 'tenant-fresh', surfaces: ['web'] });
 ```
 
 ## Scripts

@@ -34,4 +34,20 @@ describe('InMemoryConfigRepository', () => {
     await repo.save(doc(1));
     await expect(repo.save(doc(1))).rejects.toThrow(ConfigDocumentAlreadyExistsException);
   });
+
+  it('updates an existing revision and finds latest draft/published', async () => {
+    const repo = new InMemoryConfigRepository();
+    await repo.save(doc(1));
+    await repo.update({
+      ...doc(1),
+      status: 'published',
+      publishedAt: '2026-08-26T19:00:00.000Z',
+    });
+
+    await expect(repo.findLatestPublishedByTenant('tenant-fresh')).resolves.toMatchObject({
+      status: 'published',
+      version: 1,
+    });
+    await expect(repo.findLatestDraftByTenant('tenant-fresh')).resolves.toBeUndefined();
+  });
 });

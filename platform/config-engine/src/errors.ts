@@ -43,3 +43,16 @@ export class ConfigDraftValidationException extends ConfigEngineException {
     this.name = 'ConfigDraftValidationException';
   }
 }
+
+/** Thrown when a revision cannot be published (wrong status / missing draft). */
+export class ConfigPublishException extends ConfigEngineException {
+  readonly tenantId: string;
+  readonly version?: number;
+
+  constructor(message: string, tenantId: string, version?: number) {
+    super(message);
+    this.name = 'ConfigPublishException';
+    this.tenantId = tenantId;
+    this.version = version;
+  }
+}
