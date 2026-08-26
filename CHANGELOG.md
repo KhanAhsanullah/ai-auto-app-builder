@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Web store screen registry + React layout** (Sprint 11 Task 2) — `@ai-commerce/web-store`
+  - `WebScreenRegistry` / `createDefaultWebScreenRegistry` — `store.*` route map
+  - `buildWebShellViewModel` — shell + registry view-model for layout
+  - React shell — `WebShellLayout`, `WebHeader`, `WebTopNav`, `WebFooter` via `./react`
+  - Vitest coverage with jsdom + Testing Library
+
 - **Web store shell foundation** (Sprint 11 Task 1) — `@ai-commerce/web-store`
   - `FeatureFlagEvaluator` — `flags.*` and `modules.*` evaluation
   - `WebNavigationResolver` — visibility + feature-flag gated web nav

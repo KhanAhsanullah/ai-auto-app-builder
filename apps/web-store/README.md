@@ -1,6 +1,6 @@
 # Web Store
 
-Config-driven consumer web storefront for CommerceOS AI — resolve tenant config into a branded shell (nav, SEO, domain, PWA) before screens and SSR layout land in later tasks.
+Config-driven consumer web storefront for CommerceOS AI — resolve tenant config into a branded shell, map `store.*` screens, and render a React top-bar layout.
 
 ## Package
 
@@ -8,28 +8,36 @@ Config-driven consumer web storefront for CommerceOS AI — resolve tenant confi
 
 ## Status
 
-**Sprint 11 Task 1** — Shell foundation (nav, flags, branding, domain/SEO/rendering).
+**Sprint 11 Task 2** — Screen registry + React storefront layout shell.
 
-Tasks 2–3 (screen registry + React/SSR layout, `createWebStore` facade) are not yet implemented.
+Task 3 (`createWebStore` facade + app entry) is not yet implemented.
 
 ## Modules
 
-| Module                        | Purpose                                                  |
-| ----------------------------- | -------------------------------------------------------- |
-| `FeatureFlagEvaluator`        | `flags.*` / `modules.*` evaluation                       |
-| `WebNavigationResolver`       | Visibility + feature-flag gated `navigation.web`         |
-| `WebBrandingResolver`         | Branding / favicon / OG slice                            |
-| `WebStoreShellResolver`       | Composed shell (nav, identity domain/SEO, landing route) |
-| `toResolveWebStoreShellInput` | Config Runtime → shell input                             |
+| Module                       | Purpose                                             |
+| ---------------------------- | --------------------------------------------------- |
+| `WebStoreShellResolver`      | Composed shell (nav, branding, domain/SEO, landing) |
+| `WebScreenRegistry`          | `store.*` route → screen map                        |
+| `buildWebShellViewModel`     | Shell + registry view-model for layout              |
+| `WebShellLayout` (`./react`) | Header + top nav + content + footer                 |
 
 ## Usage
 
 ```ts
-import { WebStoreShellResolver, toResolveWebStoreShellInput } from '@ai-commerce/web-store';
+import {
+  WebStoreShellResolver,
+  toResolveWebStoreShellInput,
+  createDefaultWebScreenRegistry,
+  buildWebShellViewModel,
+} from '@ai-commerce/web-store';
+import { WebShellLayout } from '@ai-commerce/web-store/react';
 import { ConfigProvider } from '@ai-commerce/config-runtime';
 
 const result = new ConfigProvider({ cache: false }).resolve({ tenantConfig });
 const shell = new WebStoreShellResolver().resolve(toResolveWebStoreShellInput(result));
+const viewModel = buildWebShellViewModel(shell, createDefaultWebScreenRegistry());
+
+<WebShellLayout viewModel={viewModel} onNavigate={(route) => { /* set active route */ }} />
 ```
 
 ## Scripts

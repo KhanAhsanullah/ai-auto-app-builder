@@ -8,6 +8,14 @@ export {
   toResolveWebStoreShellInput,
   type WebStoreConfigSource,
 } from './domain/map-config-provider-result.js';
+export {
+  WebScreenRegistry,
+  createDefaultWebScreenRegistry,
+  createDefaultWebScreens,
+} from './domain/web-screen-registry.js';
+export type { WebScreenDefinition } from './domain/web-screen-registry.js';
+export { buildWebShellViewModel } from './domain/build-web-shell-view-model.js';
+export type { WebShellViewModel } from './domain/build-web-shell-view-model.js';
 export { WebStoreException, WebStoreResolutionException } from './errors.js';
 export type {
   ResolveWebStoreShellInput,

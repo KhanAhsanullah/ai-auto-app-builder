@@ -10,9 +10,9 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 **Sprint 11 — Web Store** (in progress)
 
-Sprint 11 Task 1 complete — web store shell foundation in `@ai-commerce/web-store`.
+Sprint 11 Task 2 complete — screen registry + React layout in `@ai-commerce/web-store`.
 
-**Next:** Sprint 11 Task 2 — screen registry + React/SSR layout.
+**Next:** Sprint 11 Task 3 — `createWebStore` facade + app entry.
 
 ## Completed Tasks
 
@@ -20,38 +20,39 @@ Sprint 11 Task 1 complete — web store shell foundation in `@ai-commerce/web-st
 | ------------------- | ------------------------------------------- | ---------------- |
 | Sprint 1–10 ✅      | Foundation through AI Commerce Engine       | `sprint*-task*`  |
 | Sprint 11 Task 1 ✅ | Web store shell — nav, flags, branding, SEO | `sprint11-task1` |
+| Sprint 11 Task 2 ✅ | Screen registry + React layout              | `sprint11-task2` |
 
 ## Current Progress
 
 - Sprints 1–10 complete
-- **Web Store** — shell resolvers (Task 1)
+- **Web Store** — shell, screens, React layout (Tasks 1–2)
 
-**Overall:** Sprint 11 Task 1 complete. Next: Task 2 layout/screens.
+**Overall:** Sprint 11 Task 2 complete. Next: Task 3 facade.
 
 ## Next Tasks
 
-**Sprint 11 Task 2 — Screen registry + layout**
+**Sprint 11 Task 3 — Facade**
 
-- Storefront route/screen map
-- React/SSR shell layout (header / nav / content)
+- `createWebStore` / `WebStore` facade
+- Stateful React entry + mount helper
 - See [SPRINT_BOARD.md](./SPRINT_BOARD.md)
 
 ## Latest Commit
 
 ```
-feat(web-store): add config-driven web storefront shell foundation (Sprint 11 Task 1)
+feat(web-store): add screen registry and React storefront layout (Sprint 11 Task 2)
 ```
 
 ## Latest Tag
 
 ```
-sprint11-task1
+sprint11-task2
 ```
 
 ## Health Status
 
 | Area       | Status         | Notes                               |
 | ---------- | -------------- | ----------------------------------- |
-| Repository | ✅ Healthy     | Sprint 11 Task 1 ready              |
-| Web store  | 🟡 In progress | Task 1 done; Tasks 2–3 remaining    |
+| Repository | ✅ Healthy     | Sprint 11 Task 2 ready              |
+| Web store  | 🟡 In progress | Tasks 1–2 done; Task 3 remaining    |
 | Tests      | ✅ Passing     | `@ai-commerce/web-store` unit tests |

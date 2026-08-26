@@ -135,12 +135,12 @@ All Sprint 10 code lives in `@ai-commerce/ai-orchestrator` (`platform/ai-orchest
 | Task   | Status | Deliverable                                                                    |
 | ------ | ------ | ------------------------------------------------------------------------------ |
 | Task 1 | ✅     | Shell foundation — nav, flags, branding, domain/SEO (`@ai-commerce/web-store`) |
-| Task 2 | ⬜     | Screen registry + React/SSR storefront layout                                  |
+| Task 2 | ✅     | Screen registry + React storefront layout                                      |
 | Task 3 | ⬜     | `createWebStore` facade, app entry helpers, integration docs                   |
 
 All Sprint 11 code lives in `@ai-commerce/web-store` (`apps/web-store`). Dedicated host app deferred.
 
-**Tags:** `sprint11-task1` (on Task 1 completion)
+**Tags:** `sprint11-task1`, `sprint11-task2`
 
 ---
 
