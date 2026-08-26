@@ -6,20 +6,22 @@ Control-plane package (`@ai-commerce/config-engine`) for versioned tenant config
 
 1. **Config Runtime is the validation gate** — never reimplement schema validation.
 2. **Revisions are versioned** — monotonic `version` per tenant; publish uses that as `configVersion`.
-3. **Draft then publish** — Task 1 drafts; Task 2 promotes and emits `ConfigPublishEvent`.
+3. **Draft then publish** — drafts are validated; publish stamps `meta.configVersion` and emits `ConfigPublishEvent`.
+4. **Facade entry** — callers use `createConfigEngine` / `ConfigEngine` (not individual services).
 
 ## Flow
 
 ```
-SaveDraftInput → DraftConfigService → ConfigDocument (draft)
-                                              │
-                                              ▼
-                                    PublishConfigService
-                                              │
-                          ┌───────────────────┼───────────────────┐
-                          ▼                   ▼                   ▼
-                   status=published    meta.configVersion    ConfigPublishEvent
-                                                              (emitter)
+createConfigEngine() → ConfigEngine
+         │
+         ├─ saveDraft → DraftConfigService → ConfigDocument (draft)
+         │
+         └─ publish → PublishConfigService
+                            │
+          ┌─────────────────┼─────────────────┐
+          ▼                 ▼                 ▼
+   status=published  meta.configVersion  ConfigPublishEvent
+                                          (emitter / onPublish)
 ```
 
 `ConfigPublishEvent` matches Build Orchestrator:

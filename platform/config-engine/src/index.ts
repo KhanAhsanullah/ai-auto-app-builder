@@ -28,3 +28,7 @@ export {
   type ConfigPublishListener,
 } from './domain/config-publish-emitter.js';
 export { InMemoryConfigRepository } from './infrastructure/in-memory-config-repository.js';
+export { ConfigEngine } from './domain/config-engine.js';
+export type { ConfigEngineDeps } from './domain/config-engine.js';
+export { createConfigEngine } from './infrastructure/create-config-engine.js';
+export type { CreateConfigEngineOptions } from './infrastructure/create-config-engine.js';

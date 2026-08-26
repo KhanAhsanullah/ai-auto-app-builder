@@ -11,7 +11,6 @@ export interface DraftConfigServiceDeps {
 
 /**
  * Saves validated draft revisions and reads stored config documents.
- * Publish / version promotion lands in Task 2.
  */
 export class DraftConfigService {
   private readonly now: () => string;

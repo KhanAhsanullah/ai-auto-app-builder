@@ -8,14 +8,14 @@ Control-plane service for tenant configuration CRUD, versioning, validation, and
 
 ## Status
 
-**Sprint 13 Task 2** — Publish workflow + `ConfigPublishEvent` (Build Orchestrator–aligned).
-
-Task 1 (draft CRUD) is complete. Task 3 (`createConfigEngine` facade) is next.
+**Sprint 13 complete** — Task 3 delivers `ConfigEngine` / `createConfigEngine` facade.
 
 ## Modules
 
 | Module                         | Purpose                                |
 | ------------------------------ | -------------------------------------- |
+| `createConfigEngine`           | Wire drafts + publish + in-memory deps |
+| `ConfigEngine`                 | Facade: saveDraft, publish, get/list   |
 | `DraftConfigService`           | Save/get/list draft revisions          |
 | `PublishConfigService`         | Promote draft → published + emit event |
 | `ConfigValidationService`      | Validate via Config Runtime            |
@@ -25,30 +25,21 @@ Task 1 (draft CRUD) is complete. Task 3 (`createConfigEngine` facade) is next.
 ## Usage
 
 ```ts
-import { ConfigProvider } from '@ai-commerce/config-runtime';
-import {
-  ConfigValidationService,
-  DraftConfigService,
-  PublishConfigService,
-  InMemoryConfigRepository,
-  InMemoryConfigPublishEmitter,
-} from '@ai-commerce/config-engine';
+import { createConfigEngine } from '@ai-commerce/config-engine';
 
-const repository = new InMemoryConfigRepository();
-const validation = new ConfigValidationService({
-  configProvider: new ConfigProvider({ cache: false }),
+const engine = createConfigEngine({
+  onPublish: [
+    async (event) => {
+      // e.g. await builds.onConfigPublish(event)
+    },
+  ],
 });
-const emitter = new InMemoryConfigPublishEmitter([
-  async (event) => {
-    // e.g. await builds.onConfigPublish(event)
-  },
-]);
 
-const drafts = new DraftConfigService({ repository, validation });
-const publish = new PublishConfigService({ repository, validation, emitter });
-
-await drafts.saveDraft({ tenantId: 'tenant-fresh', document });
-const { event } = await publish.publish({ tenantId: 'tenant-fresh', surfaces: ['web'] });
+await engine.saveDraft({ tenantId: 'tenant-fresh', document });
+const { event } = await engine.publish({
+  tenantId: 'tenant-fresh',
+  surfaces: ['web'],
+});
 ```
 
 ## Scripts
