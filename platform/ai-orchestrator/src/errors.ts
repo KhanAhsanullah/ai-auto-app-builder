@@ -27,3 +27,11 @@ export class AiValidationException extends AiOrchestratorException {
     this.errors = errors;
   }
 }
+
+/** Thrown when the AI provider returns unusable structured output. */
+export class AiProviderResponseException extends AiOrchestratorException {
+  constructor(message: string) {
+    super(message);
+    this.name = 'AiProviderResponseException';
+  }
+}

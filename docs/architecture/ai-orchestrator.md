@@ -22,7 +22,30 @@ AiGuardPolicyResolver → ResolvedAiGuardPolicy
         └─ AiProposalFactory → AiProposal
 ```
 
-`AiProvider` is a port only in Task 1 (`StubAiProvider` for tests). Live generation adapters land in Task 2; the public facade (`createAiOrchestrator`) in Task 3.
+`AiProvider` is a port (`StubAiProvider` for tests/dry-runs). Live SDK wrappers can implement the same interface without changing adapters.
+
+## Sprint 10 Task 2 — Generation adapters
+
+```
+brief → prompt builder → AiProvider.generateJson
+                              │
+                              ▼
+                     parseProviderJson
+                              │
+                              ▼
+                     inferTouchedFields
+                              │
+                              ▼
+                     AiProposalFactory.create → AiProposal
+```
+
+Adapters:
+
+- `ConfigGenerationAdapter` — partial tenant config patch from business brief
+- `ThemeGenerationAdapter` — full Theme JSON from brand/style brief
+- `CatalogGenerationAdapter` — product enrichment (`productId`, `description`, `categories`)
+
+Wire with `createGenerationAdapters({ provider, proposals, policy })`.
 
 ## Locked fields
 

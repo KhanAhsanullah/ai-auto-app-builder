@@ -8,9 +8,27 @@ export { AiProposalFactory } from './domain/ai-proposal-factory.js';
 export { StubAiProvider } from './domain/ai-provider.js';
 export type { AiProvider } from './domain/ai-provider.js';
 export { toAiSettings, type AiSettingsConfigSource } from './domain/map-ai-settings.js';
+export { buildGenerationPrompt } from './domain/ai-generation-prompts.js';
+export type {
+  AdapterGenerationTarget,
+  CatalogEnrichmentBrief,
+  ConfigGenerationBrief,
+  GenerationPrompt,
+  ThemeGenerationBrief,
+} from './domain/ai-generation-prompts.js';
+export { inferTouchedFields } from './domain/infer-touched-fields.js';
+export { parseProviderJson } from './domain/parse-provider-json.js';
+export {
+  CatalogGenerationAdapter,
+  ConfigGenerationAdapter,
+  createGenerationAdapters,
+  ThemeGenerationAdapter,
+} from './domain/generation-adapters.js';
+export type { GenerationAdapterOptions, GenerationAdapters } from './domain/generation-adapters.js';
 export {
   AiActionForbiddenException,
   AiOrchestratorException,
+  AiProviderResponseException,
   AiValidationException,
 } from './errors.js';
 export type {

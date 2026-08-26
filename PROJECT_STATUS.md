@@ -10,9 +10,9 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 **Sprint 10 — AI Commerce Engine** (in progress)
 
-Sprint 10 Task 1 complete — guardrails + schema-bound proposals foundation in `@ai-commerce/ai-orchestrator`.
+Sprint 10 Task 2 complete — config / theme / catalog generation adapters in `@ai-commerce/ai-orchestrator`.
 
-**Next:** Sprint 10 Task 2 — generation adapters via `AiProvider`.
+**Next:** Sprint 10 Task 3 — `AiOrchestrator` / `createAiOrchestrator` facade.
 
 ## Completed Tasks
 
@@ -20,38 +20,39 @@ Sprint 10 Task 1 complete — guardrails + schema-bound proposals foundation in 
 | ------------------- | -------------------------------------- | ---------------- |
 | Sprint 1–9 ✅       | Foundation through Mobile App          | `sprint*-task*`  |
 | Sprint 10 Task 1 ✅ | AI guardrails + schema-bound proposals | `sprint10-task1` |
+| Sprint 10 Task 2 ✅ | Generation adapters via `AiProvider`   | `sprint10-task2` |
 
 ## Current Progress
 
 - Sprints 1–9 complete
-- **AI Orchestrator** — policy resolver, action guard, output validator, proposal factory, stub provider
+- **AI Orchestrator** — guardrails, proposals, config/theme/catalog adapters
 
-**Overall:** Sprint 10 Task 1 complete. Next: Task 2 generation adapters.
+**Overall:** Sprint 10 Task 2 complete. Next: Task 3 facade.
 
 ## Next Tasks
 
-**Sprint 10 Task 2 — Generation adapters**
+**Sprint 10 Task 3 — Facade**
 
-- Config / theme / catalog generators using `AiProvider`
-- Prompt + JSON parse → schema-validated proposals
+- `AiOrchestrator` / `createAiOrchestrator`
+- Unified generation + copilot entrypoints
 - See [SPRINT_BOARD.md](./SPRINT_BOARD.md)
 
 ## Latest Commit
 
 ```
-(pending) feat(ai-orchestrator): add guardrails and schema-bound proposals (Sprint 10 Task 1)
+feat(ai-orchestrator): add config/theme/catalog generation adapters (Sprint 10 Task 2)
 ```
 
 ## Latest Tag
 
 ```
-sprint10-task1
+sprint10-task2
 ```
 
 ## Health Status
 
 | Area            | Status         | Notes                                     |
 | --------------- | -------------- | ----------------------------------------- |
-| Repository      | ✅ Healthy     | Sprint 10 Task 1 ready                    |
-| AI orchestrator | 🟡 In progress | Task 1 foundation; Tasks 2–3 remaining    |
+| Repository      | ✅ Healthy     | Sprint 10 Task 2 ready                    |
+| AI orchestrator | 🟡 In progress | Tasks 1–2 done; Task 3 remaining          |
 | Tests           | ✅ Passing     | `@ai-commerce/ai-orchestrator` unit tests |

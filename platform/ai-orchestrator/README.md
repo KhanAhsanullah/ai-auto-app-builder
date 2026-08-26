@@ -8,40 +8,49 @@ Control-plane service for AI-driven config generation, theme creation, catalog e
 
 ## Status
 
-**Sprint 10 Task 1** — Guardrails + schema-bound proposals foundation (no live LLM).
+**Sprint 10 Task 2** — Generation adapters (config / theme / catalog) via `AiProvider`.
+
+Task 1 (guardrails + proposals) is complete. Task 3 (`createAiOrchestrator` facade) is next.
 
 ## What this package does
 
 AI generates **config proposals**, not architecture. Every action is gated by tenant `aiSettings` and validated against `@ai-commerce/config-schema` Zod schemas before it can be reviewed or applied.
 
-## Task 1 API
+## API
 
-| Export                          | Role                                                                           |
-| ------------------------------- | ------------------------------------------------------------------------------ |
-| `createAiGuardContext`          | Wire policy + guard + validator + proposal factory from `AiSettings`           |
-| `toAiSettings`                  | Map raw settings / tenant config / Config Runtime result → `AiSettings`        |
-| `AiGuardPolicyResolver`         | Resolve enabled targets, locked fields, copilot gates                          |
-| `AiActionGuard`                 | Authorize generation/copilot; block locked-field writes                        |
-| `AiOutputValidator`             | Schema-bound validation (`theme`, `navigation`, `copy`, config patch, catalog) |
-| `AiProposalFactory`             | Build `AiProposal` under guardrails (pending approval unless `autoApply`)      |
-| `StubAiProvider` / `AiProvider` | Provider port + deterministic stub (live adapters in Task 2)                   |
+| Export                          | Role                                                                    |
+| ------------------------------- | ----------------------------------------------------------------------- |
+| `createAiGuardContext`          | Wire policy + guard + validator + proposal factory from `AiSettings`    |
+| `createGenerationAdapters`      | Config / theme / catalog adapters over `AiProvider` → `AiProposal`      |
+| `toAiSettings`                  | Map raw settings / tenant config / Config Runtime result → `AiSettings` |
+| `AiGuardPolicyResolver`         | Resolve enabled targets, locked fields, copilot gates                   |
+| `AiActionGuard`                 | Authorize generation/copilot; block locked-field writes                 |
+| `AiOutputValidator`             | Schema-bound validation                                                 |
+| `AiProposalFactory`             | Build reviewable proposals                                              |
+| `StubAiProvider` / `AiProvider` | Provider port + deterministic stub                                      |
 
 ## Usage
 
 ```ts
-import { createAiGuardContext, toAiSettings, StubAiProvider } from '@ai-commerce/ai-orchestrator';
+import {
+  createAiGuardContext,
+  createGenerationAdapters,
+  toAiSettings,
+  StubAiProvider,
+} from '@ai-commerce/ai-orchestrator';
 
 const settings = toAiSettings(configProviderResult);
-const { proposals, guard } = createAiGuardContext(settings);
-
-guard.requireCopilot('read_catalog');
-
-const proposal = proposals.create({
-  target: 'theme',
-  payload: themeJson,
-  touchedFields: ['theme.colors.primary'],
+const ctx = createAiGuardContext(settings);
+const adapters = createGenerationAdapters({
+  provider: new StubAiProvider(/* or live provider */),
+  proposals: ctx.proposals,
+  policy: ctx.policy,
 });
-// proposal.status === 'pending_approval' when generation.autoApply is false
+
+const themeProposal = await adapters.theme.generate({
+  brandName: 'Fresh Mart',
+  styleKeywords: ['fresh', 'green'],
+});
 ```
 
 ## Scripts

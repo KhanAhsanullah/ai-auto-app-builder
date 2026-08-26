@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **AI generation adapters** (Sprint 10 Task 2) — `@ai-commerce/ai-orchestrator`
+  - `ConfigGenerationAdapter` / `ThemeGenerationAdapter` / `CatalogGenerationAdapter`
+  - `createGenerationAdapters` — brief → `AiProvider` → schema-validated `AiProposal`
+  - Prompt builders, `parseProviderJson`, `inferTouchedFields`
+
 - **AI orchestrator guardrails + proposals** (Sprint 10 Task 1) — `@ai-commerce/ai-orchestrator`
   - `AiGuardPolicyResolver` / `AiActionGuard` — tenant AI policy, locked fields, copilot gates
   - `AiOutputValidator` — schema-bound validation via `@ai-commerce/config-schema`
