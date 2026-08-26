@@ -8,11 +8,11 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 11 — Web Store** (in progress)
+**Sprint 11 — Web Store** ✅ Complete
 
-Sprint 11 Task 2 complete — screen registry + React layout in `@ai-commerce/web-store`.
+Sprint 11 Task 3 complete — `createWebStore` facade, `WebStoreApp`, and `mountWebStore` in `@ai-commerce/web-store`.
 
-**Next:** Sprint 11 Task 3 — `createWebStore` facade + app entry.
+**Next:** See roadmap — Build Orchestrator or AI host wiring.
 
 ## Completed Tasks
 
@@ -21,38 +21,37 @@ Sprint 11 Task 2 complete — screen registry + React layout in `@ai-commerce/we
 | Sprint 1–10 ✅      | Foundation through AI Commerce Engine       | `sprint*-task*`  |
 | Sprint 11 Task 1 ✅ | Web store shell — nav, flags, branding, SEO | `sprint11-task1` |
 | Sprint 11 Task 2 ✅ | Screen registry + React layout              | `sprint11-task2` |
+| Sprint 11 Task 3 ✅ | `createWebStore` facade + app entry         | `sprint11-task3` |
 
 ## Current Progress
 
-- Sprints 1–10 complete
-- **Web Store** — shell, screens, React layout (Tasks 1–2)
+- Sprints 1–11 complete
+- **Web Store** — shell, screens, React layout, facade
 
-**Overall:** Sprint 11 Task 2 complete. Next: Task 3 facade.
+**Overall:** Sprint 11 complete. Four config-driven surfaces now have facades (Admin, Mobile, Web, API/AI).
 
 ## Next Tasks
 
-**Sprint 11 Task 3 — Facade**
-
-- `createWebStore` / `WebStore` facade
-- Stateful React entry + mount helper
-- See [SPRINT_BOARD.md](./SPRINT_BOARD.md)
+- **Build Orchestrator** — config publish → tenant artifacts
+- Live LLM providers + wire `createAiOrchestrator` into admin
+- See [PRODUCT_VISION.md](./PRODUCT_VISION.md)
 
 ## Latest Commit
 
 ```
-feat(web-store): add screen registry and React storefront layout (Sprint 11 Task 2)
+feat(web-store): add createWebStore facade and WebStoreApp (Sprint 11 Task 3)
 ```
 
 ## Latest Tag
 
 ```
-sprint11-task2
+sprint11-task3
 ```
 
 ## Health Status
 
-| Area       | Status         | Notes                               |
-| ---------- | -------------- | ----------------------------------- |
-| Repository | ✅ Healthy     | Sprint 11 Task 2 ready              |
-| Web store  | 🟡 In progress | Tasks 1–2 done; Task 3 remaining    |
-| Tests      | ✅ Passing     | `@ai-commerce/web-store` unit tests |
+| Area       | Status      | Notes                               |
+| ---------- | ----------- | ----------------------------------- |
+| Repository | ✅ Healthy  | Sprint 11 complete                  |
+| Web store  | ✅ Complete | Tasks 1–3; host app deferred        |
+| Tests      | ✅ Passing  | `@ai-commerce/web-store` unit tests |

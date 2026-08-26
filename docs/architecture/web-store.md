@@ -1,25 +1,24 @@
 # Web Store Architecture
 
-Config-driven consumer web storefront surface for CommerceOS AI (SSR-oriented shell).
+Config-driven consumer web storefront surface for CommerceOS AI.
 
 ## Overview
 
-`@ai-commerce/web-store` resolves tenant configuration into a shell model, maps `store.*` routes through `WebScreenRegistry`, and renders a React layout via `WebShellLayout`. Task 3 adds the `createWebStore` facade.
+`@ai-commerce/web-store` resolves tenant configuration into a shell model, maps `store.*` routes through `WebScreenRegistry`, and exposes a React app via `createWebStore` → `WebStoreApp` / `mountWebStore`.
 
 ## Boundaries
 
 ```
 Tenant config (ConfigProvider.resolve)
         ↓
-toResolveWebStoreShellInput()
+createWebStore()
+        ├── WebStoreShellResolver
+        └── WebScreenRegistry (defaults + extras)
         ↓
-WebStoreShellResolver
-        ├── WebNavigationResolver (flag-gated)
-        └── WebBrandingResolver
+WebStore facade (getViewModel / registerScreen)
         ↓
-buildWebShellViewModel(shell, WebScreenRegistry)
-        ↓
-WebShellLayout (header / top nav / content / footer)
+WebStoreApp / mountWebStore
+        └── WebShellLayout (header / top nav / content / footer)
 ```
 
 | Concern                   | Owner                             |
@@ -28,7 +27,7 @@ WebShellLayout (header / top nav / content / footer)
 | Config merge / validation | `@ai-commerce/config-runtime`     |
 | Theme tokens              | `@ai-commerce/theme-engine`       |
 | Brand assets              | `@ai-commerce/white-label-engine` |
-| Shell + React layout      | `@ai-commerce/web-store`          |
+| Shell + facade + React    | `@ai-commerce/web-store`          |
 
 ## Sprint 11 Task Breakdown
 
@@ -36,7 +35,7 @@ WebShellLayout (header / top nav / content / footer)
 | ------ | --------------------------------------------------------------------- |
 | Task 1 | Shell foundation — nav, feature flags, branding, domain/SEO/rendering |
 | Task 2 | Screen registry + React storefront layout shell                       |
-| Task 3 | `createWebStore` facade, app entry helpers, integration docs          |
+| Task 3 | `createWebStore` facade, `WebStoreApp`, `mountWebStore`, docs         |
 
 ## Deferred
 

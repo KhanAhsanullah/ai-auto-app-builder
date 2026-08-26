@@ -1,6 +1,6 @@
 # Web Store
 
-Config-driven consumer web storefront for CommerceOS AI — resolve tenant config into a branded shell, map `store.*` screens, and render a React top-bar layout.
+Config-driven consumer web storefront for CommerceOS AI — resolve tenant config into a branded shell, map screens, and mount a React top-bar experience from one facade call.
 
 ## Package
 
@@ -8,37 +8,37 @@ Config-driven consumer web storefront for CommerceOS AI — resolve tenant confi
 
 ## Status
 
-**Sprint 11 Task 2** — Screen registry + React storefront layout shell.
-
-Task 3 (`createWebStore` facade + app entry) is not yet implemented.
+Sprint 11 complete — Task 3 delivers `createWebStore` / `WebStore` facade, `WebStoreApp`, and `mountWebStore`.
 
 ## Modules
 
-| Module                       | Purpose                                             |
-| ---------------------------- | --------------------------------------------------- |
-| `WebStoreShellResolver`      | Composed shell (nav, branding, domain/SEO, landing) |
-| `WebScreenRegistry`          | `store.*` route → screen map                        |
-| `buildWebShellViewModel`     | Shell + registry view-model for layout              |
-| `WebShellLayout` (`./react`) | Header + top nav + content + footer                 |
+| Module                      | Purpose                                           |
+| --------------------------- | ------------------------------------------------- |
+| `createWebStore`            | Config → shell + registry facade                  |
+| `WebStore`                  | `getViewModel`, screen registration               |
+| `WebStoreApp` (`./react`)   | Stateful React entry with branded default screens |
+| `mountWebStore` (`./react`) | DOM mount helper for SPA / embed hosts            |
+| `WebScreenRegistry`         | Route → screen map                                |
+| `WebShellLayout`            | Header + top nav + content + footer               |
 
 ## Usage
 
 ```ts
-import {
-  WebStoreShellResolver,
-  toResolveWebStoreShellInput,
-  createDefaultWebScreenRegistry,
-  buildWebShellViewModel,
-} from '@ai-commerce/web-store';
-import { WebShellLayout } from '@ai-commerce/web-store/react';
+import { createWebStore } from '@ai-commerce/web-store';
+import { WebStoreApp, mountWebStore } from '@ai-commerce/web-store/react';
 import { ConfigProvider } from '@ai-commerce/config-runtime';
 
 const result = new ConfigProvider({ cache: false }).resolve({ tenantConfig });
-const shell = new WebStoreShellResolver().resolve(toResolveWebStoreShellInput(result));
-const viewModel = buildWebShellViewModel(shell, createDefaultWebScreenRegistry());
+const store = createWebStore({ config: result });
 
-<WebShellLayout viewModel={viewModel} onNavigate={(route) => { /* set active route */ }} />
+// React tree
+<WebStoreApp store={store} />
+
+// Or mount into a host element
+mountWebStore({ store, container: '#root' });
 ```
+
+Navigation, branding, SEO, and domain all come from tenant config — change config, not forks.
 
 ## Scripts
 
@@ -46,7 +46,14 @@ const viewModel = buildWebShellViewModel(shell, createDefaultWebScreenRegistry()
 pnpm --filter @ai-commerce/web-store test
 pnpm --filter @ai-commerce/web-store typecheck
 pnpm --filter @ai-commerce/web-store lint
+pnpm --filter @ai-commerce/web-store build
 ```
+
+## Out of scope
+
+- Dedicated Next.js / Vite host project (embed `WebStoreApp` / `mountWebStore`)
+- Live catalog / cart / checkout module wiring
+- Runtime Theme Engine token injection
 
 ## Architecture
 

@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Web store facade + app entry** (Sprint 11 Task 3) — `@ai-commerce/web-store`
+  - `WebStore` / `createWebStore` — config → shell + registry facade
+  - `WebStoreApp` — stateful React entry with branded default screens
+  - `mountWebStore` — DOM mount helper for SPA / embed hosts
+  - Facade + app unit/integration tests
+
 - **Web store screen registry + React layout** (Sprint 11 Task 2) — `@ai-commerce/web-store`
   - `WebScreenRegistry` / `createDefaultWebScreenRegistry` — `store.*` route map
   - `buildWebShellViewModel` — shell + registry view-model for layout
