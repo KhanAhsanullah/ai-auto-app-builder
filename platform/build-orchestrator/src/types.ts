@@ -44,6 +44,10 @@ export interface BuildJob {
   request: BuildRequest;
   status: BuildJobStatus;
   plan?: BuildPlan;
+  /** Step ids completed during execution (Task 2). */
+  completedStepIds?: readonly string[];
+  /** Artifact ids produced during execution (Task 2). */
+  artifactIds?: readonly string[];
   errorMessage?: string;
   createdAt: string;
   updatedAt: string;

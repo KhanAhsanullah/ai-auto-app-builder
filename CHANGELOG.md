@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Build orchestrator executor** (Sprint 12 Task 2) — `@ai-commerce/build-orchestrator`
+  - `BuildExecutor` — queued job → plan → simulated steps → terminal status
+  - `BuildArtifactRef` + `ArtifactStore` / `InMemoryArtifactStore`
+  - Job fields `completedStepIds` / `artifactIds`
+
 - **Build orchestrator foundation** (Sprint 12 Task 1) — `@ai-commerce/build-orchestrator`
   - `BuildPlanner` — config publish request → multi-surface plan
   - Build job status machine (`queued` → `planning` → `running` → terminal)

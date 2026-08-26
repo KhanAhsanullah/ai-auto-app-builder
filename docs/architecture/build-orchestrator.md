@@ -21,12 +21,27 @@ BuildPlanner → BuildPlan (per-surface steps)
 BuildJob (queued…)  ←→  BuildJobRepository (InMemory*)
 ```
 
-Plan step kinds (names only in Task 1):
+Plan step kinds:
 
 - `resolve_config`
 - `compile_theme`
 - `compile_brand`
 - `emit_artifact`
+
+## Sprint 12 Task 2 — Executor
+
+```
+queued BuildJob
+     │
+     ▼
+BuildExecutor.execute(jobId)
+     ├── planning (attach plan)
+     ├── running (simulate steps)
+     │     └── emit_artifact → ArtifactStore.save(BuildArtifactRef)
+     └── succeeded | failed
+```
+
+`BuildArtifactRef` is metadata only (`contentHash`, surface, configVersion) — no binary blobs or Docker images yet.
 
 ## Status machine
 

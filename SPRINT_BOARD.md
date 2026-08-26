@@ -149,12 +149,12 @@ All Sprint 11 code lives in `@ai-commerce/web-store` (`apps/web-store`). Dedicat
 | Task   | Status | Deliverable                                                  |
 | ------ | ------ | ------------------------------------------------------------ |
 | Task 1 | ✅     | Domain model, planner, status machine, in-memory job store   |
-| Task 2 | ⬜     | In-process executor + artifact descriptors                   |
+| Task 2 | ✅     | In-process executor + artifact descriptors                   |
 | Task 3 | ⬜     | `BuildOrchestrator` / `createBuildOrchestrator` facade, docs |
 
 All Sprint 12 code lives in `@ai-commerce/build-orchestrator` (`platform/build-orchestrator`). HTTP / worker / CI deferred.
 
-**Tags:** `sprint12-task1` (on Task 1 completion)
+**Tags:** `sprint12-task1`, `sprint12-task2`
 
 ---
 
