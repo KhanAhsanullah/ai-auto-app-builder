@@ -172,6 +172,20 @@ All Sprint 13 code lives in `@ai-commerce/config-engine` (`platform/config-engin
 
 ---
 
+## Sprint 14 — Core Catalog
+
+| Task   | Status | Deliverable                                                          |
+| ------ | ------ | -------------------------------------------------------------------- |
+| Task 1 | ✅     | Domain model, `CatalogService`, in-memory repository                 |
+| Task 2 | ⬜     | Queries (by category, active-only), search helpers                   |
+| Task 3 | ⬜     | `CatalogModule` / `createCatalogModule` facade + surface wiring docs |
+
+All Sprint 14 code lives in `@ai-commerce/module-catalog` (`modules/core/catalog`). HTTP / DB deferred.
+
+**Tags:** `sprint14-task1` (on Task 1 completion)
+
+---
+
 ## Sprint Conventions
 
 - Each sprint task is committed with a Conventional Commit referencing the sprint and task number

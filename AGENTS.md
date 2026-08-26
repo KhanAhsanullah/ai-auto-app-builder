@@ -8,7 +8,7 @@ Guidelines for AI assistants working on CommerceOS AI. Read this file before mak
 
 **CommerceOS AI** (`ai-commerce-platform`) is a configuration-driven, multi-tenant white-label commerce SaaS platform. It enables agencies, enterprises, and vertical operators to launch branded commerce experiences — Admin Dashboard, Web Store, Mobile App, and API Backend — from a single JSON Schema configuration contract.
 
-**Current state:** Sprints 1–13 complete (Config Engine facade included). Next: Core Catalog domain for real commerce surfaces.
+**Current state:** Sprints 1–13 complete; Sprint 14 Task 1 (Core Catalog domain) implemented. Next: Sprint 14 Task 2 — catalog queries.
 
 **Key packages (Sprint 1 deliverables):**
 
@@ -162,6 +162,7 @@ Sprints are sequential and tagged. Each sprint delivers a cohesive milestone.
 | 11     | Web Store           | ✅ Complete |
 | 12     | Build Orchestrator  | ✅ Complete |
 | 13     | Config Engine       | ✅ Complete |
+| 14     | Core Catalog        | In progress |
 
 ### Sprint Task Checklist
 
@@ -221,5 +222,5 @@ All four must pass.
 | [CHANGELOG.md](./CHANGELOG.md)                               | Version history                  |
 | [docs/architecture/README.md](./docs/architecture/README.md) | System architecture              |
 
-**Latest tag:** `sprint13-task3`
+**Latest tag:** `sprint14-task1`
 **Schema version:** v1 (`SCHEMA_VERSION`)

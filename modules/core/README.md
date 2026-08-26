@@ -23,4 +23,4 @@ These modules represent the **80% shared behavior** across e-commerce, grocery, 
 
 ## Status
 
-Foundation scaffold — domain logic in future sprints.
+Sprint 14 Task 1 — domain model and `CatalogService` in `@ai-commerce/module-catalog`. Queries and facade in later Task 2–3.

@@ -8,52 +8,50 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 13 — Config Engine** ✅ complete
+**Sprint 14 — Core Catalog** (in progress)
 
-Sprint 13 Task 3 complete — `ConfigEngine` / `createConfigEngine` facade in `@ai-commerce/config-engine`.
+Sprint 14 Task 1 complete — domain model + `CatalogService` + in-memory repository in `@ai-commerce/module-catalog`.
 
-**Next:** Define Sprint 14 — Core Catalog (products/categories) to power Web + Admin + Mobile commerce flows. See product vision end goal.
+**Next:** Sprint 14 Task 2 — category/active queries and search helpers.
 
 ## Completed Tasks
 
 | Task                | Description                           | Commit Tag       |
 | ------------------- | ------------------------------------- | ---------------- |
-| Sprint 1–12 ✅      | Foundation through Build Orchestrator | `sprint*-task*`  |
-| Sprint 13 Task 1 ✅ | Config draft CRUD + validation        | `sprint13-task1` |
-| Sprint 13 Task 2 ✅ | Publish + `ConfigPublishEvent`        | `sprint13-task2` |
-| Sprint 13 Task 3 ✅ | `ConfigEngine` facade                 | `sprint13-task3` |
+| Sprint 1–13 ✅      | Foundation through Config Engine      | `sprint*-task*`  |
+| Sprint 14 Task 1 ✅ | Catalog domain + in-memory repository | `sprint14-task1` |
 
 ## Current Progress
 
-- Sprints 1–13 complete (boarded control-plane + surface shells)
-- **Config Engine** — drafts, publish events, facade
+- Sprints 1–13 complete
+- **Core Catalog** — products, variants, categories (Task 1)
 
-**Overall:** Sprint 13 complete. Next: Core Catalog domain module for real store surfaces.
+**Overall:** Sprint 14 Task 1 complete. Next: Task 2 queries.
 
 ## Next Tasks
 
-**Sprint 14 (proposed) — Core Catalog**
+**Sprint 14 Task 2 — Queries**
 
-- Product / variant / category domain in `@ai-commerce/module-catalog`
-- Wire Web Store + Admin catalog screens
-- See [PRODUCT_VISION.md](./PRODUCT_VISION.md) and [SPRINT_BOARD.md](./SPRINT_BOARD.md)
+- List products by category / active-only filters
+- Search helpers (slug / name)
+- See [SPRINT_BOARD.md](./SPRINT_BOARD.md)
 
 ## Latest Commit
 
 ```
-feat(config-engine): add ConfigEngine facade (Sprint 13 Task 3)
+feat(module-catalog): add catalog domain and in-memory repository (Sprint 14 Task 1)
 ```
 
 ## Latest Tag
 
 ```
-sprint13-task3
+sprint14-task1
 ```
 
 ## Health Status
 
-| Area          | Status      | Notes                                   |
-| ------------- | ----------- | --------------------------------------- |
-| Repository    | ✅ Healthy  | Sprint 13 complete                      |
-| Config engine | ✅ Complete | Tasks 1–3 done                          |
-| Tests         | ✅ Passing  | `@ai-commerce/config-engine` unit tests |
+| Area       | Status         | Notes                                    |
+| ---------- | -------------- | ---------------------------------------- |
+| Repository | ✅ Healthy     | Sprint 14 Task 1 ready                   |
+| Catalog    | 🟡 In progress | Task 1 done; Tasks 2–3 remaining         |
+| Tests      | ✅ Passing     | `@ai-commerce/module-catalog` unit tests |

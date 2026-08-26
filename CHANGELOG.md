@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Core catalog foundation** (Sprint 14 Task 1) — `@ai-commerce/module-catalog`
+  - `CatalogService` — tenant-scoped category + product CRUD (variants, slugs, SKUs)
+  - `CatalogRepository` + `InMemoryCatalogRepository`
+  - Architecture doc — `docs/architecture/catalog.md`
+
 - **Config engine facade** (Sprint 13 Task 3) — `@ai-commerce/config-engine`
   - `ConfigEngine` / `createConfigEngine` — unified draft + publish entrypoints
   - Optional `onPublish` listeners for Build Orchestrator wiring
