@@ -17,6 +17,9 @@ CreateCategory / CreateProduct
         ▼
   CatalogService  ──validate slug/SKU/categories──▶ CatalogRepository
         │
+        ├── listProducts / listProductsByCategory / listActiveProducts
+        └── searchProducts / getCategoryBySlug
+        │
         ▼
   Category / Product (draft | active | archived)
 ```

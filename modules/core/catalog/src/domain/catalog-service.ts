@@ -13,9 +13,12 @@ import type {
   CreateCategoryInput,
   CreateProductInput,
   CreateProductVariantInput,
+  ListProductsOptions,
   Money,
   Product,
+  ProductStatus,
   ProductVariant,
+  SearchProductsOptions,
   UpdateCategoryInput,
   UpdateProductInput,
 } from '../types.js';
@@ -27,7 +30,7 @@ export interface CatalogServiceDeps {
 }
 
 /**
- * Tenant-scoped catalog writes and reads for categories and products.
+ * Tenant-scoped catalog writes, reads, and product queries.
  */
 export class CatalogService {
   private readonly now: () => string;
@@ -214,19 +217,108 @@ export class CatalogService {
   }
 
   async getProductBySlug(tenantId: string, slug: string): Promise<Product> {
+    const trimmedTenant = this.requireTenantId(tenantId);
     const product = await this.deps.repository.findProductBySlug(
-      this.requireTenantId(tenantId),
+      trimmedTenant,
       this.requireSlug(slug),
     );
     if (!product) {
-      throw new ProductNotFoundException(tenantId.trim(), slug);
+      throw new ProductNotFoundException(trimmedTenant, slug);
     }
     return product;
   }
 
-  async listProducts(tenantId: string): Promise<Product[]> {
-    const list = await this.deps.repository.listProductsByTenant(this.requireTenantId(tenantId));
-    return [...list].sort((a, b) => a.slug.localeCompare(b.slug));
+  async getCategoryBySlug(tenantId: string, slug: string): Promise<Category> {
+    const trimmedTenant = this.requireTenantId(tenantId);
+    const category = await this.deps.repository.findCategoryBySlug(
+      trimmedTenant,
+      this.requireSlug(slug),
+    );
+    if (!category) {
+      throw new CategoryNotFoundException(trimmedTenant, slug);
+    }
+    return category;
+  }
+
+  /**
+   * List products for a tenant with optional category, status, and search filters.
+   */
+  async listProducts(tenantId: string, options: ListProductsOptions = {}): Promise<Product[]> {
+    const trimmedTenant = this.requireTenantId(tenantId);
+    if (options.categoryId !== undefined) {
+      await this.requireCategory(trimmedTenant, options.categoryId);
+    }
+
+    const statuses = this.resolveStatusFilter(options);
+    const search = options.search?.trim().toLowerCase();
+    if (options.search !== undefined && !search) {
+      throw new CatalogValidationException('search cannot be empty.');
+    }
+
+    const list = await this.deps.repository.listProductsByTenant(trimmedTenant);
+    return list
+      .filter((product) => {
+        if (options.categoryId && !product.categoryIds.includes(options.categoryId)) {
+          return false;
+        }
+        if (statuses && !statuses.has(product.status)) {
+          return false;
+        }
+        if (search) {
+          const name = product.name.toLowerCase();
+          const slug = product.slug.toLowerCase();
+          if (!name.includes(search) && !slug.includes(search)) {
+            return false;
+          }
+        }
+        return true;
+      })
+      .sort((a, b) => a.slug.localeCompare(b.slug));
+  }
+
+  /** Products that include the given category. */
+  async listProductsByCategory(
+    tenantId: string,
+    categoryId: string,
+    options: Omit<ListProductsOptions, 'categoryId'> = {},
+  ): Promise<Product[]> {
+    return this.listProducts(tenantId, { ...options, categoryId });
+  }
+
+  /** Active products only (storefront default). */
+  async listActiveProducts(
+    tenantId: string,
+    options: Omit<ListProductsOptions, 'status' | 'activeOnly'> = {},
+  ): Promise<Product[]> {
+    return this.listProducts(tenantId, { ...options, activeOnly: true });
+  }
+
+  /** Case-insensitive name/slug search. */
+  async searchProducts(
+    tenantId: string,
+    query: string,
+    options: SearchProductsOptions = {},
+  ): Promise<Product[]> {
+    return this.listProducts(tenantId, { ...options, search: query });
+  }
+
+  private resolveStatusFilter(
+    options: Pick<ListProductsOptions, 'status' | 'activeOnly'>,
+  ): Set<ProductStatus> | undefined {
+    if (options.activeOnly) {
+      if (options.status !== undefined) {
+        throw new CatalogValidationException('Specify either activeOnly or status, not both.');
+      }
+      return new Set<ProductStatus>(['active']);
+    }
+    if (options.status === undefined) {
+      return undefined;
+    }
+    const list = typeof options.status === 'string' ? [options.status] : [...options.status];
+    if (list.length === 0) {
+      throw new CatalogValidationException('status filter cannot be empty.');
+    }
+    return new Set(list);
   }
 
   private normalizeVariants(variants: readonly CreateProductVariantInput[]): ProductVariant[] {

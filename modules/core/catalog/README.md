@@ -8,15 +8,15 @@ Core domain module for products, variants, categories, and media associations. U
 
 ## Status
 
-**Sprint 14 Task 1** — Domain model, `CatalogService`, in-memory repository.
+**Sprint 14 Task 2** — Product queries (by category, active-only) and search helpers.
 
 ## Modules
 
-| Module                      | Purpose                               |
-| --------------------------- | ------------------------------------- |
-| `CatalogService`            | Tenant-scoped category + product CRUD |
-| `CatalogRepository`         | Persistence port                      |
-| `InMemoryCatalogRepository` | In-memory store for tests / local     |
+| Module                      | Purpose                                    |
+| --------------------------- | ------------------------------------------ |
+| `CatalogService`            | CRUD + list/search queries (tenant-scoped) |
+| `CatalogRepository`         | Persistence port                           |
+| `InMemoryCatalogRepository` | In-memory store for tests / local          |
 
 ## Usage
 
@@ -31,15 +31,22 @@ await catalog.createCategory({
   tenantId: 'tenant-fresh',
   slug: 'fruit',
   name: 'Fruit',
+  id: 'cat-fruit',
 });
 
 await catalog.createProduct({
   tenantId: 'tenant-fresh',
   slug: 'organic-apple',
   name: 'Organic Apple',
-  categoryIds: [/* category id */],
+  status: 'active',
+  categoryIds: ['cat-fruit'],
   variants: [{ sku: 'APL-1', title: 'Default', price: { amount: 2.5, currency: 'USD' } }],
 });
+
+// Storefront queries
+await catalog.listActiveProducts('tenant-fresh');
+await catalog.listProductsByCategory('tenant-fresh', 'cat-fruit', { activeOnly: true });
+await catalog.searchProducts('tenant-fresh', 'apple', { activeOnly: true });
 ```
 
 All reads/writes are **tenant-scoped**. Slugs are unique per tenant; SKUs are unique per tenant across products.

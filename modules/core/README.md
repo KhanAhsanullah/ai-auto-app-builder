@@ -23,4 +23,4 @@ These modules represent the **80% shared behavior** across e-commerce, grocery, 
 
 ## Status
 
-Sprint 14 Task 1 — domain model and `CatalogService` in `@ai-commerce/module-catalog`. Queries and facade in later Task 2–3.
+Sprint 14 Task 2 — queries and search on `@ai-commerce/module-catalog`. Facade in Task 3.

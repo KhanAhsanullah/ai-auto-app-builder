@@ -3,10 +3,12 @@ export type {
   CreateCategoryInput,
   CreateProductInput,
   CreateProductVariantInput,
+  ListProductsOptions,
   Money,
   Product,
   ProductStatus,
   ProductVariant,
+  SearchProductsOptions,
   UpdateCategoryInput,
   UpdateProductInput,
 } from './types.js';

@@ -99,3 +99,22 @@ export interface UpdateProductInput {
   variants?: readonly CreateProductVariantInput[];
   mediaIds?: readonly string[] | null;
 }
+
+/** Filters for listing / querying products within a tenant. */
+export interface ListProductsOptions {
+  /** Only products that include this category id. */
+  categoryId?: string;
+  /** Filter by one or more statuses. */
+  status?: ProductStatus | readonly ProductStatus[];
+  /** Shorthand for `status: 'active'`. */
+  activeOnly?: boolean;
+  /** Case-insensitive substring match on product name or slug. */
+  search?: string;
+}
+
+/** Options for text search (category / status filters). */
+export interface SearchProductsOptions {
+  categoryId?: string;
+  status?: ProductStatus | readonly ProductStatus[];
+  activeOnly?: boolean;
+}

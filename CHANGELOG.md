@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Core catalog queries** (Sprint 14 Task 2) — `@ai-commerce/module-catalog`
+  - `listProducts` filters: category, status / activeOnly, search
+  - `listProductsByCategory`, `listActiveProducts`, `searchProducts`, `getCategoryBySlug`
+
 - **Core catalog foundation** (Sprint 14 Task 1) — `@ai-commerce/module-catalog`
   - `CatalogService` — tenant-scoped category + product CRUD (variants, slugs, SKUs)
   - `CatalogRepository` + `InMemoryCatalogRepository`
