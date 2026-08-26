@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Build orchestrator foundation** (Sprint 12 Task 1) — `@ai-commerce/build-orchestrator`
+  - `BuildPlanner` — config publish request → multi-surface plan
+  - Build job status machine (`queued` → `planning` → `running` → terminal)
+  - `BuildJobRepository` port + `InMemoryBuildJobRepository`
+  - Architecture doc — `docs/architecture/build-orchestrator.md`
+
 - **Web store facade + app entry** (Sprint 11 Task 3) — `@ai-commerce/web-store`
   - `WebStore` / `createWebStore` — config → shell + registry facade
   - `WebStoreApp` — stateful React entry with branded default screens

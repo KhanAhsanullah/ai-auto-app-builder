@@ -8,50 +8,50 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 11 — Web Store** ✅ Complete
+**Sprint 12 — Build Orchestrator** (in progress)
 
-Sprint 11 Task 3 complete — `createWebStore` facade, `WebStoreApp`, and `mountWebStore` in `@ai-commerce/web-store`.
+Sprint 12 Task 1 complete — domain model, planner, status machine, and in-memory job store in `@ai-commerce/build-orchestrator`.
 
-**Next:** See roadmap — Build Orchestrator or AI host wiring.
+**Next:** Sprint 12 Task 2 — in-process executor + artifact descriptors.
 
 ## Completed Tasks
 
 | Task                | Description                                 | Commit Tag       |
 | ------------------- | ------------------------------------------- | ---------------- |
-| Sprint 1–10 ✅      | Foundation through AI Commerce Engine       | `sprint*-task*`  |
-| Sprint 11 Task 1 ✅ | Web store shell — nav, flags, branding, SEO | `sprint11-task1` |
-| Sprint 11 Task 2 ✅ | Screen registry + React layout              | `sprint11-task2` |
-| Sprint 11 Task 3 ✅ | `createWebStore` facade + app entry         | `sprint11-task3` |
+| Sprint 1–11 ✅      | Foundation through Web Store                | `sprint*-task*`  |
+| Sprint 12 Task 1 ✅ | Build planner + job status + in-memory repo | `sprint12-task1` |
 
 ## Current Progress
 
 - Sprints 1–11 complete
-- **Web Store** — shell, screens, React layout, facade
+- **Build Orchestrator** — plan + job store (Task 1)
 
-**Overall:** Sprint 11 complete. Four config-driven surfaces now have facades (Admin, Mobile, Web, API/AI).
+**Overall:** Sprint 12 Task 1 complete. Next: Task 2 executor.
 
 ## Next Tasks
 
-- **Build Orchestrator** — config publish → tenant artifacts
-- Live LLM providers + wire `createAiOrchestrator` into admin
-- See [PRODUCT_VISION.md](./PRODUCT_VISION.md)
+**Sprint 12 Task 2 — Executor**
+
+- Run plan steps in-process (simulated)
+- Artifact descriptor metadata
+- See [SPRINT_BOARD.md](./SPRINT_BOARD.md)
 
 ## Latest Commit
 
 ```
-feat(web-store): add createWebStore facade and WebStoreApp (Sprint 11 Task 3)
+feat(build-orchestrator): add planner, job status machine, and in-memory store (Sprint 12 Task 1)
 ```
 
 ## Latest Tag
 
 ```
-sprint11-task3
+sprint12-task1
 ```
 
 ## Health Status
 
-| Area       | Status      | Notes                               |
-| ---------- | ----------- | ----------------------------------- |
-| Repository | ✅ Healthy  | Sprint 11 complete                  |
-| Web store  | ✅ Complete | Tasks 1–3; host app deferred        |
-| Tests      | ✅ Passing  | `@ai-commerce/web-store` unit tests |
+| Area               | Status         | Notes                                        |
+| ------------------ | -------------- | -------------------------------------------- |
+| Repository         | ✅ Healthy     | Sprint 12 Task 1 ready                       |
+| Build orchestrator | 🟡 In progress | Task 1 done; Tasks 2–3 remaining             |
+| Tests              | ✅ Passing     | `@ai-commerce/build-orchestrator` unit tests |

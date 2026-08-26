@@ -144,6 +144,20 @@ All Sprint 11 code lives in `@ai-commerce/web-store` (`apps/web-store`). Dedicat
 
 ---
 
+## Sprint 12 — Build Orchestrator
+
+| Task   | Status | Deliverable                                                  |
+| ------ | ------ | ------------------------------------------------------------ |
+| Task 1 | ✅     | Domain model, planner, status machine, in-memory job store   |
+| Task 2 | ⬜     | In-process executor + artifact descriptors                   |
+| Task 3 | ⬜     | `BuildOrchestrator` / `createBuildOrchestrator` facade, docs |
+
+All Sprint 12 code lives in `@ai-commerce/build-orchestrator` (`platform/build-orchestrator`). HTTP / worker / CI deferred.
+
+**Tags:** `sprint12-task1` (on Task 1 completion)
+
+---
+
 ## Sprint Conventions
 
 - Each sprint task is committed with a Conventional Commit referencing the sprint and task number

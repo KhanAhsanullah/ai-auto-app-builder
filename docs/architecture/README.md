@@ -24,6 +24,9 @@ The platform architecture was approved in Sprint 0. It defines:
 | [api-gateway.md](./api-gateway.md)                 | API Gateway — tenant routing, rate limiting, config injection, auth middleware, Node HTTP facade                         |
 | [admin-dashboard.md](./admin-dashboard.md)         | Admin Dashboard — shell, screen registry, React app facade                                                               |
 | [mobile-app.md](./mobile-app.md)                   | Mobile App — shell, screen registry, React Native app facade                                                             |
+| [web-store.md](./web-store.md)                     | Web Store — shell, screen registry, React storefront facade                                                              |
+| [ai-orchestrator.md](./ai-orchestrator.md)         | AI Orchestrator — guardrails, generation adapters, facade                                                                |
+| [build-orchestrator.md](./build-orchestrator.md)   | Build Orchestrator — publish-triggered rebuild plans and job tracking                                                    |
 
 ## Monorepo Layout
 
