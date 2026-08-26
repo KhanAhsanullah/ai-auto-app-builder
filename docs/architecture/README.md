@@ -27,6 +27,7 @@ The platform architecture was approved in Sprint 0. It defines:
 | [web-store.md](./web-store.md)                     | Web Store — shell, screen registry, React storefront facade                                                              |
 | [ai-orchestrator.md](./ai-orchestrator.md)         | AI Orchestrator — guardrails, generation adapters, facade                                                                |
 | [build-orchestrator.md](./build-orchestrator.md)   | Build Orchestrator — publish-triggered rebuild plans and job tracking                                                    |
+| [config-engine.md](./config-engine.md)             | Config Engine — versioned drafts, validation, publish events                                                             |
 
 ## Monorepo Layout
 

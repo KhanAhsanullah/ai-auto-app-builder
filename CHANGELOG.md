@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Config engine draft foundation** (Sprint 13 Task 1) — `@ai-commerce/config-engine`
+  - `ConfigValidationService` — validate via `@ai-commerce/config-runtime` ConfigProvider
+  - `DraftConfigService` — monotonic draft revisions (save / get / list)
+  - `ConfigRepository` + `InMemoryConfigRepository`
+  - Architecture doc — `docs/architecture/config-engine.md`
+
 - **Build orchestrator facade** (Sprint 12 Task 3) — `@ai-commerce/build-orchestrator`
   - `BuildOrchestrator` / `createBuildOrchestrator` — enqueue, execute, `onConfigPublish`
   - Config publish event contract + facade unit tests

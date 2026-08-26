@@ -1,2 +1,18 @@
-// Placeholder entry point — implementation in future sprints.
-export {};
+export type {
+  ConfigDocument,
+  ConfigDocumentStatus,
+  GetConfigInput,
+  SaveDraftInput,
+} from './types.js';
+export {
+  ConfigDocumentAlreadyExistsException,
+  ConfigDocumentNotFoundException,
+  ConfigDraftValidationException,
+  ConfigEngineException,
+} from './errors.js';
+export type { ConfigRepository } from './domain/config-repository.js';
+export { ConfigValidationService } from './domain/config-validation-service.js';
+export type { ConfigValidationServiceDeps } from './domain/config-validation-service.js';
+export { DraftConfigService } from './domain/draft-config-service.js';
+export type { DraftConfigServiceDeps } from './domain/draft-config-service.js';
+export { InMemoryConfigRepository } from './infrastructure/in-memory-config-repository.js';

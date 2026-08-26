@@ -8,51 +8,50 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 12 — Build Orchestrator** ✅ Complete
+**Sprint 13 — Config Engine** (in progress)
 
-Sprint 12 Task 3 complete — `BuildOrchestrator` / `createBuildOrchestrator` facade with `onConfigPublish`.
+Sprint 13 Task 1 complete — draft CRUD + Config Runtime validation in `@ai-commerce/config-engine`.
 
-**Next:** AI host wiring, Config Engine publish events, or core commerce modules.
+**Next:** Sprint 13 Task 2 — publish workflow + `ConfigPublishEvent`.
 
 ## Completed Tasks
 
-| Task                | Description                                 | Commit Tag       |
-| ------------------- | ------------------------------------------- | ---------------- |
-| Sprint 1–11 ✅      | Foundation through Web Store                | `sprint*-task*`  |
-| Sprint 12 Task 1 ✅ | Build planner + job status + in-memory repo | `sprint12-task1` |
-| Sprint 12 Task 2 ✅ | Executor + artifact descriptors             | `sprint12-task2` |
-| Sprint 12 Task 3 ✅ | `BuildOrchestrator` facade                  | `sprint12-task3` |
+| Task                | Description                           | Commit Tag       |
+| ------------------- | ------------------------------------- | ---------------- |
+| Sprint 1–12 ✅      | Foundation through Build Orchestrator | `sprint*-task*`  |
+| Sprint 13 Task 1 ✅ | Config draft CRUD + validation        | `sprint13-task1` |
 
 ## Current Progress
 
 - Sprints 1–12 complete
-- **Build Orchestrator** — plan, execute, publish-trigger facade
+- **Config Engine** — draft revisions (Task 1)
 
-**Overall:** Sprint 12 complete.
+**Overall:** Sprint 13 Task 1 complete. Next: Task 2 publish.
 
 ## Next Tasks
 
-- Wire `onConfigPublish` from Config Engine / worker
-- Live LLM providers + admin AI host wiring
-- Core catalog / cart / checkout modules
-- See [PRODUCT_VISION.md](./PRODUCT_VISION.md)
+**Sprint 13 Task 2 — Publish**
+
+- Promote draft → published
+- Emit `ConfigPublishEvent` for Build Orchestrator
+- See [SPRINT_BOARD.md](./SPRINT_BOARD.md)
 
 ## Latest Commit
 
 ```
-feat(build-orchestrator): add BuildOrchestrator facade (Sprint 12 Task 3)
+feat(config-engine): add draft CRUD and Config Runtime validation (Sprint 13 Task 1)
 ```
 
 ## Latest Tag
 
 ```
-sprint12-task3
+sprint13-task1
 ```
 
 ## Health Status
 
-| Area               | Status      | Notes                                        |
-| ------------------ | ----------- | -------------------------------------------- |
-| Repository         | ✅ Healthy  | Sprint 12 complete                           |
-| Build orchestrator | ✅ Complete | Tasks 1–3; HTTP/worker/CI deferred           |
-| Tests              | ✅ Passing  | `@ai-commerce/build-orchestrator` unit tests |
+| Area          | Status         | Notes                                   |
+| ------------- | -------------- | --------------------------------------- |
+| Repository    | ✅ Healthy     | Sprint 13 Task 1 ready                  |
+| Config engine | 🟡 In progress | Task 1 done; Tasks 2–3 remaining        |
+| Tests         | ✅ Passing     | `@ai-commerce/config-engine` unit tests |
