@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **AI orchestrator facade** (Sprint 10 Task 3) — `@ai-commerce/ai-orchestrator`
+  - `AiOrchestrator` / `createAiOrchestrator` — unified generation + copilot entrypoint
+  - Facade unit tests and architecture docs update
+
 - **AI generation adapters** (Sprint 10 Task 2) — `@ai-commerce/ai-orchestrator`
   - `ConfigGenerationAdapter` / `ThemeGenerationAdapter` / `CatalogGenerationAdapter`
   - `createGenerationAdapters` — brief → `AiProvider` → schema-validated `AiProposal`

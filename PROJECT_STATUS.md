@@ -8,51 +8,50 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 10 — AI Commerce Engine** (in progress)
+**Sprint 10 — AI Commerce Engine** ✅ Complete
 
-Sprint 10 Task 2 complete — config / theme / catalog generation adapters in `@ai-commerce/ai-orchestrator`.
+Sprint 10 Task 3 complete — `AiOrchestrator` / `createAiOrchestrator` facade in `@ai-commerce/ai-orchestrator`.
 
-**Next:** Sprint 10 Task 3 — `AiOrchestrator` / `createAiOrchestrator` facade.
+**Next:** See roadmap / product vision for post–Sprint 10 work.
 
 ## Completed Tasks
 
-| Task                | Description                            | Commit Tag       |
-| ------------------- | -------------------------------------- | ---------------- |
-| Sprint 1–9 ✅       | Foundation through Mobile App          | `sprint*-task*`  |
-| Sprint 10 Task 1 ✅ | AI guardrails + schema-bound proposals | `sprint10-task1` |
-| Sprint 10 Task 2 ✅ | Generation adapters via `AiProvider`   | `sprint10-task2` |
+| Task                | Description                                      | Commit Tag       |
+| ------------------- | ------------------------------------------------ | ---------------- |
+| Sprint 1–9 ✅       | Foundation through Mobile App                    | `sprint*-task*`  |
+| Sprint 10 Task 1 ✅ | AI guardrails + schema-bound proposals           | `sprint10-task1` |
+| Sprint 10 Task 2 ✅ | Generation adapters via `AiProvider`             | `sprint10-task2` |
+| Sprint 10 Task 3 ✅ | `AiOrchestrator` / `createAiOrchestrator` facade | `sprint10-task3` |
 
 ## Current Progress
 
-- Sprints 1–9 complete
-- **AI Orchestrator** — guardrails, proposals, config/theme/catalog adapters
+- Sprints 1–10 complete
+- **AI Orchestrator** — guardrails, adapters, public facade
 
-**Overall:** Sprint 10 Task 2 complete. Next: Task 3 facade.
+**Overall:** Sprint 10 complete.
 
 ## Next Tasks
 
-**Sprint 10 Task 3 — Facade**
-
-- `AiOrchestrator` / `createAiOrchestrator`
-- Unified generation + copilot entrypoints
-- See [SPRINT_BOARD.md](./SPRINT_BOARD.md)
+- Live LLM provider adapters (OpenAI / Anthropic / …) behind `AiProvider`
+- Wire facade into admin dashboard / platform-api hosts
+- See [PRODUCT_VISION.md](./PRODUCT_VISION.md) and [SPRINT_BOARD.md](./SPRINT_BOARD.md)
 
 ## Latest Commit
 
 ```
-feat(ai-orchestrator): add config/theme/catalog generation adapters (Sprint 10 Task 2)
+feat(ai-orchestrator): add AiOrchestrator facade (Sprint 10 Task 3)
 ```
 
 ## Latest Tag
 
 ```
-sprint10-task2
+sprint10-task3
 ```
 
 ## Health Status
 
-| Area            | Status         | Notes                                     |
-| --------------- | -------------- | ----------------------------------------- |
-| Repository      | ✅ Healthy     | Sprint 10 Task 2 ready                    |
-| AI orchestrator | 🟡 In progress | Tasks 1–2 done; Task 3 remaining          |
-| Tests           | ✅ Passing     | `@ai-commerce/ai-orchestrator` unit tests |
+| Area            | Status      | Notes                                     |
+| --------------- | ----------- | ----------------------------------------- |
+| Repository      | ✅ Healthy  | Sprint 10 complete                        |
+| AI orchestrator | ✅ Complete | Tasks 1–3; HTTP service deferred          |
+| Tests           | ✅ Passing  | `@ai-commerce/ai-orchestrator` unit tests |

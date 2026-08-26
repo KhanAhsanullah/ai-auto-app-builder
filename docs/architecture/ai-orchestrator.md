@@ -47,6 +47,23 @@ Adapters:
 
 Wire with `createGenerationAdapters({ provider, proposals, policy })`.
 
+## Sprint 10 Task 3 — Facade
+
+```
+createAiOrchestrator({ settings, provider? })
+        │
+        ├─ toAiSettings
+        ├─ createAiGuardContext
+        ├─ createGenerationAdapters
+        └─ AiOrchestrator
+              ├─ generateConfig / generateTheme / enrichCatalog
+              ├─ createProposal
+              ├─ authorizeCopilot / requireCopilot
+              └─ getPolicy / getProviderId
+```
+
+Hosts (admin dashboard, platform-api) should depend on `createAiOrchestrator` rather than wiring adapters manually.
+
 ## Locked fields
 
 Dot-paths such as `payments.checkout.captureStrategy` cannot be written by AI. Matching is exact or prefix either direction (`payments` blocks nested payment writes; nested paths block the locked ancestor).

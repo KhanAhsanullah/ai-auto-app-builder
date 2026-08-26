@@ -25,6 +25,10 @@ export {
   ThemeGenerationAdapter,
 } from './domain/generation-adapters.js';
 export type { GenerationAdapterOptions, GenerationAdapters } from './domain/generation-adapters.js';
+export { AiOrchestrator } from './domain/ai-orchestrator.js';
+export type { AiOrchestratorDeps } from './domain/ai-orchestrator.js';
+export { createAiOrchestrator } from './domain/create-ai-orchestrator.js';
+export type { CreateAiOrchestratorOptions } from './domain/create-ai-orchestrator.js';
 export {
   AiActionForbiddenException,
   AiOrchestratorException,
