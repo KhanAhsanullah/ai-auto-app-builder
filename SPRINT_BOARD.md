@@ -130,6 +130,20 @@ All Sprint 10 code lives in `@ai-commerce/ai-orchestrator` (`platform/ai-orchest
 
 ---
 
+## Sprint 11 — Web Store
+
+| Task   | Status | Deliverable                                                                    |
+| ------ | ------ | ------------------------------------------------------------------------------ |
+| Task 1 | ✅     | Shell foundation — nav, flags, branding, domain/SEO (`@ai-commerce/web-store`) |
+| Task 2 | ⬜     | Screen registry + React/SSR storefront layout                                  |
+| Task 3 | ⬜     | `createWebStore` facade, app entry helpers, integration docs                   |
+
+All Sprint 11 code lives in `@ai-commerce/web-store` (`apps/web-store`). Dedicated host app deferred.
+
+**Tags:** `sprint11-task1` (on Task 1 completion)
+
+---
+
 ## Sprint Conventions
 
 - Each sprint task is committed with a Conventional Commit referencing the sprint and task number

@@ -8,50 +8,50 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 10 — AI Commerce Engine** ✅ Complete
+**Sprint 11 — Web Store** (in progress)
 
-Sprint 10 Task 3 complete — `AiOrchestrator` / `createAiOrchestrator` facade in `@ai-commerce/ai-orchestrator`.
+Sprint 11 Task 1 complete — web store shell foundation in `@ai-commerce/web-store`.
 
-**Next:** See roadmap / product vision for post–Sprint 10 work.
+**Next:** Sprint 11 Task 2 — screen registry + React/SSR layout.
 
 ## Completed Tasks
 
-| Task                | Description                                      | Commit Tag       |
-| ------------------- | ------------------------------------------------ | ---------------- |
-| Sprint 1–9 ✅       | Foundation through Mobile App                    | `sprint*-task*`  |
-| Sprint 10 Task 1 ✅ | AI guardrails + schema-bound proposals           | `sprint10-task1` |
-| Sprint 10 Task 2 ✅ | Generation adapters via `AiProvider`             | `sprint10-task2` |
-| Sprint 10 Task 3 ✅ | `AiOrchestrator` / `createAiOrchestrator` facade | `sprint10-task3` |
+| Task                | Description                                 | Commit Tag       |
+| ------------------- | ------------------------------------------- | ---------------- |
+| Sprint 1–10 ✅      | Foundation through AI Commerce Engine       | `sprint*-task*`  |
+| Sprint 11 Task 1 ✅ | Web store shell — nav, flags, branding, SEO | `sprint11-task1` |
 
 ## Current Progress
 
 - Sprints 1–10 complete
-- **AI Orchestrator** — guardrails, adapters, public facade
+- **Web Store** — shell resolvers (Task 1)
 
-**Overall:** Sprint 10 complete.
+**Overall:** Sprint 11 Task 1 complete. Next: Task 2 layout/screens.
 
 ## Next Tasks
 
-- Live LLM provider adapters (OpenAI / Anthropic / …) behind `AiProvider`
-- Wire facade into admin dashboard / platform-api hosts
-- See [PRODUCT_VISION.md](./PRODUCT_VISION.md) and [SPRINT_BOARD.md](./SPRINT_BOARD.md)
+**Sprint 11 Task 2 — Screen registry + layout**
+
+- Storefront route/screen map
+- React/SSR shell layout (header / nav / content)
+- See [SPRINT_BOARD.md](./SPRINT_BOARD.md)
 
 ## Latest Commit
 
 ```
-feat(ai-orchestrator): add AiOrchestrator facade (Sprint 10 Task 3)
+feat(web-store): add config-driven web storefront shell foundation (Sprint 11 Task 1)
 ```
 
 ## Latest Tag
 
 ```
-sprint10-task3
+sprint11-task1
 ```
 
 ## Health Status
 
-| Area            | Status      | Notes                                     |
-| --------------- | ----------- | ----------------------------------------- |
-| Repository      | ✅ Healthy  | Sprint 10 complete                        |
-| AI orchestrator | ✅ Complete | Tasks 1–3; HTTP service deferred          |
-| Tests           | ✅ Passing  | `@ai-commerce/ai-orchestrator` unit tests |
+| Area       | Status         | Notes                               |
+| ---------- | -------------- | ----------------------------------- |
+| Repository | ✅ Healthy     | Sprint 11 Task 1 ready              |
+| Web store  | 🟡 In progress | Task 1 done; Tasks 2–3 remaining    |
+| Tests      | ✅ Passing     | `@ai-commerce/web-store` unit tests |

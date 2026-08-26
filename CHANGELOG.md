@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Web store shell foundation** (Sprint 11 Task 1) — `@ai-commerce/web-store`
+  - `FeatureFlagEvaluator` — `flags.*` and `modules.*` evaluation
+  - `WebNavigationResolver` — visibility + feature-flag gated web nav
+  - `WebBrandingResolver` — branding / favicon / OG slice
+  - `WebStoreShellResolver` — composed shell (nav, domain, SEO, rendering, landing route)
+  - Config Runtime mapping — `toResolveWebStoreShellInput`
+  - Architecture doc — `docs/architecture/web-store.md`
+
 - **AI orchestrator facade** (Sprint 10 Task 3) — `@ai-commerce/ai-orchestrator`
   - `AiOrchestrator` / `createAiOrchestrator` — unified generation + copilot entrypoint
   - Facade unit tests and architecture docs update

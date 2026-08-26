@@ -1,2 +1,20 @@
-// Placeholder entry point — implementation in future sprints.
-export {};
+export { FeatureFlagEvaluator } from './domain/feature-flag-evaluator.js';
+export { WebNavigationResolver } from './domain/web-navigation-resolver.js';
+export type { ResolveWebNavigationInput } from './domain/web-navigation-resolver.js';
+export { WebBrandingResolver } from './domain/web-branding-resolver.js';
+export { WebStoreShellResolver } from './domain/web-store-shell-resolver.js';
+export type { WebStoreShellResolverDeps } from './domain/web-store-shell-resolver.js';
+export {
+  toResolveWebStoreShellInput,
+  type WebStoreConfigSource,
+} from './domain/map-config-provider-result.js';
+export { WebStoreException, WebStoreResolutionException } from './errors.js';
+export type {
+  ResolveWebStoreShellInput,
+  ResolvedWebBranding,
+  ResolvedWebNavItem,
+  ResolvedWebNavigation,
+  ResolvedWebStoreShell,
+  WebNavItem,
+  WebNavStyle,
+} from './types.js';
