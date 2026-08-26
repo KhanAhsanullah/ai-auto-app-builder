@@ -118,10 +118,15 @@ All Sprint 6 code lives in `@ai-commerce/auth-client` (`packages/auth-client`). 
 
 ## Sprint 10 — AI Commerce Engine
 
-- AI config generation and theme creation
-- Catalog enrichment and admin copilot
-- Guarded AI actions with schema validation
-- `@ai-commerce/ai-orchestrator`
+| Task   | Status | Deliverable                                                                     |
+| ------ | ------ | ------------------------------------------------------------------------------- |
+| Task 1 | ✅     | Guardrails + schema-bound proposals foundation (`@ai-commerce/ai-orchestrator`) |
+| Task 2 | ⬜     | Generation adapters (config / theme / catalog) via `AiProvider`                 |
+| Task 3 | ⬜     | `AiOrchestrator` / `createAiOrchestrator` facade, docs                          |
+
+All Sprint 10 code lives in `@ai-commerce/ai-orchestrator` (`platform/ai-orchestrator`). HTTP service deferred.
+
+**Tags:** `sprint10-task1` (on Task 1 completion)
 
 ---
 

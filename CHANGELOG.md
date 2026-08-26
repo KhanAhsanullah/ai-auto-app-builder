@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **AI orchestrator guardrails + proposals** (Sprint 10 Task 1) — `@ai-commerce/ai-orchestrator`
+  - `AiGuardPolicyResolver` / `AiActionGuard` — tenant AI policy, locked fields, copilot gates
+  - `AiOutputValidator` — schema-bound validation via `@ai-commerce/config-schema`
+  - `AiProposalFactory` / `createAiGuardContext` — guarded, reviewable proposals
+  - `AiProvider` port + `StubAiProvider`; `toAiSettings` Config Runtime mapping
+  - Architecture doc — `docs/architecture/ai-orchestrator.md`
+
 - **Mobile app facade + RN app entry** (Sprint 9 Task 3) — `@ai-commerce/mobile-app`
   - `MobileApp` / `createMobileApp` — config → shell + registry facade
   - `MobileAppRoot` — stateful React Native entry with branded default screens
