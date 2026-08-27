@@ -6,19 +6,23 @@ Core data-plane domain module (`@ai-commerce/module-cart`) for tenant-scoped sho
 
 1. **Tenant-aware** — every cart is scoped by `tenantId`.
 2. **Variant lines** — lines key on `variantId`; re-adding merges quantity.
-3. **Price snapshot** — `unitPrice` / `lineTotal` stored on the line (catalog re-price optional later).
-4. **Guest or customer** — optional `sessionId` and/or `customerId`.
+3. **Price snapshot** — `unitPrice` / `lineTotal` stored on the line; optional catalog validation.
+4. **Guest or customer** — optional `sessionId` and/or `customerId` with getOrCreate helpers.
 5. **Clean Architecture** — domain ports + service; in-memory adapter first.
 
 ## Flow
 
 ```
+getOrCreateBySession / getOrCreateByCustomer
+        │
+        ▼
 createCart → Cart (empty)
-     │
-     ▼
-addItem / setLineQuantity / removeLine / clearCart
-     │
-     ▼
+        │
+        ▼
+addItem / addItemFromCatalog / setLineQuantity / removeLine / clearCart
+        │
+        ├── optional CatalogProductLookup (price + active status)
+        ▼
 CartService → CartRepository  (subtotal recalculated)
 ```
 
@@ -36,4 +40,4 @@ CartService → CartRepository  (subtotal recalculated)
 - Tax preview
 - Persistent DB
 - Checkout handoff (Checkout module)
-- Hard dependency on `@ai-commerce/module-catalog` (optional port in Task 2)
+- Built-in hard dependency on `@ai-commerce/module-catalog` (wire via `CatalogProductLookup` adapter)

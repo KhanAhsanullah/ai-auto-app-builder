@@ -8,15 +8,16 @@ Core domain module for shopping cart lines. Entry point to the checkout pipeline
 
 ## Status
 
-**Sprint 15 Task 1** — Domain model, `CartService`, in-memory repository.
+**Sprint 15 Task 2** — getOrCreate helpers + optional `CatalogProductLookup` price validation.
 
 ## Modules
 
-| Module                   | Purpose                                  |
-| ------------------------ | ---------------------------------------- |
-| `CartService`            | Create cart, add/merge lines, quantities |
-| `CartRepository`         | Persistence port                         |
-| `InMemoryCartRepository` | In-memory store for tests / local        |
+| Module                   | Purpose                                          |
+| ------------------------ | ------------------------------------------------ |
+| `CartService`            | Create/getOrCreate, add/merge lines, quantities  |
+| `CatalogProductLookup`   | Optional port for catalog price / variant quotes |
+| `CartRepository`         | Persistence port                                 |
+| `InMemoryCartRepository` | In-memory store for tests / local                |
 
 ## Usage
 
@@ -25,12 +26,13 @@ import { CartService, InMemoryCartRepository } from '@ai-commerce/module-cart';
 
 const carts = new CartService({
   repository: new InMemoryCartRepository(),
+  // optional: catalogLookup: adapterFromCatalogModule(catalog),
 });
 
-const cart = await carts.createCart({
+const cart = await carts.getOrCreateBySession({
   tenantId: 'tenant-fresh',
-  currency: 'USD',
   sessionId: 'sess-1',
+  currency: 'USD',
 });
 
 await carts.addItem({
@@ -43,9 +45,10 @@ await carts.addItem({
   unitPrice: { amount: 2.5, currency: 'USD' },
   quantity: 2,
 });
-```
 
-Carts are **tenant-scoped**. Same `variantId` merges quantities. Line prices are snapshots (catalog lookup deferred to Task 2+).
+// When catalogLookup is configured:
+// await carts.addItemFromCatalog({ tenantId, cartId, productId, variantId, quantity: 1 });
+```
 
 ## Scripts
 

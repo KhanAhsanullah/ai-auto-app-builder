@@ -65,3 +65,29 @@ export interface RemoveCartLineInput {
   cartId: string;
   lineId: string;
 }
+
+/** Input for get-or-create by guest session. */
+export interface GetOrCreateBySessionInput {
+  tenantId: string;
+  sessionId: string;
+  currency: string;
+  id?: string;
+}
+
+/** Input for get-or-create by customer. */
+export interface GetOrCreateByCustomerInput {
+  tenantId: string;
+  customerId: string;
+  currency: string;
+  id?: string;
+}
+
+/** Add a line by catalog ids (requires CatalogProductLookup). */
+export interface AddCartItemFromCatalogInput {
+  tenantId: string;
+  cartId: string;
+  productId: string;
+  variantId: string;
+  /** Defaults to 1. */
+  quantity?: number;
+}

@@ -191,12 +191,12 @@ All Sprint 14 code lives in `@ai-commerce/module-catalog` (`modules/core/catalog
 | Task   | Status | Deliverable                                                    |
 | ------ | ------ | -------------------------------------------------------------- |
 | Task 1 | ✅     | Domain model, `CartService`, in-memory repository              |
-| Task 2 | ⬜     | getOrCreate helpers, optional catalog price validation port    |
+| Task 2 | ✅     | getOrCreate helpers, optional catalog price validation port    |
 | Task 3 | ⬜     | `CartModule` / `createCartModule` facade + surface wiring docs |
 
 All Sprint 15 code lives in `@ai-commerce/module-cart` (`modules/core/cart`). HTTP / DB deferred.
 
-**Tags:** `sprint15-task1` (on Task 1 completion)
+**Tags:** `sprint15-task1`, `sprint15-task2`
 
 ---
 

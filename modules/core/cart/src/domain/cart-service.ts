@@ -1,16 +1,21 @@
 import { randomUUID } from 'node:crypto';
 
 import type { CartRepository } from './cart-repository.js';
+import type { CatalogProductLookup } from './catalog-product-lookup.js';
 import {
+  CartCatalogException,
   CartLineNotFoundException,
   CartNotFoundException,
   CartValidationException,
 } from '../errors.js';
 import type {
+  AddCartItemFromCatalogInput,
   AddCartItemInput,
   Cart,
   CartLine,
   CreateCartInput,
+  GetOrCreateByCustomerInput,
+  GetOrCreateBySessionInput,
   Money,
   RemoveCartLineInput,
   SetCartLineQuantityInput,
@@ -18,6 +23,8 @@ import type {
 
 export interface CartServiceDeps {
   repository: CartRepository;
+  /** Optional: validate prices / resolve variants from catalog. */
+  catalogLookup?: CatalogProductLookup;
   now?: () => string;
   createId?: () => string;
 }
@@ -90,6 +97,44 @@ export class CartService {
     return cart;
   }
 
+  /** Return existing session cart or create a new one. */
+  async getOrCreateBySession(input: GetOrCreateBySessionInput): Promise<Cart> {
+    const tenantId = this.requireTenantId(input.tenantId);
+    const sessionId = input.sessionId.trim();
+    if (!sessionId) {
+      throw new CartValidationException('sessionId cannot be empty.');
+    }
+    const existing = await this.deps.repository.findBySessionId(tenantId, sessionId);
+    if (existing) {
+      return existing;
+    }
+    return this.createCart({
+      tenantId,
+      currency: input.currency,
+      sessionId,
+      id: input.id,
+    });
+  }
+
+  /** Return existing customer cart or create a new one. */
+  async getOrCreateByCustomer(input: GetOrCreateByCustomerInput): Promise<Cart> {
+    const tenantId = this.requireTenantId(input.tenantId);
+    const customerId = input.customerId.trim();
+    if (!customerId) {
+      throw new CartValidationException('customerId cannot be empty.');
+    }
+    const existing = await this.deps.repository.findByCustomerId(tenantId, customerId);
+    if (existing) {
+      return existing;
+    }
+    return this.createCart({
+      tenantId,
+      currency: input.currency,
+      customerId,
+      id: input.id,
+    });
+  }
+
   /** Add a line or merge quantity when the same variant already exists. */
   async addItem(input: AddCartItemInput): Promise<Cart> {
     const tenantId = this.requireTenantId(input.tenantId);
@@ -99,25 +144,102 @@ export class CartService {
 
     const productId = input.productId.trim();
     const variantId = input.variantId.trim();
-    const sku = input.sku.trim();
-    const title = input.title.trim();
+    let sku = input.sku.trim();
+    let title = input.title.trim();
     if (!productId || !variantId || !sku || !title) {
       throw new CartValidationException('productId, variantId, sku, and title are required.');
     }
 
-    const unitPrice = this.requireMoney(input.unitPrice, 'unitPrice');
+    let unitPrice = this.requireMoney(input.unitPrice, 'unitPrice');
+    if (this.deps.catalogLookup) {
+      const quote = await this.requireActiveCatalogQuote(tenantId, productId, variantId);
+      if (
+        quote.unitPrice.amount !== unitPrice.amount ||
+        quote.unitPrice.currency !== unitPrice.currency
+      ) {
+        throw new CartCatalogException(
+          `Unit price does not match catalog for variant '${variantId}' (expected ${quote.unitPrice.amount} ${quote.unitPrice.currency}).`,
+          tenantId,
+          productId,
+          variantId,
+        );
+      }
+      sku = quote.sku;
+      title = quote.title;
+      unitPrice = quote.unitPrice;
+    }
+
     if (unitPrice.currency !== cart.currency) {
       throw new CartValidationException(
         `Item currency '${unitPrice.currency}' does not match cart currency '${cart.currency}'.`,
       );
     }
 
-    const existingIndex = cart.lines.findIndex((line) => line.variantId === variantId);
+    return this.mergeOrAppendLine(cart, {
+      productId,
+      variantId,
+      sku,
+      title,
+      unitPrice,
+      quantity,
+    });
+  }
+
+  /**
+   * Resolve variant from catalog and add to cart (requires `catalogLookup`).
+   */
+  async addItemFromCatalog(input: AddCartItemFromCatalogInput): Promise<Cart> {
+    if (!this.deps.catalogLookup) {
+      throw new CartValidationException(
+        'addItemFromCatalog requires a CatalogProductLookup on CartService.',
+      );
+    }
+
+    const tenantId = this.requireTenantId(input.tenantId);
+    const cart = await this.requireCart(tenantId, input.cartId);
+    const quantity = input.quantity ?? 1;
+    this.requirePositiveQuantity(quantity);
+
+    const productId = input.productId.trim();
+    const variantId = input.variantId.trim();
+    if (!productId || !variantId) {
+      throw new CartValidationException('productId and variantId are required.');
+    }
+
+    const quote = await this.requireActiveCatalogQuote(tenantId, productId, variantId);
+    if (quote.unitPrice.currency !== cart.currency) {
+      throw new CartValidationException(
+        `Catalog currency '${quote.unitPrice.currency}' does not match cart currency '${cart.currency}'.`,
+      );
+    }
+
+    return this.mergeOrAppendLine(cart, {
+      productId: quote.productId,
+      variantId: quote.variantId,
+      sku: quote.sku,
+      title: quote.title,
+      unitPrice: quote.unitPrice,
+      quantity,
+    });
+  }
+
+  private async mergeOrAppendLine(
+    cart: Cart,
+    item: {
+      productId: string;
+      variantId: string;
+      sku: string;
+      title: string;
+      unitPrice: Money;
+      quantity: number;
+    },
+  ): Promise<Cart> {
+    const existingIndex = cart.lines.findIndex((line) => line.variantId === item.variantId);
     let lines: CartLine[];
 
     if (existingIndex >= 0) {
       const existing = cart.lines[existingIndex]!;
-      const nextQty = existing.quantity + quantity;
+      const nextQty = existing.quantity + item.quantity;
       const updatedLine = this.buildLine({
         id: existing.id,
         productId: existing.productId,
@@ -131,17 +253,38 @@ export class CartService {
     } else {
       const newLine = this.buildLine({
         id: this.createId(),
-        productId,
-        variantId,
-        sku,
-        title,
-        unitPrice,
-        quantity,
+        productId: item.productId,
+        variantId: item.variantId,
+        sku: item.sku,
+        title: item.title,
+        unitPrice: item.unitPrice,
+        quantity: item.quantity,
       });
       lines = [...cart.lines, newLine];
     }
 
     return this.persistCart({ ...cart, lines });
+  }
+
+  private async requireActiveCatalogQuote(tenantId: string, productId: string, variantId: string) {
+    const quote = await this.deps.catalogLookup!.findVariant(tenantId, productId, variantId);
+    if (!quote) {
+      throw new CartCatalogException(
+        `Catalog variant '${variantId}' not found for product '${productId}'.`,
+        tenantId,
+        productId,
+        variantId,
+      );
+    }
+    if (quote.status !== 'active') {
+      throw new CartCatalogException(
+        `Catalog variant '${variantId}' is not active (status: ${quote.status}).`,
+        tenantId,
+        productId,
+        variantId,
+      );
+    }
+    return quote;
   }
 
   async setLineQuantity(input: SetCartLineQuantityInput): Promise<Cart> {

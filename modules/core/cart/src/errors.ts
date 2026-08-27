@@ -41,3 +41,18 @@ export class CartValidationException extends CartException {
     this.name = 'CartValidationException';
   }
 }
+
+/** Thrown when catalog lookup fails or price/status is invalid for cart. */
+export class CartCatalogException extends CartException {
+  readonly tenantId: string;
+  readonly productId?: string;
+  readonly variantId?: string;
+
+  constructor(message: string, tenantId: string, productId?: string, variantId?: string) {
+    super(message);
+    this.name = 'CartCatalogException';
+    this.tenantId = tenantId;
+    this.productId = productId;
+    this.variantId = variantId;
+  }
+}
