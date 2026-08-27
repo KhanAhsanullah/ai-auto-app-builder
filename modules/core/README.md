@@ -23,4 +23,4 @@ These modules represent the **80% shared behavior** across e-commerce, grocery, 
 
 ## Status
 
-Sprint 14 complete — `CatalogModule` / `createCatalogModule` in `@ai-commerce/module-catalog`.
+Sprint 14 complete (catalog). Sprint 15 Task 1 — cart domain in `@ai-commerce/module-cart`.

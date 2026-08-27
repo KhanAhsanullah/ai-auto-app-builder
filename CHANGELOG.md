@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Core cart foundation** (Sprint 15 Task 1) — `@ai-commerce/module-cart`
+  - `CartService` — create cart, add/merge lines, set quantity, clear
+  - `CartRepository` + `InMemoryCartRepository`
+  - Architecture doc — `docs/architecture/cart.md`
+
 - **Core catalog facade** (Sprint 14 Task 3) — `@ai-commerce/module-catalog`
   - `CatalogModule` / `createCatalogModule` — unified CRUD + query entrypoints
   - Surface wiring guidance (Web / Admin / Mobile) in architecture docs

@@ -186,6 +186,20 @@ All Sprint 14 code lives in `@ai-commerce/module-catalog` (`modules/core/catalog
 
 ---
 
+## Sprint 15 — Core Cart
+
+| Task   | Status | Deliverable                                                    |
+| ------ | ------ | -------------------------------------------------------------- |
+| Task 1 | ✅     | Domain model, `CartService`, in-memory repository              |
+| Task 2 | ⬜     | getOrCreate helpers, optional catalog price validation port    |
+| Task 3 | ⬜     | `CartModule` / `createCartModule` facade + surface wiring docs |
+
+All Sprint 15 code lives in `@ai-commerce/module-cart` (`modules/core/cart`). HTTP / DB deferred.
+
+**Tags:** `sprint15-task1` (on Task 1 completion)
+
+---
+
 ## Sprint Conventions
 
 - Each sprint task is committed with a Conventional Commit referencing the sprint and task number

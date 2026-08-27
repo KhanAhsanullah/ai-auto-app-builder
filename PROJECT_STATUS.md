@@ -8,52 +8,50 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 14 — Core Catalog** ✅ complete
+**Sprint 15 — Core Cart** (in progress)
 
-Sprint 14 Task 3 complete — `CatalogModule` / `createCatalogModule` facade in `@ai-commerce/module-catalog`.
+Sprint 15 Task 1 complete — domain model + `CartService` + in-memory repository in `@ai-commerce/module-cart`.
 
-**Next:** Sprint 15 (proposed) — Core Cart + thin Checkout slice, then wire Web/Admin catalog screens to `createCatalogModule`.
+**Next:** Sprint 15 Task 2 — getOrCreate helpers + optional catalog price validation.
 
 ## Completed Tasks
 
-| Task                | Description                           | Commit Tag       |
-| ------------------- | ------------------------------------- | ---------------- |
-| Sprint 1–13 ✅      | Foundation through Config Engine      | `sprint*-task*`  |
-| Sprint 14 Task 1 ✅ | Catalog domain + in-memory repository | `sprint14-task1` |
-| Sprint 14 Task 2 ✅ | Catalog queries + search              | `sprint14-task2` |
-| Sprint 14 Task 3 ✅ | `CatalogModule` facade                | `sprint14-task3` |
+| Task                | Description                     | Commit Tag       |
+| ------------------- | ------------------------------- | ---------------- |
+| Sprint 1–14 ✅      | Foundation through Core Catalog | `sprint*-task*`  |
+| Sprint 15 Task 1 ✅ | Cart domain + in-memory repo    | `sprint15-task1` |
 
 ## Current Progress
 
 - Sprints 1–14 complete
-- **Core Catalog** — domain, queries, facade
+- **Core Cart** — create / add / merge / quantities (Task 1)
 
-**Overall:** Sprint 14 complete. Next: Cart/Checkout or surface wiring.
+**Overall:** Sprint 15 Task 1 complete. Next: Task 2 helpers.
 
 ## Next Tasks
 
-**Sprint 15 (proposed) — Core Cart**
+**Sprint 15 Task 2 — Helpers + catalog port**
 
-- Cart line items scoped by tenant + customer/session
-- Wire Web Store cart screens
-- See [PRODUCT_VISION.md](./PRODUCT_VISION.md)
+- `getOrCreateBySession` / `getOrCreateByCustomer`
+- Optional catalog price validation port
+- See [SPRINT_BOARD.md](./SPRINT_BOARD.md)
 
 ## Latest Commit
 
 ```
-feat(module-catalog): add CatalogModule facade (Sprint 14 Task 3)
+feat(module-cart): add cart domain and in-memory repository (Sprint 15 Task 1)
 ```
 
 ## Latest Tag
 
 ```
-sprint14-task3
+sprint15-task1
 ```
 
 ## Health Status
 
-| Area       | Status      | Notes                                    |
-| ---------- | ----------- | ---------------------------------------- |
-| Repository | ✅ Healthy  | Sprint 14 complete                       |
-| Catalog    | ✅ Complete | Tasks 1–3 done                           |
-| Tests      | ✅ Passing  | `@ai-commerce/module-catalog` unit tests |
+| Area       | Status         | Notes                                 |
+| ---------- | -------------- | ------------------------------------- |
+| Repository | ✅ Healthy     | Sprint 15 Task 1 ready                |
+| Cart       | 🟡 In progress | Task 1 done; Tasks 2–3 remaining      |
+| Tests      | ✅ Passing     | `@ai-commerce/module-cart` unit tests |
