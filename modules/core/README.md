@@ -23,4 +23,4 @@ These modules represent the **80% shared behavior** across e-commerce, grocery, 
 
 ## Status
 
-Sprint 14 complete (catalog). Sprint 15 Task 2 — cart getOrCreate + catalog price port in `@ai-commerce/module-cart`.
+Sprint 15 complete — `CartModule` / `createCartModule` in `@ai-commerce/module-cart`.

@@ -8,13 +8,15 @@ Core domain module for shopping cart lines. Entry point to the checkout pipeline
 
 ## Status
 
-**Sprint 15 Task 2** — getOrCreate helpers + optional `CatalogProductLookup` price validation.
+**Sprint 15 complete** — Task 3 delivers `CartModule` / `createCartModule` facade.
 
 ## Modules
 
 | Module                   | Purpose                                          |
 | ------------------------ | ------------------------------------------------ |
-| `CartService`            | Create/getOrCreate, add/merge lines, quantities  |
+| `createCartModule`       | Wire service + in-memory repository              |
+| `CartModule`             | Facade: getOrCreate, add lines, quantities       |
+| `CartService`            | Domain service (used by the facade)              |
 | `CatalogProductLookup`   | Optional port for catalog price / variant quotes |
 | `CartRepository`         | Persistence port                                 |
 | `InMemoryCartRepository` | In-memory store for tests / local                |
@@ -22,22 +24,21 @@ Core domain module for shopping cart lines. Entry point to the checkout pipeline
 ## Usage
 
 ```ts
-import { CartService, InMemoryCartRepository } from '@ai-commerce/module-cart';
+import { createCartModule } from '@ai-commerce/module-cart';
 
-const carts = new CartService({
-  repository: new InMemoryCartRepository(),
+const cart = createCartModule({
   // optional: catalogLookup: adapterFromCatalogModule(catalog),
 });
 
-const cart = await carts.getOrCreateBySession({
+const sessionCart = await cart.getOrCreateBySession({
   tenantId: 'tenant-fresh',
   sessionId: 'sess-1',
   currency: 'USD',
 });
 
-await carts.addItem({
+await cart.addItem({
   tenantId: 'tenant-fresh',
-  cartId: cart.id,
+  cartId: sessionCart.id,
   productId: 'prod-apple',
   variantId: 'var-1',
   sku: 'APL-1',
@@ -45,10 +46,9 @@ await carts.addItem({
   unitPrice: { amount: 2.5, currency: 'USD' },
   quantity: 2,
 });
-
-// When catalogLookup is configured:
-// await carts.addItemFromCatalog({ tenantId, cartId, productId, variantId, quantity: 1 });
 ```
+
+Surface wiring guidance: [docs/architecture/cart.md](../../../docs/architecture/cart.md#surface-wiring).
 
 ## Scripts
 

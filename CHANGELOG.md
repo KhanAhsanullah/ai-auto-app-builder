@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Core cart facade** (Sprint 15 Task 3) — `@ai-commerce/module-cart`
+  - `CartModule` / `createCartModule` — unified getOrCreate + line item entrypoints
+  - Surface wiring guidance (Web / Mobile + catalog adapter) in architecture docs
+
 - **Core cart helpers** (Sprint 15 Task 2) — `@ai-commerce/module-cart`
   - `getOrCreateBySession` / `getOrCreateByCustomer`
   - Optional `CatalogProductLookup` + `addItemFromCatalog` / price validation on `addItem`
