@@ -182,7 +182,14 @@ importers:
         specifier: ^3.0.5
         version: 3.2.7(@types/node@22.20.1)(jiti@2.6.1)(jsdom@26.1.0)(terser@5.50.0)(tsx@4.23.1)(yaml@2.9.0)
 
-  modules/core/checkout: {}
+  modules/core/checkout:
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.20.1
+      vitest:
+        specifier: ^3.0.5
+        version: 3.2.7(@types/node@22.20.1)(jiti@2.6.1)(jsdom@26.1.0)(terser@5.50.0)(tsx@4.23.1)(yaml@2.9.0)
 
   modules/core/customer: {}
 

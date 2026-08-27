@@ -8,52 +8,50 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 15 — Core Cart** ✅ complete
+**Sprint 16 — Core Checkout** (in progress)
 
-Sprint 15 Task 3 complete — `CartModule` / `createCartModule` facade in `@ai-commerce/module-cart`.
+Sprint 16 Task 1 complete — domain model + `CheckoutService` + in-memory repository in `@ai-commerce/module-checkout`.
 
-**Next:** Sprint 16 (proposed) — Core Checkout thin slice, then wire Web/Mobile cart → checkout flow.
+**Next:** Sprint 16 Task 2 — getActiveByCart + shipping method catalog port.
 
 ## Completed Tasks
 
 | Task                | Description                      | Commit Tag       |
 | ------------------- | -------------------------------- | ---------------- |
-| Sprint 1–14 ✅      | Foundation through Core Catalog  | `sprint*-task*`  |
-| Sprint 15 Task 1 ✅ | Cart domain + in-memory repo     | `sprint15-task1` |
-| Sprint 15 Task 2 ✅ | getOrCreate + catalog price port | `sprint15-task2` |
-| Sprint 15 Task 3 ✅ | `CartModule` facade              | `sprint15-task3` |
+| Sprint 1–15 ✅      | Foundation through Core Cart     | `sprint*-task*`  |
+| Sprint 16 Task 1 ✅ | Checkout domain + in-memory repo | `sprint16-task1` |
 
 ## Current Progress
 
 - Sprints 1–15 complete
-- **Core Cart** — domain, helpers, facade
+- **Core Checkout** — start from cart, address, shipping, complete (Task 1)
 
-**Overall:** Sprint 15 complete. Next: Checkout or surface wiring.
+**Overall:** Sprint 16 Task 1 complete. Next: Task 2 helpers.
 
 ## Next Tasks
 
-**Sprint 16 (proposed) — Core Checkout**
+**Sprint 16 Task 2 — Helpers**
 
-- Checkout pipeline from cart
-- Wire Web Store checkout screens
-- See [PRODUCT_VISION.md](./PRODUCT_VISION.md)
+- `getActiveCheckoutByCart`
+- Shipping method catalog port (config-driven)
+- See [SPRINT_BOARD.md](./SPRINT_BOARD.md)
 
 ## Latest Commit
 
 ```
-feat(module-cart): add CartModule facade (Sprint 15 Task 3)
+feat(module-checkout): add checkout domain and in-memory repository (Sprint 16 Task 1)
 ```
 
 ## Latest Tag
 
 ```
-sprint15-task3
+sprint16-task1
 ```
 
 ## Health Status
 
-| Area       | Status      | Notes                                 |
-| ---------- | ----------- | ------------------------------------- |
-| Repository | ✅ Healthy  | Sprint 15 complete                    |
-| Cart       | ✅ Complete | Tasks 1–3 done                        |
-| Tests      | ✅ Passing  | `@ai-commerce/module-cart` unit tests |
+| Area       | Status         | Notes                                     |
+| ---------- | -------------- | ----------------------------------------- |
+| Repository | ✅ Healthy     | Sprint 16 Task 1 ready                    |
+| Checkout   | 🟡 In progress | Task 1 done; Tasks 2–3 remaining          |
+| Tests      | ✅ Passing     | `@ai-commerce/module-checkout` unit tests |

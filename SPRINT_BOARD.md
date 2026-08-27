@@ -200,6 +200,20 @@ All Sprint 15 code lives in `@ai-commerce/module-cart` (`modules/core/cart`). HT
 
 ---
 
+## Sprint 16 — Core Checkout
+
+| Task   | Status | Deliverable                                                       |
+| ------ | ------ | ----------------------------------------------------------------- |
+| Task 1 | ✅     | Domain model, `CheckoutService`, in-memory repository             |
+| Task 2 | ⬜     | getActiveByCart helper, shipping method catalog port              |
+| Task 3 | ⬜     | `CheckoutModule` / `createCheckoutModule` facade + surface wiring |
+
+All Sprint 16 code lives in `@ai-commerce/module-checkout` (`modules/core/checkout`). HTTP / DB / payment deferred.
+
+**Tags:** `sprint16-task1` (on Task 1 completion)
+
+---
+
 ## Sprint Conventions
 
 - Each sprint task is committed with a Conventional Commit referencing the sprint and task number

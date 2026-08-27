@@ -1,6 +1,6 @@
 # Checkout Module
 
-Core domain module for address collection, shipping method selection, and payment intent creation. Extended by vertical hooks.
+Core domain module for address collection, shipping method selection, and checkout completion. Entry point from cart to order (order module deferred).
 
 ## Package
 
@@ -8,25 +8,53 @@ Core domain module for address collection, shipping method selection, and paymen
 
 ## Status
 
-Foundation scaffold — no business logic implemented yet.
+**Sprint 16 Task 1** — Domain model, `CheckoutService`, in-memory repository.
 
-## Clean Architecture Layers
+## Modules
 
-| Layer          | Path              | Responsibility                             |
-| -------------- | ----------------- | ------------------------------------------ |
-| Domain         | `domain/`         | Entities, value objects, domain invariants |
-| Application    | `application/`    | Use cases, commands, queries               |
-| Infrastructure | `infrastructure/` | Database repositories, external adapters   |
-| API            | `api/`            | Thin HTTP/GraphQL handlers                 |
-| Events         | `events/`         | Published domain events                    |
+| Module                       | Purpose                                      |
+| ---------------------------- | -------------------------------------------- |
+| `CheckoutService`            | Start from cart, address, shipping, complete |
+| `CartLookup`                 | Optional port to load cart snapshot          |
+| `CheckoutRepository`         | Persistence port                             |
+| `InMemoryCheckoutRepository` | In-memory store for tests / local            |
 
-## Manifest
+## Usage
 
-Module capabilities and hook registrations are declared in `manifest.json`.
+```ts
+import { CheckoutService, InMemoryCheckoutRepository } from '@ai-commerce/module-checkout';
+
+const checkout = new CheckoutService({
+  repository: new InMemoryCheckoutRepository(),
+  cartLookup: {
+    getCart: async (tenantId, cartId) => {
+      const cart = await carts.getCart(tenantId, cartId);
+      if (!cart) return undefined;
+      return {
+        id: cart.id,
+        tenantId: cart.tenantId,
+        currency: cart.currency,
+        subtotal: cart.subtotal,
+        lines: cart.lines,
+      };
+    },
+  },
+});
+
+const session = await checkout.startCheckout({
+  tenantId: 'tenant-fresh',
+  cartId: 'cart-1',
+});
+```
 
 ## Scripts
 
 ```bash
-pnpm lint
-pnpm typecheck
+pnpm --filter @ai-commerce/module-checkout test
+pnpm --filter @ai-commerce/module-checkout typecheck
+pnpm --filter @ai-commerce/module-checkout lint
 ```
+
+## Architecture
+
+See [docs/architecture/checkout.md](../../../docs/architecture/checkout.md).
