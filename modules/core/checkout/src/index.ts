@@ -26,5 +26,9 @@ export type {
 export type { CheckoutRepository } from './domain/checkout-repository.js';
 export { CheckoutService } from './domain/checkout-service.js';
 export type { CheckoutServiceDeps } from './domain/checkout-service.js';
+export { CheckoutModule } from './domain/checkout-module.js';
+export type { CheckoutModuleDeps } from './domain/checkout-module.js';
 export { InMemoryCheckoutRepository } from './infrastructure/in-memory-checkout-repository.js';
 export { InMemoryShippingMethodCatalog } from './infrastructure/in-memory-shipping-method-catalog.js';
+export { createCheckoutModule } from './infrastructure/create-checkout-module.js';
+export type { CreateCheckoutModuleOptions } from './infrastructure/create-checkout-module.js';

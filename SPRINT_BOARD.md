@@ -206,11 +206,11 @@ All Sprint 15 code lives in `@ai-commerce/module-cart` (`modules/core/cart`). HT
 | ------ | ------ | ----------------------------------------------------------------- |
 | Task 1 | ✅     | Domain model, `CheckoutService`, in-memory repository             |
 | Task 2 | ✅     | getActiveByCart helper, shipping method catalog port              |
-| Task 3 | ⬜     | `CheckoutModule` / `createCheckoutModule` facade + surface wiring |
+| Task 3 | ✅     | `CheckoutModule` / `createCheckoutModule` facade + surface wiring |
 
 All Sprint 16 code lives in `@ai-commerce/module-checkout` (`modules/core/checkout`). HTTP / DB / payment deferred.
 
-**Tags:** `sprint16-task1`, `sprint16-task2` (on Task 2 merge)
+**Tags:** `sprint16-task1`, `sprint16-task2`, `sprint16-task3`
 
 ---
 

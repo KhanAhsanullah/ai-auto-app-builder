@@ -23,4 +23,4 @@ These modules represent the **80% shared behavior** across e-commerce, grocery, 
 
 ## Status
 
-Sprint 15 complete (cart). Sprint 16 Task 2 — checkout helpers + shipping catalog in `@ai-commerce/module-checkout`.
+Sprint 16 complete — `CheckoutModule` / `createCheckoutModule` in `@ai-commerce/module-checkout`.

@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Core checkout facade** (Sprint 16 Task 3) — `@ai-commerce/module-checkout`
+  - `CheckoutModule` / `createCheckoutModule` — unified cart → complete entrypoints
+  - Surface wiring guidance (Web / Mobile + cart adapter) in architecture docs
+
 - **Core checkout helpers** (Sprint 16 Task 2) — `@ai-commerce/module-checkout`
   - `getActiveCheckoutByCart` + repository `findActiveByCartId`
   - Optional `ShippingMethodCatalog` + `listShippingMethods` / `selectShippingMethodById`

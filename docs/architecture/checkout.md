@@ -9,24 +9,60 @@ Core data-plane domain module (`@ai-commerce/module-checkout`) for tenant-scoped
 3. **Status machine** — `draft` → `address_collected` → `shipping_selected` → `completed` (or `cancelled`).
 4. **No hard cart dependency** — `CartLookup` port adapts `@ai-commerce/module-cart`.
 5. **Shipping from config** — optional `ShippingMethodCatalog` (host wires tenant shipping offers).
-6. **Clean Architecture** — domain ports + service; in-memory adapter first.
+6. **Facade entry** — callers use `createCheckoutModule` / `CheckoutModule`.
+7. **Clean Architecture** — domain ports + service; in-memory adapter first.
 
 ## Flow
 
 ```
-getActiveCheckoutByCart / startCheckout + CartLookup
+createCheckoutModule({ cartLookup, shippingCatalog? }) → CheckoutModule
+        │
+        ├─ getActiveCheckoutByCart / startCheckout
+        ├─ updateShippingAddress
+        ├─ listShippingMethods / selectShippingMethodById
+        ├─ completeCheckout / cancelCheckout
         │
         ▼
-CheckoutService
-        ├── updateShippingAddress
-        ├── listShippingMethods / selectShippingMethodById  (ShippingMethodCatalog)
-        ├── selectShippingMethod (inline; validated when catalog set)
-        ├── completeCheckout
-        └── cancelCheckout
-                │
-                ▼
-        CheckoutRepository
+  CheckoutService → CheckoutRepository
 ```
+
+## Surface wiring
+
+Gate checkout UI with tenant config `features.checkout`. Wire cart → checkout in the host:
+
+| Surface             | Typical calls                                                                                             |
+| ------------------- | --------------------------------------------------------------------------------------------------------- |
+| **Web Store**       | `getActiveCheckoutByCart` / `startCheckout`, address form, `selectShippingMethodById`, `completeCheckout` |
+| **Mobile App**      | Same as Web Store                                                                                         |
+| **Admin Dashboard** | `listCheckouts` / `getCheckout` (inspect); payment ops deferred                                           |
+| **API Gateway**     | Thin handlers that call the same facade (HTTP deferred)                                                   |
+
+```ts
+import { createCartModule } from '@ai-commerce/module-cart';
+import { createCheckoutModule, InMemoryShippingMethodCatalog } from '@ai-commerce/module-checkout';
+
+const cart = createCartModule();
+const checkout = createCheckoutModule({
+  cartLookup: {
+    getCart: async (tenantId, cartId) => {
+      const c = await cart.getCart(tenantId, cartId);
+      return {
+        id: c.id,
+        tenantId: c.tenantId,
+        currency: c.currency,
+        subtotal: c.subtotal,
+        lines: [...c.lines],
+      };
+    },
+  },
+  // Prefer offers from resolved tenant config in production
+  shippingCatalog: new InMemoryShippingMethodCatalog([
+    { id: 'standard', name: 'Standard', price: { amount: 5, currency: 'USD' } },
+  ]),
+});
+```
+
+Do **not** store checkout sessions in tenant JSON config — config toggles `features.checkout` and supplies shipping offers via the catalog adapter.
 
 ## Sprint 16 Task Breakdown
 

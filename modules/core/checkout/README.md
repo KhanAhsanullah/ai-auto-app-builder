@@ -8,46 +8,51 @@ Core domain module for address collection, shipping method selection, and checko
 
 ## Status
 
-**Sprint 16 Task 2** — `getActiveCheckoutByCart` + optional `ShippingMethodCatalog`.
+**Sprint 16 complete** — Task 3 delivers `CheckoutModule` / `createCheckoutModule` facade.
 
 ## Modules
 
 | Module                          | Purpose                                         |
 | ------------------------------- | ----------------------------------------------- |
-| `CheckoutService`               | Start from cart, address, shipping, complete    |
-| `CartLookup`                    | Port to load cart snapshot                      |
+| `createCheckoutModule`          | Wire service + in-memory repository             |
+| `CheckoutModule`                | Facade: start → address → shipping → complete   |
+| `CheckoutService`               | Domain service (used by the facade)             |
+| `CartLookup`                    | Required port to load cart snapshot             |
 | `ShippingMethodCatalog`         | Optional port for config-driven shipping offers |
-| `CheckoutRepository`            | Persistence port                                |
 | `InMemoryCheckoutRepository`    | In-memory store for tests / local               |
 | `InMemoryShippingMethodCatalog` | In-memory shipping offers for tests / local     |
 
 ## Usage
 
 ```ts
-import {
-  CheckoutService,
-  InMemoryCheckoutRepository,
-  InMemoryShippingMethodCatalog,
-} from '@ai-commerce/module-checkout';
+import { createCheckoutModule, InMemoryShippingMethodCatalog } from '@ai-commerce/module-checkout';
+import { createCartModule } from '@ai-commerce/module-cart';
 
-const checkout = new CheckoutService({
-  repository: new InMemoryCheckoutRepository(),
-  cartLookup: { getCart: async (tenantId, cartId) => /* adapt CartModule */ undefined },
+const cart = createCartModule();
+const checkout = createCheckoutModule({
+  cartLookup: {
+    getCart: async (tenantId, cartId) => {
+      const c = await cart.getCart(tenantId, cartId);
+      return {
+        id: c.id,
+        tenantId: c.tenantId,
+        currency: c.currency,
+        subtotal: c.subtotal,
+        lines: c.lines,
+      };
+    },
+  },
   shippingCatalog: new InMemoryShippingMethodCatalog([
     { id: 'standard', name: 'Standard', price: { amount: 5, currency: 'USD' } },
   ]),
 });
 
-const active = await checkout.getActiveCheckoutByCart(tenantId, cartId);
-const session = active ?? (await checkout.startCheckout({ tenantId, cartId }));
-
-await checkout.updateShippingAddress({ tenantId, checkoutId: session.id, address });
-await checkout.selectShippingMethodById({
-  tenantId,
-  checkoutId: session.id,
-  methodId: 'standard',
-});
+const session =
+  (await checkout.getActiveCheckoutByCart(tenantId, cartId)) ??
+  (await checkout.startCheckout({ tenantId, cartId }));
 ```
+
+Surface wiring: [docs/architecture/checkout.md](../../../docs/architecture/checkout.md#surface-wiring).
 
 ## Scripts
 
