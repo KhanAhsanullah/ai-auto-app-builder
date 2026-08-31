@@ -23,4 +23,4 @@ These modules represent the **80% shared behavior** across e-commerce, grocery, 
 
 ## Status
 
-Sprint 16 complete — `CheckoutModule` / `createCheckoutModule` in `@ai-commerce/module-checkout`.
+Sprint 16 complete (checkout). Sprint 17 Task 1 — order domain in `@ai-commerce/module-order`.

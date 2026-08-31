@@ -8,54 +8,52 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 16 — Core Checkout** ✅ complete (on branch)
+**Sprint 17 — Core Order** (in progress)
 
-Sprint 16 Task 3 complete — `CheckoutModule` / `createCheckoutModule` facade in `@ai-commerce/module-checkout`.
+Sprint 17 Task 1 complete — domain model + `OrderService` + in-memory repository in `@ai-commerce/module-order`.
 
-**Branch:** `sprint/16/task3` (includes Task 2)
+**Branch:** `sprint/17/task1`
 
-**Next:** Merge Task 2 + Task 3 PRs to `main`, then Sprint 17 (proposed) — Core Order thin slice / payment handoff.
+**Next:** Sprint 17 Task 2 — confirm/fulfill helpers + list ports.
 
 ## Completed Tasks
 
-| Task                | Description                             | Commit Tag       |
-| ------------------- | --------------------------------------- | ---------------- |
-| Sprint 1–15 ✅      | Foundation through Core Cart            | `sprint*-task*`  |
-| Sprint 16 Task 1 ✅ | Checkout domain + in-memory repo        | `sprint16-task1` |
-| Sprint 16 Task 2 ✅ | getActiveByCart + shipping catalog port | `sprint16-task2` |
-| Sprint 16 Task 3 ✅ | `CheckoutModule` facade                 | `sprint16-task3` |
+| Task                | Description                      | Commit Tag       |
+| ------------------- | -------------------------------- | ---------------- |
+| Sprint 1–16 ✅      | Foundation through Core Checkout | `sprint*-task*`  |
+| Sprint 17 Task 1 ✅ | Order domain + in-memory repo    | `sprint17-task1` |
 
 ## Current Progress
 
-- Sprints 1–15 on `main`
-- **Core Checkout** — Tasks 1–3 on `sprint/16/task3`
+- Sprints 1–16 complete on `main`
+- **Core Order** — create from checkout, get, list, cancel (Task 1 on branch)
 
-**Overall:** Sprint 16 complete on branch. Merge to main next.
+**Overall:** Sprint 17 Task 1 complete on branch. Next: Task 2 helpers.
 
 ## Next Tasks
 
-**After merge — Sprint 17 (proposed) — Core Order**
+**Sprint 17 Task 2 — Helpers**
 
-- Order creation from completed checkout
-- Wire Web / Mobile order confirmation
-- See [PRODUCT_VISION.md](./PRODUCT_VISION.md)
+- Confirm / fulfill status transitions
+- List by cart / customer port
+- See [SPRINT_BOARD.md](./SPRINT_BOARD.md)
 
 ## Latest Commit
 
 ```
-feat(module-checkout): add CheckoutModule facade (Sprint 16 Task 3)
+feat(module-order): add order domain and in-memory repository (Sprint 17 Task 1)
 ```
 
 ## Latest Tag
 
 ```
-sprint16-task3
+sprint17-task1
 ```
 
 ## Health Status
 
-| Area       | Status      | Notes                                     |
-| ---------- | ----------- | ----------------------------------------- |
-| Repository | ✅ Healthy  | Sprint 16 on branch `sprint/16/task3`     |
-| Checkout   | ✅ Complete | Tasks 1–3 done                            |
-| Tests      | ✅ Passing  | `@ai-commerce/module-checkout` unit tests |
+| Area       | Status         | Notes                                  |
+| ---------- | -------------- | -------------------------------------- |
+| Repository | ✅ Healthy     | Sprint 17 Task 1 on branch             |
+| Order      | 🟡 In progress | Task 1 done; Tasks 2–3 remaining       |
+| Tests      | ✅ Passing     | `@ai-commerce/module-order` unit tests |

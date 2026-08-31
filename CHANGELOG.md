@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Core order foundation** (Sprint 17 Task 1) — `@ai-commerce/module-order`
+  - `OrderService` — create from completed checkout, get, list, cancel
+  - `CheckoutLookup` port + `OrderRepository` / `InMemoryOrderRepository`
+  - Architecture doc — `docs/architecture/order.md`
+
 - **Core checkout facade** (Sprint 16 Task 3) — `@ai-commerce/module-checkout`
   - `CheckoutModule` / `createCheckoutModule` — unified cart → complete entrypoints
   - Surface wiring guidance (Web / Mobile + cart adapter) in architecture docs

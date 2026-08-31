@@ -214,6 +214,20 @@ All Sprint 16 code lives in `@ai-commerce/module-checkout` (`modules/core/checko
 
 ---
 
+## Sprint 17 — Core Order
+
+| Task   | Status | Deliverable                                                      |
+| ------ | ------ | ---------------------------------------------------------------- |
+| Task 1 | ✅     | Domain model, `OrderService`, in-memory repository               |
+| Task 2 | ⬜     | Status helpers (confirm/fulfill), list by cart / customer port   |
+| Task 3 | ⬜     | `OrderModule` / `createOrderModule` facade + surface wiring docs |
+
+All Sprint 17 code lives in `@ai-commerce/module-order` (`modules/core/order`). HTTP / DB / payment deferred.
+
+**Tags:** `sprint17-task1` (on Task 1 merge)
+
+---
+
 ## Sprint Conventions
 
 - Each sprint task is committed with a Conventional Commit referencing the sprint and task number
