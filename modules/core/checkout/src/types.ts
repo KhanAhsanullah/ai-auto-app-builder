@@ -69,9 +69,16 @@ export interface UpdateShippingAddressInput {
   address: ShippingAddress;
 }
 
-/** Input for selecting a shipping method. */
+/** Input for selecting a shipping method (inline method object). */
 export interface SelectShippingMethodInput {
   tenantId: string;
   checkoutId: string;
   method: ShippingMethod;
+}
+
+/** Input for selecting a shipping method by catalog id. */
+export interface SelectShippingMethodByIdInput {
+  tenantId: string;
+  checkoutId: string;
+  methodId: string;
 }

@@ -8,42 +8,44 @@ Core domain module for address collection, shipping method selection, and checko
 
 ## Status
 
-**Sprint 16 Task 1** — Domain model, `CheckoutService`, in-memory repository.
+**Sprint 16 Task 2** — `getActiveCheckoutByCart` + optional `ShippingMethodCatalog`.
 
 ## Modules
 
-| Module                       | Purpose                                      |
-| ---------------------------- | -------------------------------------------- |
-| `CheckoutService`            | Start from cart, address, shipping, complete |
-| `CartLookup`                 | Optional port to load cart snapshot          |
-| `CheckoutRepository`         | Persistence port                             |
-| `InMemoryCheckoutRepository` | In-memory store for tests / local            |
+| Module                          | Purpose                                         |
+| ------------------------------- | ----------------------------------------------- |
+| `CheckoutService`               | Start from cart, address, shipping, complete    |
+| `CartLookup`                    | Port to load cart snapshot                      |
+| `ShippingMethodCatalog`         | Optional port for config-driven shipping offers |
+| `CheckoutRepository`            | Persistence port                                |
+| `InMemoryCheckoutRepository`    | In-memory store for tests / local               |
+| `InMemoryShippingMethodCatalog` | In-memory shipping offers for tests / local     |
 
 ## Usage
 
 ```ts
-import { CheckoutService, InMemoryCheckoutRepository } from '@ai-commerce/module-checkout';
+import {
+  CheckoutService,
+  InMemoryCheckoutRepository,
+  InMemoryShippingMethodCatalog,
+} from '@ai-commerce/module-checkout';
 
 const checkout = new CheckoutService({
   repository: new InMemoryCheckoutRepository(),
-  cartLookup: {
-    getCart: async (tenantId, cartId) => {
-      const cart = await carts.getCart(tenantId, cartId);
-      if (!cart) return undefined;
-      return {
-        id: cart.id,
-        tenantId: cart.tenantId,
-        currency: cart.currency,
-        subtotal: cart.subtotal,
-        lines: cart.lines,
-      };
-    },
-  },
+  cartLookup: { getCart: async (tenantId, cartId) => /* adapt CartModule */ undefined },
+  shippingCatalog: new InMemoryShippingMethodCatalog([
+    { id: 'standard', name: 'Standard', price: { amount: 5, currency: 'USD' } },
+  ]),
 });
 
-const session = await checkout.startCheckout({
-  tenantId: 'tenant-fresh',
-  cartId: 'cart-1',
+const active = await checkout.getActiveCheckoutByCart(tenantId, cartId);
+const session = active ?? (await checkout.startCheckout({ tenantId, cartId }));
+
+await checkout.updateShippingAddress({ tenantId, checkoutId: session.id, address });
+await checkout.selectShippingMethodById({
+  tenantId,
+  checkoutId: session.id,
+  methodId: 'standard',
 });
 ```
 

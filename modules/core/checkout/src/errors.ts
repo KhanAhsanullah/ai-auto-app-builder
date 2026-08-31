@@ -54,3 +54,16 @@ export class CheckoutStatusException extends CheckoutException {
     this.status = status;
   }
 }
+
+/** Thrown when shipping method catalog lookup fails. */
+export class CheckoutShippingException extends CheckoutException {
+  readonly tenantId: string;
+  readonly methodId?: string;
+
+  constructor(message: string, tenantId: string, methodId?: string) {
+    super(message);
+    this.name = 'CheckoutShippingException';
+    this.tenantId = tenantId;
+    this.methodId = methodId;
+  }
+}

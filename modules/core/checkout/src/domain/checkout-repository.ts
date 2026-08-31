@@ -6,5 +6,7 @@ export interface CheckoutRepository {
   update(session: CheckoutSession): Promise<void>;
   findById(tenantId: string, checkoutId: string): Promise<CheckoutSession | undefined>;
   findByCartId(tenantId: string, cartId: string): Promise<CheckoutSession | undefined>;
+  /** Active checkout for a cart (draft / address_collected / shipping_selected). */
+  findActiveByCartId(tenantId: string, cartId: string): Promise<CheckoutSession | undefined>;
   listByTenant(tenantId: string): Promise<CheckoutSession[]>;
 }

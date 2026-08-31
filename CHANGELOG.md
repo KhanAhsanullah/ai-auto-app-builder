@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Core checkout helpers** (Sprint 16 Task 2) — `@ai-commerce/module-checkout`
+  - `getActiveCheckoutByCart` + repository `findActiveByCartId`
+  - Optional `ShippingMethodCatalog` + `listShippingMethods` / `selectShippingMethodById`
+  - Catalog price validation on inline `selectShippingMethod` when configured
+
 - **Core checkout foundation** (Sprint 16 Task 1) — `@ai-commerce/module-checkout`
   - `CheckoutService` — start from cart, address, shipping, complete/cancel
   - `CartLookup` port + `CheckoutRepository` / `InMemoryCheckoutRepository`

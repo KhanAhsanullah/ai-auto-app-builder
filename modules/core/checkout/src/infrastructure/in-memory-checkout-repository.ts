@@ -42,6 +42,20 @@ export class InMemoryCheckoutRepository implements CheckoutRepository {
     return undefined;
   }
 
+  async findActiveByCartId(tenantId: string, cartId: string): Promise<CheckoutSession | undefined> {
+    const active = ['draft', 'address_collected', 'shipping_selected'];
+    for (const session of this.sessions.values()) {
+      if (
+        session.tenantId === tenantId &&
+        session.cartId === cartId &&
+        active.includes(session.status)
+      ) {
+        return structuredClone(session);
+      }
+    }
+    return undefined;
+  }
+
   async listByTenant(tenantId: string): Promise<CheckoutSession[]> {
     return [...this.sessions.values()]
       .filter((session) => session.tenantId === tenantId)

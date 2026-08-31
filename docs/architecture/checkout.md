@@ -8,17 +8,19 @@ Core data-plane domain module (`@ai-commerce/module-checkout`) for tenant-scoped
 2. **Cart snapshot** — lines and subtotal copied at start (no live cart mutation during checkout).
 3. **Status machine** — `draft` → `address_collected` → `shipping_selected` → `completed` (or `cancelled`).
 4. **No hard cart dependency** — `CartLookup` port adapts `@ai-commerce/module-cart`.
-5. **Clean Architecture** — domain ports + service; in-memory adapter first.
+5. **Shipping from config** — optional `ShippingMethodCatalog` (host wires tenant shipping offers).
+6. **Clean Architecture** — domain ports + service; in-memory adapter first.
 
 ## Flow
 
 ```
-StartCheckoutInput + CartLookup
+getActiveCheckoutByCart / startCheckout + CartLookup
         │
         ▼
 CheckoutService
         ├── updateShippingAddress
-        ├── selectShippingMethod (recalculates total)
+        ├── listShippingMethods / selectShippingMethodById  (ShippingMethodCatalog)
+        ├── selectShippingMethod (inline; validated when catalog set)
         ├── completeCheckout
         └── cancelCheckout
                 │

@@ -2,9 +2,11 @@ import { randomUUID } from 'node:crypto';
 
 import type { CartLookup } from './cart-lookup.js';
 import type { CheckoutRepository } from './checkout-repository.js';
+import type { ShippingMethodCatalog, ShippingMethodOffer } from './shipping-method-catalog.js';
 import {
   CheckoutCartException,
   CheckoutNotFoundException,
+  CheckoutShippingException,
   CheckoutStatusException,
   CheckoutValidationException,
 } from '../errors.js';
@@ -12,8 +14,10 @@ import type {
   CheckoutSession,
   CheckoutStatus,
   Money,
+  SelectShippingMethodByIdInput,
   SelectShippingMethodInput,
   ShippingAddress,
+  ShippingMethod,
   StartCheckoutInput,
   UpdateShippingAddressInput,
 } from '../types.js';
@@ -21,6 +25,8 @@ import type {
 export interface CheckoutServiceDeps {
   repository: CheckoutRepository;
   cartLookup: CartLookup;
+  /** Optional: resolve shipping methods from tenant config / catalog. */
+  shippingCatalog?: ShippingMethodCatalog;
   now?: () => string;
   createId?: () => string;
 }
@@ -51,8 +57,8 @@ export class CheckoutService {
       throw new CheckoutValidationException('cartId cannot be empty.');
     }
 
-    const existing = await this.deps.repository.findByCartId(tenantId, cartId);
-    if (existing && ACTIVE_STATUSES.includes(existing.status)) {
+    const existing = await this.deps.repository.findActiveByCartId(tenantId, cartId);
+    if (existing) {
       throw new CheckoutValidationException(
         `Active checkout already exists for cart '${cartId}' (checkout '${existing.id}').`,
       );
@@ -97,9 +103,41 @@ export class CheckoutService {
     return this.requireCheckout(this.requireTenantId(tenantId), checkoutId);
   }
 
+  /**
+   * Return the active checkout for a cart, or undefined if none.
+   */
+  async getActiveCheckoutByCart(
+    tenantId: string,
+    cartId: string,
+  ): Promise<CheckoutSession | undefined> {
+    const trimmedTenant = this.requireTenantId(tenantId);
+    const trimmedCart = cartId.trim();
+    if (!trimmedCart) {
+      throw new CheckoutValidationException('cartId cannot be empty.');
+    }
+    return this.deps.repository.findActiveByCartId(trimmedTenant, trimmedCart);
+  }
+
   async listCheckouts(tenantId: string): Promise<CheckoutSession[]> {
     const list = await this.deps.repository.listByTenant(this.requireTenantId(tenantId));
     return [...list].sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+  }
+
+  /**
+   * List shipping methods available for this checkout's currency (requires shippingCatalog).
+   */
+  async listShippingMethods(
+    tenantId: string,
+    checkoutId: string,
+  ): Promise<readonly ShippingMethodOffer[]> {
+    if (!this.deps.shippingCatalog) {
+      throw new CheckoutValidationException(
+        'listShippingMethods requires a ShippingMethodCatalog on CheckoutService.',
+      );
+    }
+    const session = await this.requireCheckout(this.requireTenantId(tenantId), checkoutId);
+    this.requireActive(session);
+    return this.deps.shippingCatalog.listMethods(session.tenantId, session.currency);
   }
 
   async updateShippingAddress(input: UpdateShippingAddressInput): Promise<CheckoutSession> {
@@ -130,38 +168,72 @@ export class CheckoutService {
       );
     }
 
-    const method = input.method;
-    if (!method.id.trim() || !method.name.trim()) {
-      throw new CheckoutValidationException('Shipping method id and name are required.');
+    let method = this.requireMethodShape(input.method);
+
+    if (this.deps.shippingCatalog) {
+      const offer = await this.deps.shippingCatalog.findById(tenantId, method.id, session.currency);
+      if (!offer) {
+        throw new CheckoutShippingException(
+          `Shipping method '${method.id}' is not available for currency '${session.currency}'.`,
+          tenantId,
+          method.id,
+        );
+      }
+      if (
+        offer.price.amount !== method.price.amount ||
+        offer.price.currency !== method.price.currency
+      ) {
+        throw new CheckoutShippingException(
+          `Shipping price does not match catalog for method '${method.id}' (expected ${offer.price.amount} ${offer.price.currency}).`,
+          tenantId,
+          method.id,
+        );
+      }
+      method = { id: offer.id, name: offer.name, price: offer.price };
     }
-    const shippingPrice = this.requireMoney(method.price, 'shipping price');
-    if (shippingPrice.currency !== session.currency) {
+
+    return this.applyShippingMethod(session, method);
+  }
+
+  /**
+   * Resolve method from shipping catalog by id and select it (requires shippingCatalog).
+   */
+  async selectShippingMethodById(input: SelectShippingMethodByIdInput): Promise<CheckoutSession> {
+    if (!this.deps.shippingCatalog) {
       throw new CheckoutValidationException(
-        `Shipping currency '${shippingPrice.currency}' does not match checkout currency '${session.currency}'.`,
+        'selectShippingMethodById requires a ShippingMethodCatalog on CheckoutService.',
       );
     }
 
-    const shipping = this.roundMoney(shippingPrice);
-    const total = this.roundMoney({
-      amount: session.subtotal.amount + shipping.amount,
-      currency: session.currency,
+    const tenantId = this.requireTenantId(input.tenantId);
+    const session = await this.requireCheckout(tenantId, input.checkoutId);
+    this.requireActive(session);
+
+    if (!session.shippingAddress) {
+      throw new CheckoutValidationException(
+        'Shipping address must be collected before selecting a shipping method.',
+      );
+    }
+
+    const methodId = input.methodId.trim();
+    if (!methodId) {
+      throw new CheckoutValidationException('methodId cannot be empty.');
+    }
+
+    const offer = await this.deps.shippingCatalog.findById(tenantId, methodId, session.currency);
+    if (!offer) {
+      throw new CheckoutShippingException(
+        `Shipping method '${methodId}' is not available for currency '${session.currency}'.`,
+        tenantId,
+        methodId,
+      );
+    }
+
+    return this.applyShippingMethod(session, {
+      id: offer.id,
+      name: offer.name,
+      price: offer.price,
     });
-
-    const updated: CheckoutSession = {
-      ...session,
-      shippingMethod: {
-        id: method.id.trim(),
-        name: method.name.trim(),
-        price: shipping,
-      },
-      shipping,
-      total,
-      status: 'shipping_selected',
-      updatedAt: this.now(),
-    };
-
-    await this.deps.repository.update(updated);
-    return updated;
   }
 
   async completeCheckout(tenantId: string, checkoutId: string): Promise<CheckoutSession> {
@@ -224,6 +296,51 @@ export class CheckoutService {
 
     await this.deps.repository.update(updated);
     return updated;
+  }
+
+  private async applyShippingMethod(
+    session: CheckoutSession,
+    method: ShippingMethod,
+  ): Promise<CheckoutSession> {
+    const shippingPrice = this.requireMoney(method.price, 'shipping price');
+    if (shippingPrice.currency !== session.currency) {
+      throw new CheckoutValidationException(
+        `Shipping currency '${shippingPrice.currency}' does not match checkout currency '${session.currency}'.`,
+      );
+    }
+
+    const shipping = this.roundMoney(shippingPrice);
+    const total = this.roundMoney({
+      amount: session.subtotal.amount + shipping.amount,
+      currency: session.currency,
+    });
+
+    const updated: CheckoutSession = {
+      ...session,
+      shippingMethod: {
+        id: method.id.trim(),
+        name: method.name.trim(),
+        price: shipping,
+      },
+      shipping,
+      total,
+      status: 'shipping_selected',
+      updatedAt: this.now(),
+    };
+
+    await this.deps.repository.update(updated);
+    return updated;
+  }
+
+  private requireMethodShape(method: ShippingMethod): ShippingMethod {
+    if (!method.id.trim() || !method.name.trim()) {
+      throw new CheckoutValidationException('Shipping method id and name are required.');
+    }
+    return {
+      id: method.id.trim(),
+      name: method.name.trim(),
+      price: this.requireMoney(method.price, 'shipping price'),
+    };
   }
 
   private requireActive(session: CheckoutSession): void {
