@@ -1,5 +1,6 @@
 export type {
   CreateOrderFromCheckoutInput,
+  ListOrdersOptions,
   Money,
   Order,
   OrderLineItem,

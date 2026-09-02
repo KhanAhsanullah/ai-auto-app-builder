@@ -8,7 +8,8 @@ Core data-plane domain module (`@ai-commerce/module-order`) for tenant-scoped or
 2. **Checkout snapshot** — lines, address, and totals copied at create time.
 3. **One order per checkout** — `createOrderFromCheckout` is idempotent.
 4. **No hard checkout dependency** — `CheckoutLookup` port adapts `@ai-commerce/module-checkout`.
-5. **Clean Architecture** — domain ports + service; in-memory adapter first.
+5. **Status machine** — `placed` → `confirmed` → `fulfilled` (or `cancelled`).
+6. **Clean Architecture** — domain ports + service; in-memory adapter first.
 
 ## Flow
 
@@ -17,8 +18,9 @@ CreateOrderFromCheckoutInput + CheckoutLookup (status=completed)
         │
         ▼
 OrderService
-        ├── getOrder / getOrderByCheckoutId / listOrders
-        └── cancelOrder (placed → cancelled)
+        ├── confirmOrder / fulfillOrder / cancelOrder
+        ├── listOrders / listOrdersByCart / listOrdersByCustomer
+        └── getOrder / getOrderByCheckoutId
                 │
                 ▼
         OrderRepository

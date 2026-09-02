@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Core order helpers** (Sprint 17 Task 2) — `@ai-commerce/module-order`
+  - `confirmOrder` / `fulfillOrder` status transitions
+  - `listOrdersByCart` / `listOrdersByCustomer` + filtered `listOrders`
+  - Optional `customerId` on order / checkout snapshot
+
 - **Core order foundation** (Sprint 17 Task 1) — `@ai-commerce/module-order`
   - `OrderService` — create from completed checkout, get, list, cancel
   - `CheckoutLookup` port + `OrderRepository` / `InMemoryOrderRepository`

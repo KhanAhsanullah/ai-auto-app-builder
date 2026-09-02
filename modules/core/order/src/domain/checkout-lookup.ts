@@ -13,6 +13,8 @@ export interface CompletedCheckoutSnapshot {
   total: Money;
   shippingAddress: OrderShippingAddress;
   shippingMethod: OrderShippingMethod;
+  /** Optional customer id when known at checkout completion. */
+  customerId?: string;
   completedAt?: string;
 }
 

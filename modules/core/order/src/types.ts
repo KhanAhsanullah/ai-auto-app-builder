@@ -4,8 +4,8 @@ export interface Money {
   currency: string;
 }
 
-/** Order lifecycle status (thin slice — Task 1). */
-export type OrderStatus = 'placed' | 'cancelled';
+/** Order lifecycle status. */
+export type OrderStatus = 'placed' | 'confirmed' | 'fulfilled' | 'cancelled';
 
 /** Snapshot of a line at order creation. */
 export interface OrderLineItem {
@@ -42,6 +42,8 @@ export interface Order {
   id: string;
   checkoutId: string;
   cartId: string;
+  /** Optional customer id (from checkout snapshot or create input). */
+  customerId?: string;
   status: OrderStatus;
   currency: string;
   lines: readonly OrderLineItem[];
@@ -52,6 +54,8 @@ export interface Order {
   shippingMethod: OrderShippingMethod;
   createdAt: string;
   updatedAt: string;
+  confirmedAt?: string;
+  fulfilledAt?: string;
   cancelledAt?: string;
 }
 
@@ -60,4 +64,13 @@ export interface CreateOrderFromCheckoutInput {
   tenantId: string;
   checkoutId: string;
   id?: string;
+  /** Override / set customer id when checkout snapshot has none. */
+  customerId?: string;
+}
+
+/** Filters for listing orders within a tenant. */
+export interface ListOrdersOptions {
+  cartId?: string;
+  customerId?: string;
+  status?: OrderStatus | readonly OrderStatus[];
 }

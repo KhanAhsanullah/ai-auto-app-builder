@@ -1,6 +1,6 @@
 import type { OrderRepository } from '../domain/order-repository.js';
 import { OrderException, OrderNotFoundException } from '../errors.js';
-import type { Order } from '../types.js';
+import type { Order, OrderStatus } from '../types.js';
 
 function orderKey(tenantId: string, orderId: string): string {
   return `${tenantId}::${orderId}`;
@@ -45,6 +45,24 @@ export class InMemoryOrderRepository implements OrderRepository {
   async listByTenant(tenantId: string): Promise<Order[]> {
     return [...this.orders.values()]
       .filter((order) => order.tenantId === tenantId)
+      .map((order) => structuredClone(order));
+  }
+
+  async listByCartId(tenantId: string, cartId: string): Promise<Order[]> {
+    return [...this.orders.values()]
+      .filter((order) => order.tenantId === tenantId && order.cartId === cartId)
+      .map((order) => structuredClone(order));
+  }
+
+  async listByCustomerId(tenantId: string, customerId: string): Promise<Order[]> {
+    return [...this.orders.values()]
+      .filter((order) => order.tenantId === tenantId && order.customerId === customerId)
+      .map((order) => structuredClone(order));
+  }
+
+  async listByStatus(tenantId: string, status: OrderStatus): Promise<Order[]> {
+    return [...this.orders.values()]
+      .filter((order) => order.tenantId === tenantId && order.status === status)
       .map((order) => structuredClone(order));
   }
 }
