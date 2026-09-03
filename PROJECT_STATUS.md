@@ -8,13 +8,13 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 17 — Core Order** (in progress)
+**Sprint 17 — Core Order** ✅ complete (on branch)
 
-Sprint 17 Task 2 complete — confirm/fulfill + list by cart/customer in `@ai-commerce/module-order`.
+Sprint 17 Task 3 complete — `OrderModule` / `createOrderModule` facade in `@ai-commerce/module-order`.
 
-**Branch:** `sprint/17/task2`
+**Branch:** `sprint/17/task3`
 
-**Next:** Sprint 17 Task 3 — `OrderModule` / `createOrderModule` facade.
+**Next:** Merge Task 3 to `main`, then Sprint 18 (proposed) — Core Payment thin slice **or** wire Web/Admin catalog→cart→checkout→order screens.
 
 ## Completed Tasks
 
@@ -23,38 +23,38 @@ Sprint 17 Task 2 complete — confirm/fulfill + list by cart/customer in `@ai-co
 | Sprint 1–16 ✅      | Foundation through Core Checkout | `sprint*-task*`  |
 | Sprint 17 Task 1 ✅ | Order domain + in-memory repo    | `sprint17-task1` |
 | Sprint 17 Task 2 ✅ | Confirm/fulfill + list helpers   | `sprint17-task2` |
+| Sprint 17 Task 3 ✅ | `OrderModule` facade             | `sprint17-task3` |
 
 ## Current Progress
 
-- Sprints 1–16 + Order Task 1 on `main`
-- **Core Order** — Tasks 1–2 (Task 2 on branch)
+- Sprints 1–16 + Order Tasks 1–2 on `main`
+- **Core Order** Task 3 on branch
 
-**Overall:** Sprint 17 Task 2 complete on branch. Next: Task 3 facade.
+**Overall:** Sprint 17 complete on branch. Merge to main next.
 
 ## Next Tasks
 
-**Sprint 17 Task 3 — Facade**
+**After merge — choose path**
 
-- `OrderModule` / `createOrderModule`
-- Surface wiring docs
-- See [SPRINT_BOARD.md](./SPRINT_BOARD.md)
+1. **Sprint 18 — Core Payment** (gateway ports, intent from checkout/order)
+2. **Surface wiring** — connect Web/Admin/Mobile screens to catalog/cart/checkout/order modules
 
 ## Latest Commit
 
 ```
-feat(module-order): add confirm/fulfill and list helpers (Sprint 17 Task 2)
+feat(module-order): add OrderModule facade (Sprint 17 Task 3)
 ```
 
 ## Latest Tag
 
 ```
-sprint17-task2
+sprint17-task3
 ```
 
 ## Health Status
 
-| Area       | Status         | Notes                                  |
-| ---------- | -------------- | -------------------------------------- |
-| Repository | ✅ Healthy     | Sprint 17 Task 2 on branch             |
-| Order      | 🟡 In progress | Tasks 1–2 done; Task 3 remaining       |
-| Tests      | ✅ Passing     | `@ai-commerce/module-order` unit tests |
+| Area       | Status      | Notes                                  |
+| ---------- | ----------- | -------------------------------------- |
+| Repository | ✅ Healthy  | Sprint 17 Task 3 on branch             |
+| Order      | ✅ Complete | Tasks 1–3 done                         |
+| Tests      | ✅ Passing  | `@ai-commerce/module-order` unit tests |

@@ -23,4 +23,4 @@ These modules represent the **80% shared behavior** across e-commerce, grocery, 
 
 ## Status
 
-Sprint 16 complete (checkout). Sprint 17 Task 2 — order status helpers in `@ai-commerce/module-order`.
+Sprint 17 complete — `OrderModule` / `createOrderModule` in `@ai-commerce/module-order`.

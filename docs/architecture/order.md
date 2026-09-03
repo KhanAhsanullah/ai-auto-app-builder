@@ -9,22 +9,50 @@ Core data-plane domain module (`@ai-commerce/module-order`) for tenant-scoped or
 3. **One order per checkout** — `createOrderFromCheckout` is idempotent.
 4. **No hard checkout dependency** — `CheckoutLookup` port adapts `@ai-commerce/module-checkout`.
 5. **Status machine** — `placed` → `confirmed` → `fulfilled` (or `cancelled`).
-6. **Clean Architecture** — domain ports + service; in-memory adapter first.
+6. **Facade entry** — callers use `createOrderModule` / `OrderModule`.
+7. **Clean Architecture** — domain ports + service; in-memory adapter first.
 
 ## Flow
 
 ```
-CreateOrderFromCheckoutInput + CheckoutLookup (status=completed)
+createOrderModule({ checkoutLookup }) → OrderModule
         │
-        ▼
-OrderService
-        ├── confirmOrder / fulfillOrder / cancelOrder
-        ├── listOrders / listOrdersByCart / listOrdersByCustomer
-        └── getOrder / getOrderByCheckoutId
+        ├─ createOrderFromCheckout
+        ├─ confirmOrder / fulfillOrder / cancelOrder
+        └─ listOrders / listOrdersByCart / listOrdersByCustomer
                 │
                 ▼
-        OrderRepository
+          OrderService → OrderRepository
 ```
+
+## Surface wiring
+
+Gate order UI with tenant config `features.order`. After checkout completes:
+
+| Surface             | Typical calls                                               |
+| ------------------- | ----------------------------------------------------------- |
+| **Web Store**       | `createOrderFromCheckout`, `getOrder` (confirmation page)   |
+| **Mobile App**      | Same as Web Store                                           |
+| **Admin Dashboard** | `listOrders`, `confirmOrder`, `fulfillOrder`, `cancelOrder` |
+| **API Gateway**     | Thin handlers that call the same facade (HTTP deferred)     |
+
+```ts
+import { createCheckoutModule } from '@ai-commerce/module-checkout';
+import { createOrderModule } from '@ai-commerce/module-order';
+
+const checkout = createCheckoutModule({ cartLookup, shippingCatalog });
+const orders = createOrderModule({
+  checkoutLookup: {
+    getCheckout: async (tenantId, checkoutId) => {
+      const session = await checkout.getCheckout(tenantId, checkoutId);
+      // map completed session → CompletedCheckoutSnapshot
+      return undefined;
+    },
+  },
+});
+```
+
+Do **not** store orders in tenant JSON config — config only toggles `features.order`.
 
 ## Sprint 17 Task Breakdown
 

@@ -220,11 +220,11 @@ All Sprint 16 code lives in `@ai-commerce/module-checkout` (`modules/core/checko
 | ------ | ------ | ---------------------------------------------------------------- |
 | Task 1 | ✅     | Domain model, `OrderService`, in-memory repository               |
 | Task 2 | ✅     | Status helpers (confirm/fulfill), list by cart / customer port   |
-| Task 3 | ⬜     | `OrderModule` / `createOrderModule` facade + surface wiring docs |
+| Task 3 | ✅     | `OrderModule` / `createOrderModule` facade + surface wiring docs |
 
 All Sprint 17 code lives in `@ai-commerce/module-order` (`modules/core/order`). HTTP / DB / payment deferred.
 
-**Tags:** `sprint17-task1`, `sprint17-task2`
+**Tags:** `sprint17-task1`, `sprint17-task2`, `sprint17-task3`
 
 ---
 

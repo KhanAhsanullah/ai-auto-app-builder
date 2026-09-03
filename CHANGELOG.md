@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Core order facade** (Sprint 17 Task 3) — `@ai-commerce/module-order`
+  - `OrderModule` / `createOrderModule` — unified create/status/list entrypoints
+  - Surface wiring guidance (Web / Admin / Mobile) in architecture docs
+
 - **Core order helpers** (Sprint 17 Task 2) — `@ai-commerce/module-order`
   - `confirmOrder` / `fulfillOrder` status transitions
   - `listOrdersByCart` / `listOrdersByCustomer` + filtered `listOrders`

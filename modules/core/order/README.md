@@ -8,36 +8,61 @@ Core domain module for order lifecycle. Authoritative record created from a comp
 
 ## Status
 
-**Sprint 17 Task 2** — confirm/fulfill status helpers + list by cart/customer.
+**Sprint 17 complete** — Task 3 delivers `OrderModule` / `createOrderModule` facade.
 
 ## Modules
 
-| Module                    | Purpose                                         |
-| ------------------------- | ----------------------------------------------- |
-| `OrderService`            | Create, confirm, fulfill, cancel, filtered list |
-| `CheckoutLookup`          | Port to load completed checkout snapshot        |
-| `OrderRepository`         | Persistence port                                |
-| `InMemoryOrderRepository` | In-memory store for tests / local               |
+| Module                    | Purpose                                        |
+| ------------------------- | ---------------------------------------------- |
+| `createOrderModule`       | Wire service + in-memory repository            |
+| `OrderModule`             | Facade: create, confirm, fulfill, cancel, list |
+| `OrderService`            | Domain service (used by the facade)            |
+| `CheckoutLookup`          | Required port to load completed checkout       |
+| `InMemoryOrderRepository` | In-memory store for tests / local              |
 
 ## Usage
 
 ```ts
-import { OrderService, InMemoryOrderRepository } from '@ai-commerce/module-order';
+import { createOrderModule } from '@ai-commerce/module-order';
+import { createCheckoutModule } from '@ai-commerce/module-checkout';
 
-const orders = new OrderService({
-  repository: new InMemoryOrderRepository(),
-  checkoutLookup: { getCheckout: async () => undefined },
+const checkout = createCheckoutModule({ cartLookup });
+const orders = createOrderModule({
+  checkoutLookup: {
+    getCheckout: async (tenantId, checkoutId) => {
+      const session = await checkout.getCheckout(tenantId, checkoutId);
+      if (
+        !session ||
+        session.status !== 'completed' ||
+        !session.shipping ||
+        !session.shippingAddress ||
+        !session.shippingMethod
+      ) {
+        return undefined;
+      }
+      return {
+        id: session.id,
+        tenantId: session.tenantId,
+        cartId: session.cartId,
+        currency: session.currency,
+        status: session.status,
+        lines: [...session.lines],
+        subtotal: session.subtotal,
+        shipping: session.shipping,
+        total: session.total,
+        shippingAddress: session.shippingAddress,
+        shippingMethod: session.shippingMethod,
+        completedAt: session.completedAt,
+      };
+    },
+  },
 });
 
 const order = await orders.createOrderFromCheckout({ tenantId, checkoutId });
 await orders.confirmOrder(tenantId, order.id);
-await orders.fulfillOrder(tenantId, order.id);
-
-await orders.listOrdersByCustomer(tenantId, customerId);
-await orders.listOrders(tenantId, { cartId, status: 'placed' });
 ```
 
-Status machine: `placed` → `confirmed` → `fulfilled` (or `cancelled` from placed/confirmed).
+Surface wiring: [docs/architecture/order.md](../../../docs/architecture/order.md#surface-wiring).
 
 ## Scripts
 
