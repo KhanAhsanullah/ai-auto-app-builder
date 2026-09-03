@@ -8,13 +8,11 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 20 — Commerce Screens** (complete)
+**Sprint 20 — Commerce Screens** ✅ complete (on `main`)
 
-Sprint 20 Task 3 complete — orders + payment confirmation screens on Web/Mobile; Admin orders list/confirm.
+Buy-path UI screens: catalog → cart → checkout → payment → orders (Web/Mobile RN) + Admin catalog/carts/orders.
 
-**Branch:** `sprint/20/task3`
-
-**Next:** Merge Sprint 20, then next roadmap item (host apps / remaining core stubs).
+**Next:** Host apps / remaining core stubs (customer, inventory) / real DB & gateways.
 
 ## Completed Tasks
 
@@ -27,13 +25,13 @@ Sprint 20 Task 3 complete — orders + payment confirmation screens on Web/Mobil
 
 ## Current Progress
 
-- Sprints 1–19 on `main`
-- **Commerce Screens** Task 3 on branch
+- Sprints 1–20 on `main`
+- Foundation buy-path engines + surface screens complete
 
 ## Next Tasks
 
-1. Merge Sprint 20 Task 3 to `main`
-2. Decide next sprint (host apps, customer/inventory stubs, or deploy)
+1. Dedicated host apps (Vite/Next/Expo) or remaining core modules
+2. Real persistence / payment gateways / deploy
 
 ## Latest Commit
 
@@ -49,8 +47,8 @@ sprint20-task3
 
 ## Health Status
 
-| Area       | Status     | Notes                                  |
-| ---------- | ---------- | -------------------------------------- |
-| Repository | ✅ Healthy | Sprint 20 Task 3 on branch             |
-| Screens    | ✅ Done    | Catalog → cart → checkout → pay/orders |
-| Tests      | ✅ Passing | Orders/payment React/RN screen tests   |
+| Area       | Status     | Notes                               |
+| ---------- | ---------- | ----------------------------------- |
+| Repository | ✅ Healthy | Sprint 20 merged to `main`          |
+| Screens    | ✅ Done    | Full commerce screen path wired     |
+| Tests      | ✅ Passing | Surface + screen tests for buy path |
