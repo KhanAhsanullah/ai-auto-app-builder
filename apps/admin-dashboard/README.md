@@ -8,7 +8,7 @@ Config-driven merchant admin for CommerceOS AI — resolve tenant config into a 
 
 ## Status
 
-Sprint 8 complete — facade + shell. Sprint 20 Task 2 — Admin carts inspect via `cartSurface`.
+Sprint 8 complete — facade + shell. Sprint 20 complete — catalog/carts/orders admin screens.
 
 ## Modules
 

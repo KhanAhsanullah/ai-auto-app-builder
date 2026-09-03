@@ -8,7 +8,7 @@ Config-driven consumer web storefront for CommerceOS AI — resolve tenant confi
 
 ## Status
 
-Sprint 11 complete — facade + shell. Sprint 20 Task 2 — cart/checkout screens via `cartSurface` / `checkoutSurface`.
+Sprint 11 complete — facade + shell. Sprint 20 complete — catalog/cart/checkout/payment/orders screens.
 
 ## Modules
 

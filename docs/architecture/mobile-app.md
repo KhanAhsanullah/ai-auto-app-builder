@@ -72,6 +72,8 @@ When modules are wired and no custom `renderScreen` is provided (Sprint 20):
 - `store.catalog` → `MobileCatalogScreen`
 - `store.cart` → `MobileCartScreen`
 - `store.checkout` → `MobileCheckoutScreen`
+- `store.payment` → `MobilePaymentConfirmScreen`
+- `store.orders` → `MobileOrdersScreen`
 
 Guest session defaults to `mobile-guest` via `MobileAppRoot` `sessionId` prop.
 
@@ -82,4 +84,3 @@ Guest session defaults to `mobile-guest` via `MobileAppRoot` `sessionId` prop.
 - Push notification provider wiring
 - Live IdP session binding
 - Full theme compile at render time
-- Order RN screens (Sprint 20 Task 3)

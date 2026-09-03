@@ -4,6 +4,8 @@ import type { WebStore } from '../domain/web-store.js';
 import { WebCartScreen } from './screens/web-cart-screen.js';
 import { WebCatalogScreen } from './screens/web-catalog-screen.js';
 import { WebCheckoutScreen } from './screens/web-checkout-screen.js';
+import { WebOrdersScreen } from './screens/web-orders-screen.js';
+import { WebPaymentConfirmScreen } from './screens/web-payment-confirm-screen.js';
 import { WebShellLayout } from './web-shell-layout.js';
 
 export interface WebStoreAppProps {
@@ -21,6 +23,11 @@ export interface WebStoreAppProps {
    * Defaults to `web-guest`.
    */
   sessionId?: string;
+  /**
+   * Optional completed checkout id for payment confirmation.
+   * When omitted, the app remembers the last checkout completed in-session.
+   */
+  checkoutId?: string;
   /**
    * Optional per-screen content.
    * When omitted, commerce screens or a branded default is shown.
@@ -45,9 +52,12 @@ export function WebStoreApp(props: WebStoreAppProps): ReactNode {
     onNavigate,
     renderScreen,
     sessionId = 'web-guest',
+    checkoutId: controlledCheckoutId,
   } = props;
   const [internalRoute, setInternalRoute] = useState(store.initialRoute);
+  const [lastCheckoutId, setLastCheckoutId] = useState<string | undefined>();
   const activeRoute = controlledRoute ?? internalRoute;
+  const checkoutId = controlledCheckoutId ?? lastCheckoutId;
 
   const viewModel = useMemo(() => store.getViewModel(activeRoute), [store, activeRoute]);
 
@@ -74,11 +84,16 @@ export function WebStoreApp(props: WebStoreAppProps): ReactNode {
       store={store}
       route={viewModel.activeRoute}
       sessionId={sessionId}
+      checkoutId={checkoutId}
       brandName={viewModel.shell.branding.displayName}
       title={viewModel.activeScreen.title}
       description={viewModel.activeScreen.description}
       seoTitle={viewModel.shell.seo.title}
       onNavigate={handleNavigate}
+      onCheckoutComplete={(id) => {
+        setLastCheckoutId(id);
+        handleNavigate(store.isOrderAvailable() ? 'store.payment' : 'store.orders');
+      }}
     />
   );
 
@@ -93,13 +108,15 @@ function DefaultCommerceContent(props: {
   store: WebStore;
   route: string;
   sessionId: string;
+  checkoutId?: string;
   brandName: string;
   title: string;
   description?: string;
   seoTitle: string;
   onNavigate: (route: string) => void;
+  onCheckoutComplete: (checkoutId: string) => void;
 }): ReactNode {
-  const { store, route, sessionId, onNavigate } = props;
+  const { store, route, sessionId, checkoutId, onNavigate, onCheckoutComplete } = props;
 
   if (route === 'store.catalog' && store.isCatalogAvailable()) {
     return <WebCatalogScreen store={store} sessionId={sessionId} />;
@@ -115,12 +132,20 @@ function DefaultCommerceContent(props: {
   }
   if (route === 'store.checkout' && store.isCheckoutAvailable() && store.isCartAvailable()) {
     return (
-      <WebCheckoutScreen
+      <WebCheckoutScreen store={store} sessionId={sessionId} onComplete={onCheckoutComplete} />
+    );
+  }
+  if (route === 'store.payment' && store.isOrderAvailable() && checkoutId) {
+    return (
+      <WebPaymentConfirmScreen
         store={store}
-        sessionId={sessionId}
-        onComplete={() => onNavigate('store.orders')}
+        checkoutId={checkoutId}
+        onDone={() => onNavigate('store.orders')}
       />
     );
+  }
+  if (route === 'store.orders' && store.isOrderAvailable() && store.isCartAvailable()) {
+    return <WebOrdersScreen store={store} sessionId={sessionId} />;
   }
 
   return (

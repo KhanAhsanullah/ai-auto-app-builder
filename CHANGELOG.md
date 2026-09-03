@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Orders + payment screens** (Sprint 20 Task 3) — Web Store / Mobile (React Native) + Admin
+  - Auto-render on `store.payment` / `store.orders` when order (+ payment) wired; Admin `admin.orders`
+  - `WebPaymentConfirmScreen`, `WebOrdersScreen`, `MobilePaymentConfirmScreen`, `MobileOrdersScreen`, `AdminOrdersScreen`
+
 - **Cart + checkout screens** (Sprint 20 Task 2) — Web Store / Mobile (React Native) + Admin inspect
   - Auto-render on `store.cart` / `store.checkout` when cart/checkout wired; Admin `admin.carts`
   - `WebCartScreen`, `WebCheckoutScreen`, `MobileCartScreen`, `MobileCheckoutScreen`, `AdminCartsScreen`

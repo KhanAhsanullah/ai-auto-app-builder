@@ -100,6 +100,11 @@ export function createDefaultWebScreens(): WebScreenDefinition[] {
       description: 'Shipping address and place order.',
     },
     {
+      route: 'store.payment',
+      title: 'Payment',
+      description: 'Confirm payment for your order.',
+    },
+    {
       route: 'store.orders',
       title: 'Orders',
       description: 'Track and reorder past purchases.',

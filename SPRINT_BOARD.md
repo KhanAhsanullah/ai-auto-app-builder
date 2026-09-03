@@ -262,11 +262,11 @@ Wiring lives in `@ai-commerce/web-store`, `@ai-commerce/admin-dashboard`, `@ai-c
 | ------ | ------ | -------------------------------------------------------------- |
 | Task 1 | ✅     | Catalog screens (Web / Admin / Mobile RN) via `catalogSurface` |
 | Task 2 | ✅     | Cart + checkout screens (Web/Mobile) + Admin carts inspect     |
-| Task 3 | ⬜     | Orders + payment confirmation screens                          |
+| Task 3 | ✅     | Orders + payment confirmation screens                          |
 
 Screens live in app React/RN packages; data from Sprint 19 surface bindings.
 
-**Tags:** `sprint20-task1`, `sprint20-task2`
+**Tags:** `sprint20-task1`, `sprint20-task2`, `sprint20-task3`
 
 ---
 

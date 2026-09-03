@@ -108,12 +108,14 @@ When modules are wired and no custom `renderScreen` is provided:
 - `store.catalog` → `WebCatalogScreen` (optional Add when cart + `sessionId`)
 - `store.cart` → `WebCartScreen` (qty +/−, checkout CTA)
 - `store.checkout` → `WebCheckoutScreen` (address + place order)
+- `store.payment` → `WebPaymentConfirmScreen` (order + capture; needs `checkoutId`)
+- `store.orders` → `WebOrdersScreen` (session cart orders)
 
 Guest session defaults to `web-guest` via `WebStoreApp` `sessionId` prop.
+Checkout completion navigates to payment when orders are wired.
 
 ## Deferred
 
 - Dedicated Next.js / Vite host app
 - Full theme compile at render time
 - CDN / edge caching policies beyond `rendering.cacheTtlSeconds`
-- Order React screens (Sprint 20 Task 3)

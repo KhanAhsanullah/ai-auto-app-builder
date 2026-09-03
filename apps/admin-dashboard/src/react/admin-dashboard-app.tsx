@@ -4,6 +4,7 @@ import type { AdminDashboard } from '../domain/admin-dashboard.js';
 import { AdminShellLayout } from './admin-shell-layout.js';
 import { AdminCartsScreen } from './screens/admin-carts-screen.js';
 import { AdminCatalogScreen } from './screens/admin-catalog-screen.js';
+import { AdminOrdersScreen } from './screens/admin-orders-screen.js';
 
 export interface AdminDashboardAppProps {
   /** Facade instance from `createAdminDashboard`. */
@@ -61,6 +62,8 @@ export function AdminDashboardApp(props: AdminDashboardAppProps): ReactNode {
     <AdminCatalogScreen dashboard={dashboard} />
   ) : viewModel.activeRoute === 'admin.carts' && dashboard.isCartAvailable() ? (
     <AdminCartsScreen dashboard={dashboard} />
+  ) : viewModel.activeRoute === 'admin.orders' && dashboard.isOrderAvailable() ? (
+    <AdminOrdersScreen dashboard={dashboard} />
   ) : (
     <BrandedDefaultScreen
       brandName={viewModel.shell.branding.displayName}

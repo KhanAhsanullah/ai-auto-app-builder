@@ -8,13 +8,13 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 20 — Commerce Screens** (in progress)
+**Sprint 20 — Commerce Screens** (complete)
 
-Sprint 20 Task 2 complete — cart + checkout screens on Web and Mobile (React Native); Admin carts inspect.
+Sprint 20 Task 3 complete — orders + payment confirmation screens on Web/Mobile; Admin orders list/confirm.
 
-**Branch:** `sprint/20/task2`
+**Branch:** `sprint/20/task3`
 
-**Next:** Task 3 — orders + payment confirmation screens.
+**Next:** Merge Sprint 20, then next roadmap item (host apps / remaining core stubs).
 
 ## Completed Tasks
 
@@ -23,32 +23,34 @@ Sprint 20 Task 2 complete — cart + checkout screens on Web and Mobile (React N
 | Sprint 1–19 ✅      | Foundation through surface wire       | `sprint*-task*`  |
 | Sprint 20 Task 1 ✅ | Catalog screens (Web/Admin/RN)        | `sprint20-task1` |
 | Sprint 20 Task 2 ✅ | Cart + checkout screens + Admin carts | `sprint20-task2` |
+| Sprint 20 Task 3 ✅ | Orders + payment confirmation screens | `sprint20-task3` |
 
 ## Current Progress
 
 - Sprints 1–19 on `main`
-- **Commerce Screens** Task 2 on branch
+- **Commerce Screens** Task 3 on branch
 
 ## Next Tasks
 
-1. **Sprint 20 Task 3** — Orders + payment confirmation screens
+1. Merge Sprint 20 Task 3 to `main`
+2. Decide next sprint (host apps, customer/inventory stubs, or deploy)
 
 ## Latest Commit
 
 ```
-feat(surfaces): add cart/checkout screens for Web/Admin/Mobile (Sprint 20 Task 2)
+feat(surfaces): add orders/payment screens for Web/Admin/Mobile (Sprint 20 Task 3)
 ```
 
 ## Latest Tag
 
 ```
-sprint20-task2
+sprint20-task3
 ```
 
 ## Health Status
 
-| Area       | Status         | Notes                               |
-| ---------- | -------------- | ----------------------------------- |
-| Repository | ✅ Healthy     | Sprint 20 Task 2 on branch          |
-| Screens    | 🟡 In progress | Catalog + cart done; orders next    |
-| Tests      | ✅ Passing     | Cart/checkout React/RN screen tests |
+| Area       | Status     | Notes                                  |
+| ---------- | ---------- | -------------------------------------- |
+| Repository | ✅ Healthy | Sprint 20 Task 3 on branch             |
+| Screens    | ✅ Done    | Catalog → cart → checkout → pay/orders |
+| Tests      | ✅ Passing | Orders/payment React/RN screen tests   |

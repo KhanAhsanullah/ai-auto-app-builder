@@ -8,7 +8,7 @@ Config-driven React Native consumer app for CommerceOS AI — resolve tenant con
 
 ## Status
 
-Sprint 9 complete — facade + shell. Sprint 20 Task 2 — cart/checkout RN screens via `cartSurface` / `checkoutSurface`.
+Sprint 9 complete — facade + shell. Sprint 20 complete — catalog/cart/checkout/payment/orders RN screens.
 
 ## Modules
 

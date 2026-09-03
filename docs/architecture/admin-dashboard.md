@@ -77,10 +77,10 @@ When modules are wired and no custom `renderScreen` is provided:
 
 - `admin.catalog` → `AdminCatalogScreen`
 - `admin.carts` → `AdminCartsScreen` (inspect open carts)
+- `admin.orders` → `AdminOrdersScreen` (list + confirm)
 
 ## Deferred
 
 - Dedicated Vite/Next host app (embed via `mountAdminDashboard`)
-- Order admin React screens (Sprint 20 Task 3)
 - Live IdP session binding (consume auth-client)
 - Full white-label / theme compile at render time

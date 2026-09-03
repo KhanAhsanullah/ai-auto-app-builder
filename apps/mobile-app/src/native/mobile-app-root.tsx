@@ -6,6 +6,8 @@ import { MobileShellLayout } from './mobile-shell-layout.js';
 import { MobileCartScreen } from './screens/mobile-cart-screen.js';
 import { MobileCatalogScreen } from './screens/mobile-catalog-screen.js';
 import { MobileCheckoutScreen } from './screens/mobile-checkout-screen.js';
+import { MobileOrdersScreen } from './screens/mobile-orders-screen.js';
+import { MobilePaymentConfirmScreen } from './screens/mobile-payment-confirm-screen.js';
 
 export interface MobileAppRootProps {
   /** Facade instance from `createMobileApp`. */
@@ -22,6 +24,8 @@ export interface MobileAppRootProps {
    * Defaults to `mobile-guest`.
    */
   sessionId?: string;
+  /** Optional completed checkout id for payment confirmation. */
+  checkoutId?: string;
   /**
    * Optional per-screen content. When omitted, commerce screens or a branded default.
    */
@@ -44,9 +48,12 @@ export function MobileAppRoot(props: MobileAppRootProps): ReactNode {
     onNavigate,
     renderScreen,
     sessionId = 'mobile-guest',
+    checkoutId: controlledCheckoutId,
   } = props;
   const [internalRoute, setInternalRoute] = useState(app.initialRoute);
+  const [lastCheckoutId, setLastCheckoutId] = useState<string | undefined>();
   const activeRoute = controlledRoute ?? internalRoute;
+  const checkoutId = controlledCheckoutId ?? lastCheckoutId;
 
   const viewModel = useMemo(() => app.getViewModel(activeRoute), [app, activeRoute]);
 
@@ -72,11 +79,16 @@ export function MobileAppRoot(props: MobileAppRootProps): ReactNode {
       app={app}
       route={viewModel.activeRoute}
       sessionId={sessionId}
+      checkoutId={checkoutId}
       brandName={viewModel.shell.branding.displayName}
       title={viewModel.activeScreen.title}
       description={viewModel.activeScreen.description}
       appName={viewModel.shell.identity.appName}
       onNavigate={handleNavigate}
+      onCheckoutComplete={(id) => {
+        setLastCheckoutId(id);
+        handleNavigate(app.isOrderAvailable() ? 'store.payment' : 'store.orders');
+      }}
     />
   );
 
@@ -91,13 +103,15 @@ function DefaultCommerceContent(props: {
   app: MobileApp;
   route: string;
   sessionId: string;
+  checkoutId?: string;
   brandName: string;
   title: string;
   description?: string;
   appName: string;
   onNavigate: (route: string) => void;
+  onCheckoutComplete: (checkoutId: string) => void;
 }): ReactNode {
-  const { app, route, sessionId, onNavigate } = props;
+  const { app, route, sessionId, checkoutId, onNavigate, onCheckoutComplete } = props;
 
   if (route === 'store.catalog' && app.isCatalogAvailable()) {
     return <MobileCatalogScreen app={app} />;
@@ -112,13 +126,19 @@ function DefaultCommerceContent(props: {
     );
   }
   if (route === 'store.checkout' && app.isCheckoutAvailable() && app.isCartAvailable()) {
+    return <MobileCheckoutScreen app={app} sessionId={sessionId} onComplete={onCheckoutComplete} />;
+  }
+  if (route === 'store.payment' && app.isOrderAvailable() && checkoutId) {
     return (
-      <MobileCheckoutScreen
+      <MobilePaymentConfirmScreen
         app={app}
-        sessionId={sessionId}
-        onComplete={() => onNavigate('store.orders')}
+        checkoutId={checkoutId}
+        onDone={() => onNavigate('store.orders')}
       />
     );
+  }
+  if (route === 'store.orders' && app.isOrderAvailable() && app.isCartAvailable()) {
+    return <MobileOrdersScreen app={app} sessionId={sessionId} />;
   }
 
   return (
