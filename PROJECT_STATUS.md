@@ -8,13 +8,9 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 18 — Core Payment** ✅ complete (on branch)
+**Sprint 18 — Core Payment** ✅ complete (on `main`)
 
-Sprint 18 Task 3 complete — `PaymentModule` / `createPaymentModule` facade in `@ai-commerce/module-payment`.
-
-**Branch:** `sprint/18/task3`
-
-**Next:** Merge Task 3 to `main`, then Sprint 19 (proposed) — surface wiring (Web/Admin/Mobile → catalog→cart→checkout→order→payment) **or** next core stub (customer / inventory).
+**Next:** Sprint 19 (proposed) — surface wiring (Web/Admin/Mobile → catalog→cart→checkout→order→payment) **or** Core Customer thin slice.
 
 ## Completed Tasks
 
@@ -27,16 +23,13 @@ Sprint 18 Task 3 complete — `PaymentModule` / `createPaymentModule` facade in 
 
 ## Current Progress
 
-- Sprints 1–17 + Payment Tasks 1–2 on `main`
-- **Core Payment** Task 3 on branch
+- Sprints 1–18 on `main`
 
-**Overall:** Sprint 18 complete on branch. Merge to main next.
+**Overall:** Buy-path engines complete: Catalog → Cart → Checkout → Order → Payment.
 
 ## Next Tasks
 
-**After merge — choose path**
-
-1. **Surface wiring** — connect Web/Admin/Mobile to catalog→cart→checkout→order→payment
+1. **Surface wiring** — connect Web/Admin/Mobile screens to the commerce modules (recommended)
 2. **Core Customer** (or inventory) thin slice
 
 ## Latest Commit
@@ -55,6 +48,6 @@ sprint18-task3
 
 | Area       | Status      | Notes                                    |
 | ---------- | ----------- | ---------------------------------------- |
-| Repository | ✅ Healthy  | Sprint 18 Task 3 on branch               |
+| Repository | ✅ Healthy  | Sprint 18 on `main`                      |
 | Payment    | ✅ Complete | Tasks 1–3 done                           |
 | Tests      | ✅ Passing  | `@ai-commerce/module-payment` unit tests |
