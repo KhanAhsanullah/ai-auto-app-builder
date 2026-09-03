@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Core payment facade** (Sprint 18 Task 3) — `@ai-commerce/module-payment`
+  - `PaymentModule` / `createPaymentModule` — unified create/status/list entrypoints
+  - Surface wiring guidance (Web / Admin / Mobile) in architecture docs
+
 - **Core payment helpers** (Sprint 18 Task 2) — `@ai-commerce/module-payment`
   - `authorizePaymentIntent` / `capturePaymentIntent` / `failPaymentIntent` / `cancelPaymentIntent`
   - Optional `PaymentGatewayPort` for provider adapters

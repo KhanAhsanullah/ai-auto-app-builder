@@ -25,4 +25,8 @@ export type { PaymentRepository } from './domain/payment-repository.js';
 export { PaymentService } from './domain/payment-service.js';
 export type { PaymentServiceDeps } from './domain/payment-service.js';
 export type { PaymentGatewayPort, PaymentGatewayResult } from './domain/payment-gateway.js';
+export { PaymentModule } from './domain/payment-module.js';
+export type { PaymentModuleDeps } from './domain/payment-module.js';
 export { InMemoryPaymentRepository } from './infrastructure/in-memory-payment-repository.js';
+export { createPaymentModule } from './infrastructure/create-payment-module.js';
+export type { CreatePaymentModuleOptions } from './infrastructure/create-payment-module.js';

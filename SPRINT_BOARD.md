@@ -234,11 +234,11 @@ All Sprint 17 code lives in `@ai-commerce/module-order` (`modules/core/order`). 
 | ------ | ------ | -------------------------------------------------------------------- |
 | Task 1 | ✅     | Domain model, `PaymentService`, in-memory repository                 |
 | Task 2 | ✅     | Authorize / capture / fail / cancel + optional gateway port          |
-| Task 3 | ⬜     | `PaymentModule` / `createPaymentModule` facade + surface wiring docs |
+| Task 3 | ✅     | `PaymentModule` / `createPaymentModule` facade + surface wiring docs |
 
 All Sprint 18 code lives in `@ai-commerce/module-payment` (`modules/core/payment`). Live gateway SDKs / DB / HTTP deferred.
 
-**Tags:** `sprint18-task1`, `sprint18-task2`
+**Tags:** `sprint18-task1`, `sprint18-task2`, `sprint18-task3`
 
 ---
 

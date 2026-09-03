@@ -10,21 +10,54 @@ Core data-plane domain module (`@ai-commerce/module-payment`) for tenant-scoped 
 4. **No hard order dependency** — `OrderLookup` port adapts `@ai-commerce/module-order`.
 5. **Config-driven gateways** — `gateway` / `method` / `captureStrategy` are passed in from tenant `payments` config; never hardcoded per tenant.
 6. **Optional gateway port** — `PaymentGatewayPort` for real providers; without it, status updates are domain-only (manual / tests).
-7. **No live PCI** — provider SDKs and webhooks deferred.
-8. **Clean Architecture** — domain ports + service; in-memory adapter first.
+7. **Facade entry** — callers use `createPaymentModule` / `PaymentModule`.
+8. **No live PCI** — provider SDKs and webhooks deferred.
+9. **Clean Architecture** — domain ports + service; in-memory adapter first.
 
 ## Flow
 
 ```
-OrderLookup.getOrder → PaymentService.createPaymentIntent → PaymentRepository
-                              │
-                              ├─ authorizePaymentIntent / capturePaymentIntent
-                              ├─ failPaymentIntent / cancelPaymentIntent
-                              └─ listPaymentIntents / listPaymentIntentsByOrder
-                                      │
-                                      ▼ (optional)
-                               PaymentGatewayPort
+createPaymentModule({ orderLookup, gateway? }) → PaymentModule
+        │
+        ├─ createPaymentIntent
+        ├─ authorizePaymentIntent / capturePaymentIntent
+        ├─ failPaymentIntent / cancelPaymentIntent
+        └─ listPaymentIntents / listPaymentIntentsByOrder
+                │
+                ▼
+          PaymentService → PaymentRepository
+                │
+                ▼ (optional)
+          PaymentGatewayPort
 ```
+
+## Surface wiring
+
+Gate payment UI with tenant config `features.payment`. After an order is placed:
+
+| Surface             | Typical calls                                                            |
+| ------------------- | ------------------------------------------------------------------------ |
+| **Web Store**       | `createPaymentIntent`, `capturePaymentIntent` / `authorizePaymentIntent` |
+| **Mobile App**      | Same as Web Store                                                        |
+| **Admin Dashboard** | `listPaymentIntents`, `capturePaymentIntent` (manual), `fail` / `cancel` |
+| **API Gateway**     | Thin handlers that call the same facade (HTTP deferred)                  |
+
+```ts
+import { createOrderModule } from '@ai-commerce/module-order';
+import { createPaymentModule } from '@ai-commerce/module-payment';
+
+const orders = createOrderModule({ checkoutLookup });
+const payments = createPaymentModule({
+  orderLookup: {
+    getOrder: async (tenantId, orderId) => {
+      // map Order → PayableOrderSnapshot
+      return undefined;
+    },
+  },
+});
+```
+
+Do **not** store payment secrets in tenant JSON config — use `credentialsRef` / secrets store. Config only selects gateway, methods, and `captureStrategy`.
 
 ## Status machine
 

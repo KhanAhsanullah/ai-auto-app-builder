@@ -23,4 +23,4 @@ These modules represent the **80% shared behavior** across e-commerce, grocery, 
 
 ## Status
 
-Sprint 18 Task 2 — payment authorize/capture helpers in `@ai-commerce/module-payment`.
+Sprint 18 complete — `PaymentModule` / `createPaymentModule` in `@ai-commerce/module-payment`.
