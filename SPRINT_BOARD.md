@@ -248,11 +248,11 @@ All Sprint 18 code lives in `@ai-commerce/module-payment` (`modules/core/payment
 | ------ | ------ | ------------------------------------------------------------------------- |
 | Task 1 | ✅     | Catalog surface binding on Web / Admin / Mobile (`catalogSurface`)        |
 | Task 2 | ✅     | Cart + checkout-start surface binding (`cartSurface` / `checkoutSurface`) |
-| Task 3 | ⬜     | Order + payment surface binding + end-to-end buy-path docs                |
+| Task 3 | ✅     | Order + payment surface binding + end-to-end buy-path docs                |
 
 Wiring lives in `@ai-commerce/web-store`, `@ai-commerce/admin-dashboard`, `@ai-commerce/mobile-app`. Commerce logic stays in `modules/core/*`.
 
-**Tags:** `sprint19-task1`, `sprint19-task2`
+**Tags:** `sprint19-task1`, `sprint19-task2`, `sprint19-task3`
 
 ---
 

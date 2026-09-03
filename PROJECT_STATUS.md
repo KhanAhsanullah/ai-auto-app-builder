@@ -8,13 +8,9 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 19 — Surface Wiring** ✅ complete (on branch)
+**Sprint 19 — Surface Wiring** ✅ complete (on `main`)
 
-Sprint 19 Task 3 complete — order + payment bound to Web / Admin / Mobile; full buy-path covered in tests.
-
-**Branch:** `sprint/19/task3`
-
-**Next:** Merge Task 3 to `main`, then rich React/RN screens **or** Core Customer / remaining stubs.
+**Next:** Rich React / React Native screens **or** Core Customer / remaining stubs.
 
 ## Completed Tasks
 
@@ -27,15 +23,14 @@ Sprint 19 Task 3 complete — order + payment bound to Web / Admin / Mobile; ful
 
 ## Current Progress
 
-- Sprints 1–18 + Surface Tasks 1–2 on `main`
-- **Surface Wiring** Task 3 on branch
+- Sprints 1–19 on `main`
 
 **Overall:** Buy path engines + surface bindings: Catalog → Cart → Checkout → Order → Payment.
 
 ## Next Tasks
 
-1. Merge Sprint 19 Task 3
-2. Rich storefront/admin screen components **or** Core Customer thin slice
+1. Rich storefront / admin / mobile screen components (use `*Surface` APIs)
+2. Core Customer thin slice (or inventory / media stubs)
 
 ## Latest Commit
 
@@ -53,6 +48,6 @@ sprint19-task3
 
 | Area       | Status      | Notes                          |
 | ---------- | ----------- | ------------------------------ |
-| Repository | ✅ Healthy  | Sprint 19 Task 3 on branch     |
+| Repository | ✅ Healthy  | Sprint 19 on `main`            |
 | Surfaces   | ✅ Complete | Full commerce surface bindings |
 | Tests      | ✅ Passing  | Buy-path surface tests         |

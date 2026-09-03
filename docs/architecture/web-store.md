@@ -79,10 +79,31 @@ await store.checkoutSurface.startCheckout(sessionCart.id);
 
 Gated by `modules.cart` / `modules.checkout`. Default currency from tenant `currency.default`.
 
+## Order + payment wiring (Sprint 19 Task 3)
+
+```ts
+import { createOrderModule } from '@ai-commerce/module-order';
+import { createPaymentModule } from '@ai-commerce/module-payment';
+import { adaptCheckoutLookup, adaptOrderLookup, createWebStore } from '@ai-commerce/web-store';
+
+const orders = createOrderModule({ checkoutLookup: adaptCheckoutLookup(checkout) });
+const payments = createPaymentModule({ orderLookup: adaptOrderLookup(orders) });
+const store = createWebStore({ config, catalog, cart, checkout, orders, payments });
+
+await store.checkoutSurface.completeCheckout(checkoutId);
+const order = await store.orderSurface.createOrderFromCheckout(checkoutId);
+const intent = await store.paymentSurface.createPaymentIntent({
+  orderId: order.id,
+  method: 'card',
+});
+await store.paymentSurface.capturePaymentIntent(intent.id);
+```
+
+Gateway / capture strategy defaults come from tenant `payments.*`.
+
 ## Deferred
 
 - Dedicated Next.js / Vite host app
-- Order / payment surface wiring (Sprint 19 Task 3)
 - Full theme compile at render time
 - CDN / edge caching policies beyond `rendering.cacheTtlSeconds`
-- Rich catalog React screen components (hosts use `catalogSurface` + `renderScreen`)
+- Rich React screen components (hosts use `*Surface` + `renderScreen`)
