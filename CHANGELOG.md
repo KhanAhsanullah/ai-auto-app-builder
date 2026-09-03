@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Core payment intents** (Sprint 18 Task 1) — `@ai-commerce/module-payment`
+  - `PaymentService` — create intent from payable order (idempotent), get, list
+  - `OrderLookup` port + `InMemoryPaymentRepository`
+  - Status model: pending → authorized → captured (transitions in Task 2)
+
 - **Core order facade** (Sprint 17 Task 3) — `@ai-commerce/module-order`
   - `OrderModule` / `createOrderModule` — unified create/status/list entrypoints
   - Surface wiring guidance (Web / Admin / Mobile) in architecture docs

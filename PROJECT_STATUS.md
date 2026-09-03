@@ -8,53 +8,50 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 17 — Core Order** ✅ complete (on branch)
+**Sprint 18 — Core Payment** (in progress)
 
-Sprint 17 Task 3 complete — `OrderModule` / `createOrderModule` facade in `@ai-commerce/module-order`.
+Sprint 18 Task 1 complete — payment intent domain + `PaymentService` + in-memory repository in `@ai-commerce/module-payment`.
 
-**Branch:** `sprint/17/task3`
+**Branch:** `sprint/18/task1`
 
-**Next:** Merge Task 3 to `main`, then Sprint 18 (proposed) — Core Payment thin slice **or** wire Web/Admin catalog→cart→checkout→order screens.
+**Next:** Task 2 — authorize / capture / fail helpers (+ optional gateway port).
 
 ## Completed Tasks
 
-| Task                | Description                      | Commit Tag       |
-| ------------------- | -------------------------------- | ---------------- |
-| Sprint 1–16 ✅      | Foundation through Core Checkout | `sprint*-task*`  |
-| Sprint 17 Task 1 ✅ | Order domain + in-memory repo    | `sprint17-task1` |
-| Sprint 17 Task 2 ✅ | Confirm/fulfill + list helpers   | `sprint17-task2` |
-| Sprint 17 Task 3 ✅ | `OrderModule` facade             | `sprint17-task3` |
+| Task                | Description                     | Commit Tag       |
+| ------------------- | ------------------------------- | ---------------- |
+| Sprint 1–17 ✅      | Foundation through Core Order   | `sprint*-task*`  |
+| Sprint 18 Task 1 ✅ | Payment intent domain + service | `sprint18-task1` |
 
 ## Current Progress
 
-- Sprints 1–16 + Order Tasks 1–2 on `main`
-- **Core Order** Task 3 on branch
+- Sprints 1–17 on `main`
+- **Core Payment** Task 1 on branch
 
-**Overall:** Sprint 17 complete on branch. Merge to main next.
+**Overall:** Sprint 18 Task 1 complete on branch.
 
 ## Next Tasks
 
-**After merge — choose path**
-
-1. **Sprint 18 — Core Payment** (gateway ports, intent from checkout/order)
-2. **Surface wiring** — connect Web/Admin/Mobile screens to catalog/cart/checkout/order modules
+1. **Sprint 18 Task 2** — authorize / capture / fail + gateway port
+2. **Sprint 18 Task 3** — `PaymentModule` facade + surface wiring docs
+3. After Sprint 18 — surface wiring (Web/Admin/Mobile) or remaining core stubs
 
 ## Latest Commit
 
 ```
-feat(module-order): add OrderModule facade (Sprint 17 Task 3)
+feat(module-payment): add payment intent domain and in-memory repository (Sprint 18 Task 1)
 ```
 
 ## Latest Tag
 
 ```
-sprint17-task3
+sprint18-task1
 ```
 
 ## Health Status
 
-| Area       | Status      | Notes                                  |
-| ---------- | ----------- | -------------------------------------- |
-| Repository | ✅ Healthy  | Sprint 17 Task 3 on branch             |
-| Order      | ✅ Complete | Tasks 1–3 done                         |
-| Tests      | ✅ Passing  | `@ai-commerce/module-order` unit tests |
+| Area       | Status         | Notes                                    |
+| ---------- | -------------- | ---------------------------------------- |
+| Repository | ✅ Healthy     | Sprint 18 Task 1 on branch               |
+| Payment    | 🟡 In progress | Task 1 done; Tasks 2–3 remaining         |
+| Tests      | ✅ Passing     | `@ai-commerce/module-payment` unit tests |

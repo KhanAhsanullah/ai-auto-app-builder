@@ -23,4 +23,4 @@ These modules represent the **80% shared behavior** across e-commerce, grocery, 
 
 ## Status
 
-Sprint 17 complete — `OrderModule` / `createOrderModule` in `@ai-commerce/module-order`.
+Sprint 18 Task 1 — payment intents in `@ai-commerce/module-payment` (`PaymentService`).

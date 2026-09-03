@@ -20,6 +20,7 @@ The platform architecture was approved in Sprint 0. It defines:
 | [cart.md](./cart.md)                               | Cart — shopping cart lines, subtotals; `CartService`                                                                     |
 | [checkout.md](./checkout.md)                       | Checkout — cart → address → shipping → complete; `CheckoutService`                                                       |
 | [order.md](./order.md)                             | Order — create from completed checkout; `OrderService`                                                                   |
+| [payment.md](./payment.md)                         | Payment — intents from payable orders; `PaymentService`                                                                  |
 | [theme-engine.md](./theme-engine.md)               | Theme Engine — presets, resolver, live preview, plugin extension points                                                  |
 | [white-label-engine.md](./white-label-engine.md)   | White-Label Engine — BrandResolver, asset pipeline, WhiteLabelProvider, web/mobile/admin surfaces; HTTP service deferred |
 | [tenant-provisioning.md](./tenant-provisioning.md) | Tenant Provisioning — onboarding workflow, activation, Config Runtime validation boundary                                |

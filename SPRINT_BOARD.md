@@ -222,9 +222,23 @@ All Sprint 16 code lives in `@ai-commerce/module-checkout` (`modules/core/checko
 | Task 2 | ✅     | Status helpers (confirm/fulfill), list by cart / customer port   |
 | Task 3 | ✅     | `OrderModule` / `createOrderModule` facade + surface wiring docs |
 
-All Sprint 17 code lives in `@ai-commerce/module-order` (`modules/core/order`). HTTP / DB / payment deferred.
+All Sprint 17 code lives in `@ai-commerce/module-order` (`modules/core/order`). HTTP / DB deferred.
 
 **Tags:** `sprint17-task1`, `sprint17-task2`, `sprint17-task3`
+
+---
+
+## Sprint 18 — Core Payment
+
+| Task   | Status | Deliverable                                                          |
+| ------ | ------ | -------------------------------------------------------------------- |
+| Task 1 | ✅     | Domain model, `PaymentService`, in-memory repository                 |
+| Task 2 | ⬜     | Authorize / capture / fail helpers + optional gateway port           |
+| Task 3 | ⬜     | `PaymentModule` / `createPaymentModule` facade + surface wiring docs |
+
+All Sprint 18 code lives in `@ai-commerce/module-payment` (`modules/core/payment`). Live gateway SDKs / DB / HTTP deferred.
+
+**Tags:** `sprint18-task1`
 
 ---
 
