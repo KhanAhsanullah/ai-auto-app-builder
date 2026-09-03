@@ -1,3 +1,5 @@
+import type { CatalogModule } from '@ai-commerce/module-catalog';
+
 import { createWebStoreFromShell, type WebStore } from '../domain/web-store.js';
 import { WebStoreShellResolver } from '../domain/web-store-shell-resolver.js';
 import type { WebScreenDefinition, WebScreenRegistry } from '../domain/web-screen-registry.js';
@@ -17,6 +19,8 @@ export interface CreateWebStoreOptions {
   extraScreens?: readonly WebScreenDefinition[];
   /** Initial active route (defaults to landing / first nav). */
   initialRoute?: string;
+  /** Optional catalog module — enables storefront product queries. */
+  catalog?: CatalogModule;
 }
 
 /**
@@ -32,5 +36,6 @@ export function createWebStore(options: CreateWebStoreOptions): WebStore {
     registry: options.registry,
     extraScreens: options.extraScreens,
     initialRoute: options.initialRoute,
+    catalog: options.catalog,
   });
 }

@@ -13,3 +13,11 @@ export class MobileAppResolutionException extends MobileAppException {
     this.name = 'MobileAppResolutionException';
   }
 }
+
+/** Thrown when catalog is not wired or disabled for the tenant. */
+export class MobileAppCatalogUnavailableException extends MobileAppException {
+  constructor(message: string) {
+    super(message);
+    this.name = 'MobileAppCatalogUnavailableException';
+  }
+}

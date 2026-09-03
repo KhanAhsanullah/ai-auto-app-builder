@@ -242,6 +242,20 @@ All Sprint 18 code lives in `@ai-commerce/module-payment` (`modules/core/payment
 
 ---
 
+## Sprint 19 — Surface Wiring
+
+| Task   | Status | Deliverable                                                        |
+| ------ | ------ | ------------------------------------------------------------------ |
+| Task 1 | ✅     | Catalog surface binding on Web / Admin / Mobile (`catalogSurface`) |
+| Task 2 | ⬜     | Cart (+ checkout start) surface binding                            |
+| Task 3 | ⬜     | Order + payment surface binding + end-to-end buy-path docs         |
+
+Wiring lives in `@ai-commerce/web-store`, `@ai-commerce/admin-dashboard`, `@ai-commerce/mobile-app`. Commerce logic stays in `modules/core/*`.
+
+**Tags:** `sprint19-task1`
+
+---
+
 ## Sprint Conventions
 
 - Each sprint task is committed with a Conventional Commit referencing the sprint and task number

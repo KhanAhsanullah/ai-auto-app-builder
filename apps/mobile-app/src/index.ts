@@ -7,6 +7,8 @@ export {
 } from './domain/map-config-provider-result.js';
 export { MobileApp, createMobileAppFromShell } from './domain/mobile-app.js';
 export type { CreateMobileAppFromShellOptions, MobileAppDeps } from './domain/mobile-app.js';
+export { MobileAppCatalogSurface } from './domain/mobile-app-catalog-surface.js';
+export type { MobileAppCatalogBinding } from './domain/mobile-app-catalog-surface.js';
 export { MobileAppShellResolver } from './domain/mobile-app-shell-resolver.js';
 export type { MobileAppShellResolverDeps } from './domain/mobile-app-shell-resolver.js';
 export { MobileBrandingResolver } from './domain/mobile-branding-resolver.js';
@@ -18,7 +20,11 @@ export {
   createDefaultMobileScreens,
 } from './domain/mobile-screen-registry.js';
 export type { MobileScreenDefinition } from './domain/mobile-screen-registry.js';
-export { MobileAppException, MobileAppResolutionException } from './errors.js';
+export {
+  MobileAppException,
+  MobileAppResolutionException,
+  MobileAppCatalogUnavailableException,
+} from './errors.js';
 export { createMobileApp } from './infrastructure/create-mobile-app.js';
 export type { CreateMobileAppOptions } from './infrastructure/create-mobile-app.js';
 export type {

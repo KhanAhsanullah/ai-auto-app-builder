@@ -13,3 +13,11 @@ export class WebStoreResolutionException extends WebStoreException {
     this.name = 'WebStoreResolutionException';
   }
 }
+
+/** Thrown when catalog is not wired or disabled for the tenant. */
+export class WebStoreCatalogUnavailableException extends WebStoreException {
+  constructor(message: string) {
+    super(message);
+    this.name = 'WebStoreCatalogUnavailableException';
+  }
+}

@@ -3,6 +3,8 @@ export type {
   AdminDashboardDeps,
   CreateAdminDashboardFromShellOptions,
 } from './domain/admin-dashboard.js';
+export { AdminDashboardCatalogSurface } from './domain/admin-dashboard-catalog-surface.js';
+export type { AdminDashboardCatalogBinding } from './domain/admin-dashboard-catalog-surface.js';
 export { AdminBrandingResolver } from './domain/admin-branding-resolver.js';
 export { AdminDashboardShellResolver } from './domain/admin-dashboard-shell-resolver.js';
 export type { AdminDashboardShellResolverDeps } from './domain/admin-dashboard-shell-resolver.js';
@@ -21,7 +23,11 @@ export {
   toResolveAdminDashboardShellInput,
   type AdminDashboardConfigSource,
 } from './domain/map-config-provider-result.js';
-export { AdminDashboardException, AdminDashboardResolutionException } from './errors.js';
+export {
+  AdminDashboardException,
+  AdminDashboardResolutionException,
+  AdminDashboardCatalogUnavailableException,
+} from './errors.js';
 export { createAdminDashboard } from './infrastructure/create-admin-dashboard.js';
 export type { CreateAdminDashboardOptions } from './infrastructure/create-admin-dashboard.js';
 export type {

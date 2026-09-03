@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Surface catalog wiring** (Sprint 19 Task 1) — Web Store / Admin Dashboard / Mobile App
+  - Optional `catalog` on `createWebStore` / `createAdminDashboard` / `createMobileApp`
+  - `catalogSurface` — feature-flag gated (`modules.catalog`), tenant-scoped product access
+  - Store/Mobile: list active / search / by slug; Admin: CRUD
+
 - **Core payment facade** (Sprint 18 Task 3) — `@ai-commerce/module-payment`
   - `PaymentModule` / `createPaymentModule` — unified create/status/list entrypoints
   - Surface wiring guidance (Web / Admin / Mobile) in architecture docs

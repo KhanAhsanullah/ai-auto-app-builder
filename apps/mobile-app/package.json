@@ -21,6 +21,7 @@
   "dependencies": {
     "@ai-commerce/config-runtime": "workspace:*",
     "@ai-commerce/config-schema": "workspace:*",
+    "@ai-commerce/module-catalog": "workspace:*",
     "react": "^19.0.0",
     "react-native": "^0.78.0"
   },

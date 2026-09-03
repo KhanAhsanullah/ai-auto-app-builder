@@ -11,11 +11,12 @@ Config-driven consumer web storefront surface for CommerceOS AI.
 ```
 Tenant config (ConfigProvider.resolve)
         ↓
-createWebStore()
+createWebStore({ config, catalog? })
         ├── WebStoreShellResolver
-        └── WebScreenRegistry (defaults + extras)
+        ├── WebScreenRegistry (defaults + extras)
+        └── optional CatalogModule → catalogSurface
         ↓
-WebStore facade (getViewModel / registerScreen)
+WebStore facade (getViewModel / registerScreen / catalogSurface)
         ↓
 WebStoreApp / mountWebStore
         └── WebShellLayout (header / top nav / content / footer)
@@ -37,9 +38,28 @@ WebStoreApp / mountWebStore
 | Task 2 | Screen registry + React storefront layout shell                       |
 | Task 3 | `createWebStore` facade, `WebStoreApp`, `mountWebStore`, docs         |
 
+## Catalog wiring (Sprint 19 Task 1)
+
+Inject `@ai-commerce/module-catalog` when creating the store:
+
+```ts
+import { createCatalogModule } from '@ai-commerce/module-catalog';
+import { createWebStore } from '@ai-commerce/web-store';
+
+const catalog = createCatalogModule();
+const store = createWebStore({ config: resolvedConfig, catalog });
+
+if (store.isCatalogAvailable()) {
+  const products = await store.catalogSurface.listActiveProducts();
+}
+```
+
+Gated by tenant `featureFlags.modules.catalog`. Tenant id comes from the resolved shell.
+
 ## Deferred
 
 - Dedicated Next.js / Vite host app
-- Live catalog / cart / checkout module wiring
+- Cart / checkout / order / payment surface wiring (Sprint 19 Tasks 2–3)
 - Full theme compile at render time
 - CDN / edge caching policies beyond `rendering.cacheTtlSeconds`
+- Rich catalog React screen components (hosts use `catalogSurface` + `renderScreen`)

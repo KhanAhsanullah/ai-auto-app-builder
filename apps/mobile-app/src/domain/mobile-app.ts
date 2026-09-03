@@ -1,3 +1,5 @@
+import type { CatalogModule } from '@ai-commerce/module-catalog';
+
 import {
   buildMobileShellViewModel,
   type MobileShellViewModel,
@@ -7,6 +9,7 @@ import {
   type MobileScreenDefinition,
   type MobileScreenRegistry,
 } from './mobile-screen-registry.js';
+import { MobileAppCatalogSurface } from './mobile-app-catalog-surface.js';
 import type { ResolvedMobileAppShell } from '../types.js';
 
 export interface MobileAppDeps {
@@ -14,34 +17,42 @@ export interface MobileAppDeps {
   registry: MobileScreenRegistry;
   /** Initial route when the host does not override. */
   initialRoute?: string;
+  /** Optional catalog module for storefront product queries. */
+  catalog?: CatalogModule;
 }
 
 /**
- * Public facade for the config-driven mobile app (Sprint 9 Task 3).
- * Holds the resolved shell + screen registry and builds layout view-models.
+ * Public facade for the config-driven mobile app.
+ * Holds the resolved shell + screen registry and optional catalog binding.
  */
 export class MobileApp {
   readonly shell: ResolvedMobileAppShell;
   readonly registry: MobileScreenRegistry;
   readonly initialRoute: string;
+  readonly catalogSurface: MobileAppCatalogSurface;
 
   constructor(private readonly deps: MobileAppDeps) {
     this.shell = deps.shell;
     this.registry = deps.registry;
     this.initialRoute = deps.initialRoute ?? this.registry.resolveActiveScreen(deps.shell).route;
+    this.catalogSurface = new MobileAppCatalogSurface(
+      deps.shell,
+      deps.catalog ? { catalog: deps.catalog } : undefined,
+    );
   }
 
-  /** Build a layout view-model for the given (or default) active route. */
+  isCatalogAvailable(): boolean {
+    return this.catalogSurface.isAvailable();
+  }
+
   getViewModel(activeRoute?: string): MobileShellViewModel {
     return buildMobileShellViewModel(this.shell, this.registry, activeRoute ?? this.initialRoute);
   }
 
-  /** Register an additional screen on the live registry. */
   registerScreen(screen: MobileScreenDefinition): void {
     this.registry.register(screen);
   }
 
-  /** Whether a route key is registered. */
   hasScreen(route: string): boolean {
     return this.registry.has(route);
   }
@@ -51,8 +62,8 @@ export interface CreateMobileAppFromShellOptions {
   shell: ResolvedMobileAppShell;
   registry?: MobileScreenRegistry;
   initialRoute?: string;
-  /** Extra screens registered after defaults (when using default registry). */
   extraScreens?: readonly MobileScreenDefinition[];
+  catalog?: CatalogModule;
 }
 
 /** Wire a MobileApp from an already-resolved shell (tests / advanced hosts). */
@@ -66,5 +77,6 @@ export function createMobileAppFromShell(options: CreateMobileAppFromShellOption
     shell: options.shell,
     registry,
     initialRoute: options.initialRoute,
+    catalog: options.catalog,
   });
 }

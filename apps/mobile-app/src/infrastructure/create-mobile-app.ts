@@ -1,3 +1,5 @@
+import type { CatalogModule } from '@ai-commerce/module-catalog';
+
 import { createMobileAppFromShell, type MobileApp } from '../domain/mobile-app.js';
 import { MobileAppShellResolver } from '../domain/mobile-app-shell-resolver.js';
 import type { MobileScreenDefinition } from '../domain/mobile-screen-registry.js';
@@ -18,6 +20,8 @@ export interface CreateMobileAppOptions {
   extraScreens?: readonly MobileScreenDefinition[];
   /** Initial active route (defaults to landing / first nav). */
   initialRoute?: string;
+  /** Optional catalog module — enables storefront product queries. */
+  catalog?: CatalogModule;
 }
 
 /**
@@ -33,5 +37,6 @@ export function createMobileApp(options: CreateMobileAppOptions): MobileApp {
     registry: options.registry,
     extraScreens: options.extraScreens,
     initialRoute: options.initialRoute,
+    catalog: options.catalog,
   });
 }

@@ -13,3 +13,11 @@ export class AdminDashboardResolutionException extends AdminDashboardException {
     this.name = 'AdminDashboardResolutionException';
   }
 }
+
+/** Thrown when catalog is not wired or disabled for the tenant. */
+export class AdminDashboardCatalogUnavailableException extends AdminDashboardException {
+  constructor(message: string) {
+    super(message);
+    this.name = 'AdminDashboardCatalogUnavailableException';
+  }
+}

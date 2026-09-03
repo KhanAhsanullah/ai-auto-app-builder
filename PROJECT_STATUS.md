@@ -8,46 +8,49 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 18 — Core Payment** ✅ complete (on `main`)
+**Sprint 19 — Surface Wiring** (in progress)
 
-**Next:** Sprint 19 (proposed) — surface wiring (Web/Admin/Mobile → catalog→cart→checkout→order→payment) **or** Core Customer thin slice.
+Sprint 19 Task 1 complete — catalog module bound to Web / Admin / Mobile facades via `catalogSurface`.
+
+**Branch:** `sprint/19/task1`
+
+**Next:** Task 2 — cart (+ checkout start) surface binding.
 
 ## Completed Tasks
 
-| Task                | Description                         | Commit Tag       |
-| ------------------- | ----------------------------------- | ---------------- |
-| Sprint 1–17 ✅      | Foundation through Core Order       | `sprint*-task*`  |
-| Sprint 18 Task 1 ✅ | Payment intent domain + service     | `sprint18-task1` |
-| Sprint 18 Task 2 ✅ | Authorize / capture / fail / cancel | `sprint18-task2` |
-| Sprint 18 Task 3 ✅ | `PaymentModule` facade              | `sprint18-task3` |
+| Task                | Description                               | Commit Tag       |
+| ------------------- | ----------------------------------------- | ---------------- |
+| Sprint 1–18 ✅      | Foundation through Core Payment           | `sprint*-task*`  |
+| Sprint 19 Task 1 ✅ | Catalog surface wiring (Web/Admin/Mobile) | `sprint19-task1` |
 
 ## Current Progress
 
 - Sprints 1–18 on `main`
+- **Surface Wiring** Task 1 on branch
 
-**Overall:** Buy-path engines complete: Catalog → Cart → Checkout → Order → Payment.
+**Overall:** Catalog can be injected into storefront/admin shells.
 
 ## Next Tasks
 
-1. **Surface wiring** — connect Web/Admin/Mobile screens to the commerce modules (recommended)
-2. **Core Customer** (or inventory) thin slice
+1. **Sprint 19 Task 2** — Cart (+ checkout start) surface binding
+2. **Sprint 19 Task 3** — Order + payment surface binding
 
 ## Latest Commit
 
 ```
-feat(module-payment): add PaymentModule facade (Sprint 18 Task 3)
+feat(surfaces): wire catalog module into Web/Admin/Mobile (Sprint 19 Task 1)
 ```
 
 ## Latest Tag
 
 ```
-sprint18-task3
+sprint19-task1
 ```
 
 ## Health Status
 
-| Area       | Status      | Notes                                    |
-| ---------- | ----------- | ---------------------------------------- |
-| Repository | ✅ Healthy  | Sprint 18 on `main`                      |
-| Payment    | ✅ Complete | Tasks 1–3 done                           |
-| Tests      | ✅ Passing  | `@ai-commerce/module-payment` unit tests |
+| Area       | Status         | Notes                                      |
+| ---------- | -------------- | ------------------------------------------ |
+| Repository | ✅ Healthy     | Sprint 19 Task 1 on branch                 |
+| Surfaces   | 🟡 In progress | Catalog wired; cart→payment remaining      |
+| Tests      | ✅ Passing     | Web / Admin / Mobile catalog surface tests |

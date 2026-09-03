@@ -18,9 +18,15 @@ export { buildWebShellViewModel } from './domain/build-web-shell-view-model.js';
 export type { WebShellViewModel } from './domain/build-web-shell-view-model.js';
 export { WebStore, createWebStoreFromShell } from './domain/web-store.js';
 export type { CreateWebStoreFromShellOptions, WebStoreDeps } from './domain/web-store.js';
+export { WebStoreCatalogSurface } from './domain/web-store-catalog-surface.js';
+export type { WebStoreCatalogBinding } from './domain/web-store-catalog-surface.js';
 export { createWebStore } from './infrastructure/create-web-store.js';
 export type { CreateWebStoreOptions } from './infrastructure/create-web-store.js';
-export { WebStoreException, WebStoreResolutionException } from './errors.js';
+export {
+  WebStoreException,
+  WebStoreResolutionException,
+  WebStoreCatalogUnavailableException,
+} from './errors.js';
 export type {
   ResolveWebStoreShellInput,
   ResolvedWebBranding,

@@ -39,8 +39,8 @@ import { createCatalogModule } from '@ai-commerce/module-catalog';
 import { createWebStore } from '@ai-commerce/web-store';
 
 const catalog = createCatalogModule();
-// When features.catalog is true, screens load products via catalog.listActiveProducts(tenantId)
-const store = createWebStore({ config: resolvedConfig });
+const store = createWebStore({ config: resolvedConfig, catalog });
+const products = await store.catalogSurface.listActiveProducts();
 ```
 
 Do **not** put product records in tenant JSON config — config only toggles the feature and navigation routes (`store.catalog`, `admin.catalog`).
@@ -59,4 +59,4 @@ Do **not** put product records in tenant JSON config — config only toggles the
 - HTTP / GraphQL API handlers
 - Inventory reservations (Inventory module)
 - Media binary storage (Media module)
-- Full Admin/Web screen component integration (follow-up sprint)
+- Full Admin/Web screen component integration (follow-up; surfaces expose `catalogSurface`)

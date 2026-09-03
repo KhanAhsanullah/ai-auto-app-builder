@@ -11,11 +11,12 @@ Config-driven merchant admin surface for CommerceOS AI.
 ```
 Tenant config (ConfigProvider.resolve)
         ↓
-createAdminDashboard()
+createAdminDashboard({ config, catalog? })
         ├── AdminDashboardShellResolver
-        └── AdminScreenRegistry (defaults + extras)
+        ├── AdminScreenRegistry (defaults + extras)
+        └── optional CatalogModule → catalogSurface
         ↓
-AdminDashboard facade (getViewModel / registerScreen)
+AdminDashboard facade (getViewModel / registerScreen / catalogSurface)
         ↓
 AdminDashboardApp / mountAdminDashboard
         └── AdminShellLayout (sidebar / header / content)
@@ -45,8 +46,19 @@ AdminDashboardApp / mountAdminDashboard
 
 Unknown keys evaluate to disabled (item hidden).
 
+## Catalog wiring (Sprint 19 Task 1)
+
+```ts
+const admin = createAdminDashboard({ config, catalog: createCatalogModule() });
+await admin.catalogSurface.createProduct({ slug: 'milk', name: 'Milk', variants: [...] });
+```
+
+Gated by `modules.catalog`. Tenant id from shell.
+
 ## Deferred
 
 - Dedicated Vite/Next host app (embed via `mountAdminDashboard`)
+- Cart / order / payment admin surface wiring
+- Rich catalog React screens (hosts use `catalogSurface` + `renderScreen`)
 - Live IdP session binding (consume auth-client)
 - Full white-label / theme compile at render time

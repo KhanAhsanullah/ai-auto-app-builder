@@ -50,6 +50,9 @@ importers:
       '@ai-commerce/config-schema':
         specifier: workspace:*
         version: link:../../packages/config-schema
+      '@ai-commerce/module-catalog':
+        specifier: workspace:*
+        version: link:../../modules/core/catalog
       react:
         specifier: ^19.0.0
         version: 19.2.8
@@ -103,6 +106,9 @@ importers:
       '@ai-commerce/config-schema':
         specifier: workspace:*
         version: link:../../packages/config-schema
+      '@ai-commerce/module-catalog':
+        specifier: workspace:*
+        version: link:../../modules/core/catalog
       react:
         specifier: ^19.0.0
         version: 19.2.8
@@ -136,6 +142,9 @@ importers:
       '@ai-commerce/config-schema':
         specifier: workspace:*
         version: link:../../packages/config-schema
+      '@ai-commerce/module-catalog':
+        specifier: workspace:*
+        version: link:../../modules/core/catalog
       react:
         specifier: ^19.0.0
         version: 19.2.8

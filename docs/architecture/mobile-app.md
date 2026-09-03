@@ -11,11 +11,12 @@ Config-driven consumer mobile surface for CommerceOS AI (React Native).
 ```
 Tenant config (ConfigProvider.resolve)
         ↓
-createMobileApp()
+createMobileApp({ config, catalog? })
         ├── MobileAppShellResolver
-        └── MobileScreenRegistry (defaults + extras)
+        ├── MobileScreenRegistry (defaults + extras)
+        └── optional CatalogModule → catalogSurface
         ↓
-MobileApp facade (getViewModel / registerScreen)
+MobileApp facade (getViewModel / registerScreen / catalogSurface)
         ↓
 MobileAppRoot
         └── MobileShellLayout (header / content / bottom bar)
@@ -37,6 +38,15 @@ MobileAppRoot
 | Task 2 | Screen registry + React Native bottom-bar layout shell      |
 | Task 3 | `createMobileApp` facade, `MobileAppRoot`, integration docs |
 
+## Catalog wiring (Sprint 19 Task 1)
+
+```ts
+const app = createMobileApp({ config, catalog: createCatalogModule() });
+const products = await app.catalogSurface.listActiveProducts();
+```
+
+Gated by `modules.catalog`. Tenant id from shell.
+
 ## Deferred
 
 - Dedicated Expo / RN CLI host app
@@ -44,3 +54,4 @@ MobileAppRoot
 - Push notification provider wiring
 - Live IdP session binding
 - Full theme compile at render time
+- Cart / checkout / order / payment surface wiring

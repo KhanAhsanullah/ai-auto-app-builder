@@ -1,3 +1,5 @@
+import type { CatalogModule } from '@ai-commerce/module-catalog';
+
 import { createAdminDashboardFromShell, type AdminDashboard } from '../domain/admin-dashboard.js';
 import { AdminDashboardShellResolver } from '../domain/admin-dashboard-shell-resolver.js';
 import type { AdminScreenDefinition } from '../domain/admin-screen-registry.js';
@@ -20,6 +22,8 @@ export interface CreateAdminDashboardOptions {
   extraScreens?: readonly AdminScreenDefinition[];
   /** Initial active route (defaults to landing / first nav). */
   initialRoute?: string;
+  /** Optional catalog module — enables admin product CRUD. */
+  catalog?: CatalogModule;
 }
 
 /**
@@ -37,5 +41,6 @@ export function createAdminDashboard(options: CreateAdminDashboardOptions): Admi
     registry: options.registry,
     extraScreens: options.extraScreens,
     initialRoute: options.initialRoute,
+    catalog: options.catalog,
   });
 }
