@@ -71,9 +71,16 @@ await admin.orderSurface.confirmOrder(orderId);
 await admin.paymentSurface.listPaymentIntents();
 ```
 
+## Commerce screens (Sprint 20)
+
+When modules are wired and no custom `renderScreen` is provided:
+
+- `admin.catalog` → `AdminCatalogScreen`
+- `admin.carts` → `AdminCartsScreen` (inspect open carts)
+
 ## Deferred
 
 - Dedicated Vite/Next host app (embed via `mountAdminDashboard`)
-- Cart / order admin React screens
+- Order admin React screens (Sprint 20 Task 3)
 - Live IdP session binding (consume auth-client)
 - Full white-label / theme compile at render time

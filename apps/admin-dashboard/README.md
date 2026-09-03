@@ -8,7 +8,7 @@ Config-driven merchant admin for CommerceOS AI — resolve tenant config into a 
 
 ## Status
 
-Sprint 8 complete — Task 3 delivers `createAdminDashboard` / `AdminDashboard` facade, `AdminDashboardApp`, and `mountAdminDashboard`.
+Sprint 8 complete — facade + shell. Sprint 20 Task 2 — Admin carts inspect via `cartSurface`.
 
 ## Modules
 

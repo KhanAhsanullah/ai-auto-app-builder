@@ -66,7 +66,14 @@ await app.paymentSurface.capturePaymentIntent(intentId);
 ```
 
 React Native shell (`MobileAppRoot` / `MobileShellLayout`) — commerce via `*Surface` APIs.
-When catalog is wired, `store.catalog` auto-renders `MobileCatalogScreen` (Sprint 20 Task 1).
+
+When modules are wired and no custom `renderScreen` is provided (Sprint 20):
+
+- `store.catalog` → `MobileCatalogScreen`
+- `store.cart` → `MobileCartScreen`
+- `store.checkout` → `MobileCheckoutScreen`
+
+Guest session defaults to `mobile-guest` via `MobileAppRoot` `sessionId` prop.
 
 ## Deferred
 
@@ -75,4 +82,4 @@ When catalog is wired, `store.catalog` auto-renders `MobileCatalogScreen` (Sprin
 - Push notification provider wiring
 - Live IdP session binding
 - Full theme compile at render time
-- Cart / checkout / order RN screens
+- Order RN screens (Sprint 20 Task 3)

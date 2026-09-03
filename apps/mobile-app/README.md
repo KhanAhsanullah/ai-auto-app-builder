@@ -8,7 +8,7 @@ Config-driven React Native consumer app for CommerceOS AI — resolve tenant con
 
 ## Status
 
-Sprint 9 complete — Task 3 delivers `createMobileApp` / `MobileApp` facade and `MobileAppRoot`.
+Sprint 9 complete — facade + shell. Sprint 20 Task 2 — cart/checkout RN screens via `cartSurface` / `checkoutSurface`.
 
 ## Modules
 

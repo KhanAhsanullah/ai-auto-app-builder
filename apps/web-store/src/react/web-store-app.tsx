@@ -1,7 +1,9 @@
 import { useCallback, useMemo, useState, type ReactNode } from 'react';
 
 import type { WebStore } from '../domain/web-store.js';
+import { WebCartScreen } from './screens/web-cart-screen.js';
 import { WebCatalogScreen } from './screens/web-catalog-screen.js';
+import { WebCheckoutScreen } from './screens/web-checkout-screen.js';
 import { WebShellLayout } from './web-shell-layout.js';
 
 export interface WebStoreAppProps {
@@ -15,8 +17,13 @@ export interface WebStoreAppProps {
   /** Called on navigation (always). Use with controlled `activeRoute`. */
   onNavigate?: (route: string) => void;
   /**
+   * Guest session id for cart / checkout / add-to-cart.
+   * Defaults to `web-guest`.
+   */
+  sessionId?: string;
+  /**
    * Optional per-screen content.
-   * When omitted, commerce screens (e.g. catalog) or a branded default is shown.
+   * When omitted, commerce screens or a branded default is shown.
    */
   renderScreen?: (input: {
     route: string;
@@ -32,7 +39,13 @@ export interface WebStoreAppProps {
  * Navigation updates the active screen; hosts can control the route externally.
  */
 export function WebStoreApp(props: WebStoreAppProps): ReactNode {
-  const { store, activeRoute: controlledRoute, onNavigate, renderScreen } = props;
+  const {
+    store,
+    activeRoute: controlledRoute,
+    onNavigate,
+    renderScreen,
+    sessionId = 'web-guest',
+  } = props;
   const [internalRoute, setInternalRoute] = useState(store.initialRoute);
   const activeRoute = controlledRoute ?? internalRoute;
 
@@ -56,15 +69,16 @@ export function WebStoreApp(props: WebStoreAppProps): ReactNode {
       brandName: viewModel.shell.branding.displayName,
       seoTitle: viewModel.shell.seo.title,
     })
-  ) : viewModel.activeRoute === 'store.catalog' && store.isCatalogAvailable() ? (
-    <WebCatalogScreen store={store} />
   ) : (
-    <BrandedDefaultScreen
+    <DefaultCommerceContent
+      store={store}
+      route={viewModel.activeRoute}
+      sessionId={sessionId}
       brandName={viewModel.shell.branding.displayName}
       title={viewModel.activeScreen.title}
       description={viewModel.activeScreen.description}
-      route={viewModel.activeRoute}
       seoTitle={viewModel.shell.seo.title}
+      onNavigate={handleNavigate}
     />
   );
 
@@ -72,6 +86,51 @@ export function WebStoreApp(props: WebStoreAppProps): ReactNode {
     <WebShellLayout viewModel={viewModel} onNavigate={handleNavigate}>
       {content}
     </WebShellLayout>
+  );
+}
+
+function DefaultCommerceContent(props: {
+  store: WebStore;
+  route: string;
+  sessionId: string;
+  brandName: string;
+  title: string;
+  description?: string;
+  seoTitle: string;
+  onNavigate: (route: string) => void;
+}): ReactNode {
+  const { store, route, sessionId, onNavigate } = props;
+
+  if (route === 'store.catalog' && store.isCatalogAvailable()) {
+    return <WebCatalogScreen store={store} sessionId={sessionId} />;
+  }
+  if (route === 'store.cart' && store.isCartAvailable()) {
+    return (
+      <WebCartScreen
+        store={store}
+        sessionId={sessionId}
+        onCheckout={store.isCheckoutAvailable() ? () => onNavigate('store.checkout') : undefined}
+      />
+    );
+  }
+  if (route === 'store.checkout' && store.isCheckoutAvailable() && store.isCartAvailable()) {
+    return (
+      <WebCheckoutScreen
+        store={store}
+        sessionId={sessionId}
+        onComplete={() => onNavigate('store.orders')}
+      />
+    );
+  }
+
+  return (
+    <BrandedDefaultScreen
+      brandName={props.brandName}
+      title={props.title}
+      description={props.description}
+      route={route}
+      seoTitle={props.seoTitle}
+    />
   );
 }
 

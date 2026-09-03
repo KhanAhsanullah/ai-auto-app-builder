@@ -13,8 +13,10 @@ import { loadResolvedTenantConfig } from './helpers.js';
 describe('MobileScreenRegistry', () => {
   it('registers and resolves default screens', () => {
     const registry = createDefaultMobileScreenRegistry();
-    expect(registry.list()).toHaveLength(4);
+    expect(registry.list()).toHaveLength(6);
     expect(registry.resolve('store.catalog').title).toBe('Shop');
+    expect(registry.resolve('store.cart').title).toBe('Cart');
+    expect(registry.resolve('store.checkout').title).toBe('Checkout');
   });
 
   it('throws for unknown routes', () => {

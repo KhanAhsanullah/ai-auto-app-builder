@@ -13,8 +13,9 @@ import { loadResolvedTenantConfig } from './helpers.js';
 describe('AdminScreenRegistry', () => {
   it('registers and resolves default screens', () => {
     const registry = createDefaultAdminScreenRegistry();
-    expect(registry.list()).toHaveLength(4);
+    expect(registry.list()).toHaveLength(5);
     expect(registry.resolve('admin.orders').title).toBe('Orders');
+    expect(registry.resolve('admin.carts').title).toBe('Carts');
   });
 
   it('throws for unknown routes', () => {

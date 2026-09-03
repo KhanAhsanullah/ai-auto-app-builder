@@ -101,9 +101,19 @@ await store.paymentSurface.capturePaymentIntent(intent.id);
 
 Gateway / capture strategy defaults come from tenant `payments.*`.
 
+## Commerce screens (Sprint 20)
+
+When modules are wired and no custom `renderScreen` is provided:
+
+- `store.catalog` → `WebCatalogScreen` (optional Add when cart + `sessionId`)
+- `store.cart` → `WebCartScreen` (qty +/−, checkout CTA)
+- `store.checkout` → `WebCheckoutScreen` (address + place order)
+
+Guest session defaults to `web-guest` via `WebStoreApp` `sessionId` prop.
+
 ## Deferred
 
 - Dedicated Next.js / Vite host app
 - Full theme compile at render time
 - CDN / edge caching policies beyond `rendering.cacheTtlSeconds`
-- Cart / checkout / order React screens (Sprint 20 Tasks 2–3)
+- Order React screens (Sprint 20 Task 3)

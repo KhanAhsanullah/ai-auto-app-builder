@@ -10,45 +10,45 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 **Sprint 20 — Commerce Screens** (in progress)
 
-Sprint 20 Task 1 complete — catalog product list screens on Web, Admin, and Mobile (React Native).
+Sprint 20 Task 2 complete — cart + checkout screens on Web and Mobile (React Native); Admin carts inspect.
 
-**Branch:** `sprint/20/task1`
+**Branch:** `sprint/20/task2`
 
-**Next:** Task 2 — cart + checkout screens.
+**Next:** Task 3 — orders + payment confirmation screens.
 
 ## Completed Tasks
 
-| Task                | Description                     | Commit Tag       |
-| ------------------- | ------------------------------- | ---------------- |
-| Sprint 1–19 ✅      | Foundation through surface wire | `sprint*-task*`  |
-| Sprint 20 Task 1 ✅ | Catalog screens (Web/Admin/RN)  | `sprint20-task1` |
+| Task                | Description                           | Commit Tag       |
+| ------------------- | ------------------------------------- | ---------------- |
+| Sprint 1–19 ✅      | Foundation through surface wire       | `sprint*-task*`  |
+| Sprint 20 Task 1 ✅ | Catalog screens (Web/Admin/RN)        | `sprint20-task1` |
+| Sprint 20 Task 2 ✅ | Cart + checkout screens + Admin carts | `sprint20-task2` |
 
 ## Current Progress
 
 - Sprints 1–19 on `main`
-- **Commerce Screens** Task 1 on branch
+- **Commerce Screens** Task 2 on branch
 
 ## Next Tasks
 
-1. **Sprint 20 Task 2** — Cart + checkout screens
-2. **Sprint 20 Task 3** — Orders + payment confirmation screens
+1. **Sprint 20 Task 3** — Orders + payment confirmation screens
 
 ## Latest Commit
 
 ```
-feat(surfaces): add catalog screens for Web/Admin/Mobile (Sprint 20 Task 1)
+feat(surfaces): add cart/checkout screens for Web/Admin/Mobile (Sprint 20 Task 2)
 ```
 
 ## Latest Tag
 
 ```
-sprint20-task1
+sprint20-task2
 ```
 
 ## Health Status
 
-| Area       | Status         | Notes                         |
-| ---------- | -------------- | ----------------------------- |
-| Repository | ✅ Healthy     | Sprint 20 Task 1 on branch    |
-| Screens    | 🟡 In progress | Catalog done; cart next       |
-| Tests      | ✅ Passing     | Catalog screen React/RN tests |
+| Area       | Status         | Notes                               |
+| ---------- | -------------- | ----------------------------------- |
+| Repository | ✅ Healthy     | Sprint 20 Task 2 on branch          |
+| Screens    | 🟡 In progress | Catalog + cart done; orders next    |
+| Tests      | ✅ Passing     | Cart/checkout React/RN screen tests |

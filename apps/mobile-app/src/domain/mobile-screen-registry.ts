@@ -90,6 +90,16 @@ export function createDefaultMobileScreens(): MobileScreenDefinition[] {
       description: 'Browse the catalog.',
     },
     {
+      route: 'store.cart',
+      title: 'Cart',
+      description: 'Review items before checkout.',
+    },
+    {
+      route: 'store.checkout',
+      title: 'Checkout',
+      description: 'Shipping address and place order.',
+    },
+    {
       route: 'store.orders',
       title: 'Orders',
       description: 'Track and reorder past purchases.',

@@ -104,6 +104,11 @@ export function createDefaultAdminScreens(): AdminScreenDefinition[] {
       description: 'Products, categories, and inventory.',
     },
     {
+      route: 'admin.carts',
+      title: 'Carts',
+      description: 'Inspect open shopping carts.',
+    },
+    {
       route: 'admin.settings',
       title: 'Settings',
       description: 'Tenant preferences and admin configuration.',

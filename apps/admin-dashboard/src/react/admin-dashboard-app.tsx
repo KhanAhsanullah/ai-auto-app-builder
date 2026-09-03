@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState, type ReactNode } from 'react';
 
 import type { AdminDashboard } from '../domain/admin-dashboard.js';
 import { AdminShellLayout } from './admin-shell-layout.js';
+import { AdminCartsScreen } from './screens/admin-carts-screen.js';
 import { AdminCatalogScreen } from './screens/admin-catalog-screen.js';
 
 export interface AdminDashboardAppProps {
@@ -58,6 +59,8 @@ export function AdminDashboardApp(props: AdminDashboardAppProps): ReactNode {
     })
   ) : viewModel.activeRoute === 'admin.catalog' && dashboard.isCatalogAvailable() ? (
     <AdminCatalogScreen dashboard={dashboard} />
+  ) : viewModel.activeRoute === 'admin.carts' && dashboard.isCartAvailable() ? (
+    <AdminCartsScreen dashboard={dashboard} />
   ) : (
     <BrandedDefaultScreen
       brandName={viewModel.shell.branding.displayName}

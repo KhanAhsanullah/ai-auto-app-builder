@@ -41,10 +41,21 @@ function host(tag: string) {
   };
 }
 
+function textInput(props: HostProps & { value?: string; onChangeText?: (v: string) => void }) {
+  const { testID, value, onChangeText, style: _style, ...rest } = props;
+  return React.createElement('input', {
+    ...rest,
+    'data-testid': testID,
+    value: value ?? '',
+    onChange: (e: { target: { value: string } }) => onChangeText?.(e.target.value),
+  });
+}
+
 vi.mock('react-native', () => ({
   View: host('div'),
   Text: host('span'),
   Pressable: host('button'),
+  TextInput: textInput,
   StyleSheet: {
     create: <T extends Record<string, unknown>>(styles: T): T => styles,
     hairlineWidth: 1,

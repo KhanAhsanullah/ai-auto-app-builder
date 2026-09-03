@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Cart + checkout screens** (Sprint 20 Task 2) — Web Store / Mobile (React Native) + Admin inspect
+  - Auto-render on `store.cart` / `store.checkout` when cart/checkout wired; Admin `admin.carts`
+  - `WebCartScreen`, `WebCheckoutScreen`, `MobileCartScreen`, `MobileCheckoutScreen`, `AdminCartsScreen`
+  - Catalog Add-to-cart when cart + session id present (Web)
+
 - **Catalog screens** (Sprint 20 Task 1) — Web Store / Admin / Mobile (React Native)
   - Auto-render product lists on `store.catalog` / `admin.catalog` when catalog is wired
   - `WebCatalogScreen`, `AdminCatalogScreen`, `MobileCatalogScreen`

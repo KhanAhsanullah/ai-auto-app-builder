@@ -3,7 +3,9 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import type { MobileApp } from '../domain/mobile-app.js';
 import { MobileShellLayout } from './mobile-shell-layout.js';
+import { MobileCartScreen } from './screens/mobile-cart-screen.js';
 import { MobileCatalogScreen } from './screens/mobile-catalog-screen.js';
+import { MobileCheckoutScreen } from './screens/mobile-checkout-screen.js';
 
 export interface MobileAppRootProps {
   /** Facade instance from `createMobileApp`. */
@@ -15,6 +17,11 @@ export interface MobileAppRootProps {
   activeRoute?: string;
   /** Called on tab navigation (always). Use with controlled `activeRoute`. */
   onNavigate?: (route: string) => void;
+  /**
+   * Guest session id for cart / checkout.
+   * Defaults to `mobile-guest`.
+   */
+  sessionId?: string;
   /**
    * Optional per-screen content. When omitted, commerce screens or a branded default.
    */
@@ -31,7 +38,13 @@ export interface MobileAppRootProps {
  * Tab navigation updates the active screen; hosts can control the route externally.
  */
 export function MobileAppRoot(props: MobileAppRootProps): ReactNode {
-  const { app, activeRoute: controlledRoute, onNavigate, renderScreen } = props;
+  const {
+    app,
+    activeRoute: controlledRoute,
+    onNavigate,
+    renderScreen,
+    sessionId = 'mobile-guest',
+  } = props;
   const [internalRoute, setInternalRoute] = useState(app.initialRoute);
   const activeRoute = controlledRoute ?? internalRoute;
 
@@ -54,15 +67,16 @@ export function MobileAppRoot(props: MobileAppRootProps): ReactNode {
       description: viewModel.activeScreen.description,
       brandName: viewModel.shell.branding.displayName,
     })
-  ) : viewModel.activeRoute === 'store.catalog' && app.isCatalogAvailable() ? (
-    <MobileCatalogScreen app={app} />
   ) : (
-    <BrandedDefaultScreen
+    <DefaultCommerceContent
+      app={app}
+      route={viewModel.activeRoute}
+      sessionId={sessionId}
       brandName={viewModel.shell.branding.displayName}
       title={viewModel.activeScreen.title}
       description={viewModel.activeScreen.description}
-      route={viewModel.activeRoute}
       appName={viewModel.shell.identity.appName}
+      onNavigate={handleNavigate}
     />
   );
 
@@ -70,6 +84,51 @@ export function MobileAppRoot(props: MobileAppRootProps): ReactNode {
     <MobileShellLayout viewModel={viewModel} onNavigate={handleNavigate}>
       {content}
     </MobileShellLayout>
+  );
+}
+
+function DefaultCommerceContent(props: {
+  app: MobileApp;
+  route: string;
+  sessionId: string;
+  brandName: string;
+  title: string;
+  description?: string;
+  appName: string;
+  onNavigate: (route: string) => void;
+}): ReactNode {
+  const { app, route, sessionId, onNavigate } = props;
+
+  if (route === 'store.catalog' && app.isCatalogAvailable()) {
+    return <MobileCatalogScreen app={app} />;
+  }
+  if (route === 'store.cart' && app.isCartAvailable()) {
+    return (
+      <MobileCartScreen
+        app={app}
+        sessionId={sessionId}
+        onCheckout={app.isCheckoutAvailable() ? () => onNavigate('store.checkout') : undefined}
+      />
+    );
+  }
+  if (route === 'store.checkout' && app.isCheckoutAvailable() && app.isCartAvailable()) {
+    return (
+      <MobileCheckoutScreen
+        app={app}
+        sessionId={sessionId}
+        onComplete={() => onNavigate('store.orders')}
+      />
+    );
+  }
+
+  return (
+    <BrandedDefaultScreen
+      brandName={props.brandName}
+      title={props.title}
+      description={props.description}
+      route={route}
+      appName={props.appName}
+    />
   );
 }
 
@@ -121,8 +180,8 @@ const styles = StyleSheet.create({
     color: 'var(--mobile-text, #0f172a)',
   },
   description: {
-    fontSize: 15,
-    lineHeight: 22,
+    fontSize: 14,
+    lineHeight: 20,
     color: 'var(--mobile-text-muted, #64748b)',
   },
 });
