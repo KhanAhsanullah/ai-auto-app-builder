@@ -256,6 +256,20 @@ Wiring lives in `@ai-commerce/web-store`, `@ai-commerce/admin-dashboard`, `@ai-c
 
 ---
 
+## Sprint 20 — Commerce Screens
+
+| Task   | Status | Deliverable                                                    |
+| ------ | ------ | -------------------------------------------------------------- |
+| Task 1 | ✅     | Catalog screens (Web / Admin / Mobile RN) via `catalogSurface` |
+| Task 2 | ⬜     | Cart + checkout screens                                        |
+| Task 3 | ⬜     | Orders + payment confirmation screens                          |
+
+Screens live in app React/RN packages; data from Sprint 19 surface bindings.
+
+**Tags:** `sprint20-task1`
+
+---
+
 ## Sprint Conventions
 
 - Each sprint task is committed with a Conventional Commit referencing the sprint and task number

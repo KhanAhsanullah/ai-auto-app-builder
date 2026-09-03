@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState, type ReactNode } from 'react';
 
 import type { WebStore } from '../domain/web-store.js';
+import { WebCatalogScreen } from './screens/web-catalog-screen.js';
 import { WebShellLayout } from './web-shell-layout.js';
 
 export interface WebStoreAppProps {
@@ -15,7 +16,7 @@ export interface WebStoreAppProps {
   onNavigate?: (route: string) => void;
   /**
    * Optional per-screen content.
-   * When omitted, a branded default screen is shown.
+   * When omitted, commerce screens (e.g. catalog) or a branded default is shown.
    */
   renderScreen?: (input: {
     route: string;
@@ -55,6 +56,8 @@ export function WebStoreApp(props: WebStoreAppProps): ReactNode {
       brandName: viewModel.shell.branding.displayName,
       seoTitle: viewModel.shell.seo.title,
     })
+  ) : viewModel.activeRoute === 'store.catalog' && store.isCatalogAvailable() ? (
+    <WebCatalogScreen store={store} />
   ) : (
     <BrandedDefaultScreen
       brandName={viewModel.shell.branding.displayName}

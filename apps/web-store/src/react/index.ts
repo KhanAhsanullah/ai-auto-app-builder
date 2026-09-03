@@ -8,5 +8,7 @@ export { WebTopNav } from './web-top-nav.js';
 export type { WebTopNavProps } from './web-top-nav.js';
 export { WebStoreApp } from './web-store-app.js';
 export type { WebStoreAppProps } from './web-store-app.js';
+export { WebCatalogScreen } from './screens/web-catalog-screen.js';
+export type { WebCatalogScreenProps } from './screens/web-catalog-screen.js';
 export { mountWebStore } from './mount-web-store.js';
 export type { MountWebStoreOptions, MountedWebStore } from './mount-web-store.js';

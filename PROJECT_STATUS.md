@@ -8,46 +8,47 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 19 — Surface Wiring** ✅ complete (on `main`)
+**Sprint 20 — Commerce Screens** (in progress)
 
-**Next:** Rich React / React Native screens **or** Core Customer / remaining stubs.
+Sprint 20 Task 1 complete — catalog product list screens on Web, Admin, and Mobile (React Native).
+
+**Branch:** `sprint/20/task1`
+
+**Next:** Task 2 — cart + checkout screens.
 
 ## Completed Tasks
 
 | Task                | Description                     | Commit Tag       |
 | ------------------- | ------------------------------- | ---------------- |
-| Sprint 1–18 ✅      | Foundation through Core Payment | `sprint*-task*`  |
-| Sprint 19 Task 1 ✅ | Catalog surface wiring          | `sprint19-task1` |
-| Sprint 19 Task 2 ✅ | Cart + checkout surface wiring  | `sprint19-task2` |
-| Sprint 19 Task 3 ✅ | Order + payment surface wiring  | `sprint19-task3` |
+| Sprint 1–19 ✅      | Foundation through surface wire | `sprint*-task*`  |
+| Sprint 20 Task 1 ✅ | Catalog screens (Web/Admin/RN)  | `sprint20-task1` |
 
 ## Current Progress
 
 - Sprints 1–19 on `main`
-
-**Overall:** Buy path engines + surface bindings: Catalog → Cart → Checkout → Order → Payment.
+- **Commerce Screens** Task 1 on branch
 
 ## Next Tasks
 
-1. Rich storefront / admin / mobile screen components (use `*Surface` APIs)
-2. Core Customer thin slice (or inventory / media stubs)
+1. **Sprint 20 Task 2** — Cart + checkout screens
+2. **Sprint 20 Task 3** — Orders + payment confirmation screens
 
 ## Latest Commit
 
 ```
-feat(surfaces): wire order and payment into Web/Admin/Mobile (Sprint 19 Task 3)
+feat(surfaces): add catalog screens for Web/Admin/Mobile (Sprint 20 Task 1)
 ```
 
 ## Latest Tag
 
 ```
-sprint19-task3
+sprint20-task1
 ```
 
 ## Health Status
 
-| Area       | Status      | Notes                          |
-| ---------- | ----------- | ------------------------------ |
-| Repository | ✅ Healthy  | Sprint 19 on `main`            |
-| Surfaces   | ✅ Complete | Full commerce surface bindings |
-| Tests      | ✅ Passing  | Buy-path surface tests         |
+| Area       | Status         | Notes                         |
+| ---------- | -------------- | ----------------------------- |
+| Repository | ✅ Healthy     | Sprint 20 Task 1 on branch    |
+| Screens    | 🟡 In progress | Catalog done; cart next       |
+| Tests      | ✅ Passing     | Catalog screen React/RN tests |

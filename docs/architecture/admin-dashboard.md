@@ -74,6 +74,6 @@ await admin.paymentSurface.listPaymentIntents();
 ## Deferred
 
 - Dedicated Vite/Next host app (embed via `mountAdminDashboard`)
-- Rich catalog React screens (hosts use `catalogSurface` + `renderScreen`)
+- Cart / order admin React screens
 - Live IdP session binding (consume auth-client)
 - Full white-label / theme compile at render time

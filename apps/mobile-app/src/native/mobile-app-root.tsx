@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import type { MobileApp } from '../domain/mobile-app.js';
 import { MobileShellLayout } from './mobile-shell-layout.js';
+import { MobileCatalogScreen } from './screens/mobile-catalog-screen.js';
 
 export interface MobileAppRootProps {
   /** Facade instance from `createMobileApp`. */
@@ -15,7 +16,7 @@ export interface MobileAppRootProps {
   /** Called on tab navigation (always). Use with controlled `activeRoute`. */
   onNavigate?: (route: string) => void;
   /**
-   * Optional per-screen content. When omitted, a branded default screen is shown.
+   * Optional per-screen content. When omitted, commerce screens or a branded default.
    */
   renderScreen?: (input: {
     route: string;
@@ -53,6 +54,8 @@ export function MobileAppRoot(props: MobileAppRootProps): ReactNode {
       description: viewModel.activeScreen.description,
       brandName: viewModel.shell.branding.displayName,
     })
+  ) : viewModel.activeRoute === 'store.catalog' && app.isCatalogAvailable() ? (
+    <MobileCatalogScreen app={app} />
   ) : (
     <BrandedDefaultScreen
       brandName={viewModel.shell.branding.displayName}

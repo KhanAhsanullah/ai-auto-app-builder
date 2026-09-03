@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState, type ReactNode } from 'react';
 
 import type { AdminDashboard } from '../domain/admin-dashboard.js';
 import { AdminShellLayout } from './admin-shell-layout.js';
+import { AdminCatalogScreen } from './screens/admin-catalog-screen.js';
 
 export interface AdminDashboardAppProps {
   /** Facade instance from `createAdminDashboard`. */
@@ -15,7 +16,7 @@ export interface AdminDashboardAppProps {
   onNavigate?: (route: string) => void;
   /**
    * Optional per-screen content. Receives the active route and view-model widgets.
-   * When omitted, a branded default screen with widget cards is shown.
+   * When omitted, commerce screens (e.g. catalog) or a branded default is shown.
    */
   renderScreen?: (input: {
     route: string;
@@ -55,6 +56,8 @@ export function AdminDashboardApp(props: AdminDashboardAppProps): ReactNode {
       widgets: viewModel.activeWidgets,
       brandName: viewModel.shell.branding.displayName,
     })
+  ) : viewModel.activeRoute === 'admin.catalog' && dashboard.isCatalogAvailable() ? (
+    <AdminCatalogScreen dashboard={dashboard} />
   ) : (
     <BrandedDefaultScreen
       brandName={viewModel.shell.branding.displayName}

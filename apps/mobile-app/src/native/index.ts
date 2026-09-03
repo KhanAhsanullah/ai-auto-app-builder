@@ -1,5 +1,7 @@
 export { MobileAppRoot } from './mobile-app-root.js';
 export type { MobileAppRootProps } from './mobile-app-root.js';
+export { MobileCatalogScreen } from './screens/mobile-catalog-screen.js';
+export type { MobileCatalogScreenProps } from './screens/mobile-catalog-screen.js';
 export { MobileBottomBar } from './mobile-bottom-bar.js';
 export type { MobileBottomBarProps } from './mobile-bottom-bar.js';
 export { MobileHeader } from './mobile-header.js';

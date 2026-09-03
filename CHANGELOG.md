@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Catalog screens** (Sprint 20 Task 1) — Web Store / Admin / Mobile (React Native)
+  - Auto-render product lists on `store.catalog` / `admin.catalog` when catalog is wired
+  - `WebCatalogScreen`, `AdminCatalogScreen`, `MobileCatalogScreen`
+
 - **Surface order/payment wiring** (Sprint 19 Task 3) — Web / Admin / Mobile
   - Optional `orders` / `payments` on create facades; `orderSurface` / `paymentSurface`
   - `adaptCheckoutLookup` / `adaptOrderLookup` helpers

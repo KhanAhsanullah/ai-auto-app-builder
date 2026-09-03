@@ -106,4 +106,4 @@ Gateway / capture strategy defaults come from tenant `payments.*`.
 - Dedicated Next.js / Vite host app
 - Full theme compile at render time
 - CDN / edge caching policies beyond `rendering.cacheTtlSeconds`
-- Rich React screen components (hosts use `*Surface` + `renderScreen`)
+- Cart / checkout / order React screens (Sprint 20 Tasks 2–3)

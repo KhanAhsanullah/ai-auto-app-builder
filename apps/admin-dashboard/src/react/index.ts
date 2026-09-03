@@ -2,6 +2,8 @@ export { AdminHeader } from './admin-header.js';
 export type { AdminHeaderProps } from './admin-header.js';
 export { AdminDashboardApp } from './admin-dashboard-app.js';
 export type { AdminDashboardAppProps } from './admin-dashboard-app.js';
+export { AdminCatalogScreen } from './screens/admin-catalog-screen.js';
+export type { AdminCatalogScreenProps } from './screens/admin-catalog-screen.js';
 export { AdminShellLayout } from './admin-shell-layout.js';
 export type { AdminShellLayoutProps } from './admin-shell-layout.js';
 export { AdminSidebar } from './admin-sidebar.js';
