@@ -8,43 +8,26 @@ Core domain module for payment intents against orders. Gateway capture stays beh
 
 ## Status
 
-**Sprint 18 Task 1** — domain model, `PaymentService`, in-memory repository.
+**Sprint 18 Task 2** — authorize / capture / fail / cancel + optional gateway port.
 
 ## Modules
 
-| Module                      | Purpose                               |
-| --------------------------- | ------------------------------------- |
-| `PaymentService`            | Create intent from order, get, list   |
-| `OrderLookup`               | Required port to load a payable order |
-| `InMemoryPaymentRepository` | In-memory store for tests / local     |
+| Module                      | Purpose                                               |
+| --------------------------- | ----------------------------------------------------- |
+| `PaymentService`            | Create intent, authorize, capture, fail, cancel, list |
+| `OrderLookup`               | Required port to load a payable order                 |
+| `PaymentGatewayPort`        | Optional provider adapter (Stripe etc. later)         |
+| `InMemoryPaymentRepository` | In-memory store for tests / local                     |
 
 ## Usage
 
 ```ts
 import { PaymentService, InMemoryPaymentRepository } from '@ai-commerce/module-payment';
-import { createOrderModule } from '@ai-commerce/module-order';
 
-const orders = createOrderModule({ checkoutLookup });
 const payments = new PaymentService({
   repository: new InMemoryPaymentRepository(),
-  orderLookup: {
-    getOrder: async (tenantId, orderId) => {
-      try {
-        const order = await orders.getOrder(tenantId, orderId);
-        return {
-          id: order.id,
-          tenantId: order.tenantId,
-          checkoutId: order.checkoutId,
-          currency: order.currency,
-          status: order.status,
-          total: order.total,
-          customerId: order.customerId,
-        };
-      } catch {
-        return undefined;
-      }
-    },
-  },
+  orderLookup, // adapt from createOrderModule()
+  // gateway: optional Stripe/PayPal adapter
 });
 
 const intent = await payments.createPaymentIntent({
@@ -52,11 +35,14 @@ const intent = await payments.createPaymentIntent({
   orderId,
   method: 'card',
   gateway: 'stripe',
-  captureStrategy: 'immediate', // from tenant payments.checkout.captureStrategy
+  captureStrategy: 'authorize_then_capture', // from tenant config
 });
+
+await payments.authorizePaymentIntent(tenantId, intent.id);
+await payments.capturePaymentIntent(tenantId, intent.id);
 ```
 
-Pass gateway / capture strategy from tenant config (`payments.*`) — do not hardcode per tenant in the module.
+Pass gateway / capture strategy from tenant config (`payments.*`) — do not hardcode per tenant.
 
 ## Scripts
 

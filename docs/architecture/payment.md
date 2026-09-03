@@ -9,19 +9,24 @@ Core data-plane domain module (`@ai-commerce/module-payment`) for tenant-scoped 
 3. **One intent per order** — `createPaymentIntent` is idempotent.
 4. **No hard order dependency** — `OrderLookup` port adapts `@ai-commerce/module-order`.
 5. **Config-driven gateways** — `gateway` / `method` / `captureStrategy` are passed in from tenant `payments` config; never hardcoded per tenant.
-6. **No live PCI** — provider SDKs and webhooks deferred; intents stay domain records until a gateway adapter exists.
-7. **Clean Architecture** — domain ports + service; in-memory adapter first.
+6. **Optional gateway port** — `PaymentGatewayPort` for real providers; without it, status updates are domain-only (manual / tests).
+7. **No live PCI** — provider SDKs and webhooks deferred.
+8. **Clean Architecture** — domain ports + service; in-memory adapter first.
 
 ## Flow
 
 ```
 OrderLookup.getOrder → PaymentService.createPaymentIntent → PaymentRepository
                               │
-                              ├─ getPaymentIntent / getPaymentIntentByOrderId
-                              └─ listPaymentIntents
+                              ├─ authorizePaymentIntent / capturePaymentIntent
+                              ├─ failPaymentIntent / cancelPaymentIntent
+                              └─ listPaymentIntents / listPaymentIntentsByOrder
+                                      │
+                                      ▼ (optional)
+                               PaymentGatewayPort
 ```
 
-## Status machine (Task 1 creates `pending` only)
+## Status machine
 
 ```
 pending → authorized → captured
@@ -29,14 +34,16 @@ pending → authorized → captured
    └───────────┴──→ failed | cancelled
 ```
 
-Authorize / capture / fail helpers: Sprint 18 Task 2. Facade: Task 3.
+- `immediate`: capture may run from `pending`
+- `authorize_then_capture`: must authorize before capture
+- `manual`: capture from pending or authorized
 
 ## Sprint 18 Task Breakdown
 
 | Task   | Deliverable                                                          |
 | ------ | -------------------------------------------------------------------- |
 | Task 1 | Domain model, `PaymentService`, in-memory repository                 |
-| Task 2 | Authorize / capture / fail helpers + optional gateway port           |
+| Task 2 | Authorize / capture / fail / cancel + optional gateway port          |
 | Task 3 | `PaymentModule` / `createPaymentModule` facade + surface wiring docs |
 
 ## Deferred

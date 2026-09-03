@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Core payment helpers** (Sprint 18 Task 2) — `@ai-commerce/module-payment`
+  - `authorizePaymentIntent` / `capturePaymentIntent` / `failPaymentIntent` / `cancelPaymentIntent`
+  - Optional `PaymentGatewayPort` for provider adapters
+  - Capture strategy rules (`immediate` vs `authorize_then_capture`)
+
 - **Core payment intents** (Sprint 18 Task 1) — `@ai-commerce/module-payment`
   - `PaymentService` — create intent from payable order (idempotent), get, list
   - `OrderLookup` port + `InMemoryPaymentRepository`

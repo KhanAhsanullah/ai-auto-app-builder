@@ -2,10 +2,12 @@ import { randomUUID } from 'node:crypto';
 
 import type { OrderLookup } from './order-lookup.js';
 import { isPayableOrderStatus } from './order-lookup.js';
+import type { PaymentGatewayPort } from './payment-gateway.js';
 import type { PaymentRepository } from './payment-repository.js';
 import {
   PaymentNotFoundException,
   PaymentOrderException,
+  PaymentStatusException,
   PaymentValidationException,
 } from '../errors.js';
 import type {
@@ -19,13 +21,19 @@ import type {
 export interface PaymentServiceDeps {
   repository: PaymentRepository;
   orderLookup: OrderLookup;
+  /** Optional; when set, authorize/capture call the provider first. */
+  gateway?: PaymentGatewayPort;
   now?: () => string;
   createId?: () => string;
 }
 
+const AUTHORIZABLE: readonly PaymentIntentStatus[] = ['pending'];
+const CAPTURABLE: readonly PaymentIntentStatus[] = ['pending', 'authorized'];
+const FAILABLE: readonly PaymentIntentStatus[] = ['pending', 'authorized'];
+const CANCELABLE: readonly PaymentIntentStatus[] = ['pending', 'authorized'];
+
 /**
- * Tenant-scoped payment intents: create from a payable order, get, list.
- * Authorize / capture / fail land in later Sprint 18 tasks.
+ * Tenant-scoped payment intents: create, status transitions, queries.
  */
 export class PaymentService {
   private readonly now: () => string;
@@ -146,7 +154,166 @@ export class PaymentService {
       list = list.filter((intent) => allowed.has(intent.status));
     }
 
-    return list;
+    return [...list].sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+  }
+
+  async listPaymentIntentsByOrder(tenantId: string, orderId: string): Promise<PaymentIntent[]> {
+    return this.listPaymentIntents(tenantId, { orderId });
+  }
+
+  /** pending → authorized (idempotent if already authorized). */
+  async authorizePaymentIntent(tenantId: string, paymentIntentId: string): Promise<PaymentIntent> {
+    const trimmedTenant = this.requireTenantId(tenantId);
+    const intent = await this.requireIntent(trimmedTenant, paymentIntentId);
+
+    if (intent.status === 'authorized') {
+      return intent;
+    }
+    if (intent.status === 'captured') {
+      throw new PaymentStatusException(
+        `Payment intent '${paymentIntentId}' is already captured.`,
+        trimmedTenant,
+        paymentIntentId,
+        intent.status,
+      );
+    }
+    if (!AUTHORIZABLE.includes(intent.status)) {
+      throw new PaymentStatusException(
+        `Payment intent '${paymentIntentId}' must be pending before authorize (status: ${intent.status}).`,
+        trimmedTenant,
+        paymentIntentId,
+        intent.status,
+      );
+    }
+
+    const gatewayResult = this.deps.gateway?.authorize
+      ? await this.deps.gateway.authorize(intent)
+      : undefined;
+
+    const authorizedAt = this.now();
+    const updated: PaymentIntent = {
+      ...intent,
+      status: 'authorized',
+      updatedAt: authorizedAt,
+      authorizedAt,
+      ...(gatewayResult?.providerReference
+        ? { providerReference: gatewayResult.providerReference }
+        : {}),
+    };
+    await this.deps.repository.update(updated);
+    return updated;
+  }
+
+  /**
+   * Capture funds.
+   * - `immediate`: pending → captured allowed
+   * - `authorize_then_capture`: must authorize first
+   * - `manual`: pending or authorized → captured
+   */
+  async capturePaymentIntent(tenantId: string, paymentIntentId: string): Promise<PaymentIntent> {
+    const trimmedTenant = this.requireTenantId(tenantId);
+    const intent = await this.requireIntent(trimmedTenant, paymentIntentId);
+
+    if (intent.status === 'captured') {
+      return intent;
+    }
+    if (!CAPTURABLE.includes(intent.status)) {
+      throw new PaymentStatusException(
+        `Payment intent '${paymentIntentId}' cannot be captured (status: ${intent.status}).`,
+        trimmedTenant,
+        paymentIntentId,
+        intent.status,
+      );
+    }
+
+    if (intent.captureStrategy === 'authorize_then_capture' && intent.status === 'pending') {
+      throw new PaymentStatusException(
+        `Payment intent '${paymentIntentId}' must be authorized before capture when strategy is authorize_then_capture.`,
+        trimmedTenant,
+        paymentIntentId,
+        intent.status,
+      );
+    }
+
+    const gatewayResult = this.deps.gateway?.capture
+      ? await this.deps.gateway.capture(intent)
+      : undefined;
+
+    const capturedAt = this.now();
+    const updated: PaymentIntent = {
+      ...intent,
+      status: 'captured',
+      updatedAt: capturedAt,
+      capturedAt,
+      ...(intent.status === 'pending' && !intent.authorizedAt ? { authorizedAt: capturedAt } : {}),
+      ...(gatewayResult?.providerReference
+        ? { providerReference: gatewayResult.providerReference }
+        : {}),
+    };
+    await this.deps.repository.update(updated);
+    return updated;
+  }
+
+  /** pending | authorized → failed. */
+  async failPaymentIntent(
+    tenantId: string,
+    paymentIntentId: string,
+    reason?: string,
+  ): Promise<PaymentIntent> {
+    const trimmedTenant = this.requireTenantId(tenantId);
+    const intent = await this.requireIntent(trimmedTenant, paymentIntentId);
+
+    if (intent.status === 'failed') {
+      return intent;
+    }
+    if (!FAILABLE.includes(intent.status)) {
+      throw new PaymentStatusException(
+        `Payment intent '${paymentIntentId}' cannot be marked failed (status: ${intent.status}).`,
+        trimmedTenant,
+        paymentIntentId,
+        intent.status,
+      );
+    }
+
+    const failedAt = this.now();
+    const failureReason = reason?.trim() || undefined;
+    const updated: PaymentIntent = {
+      ...intent,
+      status: 'failed',
+      updatedAt: failedAt,
+      failedAt,
+      ...(failureReason ? { failureReason } : {}),
+    };
+    await this.deps.repository.update(updated);
+    return updated;
+  }
+
+  /** pending | authorized → cancelled (not after capture). */
+  async cancelPaymentIntent(tenantId: string, paymentIntentId: string): Promise<PaymentIntent> {
+    const trimmedTenant = this.requireTenantId(tenantId);
+    const intent = await this.requireIntent(trimmedTenant, paymentIntentId);
+
+    if (intent.status === 'cancelled') {
+      return intent;
+    }
+    if (!CANCELABLE.includes(intent.status)) {
+      throw new PaymentStatusException(
+        `Payment intent '${paymentIntentId}' cannot be cancelled (status: ${intent.status}).`,
+        trimmedTenant,
+        paymentIntentId,
+        intent.status,
+      );
+    }
+
+    const cancelledAt = this.now();
+    const updated: PaymentIntent = {
+      ...intent,
+      status: 'cancelled',
+      updatedAt: cancelledAt,
+      cancelledAt,
+    };
+    await this.deps.repository.update(updated);
+    return updated;
   }
 
   private async requireIntent(tenantId: string, paymentIntentId: string): Promise<PaymentIntent> {

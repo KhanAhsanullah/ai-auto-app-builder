@@ -10,48 +10,48 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 **Sprint 18 — Core Payment** (in progress)
 
-Sprint 18 Task 1 complete — payment intent domain + `PaymentService` + in-memory repository in `@ai-commerce/module-payment`.
+Sprint 18 Task 2 complete — authorize / capture / fail / cancel + optional gateway port.
 
-**Branch:** `sprint/18/task1`
+**Branch:** `sprint/18/task2`
 
-**Next:** Task 2 — authorize / capture / fail helpers (+ optional gateway port).
+**Next:** Task 3 — `PaymentModule` / `createPaymentModule` facade + surface wiring docs.
 
 ## Completed Tasks
 
-| Task                | Description                     | Commit Tag       |
-| ------------------- | ------------------------------- | ---------------- |
-| Sprint 1–17 ✅      | Foundation through Core Order   | `sprint*-task*`  |
-| Sprint 18 Task 1 ✅ | Payment intent domain + service | `sprint18-task1` |
+| Task                | Description                         | Commit Tag       |
+| ------------------- | ----------------------------------- | ---------------- |
+| Sprint 1–17 ✅      | Foundation through Core Order       | `sprint*-task*`  |
+| Sprint 18 Task 1 ✅ | Payment intent domain + service     | `sprint18-task1` |
+| Sprint 18 Task 2 ✅ | Authorize / capture / fail / cancel | `sprint18-task2` |
 
 ## Current Progress
 
-- Sprints 1–17 on `main`
-- **Core Payment** Task 1 on branch
+- Sprints 1–17 + Payment Task 1 on `main`
+- **Core Payment** Task 2 on branch
 
-**Overall:** Sprint 18 Task 1 complete on branch.
+**Overall:** Sprint 18 Task 2 complete on branch.
 
 ## Next Tasks
 
-1. **Sprint 18 Task 2** — authorize / capture / fail + gateway port
-2. **Sprint 18 Task 3** — `PaymentModule` facade + surface wiring docs
-3. After Sprint 18 — surface wiring (Web/Admin/Mobile) or remaining core stubs
+1. **Sprint 18 Task 3** — `PaymentModule` facade + surface wiring docs
+2. After Sprint 18 — surface wiring (Web/Admin/Mobile) or remaining core stubs
 
 ## Latest Commit
 
 ```
-feat(module-payment): add payment intent domain and in-memory repository (Sprint 18 Task 1)
+feat(module-payment): add authorize/capture/fail helpers (Sprint 18 Task 2)
 ```
 
 ## Latest Tag
 
 ```
-sprint18-task1
+sprint18-task2
 ```
 
 ## Health Status
 
 | Area       | Status         | Notes                                    |
 | ---------- | -------------- | ---------------------------------------- |
-| Repository | ✅ Healthy     | Sprint 18 Task 1 on branch               |
-| Payment    | 🟡 In progress | Task 1 done; Tasks 2–3 remaining         |
+| Repository | ✅ Healthy     | Sprint 18 Task 2 on branch               |
+| Payment    | 🟡 In progress | Tasks 1–2 done; Task 3 remaining         |
 | Tests      | ✅ Passing     | `@ai-commerce/module-payment` unit tests |
