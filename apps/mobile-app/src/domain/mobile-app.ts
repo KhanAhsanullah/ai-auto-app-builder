@@ -1,4 +1,6 @@
+import type { CartModule } from '@ai-commerce/module-cart';
 import type { CatalogModule } from '@ai-commerce/module-catalog';
+import type { CheckoutModule } from '@ai-commerce/module-checkout';
 
 import {
   buildMobileShellViewModel,
@@ -9,27 +11,31 @@ import {
   type MobileScreenDefinition,
   type MobileScreenRegistry,
 } from './mobile-screen-registry.js';
+import { MobileAppCartSurface } from './mobile-app-cart-surface.js';
 import { MobileAppCatalogSurface } from './mobile-app-catalog-surface.js';
+import { MobileAppCheckoutSurface } from './mobile-app-checkout-surface.js';
 import type { ResolvedMobileAppShell } from '../types.js';
 
 export interface MobileAppDeps {
   shell: ResolvedMobileAppShell;
   registry: MobileScreenRegistry;
-  /** Initial route when the host does not override. */
   initialRoute?: string;
-  /** Optional catalog module for storefront product queries. */
   catalog?: CatalogModule;
+  cart?: CartModule;
+  checkout?: CheckoutModule;
+  defaultCurrency?: string;
 }
 
 /**
  * Public facade for the config-driven mobile app.
- * Holds the resolved shell + screen registry and optional catalog binding.
  */
 export class MobileApp {
   readonly shell: ResolvedMobileAppShell;
   readonly registry: MobileScreenRegistry;
   readonly initialRoute: string;
   readonly catalogSurface: MobileAppCatalogSurface;
+  readonly cartSurface: MobileAppCartSurface;
+  readonly checkoutSurface: MobileAppCheckoutSurface;
 
   constructor(private readonly deps: MobileAppDeps) {
     this.shell = deps.shell;
@@ -39,10 +45,28 @@ export class MobileApp {
       deps.shell,
       deps.catalog ? { catalog: deps.catalog } : undefined,
     );
+    this.cartSurface = new MobileAppCartSurface(
+      deps.shell,
+      deps.cart
+        ? { cart: deps.cart, defaultCurrency: deps.defaultCurrency?.trim() || 'USD' }
+        : undefined,
+    );
+    this.checkoutSurface = new MobileAppCheckoutSurface(
+      deps.shell,
+      deps.checkout ? { checkout: deps.checkout } : undefined,
+    );
   }
 
   isCatalogAvailable(): boolean {
     return this.catalogSurface.isAvailable();
+  }
+
+  isCartAvailable(): boolean {
+    return this.cartSurface.isAvailable();
+  }
+
+  isCheckoutAvailable(): boolean {
+    return this.checkoutSurface.isAvailable();
   }
 
   getViewModel(activeRoute?: string): MobileShellViewModel {
@@ -64,9 +88,11 @@ export interface CreateMobileAppFromShellOptions {
   initialRoute?: string;
   extraScreens?: readonly MobileScreenDefinition[];
   catalog?: CatalogModule;
+  cart?: CartModule;
+  checkout?: CheckoutModule;
+  defaultCurrency?: string;
 }
 
-/** Wire a MobileApp from an already-resolved shell (tests / advanced hosts). */
 export function createMobileAppFromShell(options: CreateMobileAppFromShellOptions): MobileApp {
   const registry = options.registry ?? createDefaultMobileScreenRegistry();
   if (!options.registry && options.extraScreens) {
@@ -78,5 +104,8 @@ export function createMobileAppFromShell(options: CreateMobileAppFromShellOption
     registry,
     initialRoute: options.initialRoute,
     catalog: options.catalog,
+    cart: options.cart,
+    checkout: options.checkout,
+    defaultCurrency: options.defaultCurrency,
   });
 }

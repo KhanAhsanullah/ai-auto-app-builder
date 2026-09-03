@@ -9,6 +9,12 @@ export { MobileApp, createMobileAppFromShell } from './domain/mobile-app.js';
 export type { CreateMobileAppFromShellOptions, MobileAppDeps } from './domain/mobile-app.js';
 export { MobileAppCatalogSurface } from './domain/mobile-app-catalog-surface.js';
 export type { MobileAppCatalogBinding } from './domain/mobile-app-catalog-surface.js';
+export { MobileAppCartSurface } from './domain/mobile-app-cart-surface.js';
+export type { MobileAppCartBinding } from './domain/mobile-app-cart-surface.js';
+export { MobileAppCheckoutSurface } from './domain/mobile-app-checkout-surface.js';
+export type { MobileAppCheckoutBinding } from './domain/mobile-app-checkout-surface.js';
+export { adaptCatalogProductLookup } from './domain/adapt-catalog-product-lookup.js';
+export { adaptCartLookup } from './domain/adapt-cart-lookup.js';
 export { MobileAppShellResolver } from './domain/mobile-app-shell-resolver.js';
 export type { MobileAppShellResolverDeps } from './domain/mobile-app-shell-resolver.js';
 export { MobileBrandingResolver } from './domain/mobile-branding-resolver.js';
@@ -24,6 +30,8 @@ export {
   MobileAppException,
   MobileAppResolutionException,
   MobileAppCatalogUnavailableException,
+  MobileAppCartUnavailableException,
+  MobileAppCheckoutUnavailableException,
 } from './errors.js';
 export { createMobileApp } from './infrastructure/create-mobile-app.js';
 export type { CreateMobileAppOptions } from './infrastructure/create-mobile-app.js';

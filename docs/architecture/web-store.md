@@ -56,10 +56,33 @@ if (store.isCatalogAvailable()) {
 
 Gated by tenant `featureFlags.modules.catalog`. Tenant id comes from the resolved shell.
 
+## Cart + checkout wiring (Sprint 19 Task 2)
+
+```ts
+import { createCartModule } from '@ai-commerce/module-cart';
+import { createCheckoutModule } from '@ai-commerce/module-checkout';
+import { adaptCartLookup, adaptCatalogProductLookup, createWebStore } from '@ai-commerce/web-store';
+
+const catalog = createCatalogModule();
+const cart = createCartModule({ catalogLookup: adaptCatalogProductLookup(catalog) });
+const checkout = createCheckoutModule({ cartLookup: adaptCartLookup(cart) });
+const store = createWebStore({ config, catalog, cart, checkout });
+
+const sessionCart = await store.cartSurface.getOrCreateBySession({ sessionId });
+await store.cartSurface.addItemFromCatalog({
+  cartId: sessionCart.id,
+  productId,
+  variantId,
+});
+await store.checkoutSurface.startCheckout(sessionCart.id);
+```
+
+Gated by `modules.cart` / `modules.checkout`. Default currency from tenant `currency.default`.
+
 ## Deferred
 
 - Dedicated Next.js / Vite host app
-- Cart / checkout / order / payment surface wiring (Sprint 19 Tasks 2–3)
+- Order / payment surface wiring (Sprint 19 Task 3)
 - Full theme compile at render time
 - CDN / edge caching policies beyond `rendering.cacheTtlSeconds`
 - Rich catalog React screen components (hosts use `catalogSurface` + `renderScreen`)

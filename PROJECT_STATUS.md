@@ -10,47 +10,46 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 **Sprint 19 — Surface Wiring** (in progress)
 
-Sprint 19 Task 1 complete — catalog module bound to Web / Admin / Mobile facades via `catalogSurface`.
+Sprint 19 Task 2 complete — cart + checkout-start bound to Web / Admin / Mobile facades.
 
-**Branch:** `sprint/19/task1`
+**Branch:** `sprint/19/task2`
 
-**Next:** Task 2 — cart (+ checkout start) surface binding.
+**Next:** Task 3 — order + payment surface binding + buy-path docs.
 
 ## Completed Tasks
 
-| Task                | Description                               | Commit Tag       |
-| ------------------- | ----------------------------------------- | ---------------- |
-| Sprint 1–18 ✅      | Foundation through Core Payment           | `sprint*-task*`  |
-| Sprint 19 Task 1 ✅ | Catalog surface wiring (Web/Admin/Mobile) | `sprint19-task1` |
+| Task                | Description                          | Commit Tag       |
+| ------------------- | ------------------------------------ | ---------------- |
+| Sprint 1–18 ✅      | Foundation through Core Payment      | `sprint*-task*`  |
+| Sprint 19 Task 1 ✅ | Catalog surface wiring               | `sprint19-task1` |
+| Sprint 19 Task 2 ✅ | Cart + checkout-start surface wiring | `sprint19-task2` |
 
 ## Current Progress
 
-- Sprints 1–18 on `main`
-- **Surface Wiring** Task 1 on branch
-
-**Overall:** Catalog can be injected into storefront/admin shells.
+- Sprints 1–18 + Surface Task 1 on `main`
+- **Surface Wiring** Task 2 on branch
 
 ## Next Tasks
 
-1. **Sprint 19 Task 2** — Cart (+ checkout start) surface binding
-2. **Sprint 19 Task 3** — Order + payment surface binding
+1. **Sprint 19 Task 3** — Order + payment surface binding
+2. After Sprint 19 — rich screens / Core Customer / remaining stubs
 
 ## Latest Commit
 
 ```
-feat(surfaces): wire catalog module into Web/Admin/Mobile (Sprint 19 Task 1)
+feat(surfaces): wire cart and checkout into Web/Admin/Mobile (Sprint 19 Task 2)
 ```
 
 ## Latest Tag
 
 ```
-sprint19-task1
+sprint19-task2
 ```
 
 ## Health Status
 
-| Area       | Status         | Notes                                      |
-| ---------- | -------------- | ------------------------------------------ |
-| Repository | ✅ Healthy     | Sprint 19 Task 1 on branch                 |
-| Surfaces   | 🟡 In progress | Catalog wired; cart→payment remaining      |
-| Tests      | ✅ Passing     | Web / Admin / Mobile catalog surface tests |
+| Area       | Status         | Notes                                          |
+| ---------- | -------------- | ---------------------------------------------- |
+| Repository | ✅ Healthy     | Sprint 19 Task 2 on branch                     |
+| Surfaces   | 🟡 In progress | Catalog+cart+checkout; order/payment remaining |
+| Tests      | ✅ Passing     | Web / Admin / Mobile surface tests             |

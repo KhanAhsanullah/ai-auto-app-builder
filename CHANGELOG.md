@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Surface cart/checkout wiring** (Sprint 19 Task 2) — Web / Admin / Mobile
+  - Optional `cart` / `checkout` on create facades; `cartSurface` / `checkoutSurface`
+  - `adaptCatalogProductLookup` / `adaptCartLookup` helpers
+  - Store/Mobile: getOrCreate, add from catalog, start checkout; Admin: list/get inspect
+
 - **Surface catalog wiring** (Sprint 19 Task 1) — Web Store / Admin Dashboard / Mobile App
   - Optional `catalog` on `createWebStore` / `createAdminDashboard` / `createMobileApp`
   - `catalogSurface` — feature-flag gated (`modules.catalog`), tenant-scoped product access

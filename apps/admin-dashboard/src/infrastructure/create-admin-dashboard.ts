@@ -1,4 +1,6 @@
+import type { CartModule } from '@ai-commerce/module-cart';
 import type { CatalogModule } from '@ai-commerce/module-catalog';
+import type { CheckoutModule } from '@ai-commerce/module-checkout';
 
 import { createAdminDashboardFromShell, type AdminDashboard } from '../domain/admin-dashboard.js';
 import { AdminDashboardShellResolver } from '../domain/admin-dashboard-shell-resolver.js';
@@ -10,26 +12,17 @@ import {
 } from '../domain/map-config-provider-result.js';
 
 export interface CreateAdminDashboardOptions {
-  /** Tenant config or ConfigProvider result. */
   config: AdminDashboardConfigSource;
-  /** Admin roles for widget RBAC gating. */
   roles?: readonly string[];
-  /** Override shell resolver. */
   shellResolver?: AdminDashboardShellResolver;
-  /** Pre-built screen registry (skips default + extraScreens). */
   registry?: AdminScreenRegistry;
-  /** Extra screens when using the default registry. */
   extraScreens?: readonly AdminScreenDefinition[];
-  /** Initial active route (defaults to landing / first nav). */
   initialRoute?: string;
-  /** Optional catalog module — enables admin product CRUD. */
   catalog?: CatalogModule;
+  cart?: CartModule;
+  checkout?: CheckoutModule;
 }
 
-/**
- * Create the AdminDashboard facade from tenant configuration.
- * One call: resolve shell → registry → ready for React app / view-models.
- */
 export function createAdminDashboard(options: CreateAdminDashboardOptions): AdminDashboard {
   const resolver = options.shellResolver ?? new AdminDashboardShellResolver();
   const shell = resolver.resolve(
@@ -42,5 +35,7 @@ export function createAdminDashboard(options: CreateAdminDashboardOptions): Admi
     extraScreens: options.extraScreens,
     initialRoute: options.initialRoute,
     catalog: options.catalog,
+    cart: options.cart,
+    checkout: options.checkout,
   });
 }

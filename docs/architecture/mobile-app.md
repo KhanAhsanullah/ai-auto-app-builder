@@ -47,6 +47,16 @@ const products = await app.catalogSurface.listActiveProducts();
 
 Gated by `modules.catalog`. Tenant id from shell.
 
+## Cart + checkout wiring (Sprint 19 Task 2)
+
+```ts
+const app = createMobileApp({ config, catalog, cart, checkout });
+await app.cartSurface.getOrCreateBySession({ sessionId });
+await app.checkoutSurface.startCheckout(cartId);
+```
+
+Use `adaptCatalogProductLookup` / `adaptCartLookup` from `@ai-commerce/mobile-app`.
+
 ## Deferred
 
 - Dedicated Expo / RN CLI host app
@@ -54,4 +64,4 @@ Gated by `modules.catalog`. Tenant id from shell.
 - Push notification provider wiring
 - Live IdP session binding
 - Full theme compile at render time
-- Cart / checkout / order / payment surface wiring
+- Order / payment surface wiring

@@ -55,10 +55,18 @@ await admin.catalogSurface.createProduct({ slug: 'milk', name: 'Milk', variants:
 
 Gated by `modules.catalog`. Tenant id from shell.
 
+## Cart + checkout wiring (Sprint 19 Task 2)
+
+```ts
+const admin = createAdminDashboard({ config, cart, checkout });
+await admin.cartSurface.listCarts();
+await admin.checkoutSurface.listCheckouts();
+```
+
 ## Deferred
 
 - Dedicated Vite/Next host app (embed via `mountAdminDashboard`)
-- Cart / order / payment admin surface wiring
+- Order / payment admin surface wiring
 - Rich catalog React screens (hosts use `catalogSurface` + `renderScreen`)
 - Live IdP session binding (consume auth-client)
 - Full white-label / theme compile at render time

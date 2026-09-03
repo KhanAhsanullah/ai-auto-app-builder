@@ -1,4 +1,7 @@
+import type { CartModule } from '@ai-commerce/module-cart';
 import type { CatalogModule } from '@ai-commerce/module-catalog';
+import type { CheckoutModule } from '@ai-commerce/module-checkout';
+import type { TenantConfiguration } from '@ai-commerce/config-schema';
 
 import { createWebStoreFromShell, type WebStore } from '../domain/web-store.js';
 import { WebStoreShellResolver } from '../domain/web-store-shell-resolver.js';
@@ -21,6 +24,16 @@ export interface CreateWebStoreOptions {
   initialRoute?: string;
   /** Optional catalog module — enables storefront product queries. */
   catalog?: CatalogModule;
+  /** Optional cart module — enables cart operations. */
+  cart?: CartModule;
+  /** Optional checkout module — enables start-checkout. */
+  checkout?: CheckoutModule;
+  /** Override default currency (otherwise from tenant config). */
+  defaultCurrency?: string;
+}
+
+function resolveConfig(source: WebStoreConfigSource): TenantConfiguration {
+  return ('config' in source ? source.config : source) as TenantConfiguration;
 }
 
 /**
@@ -30,6 +43,9 @@ export interface CreateWebStoreOptions {
 export function createWebStore(options: CreateWebStoreOptions): WebStore {
   const resolver = options.shellResolver ?? new WebStoreShellResolver();
   const shell = resolver.resolve(toResolveWebStoreShellInput(options.config));
+  const config = resolveConfig(options.config);
+  const defaultCurrency =
+    options.defaultCurrency?.trim() || config.currency?.default?.trim() || 'USD';
 
   return createWebStoreFromShell({
     shell,
@@ -37,5 +53,8 @@ export function createWebStore(options: CreateWebStoreOptions): WebStore {
     extraScreens: options.extraScreens,
     initialRoute: options.initialRoute,
     catalog: options.catalog,
+    cart: options.cart,
+    checkout: options.checkout,
+    defaultCurrency,
   });
 }

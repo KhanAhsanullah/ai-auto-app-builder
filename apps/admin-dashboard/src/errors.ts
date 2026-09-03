@@ -21,3 +21,19 @@ export class AdminDashboardCatalogUnavailableException extends AdminDashboardExc
     this.name = 'AdminDashboardCatalogUnavailableException';
   }
 }
+
+/** Thrown when cart is not wired or disabled for the tenant. */
+export class AdminDashboardCartUnavailableException extends AdminDashboardException {
+  constructor(message: string) {
+    super(message);
+    this.name = 'AdminDashboardCartUnavailableException';
+  }
+}
+
+/** Thrown when checkout is not wired or disabled for the tenant. */
+export class AdminDashboardCheckoutUnavailableException extends AdminDashboardException {
+  constructor(message: string) {
+    super(message);
+    this.name = 'AdminDashboardCheckoutUnavailableException';
+  }
+}

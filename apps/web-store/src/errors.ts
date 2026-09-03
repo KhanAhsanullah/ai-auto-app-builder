@@ -21,3 +21,19 @@ export class WebStoreCatalogUnavailableException extends WebStoreException {
     this.name = 'WebStoreCatalogUnavailableException';
   }
 }
+
+/** Thrown when cart is not wired or disabled for the tenant. */
+export class WebStoreCartUnavailableException extends WebStoreException {
+  constructor(message: string) {
+    super(message);
+    this.name = 'WebStoreCartUnavailableException';
+  }
+}
+
+/** Thrown when checkout is not wired or disabled for the tenant. */
+export class WebStoreCheckoutUnavailableException extends WebStoreException {
+  constructor(message: string) {
+    super(message);
+    this.name = 'WebStoreCheckoutUnavailableException';
+  }
+}

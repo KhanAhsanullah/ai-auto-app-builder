@@ -20,12 +20,20 @@ export { WebStore, createWebStoreFromShell } from './domain/web-store.js';
 export type { CreateWebStoreFromShellOptions, WebStoreDeps } from './domain/web-store.js';
 export { WebStoreCatalogSurface } from './domain/web-store-catalog-surface.js';
 export type { WebStoreCatalogBinding } from './domain/web-store-catalog-surface.js';
+export { WebStoreCartSurface } from './domain/web-store-cart-surface.js';
+export type { WebStoreCartBinding } from './domain/web-store-cart-surface.js';
+export { WebStoreCheckoutSurface } from './domain/web-store-checkout-surface.js';
+export type { WebStoreCheckoutBinding } from './domain/web-store-checkout-surface.js';
+export { adaptCatalogProductLookup } from './domain/adapt-catalog-product-lookup.js';
+export { adaptCartLookup } from './domain/adapt-cart-lookup.js';
 export { createWebStore } from './infrastructure/create-web-store.js';
 export type { CreateWebStoreOptions } from './infrastructure/create-web-store.js';
 export {
   WebStoreException,
   WebStoreResolutionException,
   WebStoreCatalogUnavailableException,
+  WebStoreCartUnavailableException,
+  WebStoreCheckoutUnavailableException,
 } from './errors.js';
 export type {
   ResolveWebStoreShellInput,

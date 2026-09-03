@@ -50,9 +50,15 @@ importers:
       '@ai-commerce/config-schema':
         specifier: workspace:*
         version: link:../../packages/config-schema
+      '@ai-commerce/module-cart':
+        specifier: workspace:*
+        version: link:../../modules/core/cart
       '@ai-commerce/module-catalog':
         specifier: workspace:*
         version: link:../../modules/core/catalog
+      '@ai-commerce/module-checkout':
+        specifier: workspace:*
+        version: link:../../modules/core/checkout
       react:
         specifier: ^19.0.0
         version: 19.2.8
@@ -106,9 +112,15 @@ importers:
       '@ai-commerce/config-schema':
         specifier: workspace:*
         version: link:../../packages/config-schema
+      '@ai-commerce/module-cart':
+        specifier: workspace:*
+        version: link:../../modules/core/cart
       '@ai-commerce/module-catalog':
         specifier: workspace:*
         version: link:../../modules/core/catalog
+      '@ai-commerce/module-checkout':
+        specifier: workspace:*
+        version: link:../../modules/core/checkout
       react:
         specifier: ^19.0.0
         version: 19.2.8
@@ -142,9 +154,15 @@ importers:
       '@ai-commerce/config-schema':
         specifier: workspace:*
         version: link:../../packages/config-schema
+      '@ai-commerce/module-cart':
+        specifier: workspace:*
+        version: link:../../modules/core/cart
       '@ai-commerce/module-catalog':
         specifier: workspace:*
         version: link:../../modules/core/catalog
+      '@ai-commerce/module-checkout':
+        specifier: workspace:*
+        version: link:../../modules/core/checkout
       react:
         specifier: ^19.0.0
         version: 19.2.8

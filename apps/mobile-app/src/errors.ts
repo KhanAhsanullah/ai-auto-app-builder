@@ -21,3 +21,19 @@ export class MobileAppCatalogUnavailableException extends MobileAppException {
     this.name = 'MobileAppCatalogUnavailableException';
   }
 }
+
+/** Thrown when cart is not wired or disabled for the tenant. */
+export class MobileAppCartUnavailableException extends MobileAppException {
+  constructor(message: string) {
+    super(message);
+    this.name = 'MobileAppCartUnavailableException';
+  }
+}
+
+/** Thrown when checkout is not wired or disabled for the tenant. */
+export class MobileAppCheckoutUnavailableException extends MobileAppException {
+  constructor(message: string) {
+    super(message);
+    this.name = 'MobileAppCheckoutUnavailableException';
+  }
+}

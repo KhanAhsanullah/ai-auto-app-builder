@@ -1,4 +1,7 @@
+import type { CartModule } from '@ai-commerce/module-cart';
 import type { CatalogModule } from '@ai-commerce/module-catalog';
+import type { CheckoutModule } from '@ai-commerce/module-checkout';
+import type { TenantConfiguration } from '@ai-commerce/config-schema';
 
 import { createMobileAppFromShell, type MobileApp } from '../domain/mobile-app.js';
 import { MobileAppShellResolver } from '../domain/mobile-app-shell-resolver.js';
@@ -10,27 +13,27 @@ import {
 } from '../domain/map-config-provider-result.js';
 
 export interface CreateMobileAppOptions {
-  /** Tenant config or ConfigProvider result. */
   config: MobileAppConfigSource;
-  /** Override shell resolver. */
   shellResolver?: MobileAppShellResolver;
-  /** Pre-built screen registry (skips default + extraScreens). */
   registry?: MobileScreenRegistry;
-  /** Extra screens when using the default registry. */
   extraScreens?: readonly MobileScreenDefinition[];
-  /** Initial active route (defaults to landing / first nav). */
   initialRoute?: string;
-  /** Optional catalog module — enables storefront product queries. */
   catalog?: CatalogModule;
+  cart?: CartModule;
+  checkout?: CheckoutModule;
+  defaultCurrency?: string;
 }
 
-/**
- * Create the MobileApp facade from tenant configuration.
- * One call: resolve shell → registry → ready for RN app / view-models.
- */
+function resolveConfig(source: MobileAppConfigSource): TenantConfiguration {
+  return ('config' in source ? source.config : source) as TenantConfiguration;
+}
+
 export function createMobileApp(options: CreateMobileAppOptions): MobileApp {
   const resolver = options.shellResolver ?? new MobileAppShellResolver();
   const shell = resolver.resolve(toResolveMobileAppShellInput(options.config));
+  const config = resolveConfig(options.config);
+  const defaultCurrency =
+    options.defaultCurrency?.trim() || config.currency?.default?.trim() || 'USD';
 
   return createMobileAppFromShell({
     shell,
@@ -38,5 +41,8 @@ export function createMobileApp(options: CreateMobileAppOptions): MobileApp {
     extraScreens: options.extraScreens,
     initialRoute: options.initialRoute,
     catalog: options.catalog,
+    cart: options.cart,
+    checkout: options.checkout,
+    defaultCurrency,
   });
 }

@@ -1,4 +1,6 @@
+import type { CartModule } from '@ai-commerce/module-cart';
 import type { CatalogModule } from '@ai-commerce/module-catalog';
+import type { CheckoutModule } from '@ai-commerce/module-checkout';
 
 import {
   buildAdminShellViewModel,
@@ -9,27 +11,32 @@ import {
   type AdminScreenDefinition,
   type AdminScreenRegistry,
 } from './admin-screen-registry.js';
+import {
+  AdminDashboardCartSurface,
+  AdminDashboardCheckoutSurface,
+} from './admin-dashboard-cart-checkout-surface.js';
 import { AdminDashboardCatalogSurface } from './admin-dashboard-catalog-surface.js';
 import type { ResolvedAdminDashboardShell } from '../types.js';
 
 export interface AdminDashboardDeps {
   shell: ResolvedAdminDashboardShell;
   registry: AdminScreenRegistry;
-  /** Initial route when the host does not override. */
   initialRoute?: string;
-  /** Optional catalog module for admin product CRUD. */
   catalog?: CatalogModule;
+  cart?: CartModule;
+  checkout?: CheckoutModule;
 }
 
 /**
  * Public facade for the config-driven admin dashboard.
- * Holds the resolved shell + screen registry and optional catalog binding.
  */
 export class AdminDashboard {
   readonly shell: ResolvedAdminDashboardShell;
   readonly registry: AdminScreenRegistry;
   readonly initialRoute: string;
   readonly catalogSurface: AdminDashboardCatalogSurface;
+  readonly cartSurface: AdminDashboardCartSurface;
+  readonly checkoutSurface: AdminDashboardCheckoutSurface;
 
   constructor(private readonly deps: AdminDashboardDeps) {
     this.shell = deps.shell;
@@ -39,10 +46,26 @@ export class AdminDashboard {
       deps.shell,
       deps.catalog ? { catalog: deps.catalog } : undefined,
     );
+    this.cartSurface = new AdminDashboardCartSurface(
+      deps.shell,
+      deps.cart ? { cart: deps.cart } : undefined,
+    );
+    this.checkoutSurface = new AdminDashboardCheckoutSurface(
+      deps.shell,
+      deps.checkout ? { checkout: deps.checkout } : undefined,
+    );
   }
 
   isCatalogAvailable(): boolean {
     return this.catalogSurface.isAvailable();
+  }
+
+  isCartAvailable(): boolean {
+    return this.cartSurface.isAvailable();
+  }
+
+  isCheckoutAvailable(): boolean {
+    return this.checkoutSurface.isAvailable();
   }
 
   getViewModel(activeRoute?: string): AdminShellViewModel {
@@ -62,15 +85,15 @@ export interface CreateAdminDashboardFromShellOptions {
   shell: ResolvedAdminDashboardShell;
   registry?: AdminScreenRegistry;
   initialRoute?: string;
-  /** Extra screens registered after defaults (when using default registry). */
   extraScreens?: readonly AdminScreenDefinition[];
   catalog?: CatalogModule;
+  cart?: CartModule;
+  checkout?: CheckoutModule;
   shellResolver?: never;
   config?: never;
   roles?: never;
 }
 
-/** Wire an AdminDashboard from an already-resolved shell (tests / advanced hosts). */
 export function createAdminDashboardFromShell(
   options: CreateAdminDashboardFromShellOptions,
 ): AdminDashboard {
@@ -84,5 +107,7 @@ export function createAdminDashboardFromShell(
     registry,
     initialRoute: options.initialRoute,
     catalog: options.catalog,
+    cart: options.cart,
+    checkout: options.checkout,
   });
 }
