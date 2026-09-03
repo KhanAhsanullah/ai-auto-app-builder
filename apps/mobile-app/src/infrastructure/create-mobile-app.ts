@@ -1,6 +1,8 @@
 import type { CartModule } from '@ai-commerce/module-cart';
 import type { CatalogModule } from '@ai-commerce/module-catalog';
 import type { CheckoutModule } from '@ai-commerce/module-checkout';
+import type { OrderModule } from '@ai-commerce/module-order';
+import type { CaptureStrategy, PaymentGateway, PaymentModule } from '@ai-commerce/module-payment';
 import type { TenantConfiguration } from '@ai-commerce/config-schema';
 
 import { createMobileAppFromShell, type MobileApp } from '../domain/mobile-app.js';
@@ -21,7 +23,11 @@ export interface CreateMobileAppOptions {
   catalog?: CatalogModule;
   cart?: CartModule;
   checkout?: CheckoutModule;
+  orders?: OrderModule;
+  payments?: PaymentModule;
   defaultCurrency?: string;
+  defaultPaymentGateway?: PaymentGateway;
+  defaultCaptureStrategy?: CaptureStrategy;
 }
 
 function resolveConfig(source: MobileAppConfigSource): TenantConfiguration {
@@ -34,6 +40,12 @@ export function createMobileApp(options: CreateMobileAppOptions): MobileApp {
   const config = resolveConfig(options.config);
   const defaultCurrency =
     options.defaultCurrency?.trim() || config.currency?.default?.trim() || 'USD';
+  const defaultPaymentGateway =
+    options.defaultPaymentGateway ??
+    (config.payments?.defaultGateway as PaymentGateway | undefined);
+  const defaultCaptureStrategy =
+    options.defaultCaptureStrategy ??
+    (config.payments?.checkout?.captureStrategy as CaptureStrategy | undefined);
 
   return createMobileAppFromShell({
     shell,
@@ -43,6 +55,10 @@ export function createMobileApp(options: CreateMobileAppOptions): MobileApp {
     catalog: options.catalog,
     cart: options.cart,
     checkout: options.checkout,
+    orders: options.orders,
+    payments: options.payments,
     defaultCurrency,
+    defaultPaymentGateway,
+    defaultCaptureStrategy,
   });
 }

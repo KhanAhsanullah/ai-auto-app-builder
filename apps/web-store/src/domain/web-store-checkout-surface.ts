@@ -43,6 +43,32 @@ export class WebStoreCheckoutSurface {
     return this.requireCheckout().getActiveCheckoutByCart(this.tenantId, cartId);
   }
 
+  async updateShippingAddress(
+    checkoutId: string,
+    address: Parameters<CheckoutModule['updateShippingAddress']>[0]['address'],
+  ): Promise<CheckoutSession> {
+    return this.requireCheckout().updateShippingAddress({
+      tenantId: this.tenantId,
+      checkoutId,
+      address,
+    });
+  }
+
+  async selectShippingMethod(
+    checkoutId: string,
+    method: Parameters<CheckoutModule['selectShippingMethod']>[0]['method'],
+  ): Promise<CheckoutSession> {
+    return this.requireCheckout().selectShippingMethod({
+      tenantId: this.tenantId,
+      checkoutId,
+      method,
+    });
+  }
+
+  async completeCheckout(checkoutId: string): Promise<CheckoutSession> {
+    return this.requireCheckout().completeCheckout(this.tenantId, checkoutId);
+  }
+
   private requireCheckout(): CheckoutModule {
     if (!this.binding) {
       throw new WebStoreCheckoutUnavailableException(

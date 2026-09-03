@@ -1,6 +1,8 @@
 import type { CartModule } from '@ai-commerce/module-cart';
 import type { CatalogModule } from '@ai-commerce/module-catalog';
 import type { CheckoutModule } from '@ai-commerce/module-checkout';
+import type { OrderModule } from '@ai-commerce/module-order';
+import type { CaptureStrategy, PaymentGateway, PaymentModule } from '@ai-commerce/module-payment';
 
 import {
   buildMobileShellViewModel,
@@ -14,6 +16,8 @@ import {
 import { MobileAppCartSurface } from './mobile-app-cart-surface.js';
 import { MobileAppCatalogSurface } from './mobile-app-catalog-surface.js';
 import { MobileAppCheckoutSurface } from './mobile-app-checkout-surface.js';
+import { MobileAppOrderSurface } from './mobile-app-order-surface.js';
+import { MobileAppPaymentSurface } from './mobile-app-payment-surface.js';
 import type { ResolvedMobileAppShell } from '../types.js';
 
 export interface MobileAppDeps {
@@ -23,12 +27,13 @@ export interface MobileAppDeps {
   catalog?: CatalogModule;
   cart?: CartModule;
   checkout?: CheckoutModule;
+  orders?: OrderModule;
+  payments?: PaymentModule;
   defaultCurrency?: string;
+  defaultPaymentGateway?: PaymentGateway;
+  defaultCaptureStrategy?: CaptureStrategy;
 }
 
-/**
- * Public facade for the config-driven mobile app.
- */
 export class MobileApp {
   readonly shell: ResolvedMobileAppShell;
   readonly registry: MobileScreenRegistry;
@@ -36,6 +41,8 @@ export class MobileApp {
   readonly catalogSurface: MobileAppCatalogSurface;
   readonly cartSurface: MobileAppCartSurface;
   readonly checkoutSurface: MobileAppCheckoutSurface;
+  readonly orderSurface: MobileAppOrderSurface;
+  readonly paymentSurface: MobileAppPaymentSurface;
 
   constructor(private readonly deps: MobileAppDeps) {
     this.shell = deps.shell;
@@ -55,6 +62,20 @@ export class MobileApp {
       deps.shell,
       deps.checkout ? { checkout: deps.checkout } : undefined,
     );
+    this.orderSurface = new MobileAppOrderSurface(
+      deps.shell,
+      deps.orders ? { orders: deps.orders } : undefined,
+    );
+    this.paymentSurface = new MobileAppPaymentSurface(
+      deps.shell,
+      deps.payments
+        ? {
+            payments: deps.payments,
+            defaultGateway: deps.defaultPaymentGateway,
+            defaultCaptureStrategy: deps.defaultCaptureStrategy,
+          }
+        : undefined,
+    );
   }
 
   isCatalogAvailable(): boolean {
@@ -67,6 +88,14 @@ export class MobileApp {
 
   isCheckoutAvailable(): boolean {
     return this.checkoutSurface.isAvailable();
+  }
+
+  isOrderAvailable(): boolean {
+    return this.orderSurface.isAvailable();
+  }
+
+  isPaymentAvailable(): boolean {
+    return this.paymentSurface.isAvailable();
   }
 
   getViewModel(activeRoute?: string): MobileShellViewModel {
@@ -90,7 +119,11 @@ export interface CreateMobileAppFromShellOptions {
   catalog?: CatalogModule;
   cart?: CartModule;
   checkout?: CheckoutModule;
+  orders?: OrderModule;
+  payments?: PaymentModule;
   defaultCurrency?: string;
+  defaultPaymentGateway?: PaymentGateway;
+  defaultCaptureStrategy?: CaptureStrategy;
 }
 
 export function createMobileAppFromShell(options: CreateMobileAppFromShellOptions): MobileApp {
@@ -106,6 +139,10 @@ export function createMobileAppFromShell(options: CreateMobileAppFromShellOption
     catalog: options.catalog,
     cart: options.cart,
     checkout: options.checkout,
+    orders: options.orders,
+    payments: options.payments,
     defaultCurrency: options.defaultCurrency,
+    defaultPaymentGateway: options.defaultPaymentGateway,
+    defaultCaptureStrategy: options.defaultCaptureStrategy,
   });
 }

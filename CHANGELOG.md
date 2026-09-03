@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Surface order/payment wiring** (Sprint 19 Task 3) — Web / Admin / Mobile
+  - Optional `orders` / `payments` on create facades; `orderSurface` / `paymentSurface`
+  - `adaptCheckoutLookup` / `adaptOrderLookup` helpers
+  - End-to-end buy-path tests (catalog → cart → checkout → order → capture)
+
 - **Surface cart/checkout wiring** (Sprint 19 Task 2) — Web / Admin / Mobile
   - Optional `cart` / `checkout` on create facades; `cartSurface` / `checkoutSurface`
   - `adaptCatalogProductLookup` / `adaptCartLookup` helpers

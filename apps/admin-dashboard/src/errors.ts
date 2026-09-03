@@ -37,3 +37,19 @@ export class AdminDashboardCheckoutUnavailableException extends AdminDashboardEx
     this.name = 'AdminDashboardCheckoutUnavailableException';
   }
 }
+
+/** Thrown when order is not wired or disabled for the tenant. */
+export class AdminDashboardOrderUnavailableException extends AdminDashboardException {
+  constructor(message: string) {
+    super(message);
+    this.name = 'AdminDashboardOrderUnavailableException';
+  }
+}
+
+/** Thrown when payment is not wired or disabled for the tenant. */
+export class AdminDashboardPaymentUnavailableException extends AdminDashboardException {
+  constructor(message: string) {
+    super(message);
+    this.name = 'AdminDashboardPaymentUnavailableException';
+  }
+}

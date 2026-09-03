@@ -13,6 +13,14 @@ export type {
   AdminDashboardCartBinding,
   AdminDashboardCheckoutBinding,
 } from './domain/admin-dashboard-cart-checkout-surface.js';
+export {
+  AdminDashboardOrderSurface,
+  AdminDashboardPaymentSurface,
+} from './domain/admin-dashboard-order-payment-surface.js';
+export type {
+  AdminDashboardOrderBinding,
+  AdminDashboardPaymentBinding,
+} from './domain/admin-dashboard-order-payment-surface.js';
 export { AdminBrandingResolver } from './domain/admin-branding-resolver.js';
 export { AdminDashboardShellResolver } from './domain/admin-dashboard-shell-resolver.js';
 export type { AdminDashboardShellResolverDeps } from './domain/admin-dashboard-shell-resolver.js';
@@ -37,6 +45,8 @@ export {
   AdminDashboardCatalogUnavailableException,
   AdminDashboardCartUnavailableException,
   AdminDashboardCheckoutUnavailableException,
+  AdminDashboardOrderUnavailableException,
+  AdminDashboardPaymentUnavailableException,
 } from './errors.js';
 export { createAdminDashboard } from './infrastructure/create-admin-dashboard.js';
 export type { CreateAdminDashboardOptions } from './infrastructure/create-admin-dashboard.js';

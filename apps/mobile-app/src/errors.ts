@@ -37,3 +37,19 @@ export class MobileAppCheckoutUnavailableException extends MobileAppException {
     this.name = 'MobileAppCheckoutUnavailableException';
   }
 }
+
+/** Thrown when order is not wired or disabled for the tenant. */
+export class MobileAppOrderUnavailableException extends MobileAppException {
+  constructor(message: string) {
+    super(message);
+    this.name = 'MobileAppOrderUnavailableException';
+  }
+}
+
+/** Thrown when payment is not wired or disabled for the tenant. */
+export class MobileAppPaymentUnavailableException extends MobileAppException {
+  constructor(message: string) {
+    super(message);
+    this.name = 'MobileAppPaymentUnavailableException';
+  }
+}

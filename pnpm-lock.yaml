@@ -59,6 +59,12 @@ importers:
       '@ai-commerce/module-checkout':
         specifier: workspace:*
         version: link:../../modules/core/checkout
+      '@ai-commerce/module-order':
+        specifier: workspace:*
+        version: link:../../modules/core/order
+      '@ai-commerce/module-payment':
+        specifier: workspace:*
+        version: link:../../modules/core/payment
       react:
         specifier: ^19.0.0
         version: 19.2.8
@@ -121,6 +127,12 @@ importers:
       '@ai-commerce/module-checkout':
         specifier: workspace:*
         version: link:../../modules/core/checkout
+      '@ai-commerce/module-order':
+        specifier: workspace:*
+        version: link:../../modules/core/order
+      '@ai-commerce/module-payment':
+        specifier: workspace:*
+        version: link:../../modules/core/payment
       react:
         specifier: ^19.0.0
         version: 19.2.8
@@ -163,6 +175,12 @@ importers:
       '@ai-commerce/module-checkout':
         specifier: workspace:*
         version: link:../../modules/core/checkout
+      '@ai-commerce/module-order':
+        specifier: workspace:*
+        version: link:../../modules/core/order
+      '@ai-commerce/module-payment':
+        specifier: workspace:*
+        version: link:../../modules/core/payment
       react:
         specifier: ^19.0.0
         version: 19.2.8

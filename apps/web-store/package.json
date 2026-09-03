@@ -24,6 +24,8 @@
     "@ai-commerce/module-cart": "workspace:*",
     "@ai-commerce/module-catalog": "workspace:*",
     "@ai-commerce/module-checkout": "workspace:*",
+    "@ai-commerce/module-order": "workspace:*",
+    "@ai-commerce/module-payment": "workspace:*",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

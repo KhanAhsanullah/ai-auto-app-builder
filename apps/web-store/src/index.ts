@@ -24,8 +24,14 @@ export { WebStoreCartSurface } from './domain/web-store-cart-surface.js';
 export type { WebStoreCartBinding } from './domain/web-store-cart-surface.js';
 export { WebStoreCheckoutSurface } from './domain/web-store-checkout-surface.js';
 export type { WebStoreCheckoutBinding } from './domain/web-store-checkout-surface.js';
+export { WebStoreOrderSurface } from './domain/web-store-order-surface.js';
+export type { WebStoreOrderBinding } from './domain/web-store-order-surface.js';
+export { WebStorePaymentSurface } from './domain/web-store-payment-surface.js';
+export type { WebStorePaymentBinding } from './domain/web-store-payment-surface.js';
 export { adaptCatalogProductLookup } from './domain/adapt-catalog-product-lookup.js';
 export { adaptCartLookup } from './domain/adapt-cart-lookup.js';
+export { adaptCheckoutLookup } from './domain/adapt-checkout-lookup.js';
+export { adaptOrderLookup } from './domain/adapt-order-lookup.js';
 export { createWebStore } from './infrastructure/create-web-store.js';
 export type { CreateWebStoreOptions } from './infrastructure/create-web-store.js';
 export {
@@ -34,6 +40,8 @@ export {
   WebStoreCatalogUnavailableException,
   WebStoreCartUnavailableException,
   WebStoreCheckoutUnavailableException,
+  WebStoreOrderUnavailableException,
+  WebStorePaymentUnavailableException,
 } from './errors.js';
 export type {
   ResolveWebStoreShellInput,

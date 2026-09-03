@@ -1,6 +1,8 @@
 import type { CartModule } from '@ai-commerce/module-cart';
 import type { CatalogModule } from '@ai-commerce/module-catalog';
 import type { CheckoutModule } from '@ai-commerce/module-checkout';
+import type { OrderModule } from '@ai-commerce/module-order';
+import type { CaptureStrategy, PaymentGateway, PaymentModule } from '@ai-commerce/module-payment';
 
 import { buildWebShellViewModel, type WebShellViewModel } from './build-web-shell-view-model.js';
 import {
@@ -11,26 +13,26 @@ import {
 import { WebStoreCartSurface } from './web-store-cart-surface.js';
 import { WebStoreCatalogSurface } from './web-store-catalog-surface.js';
 import { WebStoreCheckoutSurface } from './web-store-checkout-surface.js';
+import { WebStoreOrderSurface } from './web-store-order-surface.js';
+import { WebStorePaymentSurface } from './web-store-payment-surface.js';
 import type { ResolvedWebStoreShell } from '../types.js';
 
 export interface WebStoreDeps {
   shell: ResolvedWebStoreShell;
   registry: WebScreenRegistry;
-  /** Initial route when the host does not override. */
   initialRoute?: string;
-  /** Optional catalog module for storefront product queries. */
   catalog?: CatalogModule;
-  /** Optional cart module for storefront cart operations. */
   cart?: CartModule;
-  /** Optional checkout module for start-checkout flow. */
   checkout?: CheckoutModule;
-  /** Default ISO currency for getOrCreate cart helpers (from tenant config). */
+  orders?: OrderModule;
+  payments?: PaymentModule;
   defaultCurrency?: string;
+  defaultPaymentGateway?: PaymentGateway;
+  defaultCaptureStrategy?: CaptureStrategy;
 }
 
 /**
  * Public facade for the config-driven web storefront.
- * Holds the resolved shell + screen registry and optional commerce bindings.
  */
 export class WebStore {
   readonly shell: ResolvedWebStoreShell;
@@ -39,6 +41,8 @@ export class WebStore {
   readonly catalogSurface: WebStoreCatalogSurface;
   readonly cartSurface: WebStoreCartSurface;
   readonly checkoutSurface: WebStoreCheckoutSurface;
+  readonly orderSurface: WebStoreOrderSurface;
+  readonly paymentSurface: WebStorePaymentSurface;
 
   constructor(private readonly deps: WebStoreDeps) {
     this.shell = deps.shell;
@@ -58,6 +62,20 @@ export class WebStore {
       deps.shell,
       deps.checkout ? { checkout: deps.checkout } : undefined,
     );
+    this.orderSurface = new WebStoreOrderSurface(
+      deps.shell,
+      deps.orders ? { orders: deps.orders } : undefined,
+    );
+    this.paymentSurface = new WebStorePaymentSurface(
+      deps.shell,
+      deps.payments
+        ? {
+            payments: deps.payments,
+            defaultGateway: deps.defaultPaymentGateway,
+            defaultCaptureStrategy: deps.defaultCaptureStrategy,
+          }
+        : undefined,
+    );
   }
 
   isCatalogAvailable(): boolean {
@@ -70,6 +88,14 @@ export class WebStore {
 
   isCheckoutAvailable(): boolean {
     return this.checkoutSurface.isAvailable();
+  }
+
+  isOrderAvailable(): boolean {
+    return this.orderSurface.isAvailable();
+  }
+
+  isPaymentAvailable(): boolean {
+    return this.paymentSurface.isAvailable();
   }
 
   getViewModel(activeRoute?: string): WebShellViewModel {
@@ -93,10 +119,13 @@ export interface CreateWebStoreFromShellOptions {
   catalog?: CatalogModule;
   cart?: CartModule;
   checkout?: CheckoutModule;
+  orders?: OrderModule;
+  payments?: PaymentModule;
   defaultCurrency?: string;
+  defaultPaymentGateway?: PaymentGateway;
+  defaultCaptureStrategy?: CaptureStrategy;
 }
 
-/** Wire a WebStore from an already-resolved shell (tests / advanced hosts). */
 export function createWebStoreFromShell(options: CreateWebStoreFromShellOptions): WebStore {
   const registry = options.registry ?? createDefaultWebScreenRegistry();
   if (!options.registry && options.extraScreens) {
@@ -110,6 +139,10 @@ export function createWebStoreFromShell(options: CreateWebStoreFromShellOptions)
     catalog: options.catalog,
     cart: options.cart,
     checkout: options.checkout,
+    orders: options.orders,
+    payments: options.payments,
     defaultCurrency: options.defaultCurrency,
+    defaultPaymentGateway: options.defaultPaymentGateway,
+    defaultCaptureStrategy: options.defaultCaptureStrategy,
   });
 }

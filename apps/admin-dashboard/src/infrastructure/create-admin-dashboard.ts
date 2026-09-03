@@ -1,6 +1,8 @@
 import type { CartModule } from '@ai-commerce/module-cart';
 import type { CatalogModule } from '@ai-commerce/module-catalog';
 import type { CheckoutModule } from '@ai-commerce/module-checkout';
+import type { OrderModule } from '@ai-commerce/module-order';
+import type { PaymentModule } from '@ai-commerce/module-payment';
 
 import { createAdminDashboardFromShell, type AdminDashboard } from '../domain/admin-dashboard.js';
 import { AdminDashboardShellResolver } from '../domain/admin-dashboard-shell-resolver.js';
@@ -21,6 +23,8 @@ export interface CreateAdminDashboardOptions {
   catalog?: CatalogModule;
   cart?: CartModule;
   checkout?: CheckoutModule;
+  orders?: OrderModule;
+  payments?: PaymentModule;
 }
 
 export function createAdminDashboard(options: CreateAdminDashboardOptions): AdminDashboard {
@@ -37,5 +41,7 @@ export function createAdminDashboard(options: CreateAdminDashboardOptions): Admi
     catalog: options.catalog,
     cart: options.cart,
     checkout: options.checkout,
+    orders: options.orders,
+    payments: options.payments,
   });
 }

@@ -57,6 +57,16 @@ await app.checkoutSurface.startCheckout(cartId);
 
 Use `adaptCatalogProductLookup` / `adaptCartLookup` from `@ai-commerce/mobile-app`.
 
+## Order + payment wiring (Sprint 19 Task 3)
+
+```ts
+const app = createMobileApp({ config, catalog, cart, checkout, orders, payments });
+const order = await app.orderSurface.createOrderFromCheckout(checkoutId);
+await app.paymentSurface.capturePaymentIntent(intentId);
+```
+
+React Native shell (`MobileAppRoot` / `MobileShellLayout`) — commerce via `*Surface` APIs.
+
 ## Deferred
 
 - Dedicated Expo / RN CLI host app
@@ -64,4 +74,4 @@ Use `adaptCatalogProductLookup` / `adaptCartLookup` from `@ai-commerce/mobile-ap
 - Push notification provider wiring
 - Live IdP session binding
 - Full theme compile at render time
-- Order / payment surface wiring
+- Rich RN product/cart screens

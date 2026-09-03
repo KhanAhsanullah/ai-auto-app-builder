@@ -37,3 +37,19 @@ export class WebStoreCheckoutUnavailableException extends WebStoreException {
     this.name = 'WebStoreCheckoutUnavailableException';
   }
 }
+
+/** Thrown when order is not wired or disabled for the tenant. */
+export class WebStoreOrderUnavailableException extends WebStoreException {
+  constructor(message: string) {
+    super(message);
+    this.name = 'WebStoreOrderUnavailableException';
+  }
+}
+
+/** Thrown when payment is not wired or disabled for the tenant. */
+export class WebStorePaymentUnavailableException extends WebStoreException {
+  constructor(message: string) {
+    super(message);
+    this.name = 'WebStorePaymentUnavailableException';
+  }
+}

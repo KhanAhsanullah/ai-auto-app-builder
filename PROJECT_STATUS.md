@@ -8,48 +8,51 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 19 — Surface Wiring** (in progress)
+**Sprint 19 — Surface Wiring** ✅ complete (on branch)
 
-Sprint 19 Task 2 complete — cart + checkout-start bound to Web / Admin / Mobile facades.
+Sprint 19 Task 3 complete — order + payment bound to Web / Admin / Mobile; full buy-path covered in tests.
 
-**Branch:** `sprint/19/task2`
+**Branch:** `sprint/19/task3`
 
-**Next:** Task 3 — order + payment surface binding + buy-path docs.
+**Next:** Merge Task 3 to `main`, then rich React/RN screens **or** Core Customer / remaining stubs.
 
 ## Completed Tasks
 
-| Task                | Description                          | Commit Tag       |
-| ------------------- | ------------------------------------ | ---------------- |
-| Sprint 1–18 ✅      | Foundation through Core Payment      | `sprint*-task*`  |
-| Sprint 19 Task 1 ✅ | Catalog surface wiring               | `sprint19-task1` |
-| Sprint 19 Task 2 ✅ | Cart + checkout-start surface wiring | `sprint19-task2` |
+| Task                | Description                     | Commit Tag       |
+| ------------------- | ------------------------------- | ---------------- |
+| Sprint 1–18 ✅      | Foundation through Core Payment | `sprint*-task*`  |
+| Sprint 19 Task 1 ✅ | Catalog surface wiring          | `sprint19-task1` |
+| Sprint 19 Task 2 ✅ | Cart + checkout surface wiring  | `sprint19-task2` |
+| Sprint 19 Task 3 ✅ | Order + payment surface wiring  | `sprint19-task3` |
 
 ## Current Progress
 
-- Sprints 1–18 + Surface Task 1 on `main`
-- **Surface Wiring** Task 2 on branch
+- Sprints 1–18 + Surface Tasks 1–2 on `main`
+- **Surface Wiring** Task 3 on branch
+
+**Overall:** Buy path engines + surface bindings: Catalog → Cart → Checkout → Order → Payment.
 
 ## Next Tasks
 
-1. **Sprint 19 Task 3** — Order + payment surface binding
-2. After Sprint 19 — rich screens / Core Customer / remaining stubs
+1. Merge Sprint 19 Task 3
+2. Rich storefront/admin screen components **or** Core Customer thin slice
 
 ## Latest Commit
 
 ```
-feat(surfaces): wire cart and checkout into Web/Admin/Mobile (Sprint 19 Task 2)
+feat(surfaces): wire order and payment into Web/Admin/Mobile (Sprint 19 Task 3)
 ```
 
 ## Latest Tag
 
 ```
-sprint19-task2
+sprint19-task3
 ```
 
 ## Health Status
 
-| Area       | Status         | Notes                                          |
-| ---------- | -------------- | ---------------------------------------------- |
-| Repository | ✅ Healthy     | Sprint 19 Task 2 on branch                     |
-| Surfaces   | 🟡 In progress | Catalog+cart+checkout; order/payment remaining |
-| Tests      | ✅ Passing     | Web / Admin / Mobile surface tests             |
+| Area       | Status      | Notes                          |
+| ---------- | ----------- | ------------------------------ |
+| Repository | ✅ Healthy  | Sprint 19 Task 3 on branch     |
+| Surfaces   | ✅ Complete | Full commerce surface bindings |
+| Tests      | ✅ Passing  | Buy-path surface tests         |

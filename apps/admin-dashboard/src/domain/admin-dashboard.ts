@@ -1,6 +1,8 @@
 import type { CartModule } from '@ai-commerce/module-cart';
 import type { CatalogModule } from '@ai-commerce/module-catalog';
 import type { CheckoutModule } from '@ai-commerce/module-checkout';
+import type { OrderModule } from '@ai-commerce/module-order';
+import type { PaymentModule } from '@ai-commerce/module-payment';
 
 import {
   buildAdminShellViewModel,
@@ -16,6 +18,10 @@ import {
   AdminDashboardCheckoutSurface,
 } from './admin-dashboard-cart-checkout-surface.js';
 import { AdminDashboardCatalogSurface } from './admin-dashboard-catalog-surface.js';
+import {
+  AdminDashboardOrderSurface,
+  AdminDashboardPaymentSurface,
+} from './admin-dashboard-order-payment-surface.js';
 import type { ResolvedAdminDashboardShell } from '../types.js';
 
 export interface AdminDashboardDeps {
@@ -25,11 +31,10 @@ export interface AdminDashboardDeps {
   catalog?: CatalogModule;
   cart?: CartModule;
   checkout?: CheckoutModule;
+  orders?: OrderModule;
+  payments?: PaymentModule;
 }
 
-/**
- * Public facade for the config-driven admin dashboard.
- */
 export class AdminDashboard {
   readonly shell: ResolvedAdminDashboardShell;
   readonly registry: AdminScreenRegistry;
@@ -37,6 +42,8 @@ export class AdminDashboard {
   readonly catalogSurface: AdminDashboardCatalogSurface;
   readonly cartSurface: AdminDashboardCartSurface;
   readonly checkoutSurface: AdminDashboardCheckoutSurface;
+  readonly orderSurface: AdminDashboardOrderSurface;
+  readonly paymentSurface: AdminDashboardPaymentSurface;
 
   constructor(private readonly deps: AdminDashboardDeps) {
     this.shell = deps.shell;
@@ -54,6 +61,14 @@ export class AdminDashboard {
       deps.shell,
       deps.checkout ? { checkout: deps.checkout } : undefined,
     );
+    this.orderSurface = new AdminDashboardOrderSurface(
+      deps.shell,
+      deps.orders ? { orders: deps.orders } : undefined,
+    );
+    this.paymentSurface = new AdminDashboardPaymentSurface(
+      deps.shell,
+      deps.payments ? { payments: deps.payments } : undefined,
+    );
   }
 
   isCatalogAvailable(): boolean {
@@ -66,6 +81,14 @@ export class AdminDashboard {
 
   isCheckoutAvailable(): boolean {
     return this.checkoutSurface.isAvailable();
+  }
+
+  isOrderAvailable(): boolean {
+    return this.orderSurface.isAvailable();
+  }
+
+  isPaymentAvailable(): boolean {
+    return this.paymentSurface.isAvailable();
   }
 
   getViewModel(activeRoute?: string): AdminShellViewModel {
@@ -89,6 +112,8 @@ export interface CreateAdminDashboardFromShellOptions {
   catalog?: CatalogModule;
   cart?: CartModule;
   checkout?: CheckoutModule;
+  orders?: OrderModule;
+  payments?: PaymentModule;
   shellResolver?: never;
   config?: never;
   roles?: never;
@@ -109,5 +134,7 @@ export function createAdminDashboardFromShell(
     catalog: options.catalog,
     cart: options.cart,
     checkout: options.checkout,
+    orders: options.orders,
+    payments: options.payments,
   });
 }

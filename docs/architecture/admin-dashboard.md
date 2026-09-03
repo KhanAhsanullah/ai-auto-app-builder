@@ -63,10 +63,17 @@ await admin.cartSurface.listCarts();
 await admin.checkoutSurface.listCheckouts();
 ```
 
+## Order + payment wiring (Sprint 19 Task 3)
+
+```ts
+const admin = createAdminDashboard({ config, orders, payments });
+await admin.orderSurface.confirmOrder(orderId);
+await admin.paymentSurface.listPaymentIntents();
+```
+
 ## Deferred
 
 - Dedicated Vite/Next host app (embed via `mountAdminDashboard`)
-- Order / payment admin surface wiring
 - Rich catalog React screens (hosts use `catalogSurface` + `renderScreen`)
 - Live IdP session binding (consume auth-client)
 - Full white-label / theme compile at render time
