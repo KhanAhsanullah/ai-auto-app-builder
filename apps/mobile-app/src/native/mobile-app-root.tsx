@@ -114,7 +114,7 @@ function DefaultCommerceContent(props: {
   const { app, route, sessionId, checkoutId, onNavigate, onCheckoutComplete } = props;
 
   if (route === 'store.catalog' && app.isCatalogAvailable()) {
-    return <MobileCatalogScreen app={app} />;
+    return <MobileCatalogScreen app={app} sessionId={sessionId} />;
   }
   if (route === 'store.cart' && app.isCartAvailable()) {
     return (

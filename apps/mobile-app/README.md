@@ -8,7 +8,7 @@ Config-driven React Native consumer app for CommerceOS AI — resolve tenant con
 
 ## Status
 
-Sprint 9 complete — facade + shell. Sprint 20 complete — catalog/cart/checkout/payment/orders RN screens.
+Sprint 9 complete — facade + shell. Sprint 20 complete — commerce screens. Sprint 21 — use `@ai-commerce/mobile-host` to run on device.
 
 ## Modules
 

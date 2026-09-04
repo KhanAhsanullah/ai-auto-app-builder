@@ -1,0 +1,8 @@
+{
+  "name": "iconv-lite",
+  "version": "0.6.3",
+  "private": true,
+  "description": "Workspace stub — avoids corrupted registry copy with IDE .idea pollution.",
+  "main": "index.js",
+  "license": "MIT"
+}

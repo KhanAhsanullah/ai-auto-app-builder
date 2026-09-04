@@ -43,6 +43,11 @@ export {
 } from './errors.js';
 export { createMobileApp } from './infrastructure/create-mobile-app.js';
 export type { CreateMobileAppOptions } from './infrastructure/create-mobile-app.js';
+export { createDemoMobileApp } from './infrastructure/create-demo-mobile-app.js';
+export type {
+  CreateDemoMobileAppOptions,
+  DemoMobileAppBundle,
+} from './infrastructure/create-demo-mobile-app.js';
 export type {
   MobileNavItem,
   MobileNavStyle,

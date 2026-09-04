@@ -77,10 +77,19 @@ When modules are wired and no custom `renderScreen` is provided (Sprint 20):
 
 Guest session defaults to `mobile-guest` via `MobileAppRoot` `sessionId` prop.
 
+## Expo host (Sprint 21 Task 1)
+
+Runnable shell: `@ai-commerce/mobile-host`.
+
+```bash
+pnpm --filter @ai-commerce/mobile-host start
+```
+
+`createDemoMobileApp()` seeds an in-memory grocery demo (config + catalog/cart/checkout/order/payment) and mounts `MobileAppRoot`.
+
 ## Deferred
 
-- Dedicated Expo / RN CLI host app
-- Native store builds
+- Native store builds / EAS production profiles
 - Push notification provider wiring
 - Live IdP session binding
 - Full theme compile at render time

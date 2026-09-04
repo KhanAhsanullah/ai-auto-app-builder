@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Expo mobile host** (Sprint 21 Task 1) — `@ai-commerce/mobile-host`
+  - Runnable Expo shell mounting `MobileAppRoot`
+  - `createDemoMobileApp()` seeds in-memory grocery buy path for RN developers
+  - Metro monorepo config + Node crypto shims
+
 - **Orders + payment screens** (Sprint 20 Task 3) — Web Store / Mobile (React Native) + Admin
   - Auto-render on `store.payment` / `store.orders` when order (+ payment) wired; Admin `admin.orders`
   - `WebPaymentConfirmScreen`, `WebOrdersScreen`, `MobilePaymentConfirmScreen`, `MobileOrdersScreen`, `AdminOrdersScreen`

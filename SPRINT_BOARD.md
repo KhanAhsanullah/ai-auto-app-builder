@@ -270,6 +270,20 @@ Screens live in app React/RN packages; data from Sprint 19 surface bindings.
 
 ---
 
+## Sprint 21 — Mobile Host (Expo)
+
+| Task   | Status | Deliverable                                                           |
+| ------ | ------ | --------------------------------------------------------------------- |
+| Task 1 | ✅     | Expo `@ai-commerce/mobile-host` + `createDemoMobileApp` buy-path demo |
+| Task 2 | ⬜     | Deep links / session persistence / Expo Go polish                     |
+| Task 3 | ⬜     | EAS build profile + release checklist                                 |
+
+RN-first runnable surface over Sprint 19–20 facades and screens.
+
+**Tags:** `sprint21-task1`
+
+---
+
 ## Sprint Conventions
 
 - Each sprint task is committed with a Conventional Commit referencing the sprint and task number

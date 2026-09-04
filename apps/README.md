@@ -9,6 +9,7 @@ Deployable applications that form the runtime surfaces and entry points of the p
 | [admin-dashboard](./admin-dashboard) | `@ai-commerce/admin-dashboard` | Merchant admin and platform administration |
 | [web-store](./web-store)             | `@ai-commerce/web-store`       | Consumer web storefront                    |
 | [mobile-app](./mobile-app)           | `@ai-commerce/mobile-app`      | Consumer React Native mobile app           |
+| [mobile-host](./mobile-host)         | `@ai-commerce/mobile-host`     | Expo host — run the mobile app on device   |
 | [api-gateway](./api-gateway)         | `@ai-commerce/api-gateway`     | BFF, routing, rate limiting                |
 | [platform-api](./platform-api)       | `@ai-commerce/platform-api`    | Control-plane API                          |
 | [worker](./worker)                   | `@ai-commerce/worker`          | Background jobs and event processing       |

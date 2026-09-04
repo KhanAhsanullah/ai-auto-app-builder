@@ -1,0 +1,17 @@
+{
+  "expo": {
+    "name": "CommerceOS Mobile",
+    "slug": "ai-commerce-mobile-host",
+    "version": "0.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "platforms": ["ios", "android", "web"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "ai.commerce.mobilehost"
+    },
+    "android": {
+      "package": "ai.commerce.mobilehost"
+    }
+  }
+}

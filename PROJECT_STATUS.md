@@ -8,47 +8,47 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 20 — Commerce Screens** ✅ complete (on `main`)
+**Sprint 21 — Mobile Host (Expo)** (in progress)
 
-Buy-path UI screens: catalog → cart → checkout → payment → orders (Web/Mobile RN) + Admin catalog/carts/orders.
+Sprint 21 Task 1 complete — Expo host runs the demo buy path on device/simulator.
 
-**Next:** Host apps / remaining core stubs (customer, inventory) / real DB & gateways.
+**Branch:** `sprint/21/task1`
+
+**Next:** Task 2 — deep links / session polish (or continue toward shippable RN builds).
 
 ## Completed Tasks
 
-| Task                | Description                           | Commit Tag       |
-| ------------------- | ------------------------------------- | ---------------- |
-| Sprint 1–19 ✅      | Foundation through surface wire       | `sprint*-task*`  |
-| Sprint 20 Task 1 ✅ | Catalog screens (Web/Admin/RN)        | `sprint20-task1` |
-| Sprint 20 Task 2 ✅ | Cart + checkout screens + Admin carts | `sprint20-task2` |
-| Sprint 20 Task 3 ✅ | Orders + payment confirmation screens | `sprint20-task3` |
+| Task                | Description                            | Commit Tag       |
+| ------------------- | -------------------------------------- | ---------------- |
+| Sprint 1–20 ✅      | Foundation through commerce screens    | `sprint*-task*`  |
+| Sprint 21 Task 1 ✅ | Expo mobile-host + createDemoMobileApp | `sprint21-task1` |
 
 ## Current Progress
 
 - Sprints 1–20 on `main`
-- Foundation buy-path engines + surface screens complete
+- **Mobile Host** Task 1 on branch — RN developer can run Shop → Cart → Checkout → Pay → Orders
 
 ## Next Tasks
 
-1. Dedicated host apps (Vite/Next/Expo) or remaining core modules
-2. Real persistence / payment gateways / deploy
+1. **Sprint 21 Task 2** — Deep links / session persistence / Expo Go polish
+2. Remaining core stubs or real persistence when ready
 
 ## Latest Commit
 
 ```
-feat(surfaces): add orders/payment screens for Web/Admin/Mobile (Sprint 20 Task 3)
+feat(mobile-host): add Expo host with demo buy path (Sprint 21 Task 1)
 ```
 
 ## Latest Tag
 
 ```
-sprint20-task3
+sprint21-task1
 ```
 
 ## Health Status
 
-| Area       | Status     | Notes                               |
-| ---------- | ---------- | ----------------------------------- |
-| Repository | ✅ Healthy | Sprint 20 merged to `main`          |
-| Screens    | ✅ Done    | Full commerce screen path wired     |
-| Tests      | ✅ Passing | Surface + screen tests for buy path |
+| Area       | Status      | Notes                              |
+| ---------- | ----------- | ---------------------------------- |
+| Repository | ✅ Healthy  | Sprint 21 Task 1 on branch         |
+| Mobile RN  | 🟡 Runnable | Expo host + in-memory demo modules |
+| Tests      | ✅ Passing  | Demo factory + host package tests  |
