@@ -275,12 +275,12 @@ Screens live in app React/RN packages; data from Sprint 19 surface bindings.
 | Task   | Status | Deliverable                                                           |
 | ------ | ------ | --------------------------------------------------------------------- |
 | Task 1 | ✅     | Expo `@ai-commerce/mobile-host` + `createDemoMobileApp` buy-path demo |
-| Task 2 | ⬜     | Deep links / session persistence / Expo Go polish                     |
-| Task 3 | ⬜     | EAS build profile + release checklist                                 |
+| Task 2 | ✅     | Deep links + guest session persistence (AsyncStorage)                 |
+| Task 3 | ⬜     | EAS build profile + release checklist (`expo prebuild` path)          |
 
 RN-first runnable surface over Sprint 19–20 facades and screens.
 
-**Tags:** `sprint21-task1`
+**Tags:** `sprint21-task1`, `sprint21-task2`
 
 ---
 

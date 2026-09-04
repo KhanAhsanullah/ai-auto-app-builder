@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Mobile host deep links + session** (Sprint 21 Task 2) — `@ai-commerce/mobile-host`
+  - `aicommerce://` / path deep links → `store.*` routes
+  - Guest `sessionId` persisted via AsyncStorage
+  - Docs: Expo vs bare RN CLI (`expo prebuild` later)
+
 - **Expo mobile host** (Sprint 21 Task 1) — `@ai-commerce/mobile-host`
   - Runnable Expo shell mounting `MobileAppRoot`
   - `createDemoMobileApp()` seeds in-memory grocery buy path for RN developers

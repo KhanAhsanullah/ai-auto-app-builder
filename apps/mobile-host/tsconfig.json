@@ -9,6 +9,6 @@
     "allowJs": true,
     "skipLibCheck": true
   },
-  "include": ["App.tsx", "index.js", "tests/**/*", "vitest.config.ts"],
+  "include": ["App.tsx", "index.js", "src/**/*", "tests/**/*", "vitest.config.ts"],
   "exclude": ["node_modules", ".expo"]
 }

@@ -2,35 +2,45 @@ import { useEffect, useState, type ComponentType, type ReactNode } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
+import AsyncStorageImport from '@react-native-async-storage/async-storage';
 
 import { createDemoMobileApp, type MobileApp } from '@ai-commerce/mobile-app';
 import { MobileAppRoot, type MobileAppRootProps } from '@ai-commerce/mobile-app/native';
 
+import { resolveGuestSessionId, type SessionStore } from './src/session-storage.js';
+import { useDeepLinkRoute } from './src/use-deep-link-route.js';
+
 // Dual @types/react (Expo vs workspace) can diverge on ReactNode; cast keeps host build clean.
 const AppRoot = MobileAppRoot as ComponentType<MobileAppRootProps>;
 
+// NodeNext resolves the CJS default export awkwardly; narrow to the SessionStore surface.
+const asyncStorage = AsyncStorageImport as unknown as SessionStore;
+
 /**
- * Expo host entry — boots an in-memory demo tenant and mounts `MobileAppRoot`.
+ * Expo host entry — demo tenant, persisted guest session, deep-link routes.
  */
 export default function App(): ReactNode {
   const [app, setApp] = useState<MobileApp | null>(null);
-  const [sessionId, setSessionId] = useState('mobile-demo');
+  const [sessionId, setSessionId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const { route: deepLinkRoute, setRoute } = useDeepLinkRoute();
 
   useEffect(() => {
     let cancelled = false;
-    void createDemoMobileApp()
-      .then((bundle) => {
+    void (async () => {
+      try {
+        const resolvedSession = await resolveGuestSessionId({ store: asyncStorage });
+        const bundle = await createDemoMobileApp({ sessionId: resolvedSession });
         if (!cancelled) {
-          setApp(bundle.app);
           setSessionId(bundle.sessionId);
+          setApp(bundle.app);
         }
-      })
-      .catch((err: unknown) => {
+      } catch (err: unknown) {
         if (!cancelled) {
           setError(err instanceof Error ? err.message : 'Failed to start demo store.');
         }
-      });
+      }
+    })();
     return () => {
       cancelled = true;
     };
@@ -41,16 +51,21 @@ export default function App(): ReactNode {
       <SafeAreaView style={styles.root} edges={['top', 'bottom']}>
         <StatusBar style="dark" />
         {error ? (
-          <View style={styles.centered}>
+          <View style={styles.centered} testID="mobile-host-error">
             <Text style={styles.error}>{error}</Text>
           </View>
-        ) : !app ? (
-          <View style={styles.centered}>
+        ) : !app || !sessionId ? (
+          <View style={styles.centered} testID="mobile-host-loading">
             <ActivityIndicator />
             <Text style={styles.muted}>Starting demo store…</Text>
           </View>
         ) : (
-          <AppRoot app={app} sessionId={sessionId} />
+          <AppRoot
+            app={app}
+            sessionId={sessionId}
+            activeRoute={deepLinkRoute}
+            onNavigate={setRoute}
+          />
         )}
       </SafeAreaView>
     </SafeAreaProvider>

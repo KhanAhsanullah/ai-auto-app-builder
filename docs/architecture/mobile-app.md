@@ -77,15 +77,18 @@ When modules are wired and no custom `renderScreen` is provided (Sprint 20):
 
 Guest session defaults to `mobile-guest` via `MobileAppRoot` `sessionId` prop.
 
-## Expo host (Sprint 21 Task 1)
+## Expo host (Sprint 21)
 
-Runnable shell: `@ai-commerce/mobile-host`.
+Runnable shell: `@ai-commerce/mobile-host` (Expo = React Native managed workflow).
 
 ```bash
 pnpm --filter @ai-commerce/mobile-host start
 ```
 
-`createDemoMobileApp()` seeds an in-memory grocery demo (config + catalog/cart/checkout/order/payment) and mounts `MobileAppRoot`.
+- Task 1: `createDemoMobileApp()` + `MobileAppRoot`
+- Task 2: persisted guest session (AsyncStorage) + deep links (`aicommerce://cart`, `/store/orders`, …)
+
+Bare RN CLI is deferred until EAS/`expo prebuild` (Task 3) — same RN screens, native folders generated when needed.
 
 ## Deferred
 
