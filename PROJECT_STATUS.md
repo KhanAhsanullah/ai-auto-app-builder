@@ -10,11 +10,7 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 **Sprint 21 — Mobile Host (Expo)** (in progress)
 
-Sprint 21 Task 2 complete — deep links + persisted guest session on the Expo host.
-
-**Branch:** `sprint/21/task2`
-
-**Next:** Task 3 — EAS build profile / `expo prebuild` release path.
+Tasks 1–2 on `main`. Next: Task 3 — EAS build profile / `expo prebuild` release path.
 
 ## Completed Tasks
 
@@ -26,8 +22,8 @@ Sprint 21 Task 2 complete — deep links + persisted guest session on the Expo h
 
 ## Current Progress
 
-- Sprints 1–21 Task 1 on `main`
-- **Mobile Host** Task 2 on branch
+- Sprints 1–21 Task 2 on `main`
+- Expo host runnable with session + deep links
 
 ## Next Tasks
 
@@ -48,8 +44,8 @@ sprint21-task2
 
 ## Health Status
 
-| Area       | Status      | Notes                                  |
-| ---------- | ----------- | -------------------------------------- |
-| Repository | ✅ Healthy  | Sprint 21 Task 2 on branch             |
-| Mobile RN  | 🟡 Runnable | Expo host; bare CLI via prebuild later |
-| Tests      | ✅ Passing  | Deep-link + session unit tests         |
+| Area       | Status      | Notes                              |
+| ---------- | ----------- | ---------------------------------- |
+| Repository | ✅ Healthy  | Sprint 21 Task 2 merged to `main`  |
+| Mobile RN  | 🟡 Runnable | Expo host; Task 3 = EAS / prebuild |
+| Tests      | ✅ Passing  | Deep-link + session unit tests     |
