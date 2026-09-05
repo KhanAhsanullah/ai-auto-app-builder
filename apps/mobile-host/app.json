@@ -7,12 +7,17 @@
     "userInterfaceStyle": "light",
     "scheme": "aicommerce",
     "platforms": ["ios", "android", "web"],
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "ai.commerce.mobilehost"
+      "bundleIdentifier": "ai.commerce.mobilehost",
+      "buildNumber": "1"
     },
     "android": {
       "package": "ai.commerce.mobilehost",
+      "versionCode": 1,
       "intentFilters": [
         {
           "action": "VIEW",

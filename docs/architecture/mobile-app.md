@@ -87,12 +87,13 @@ pnpm --filter @ai-commerce/mobile-host start
 
 - Task 1: `createDemoMobileApp()` + `MobileAppRoot`
 - Task 2: persisted guest session (AsyncStorage) + deep links (`aicommerce://cart`, `/store/orders`, …)
+- Task 3: `eas.json` profiles + `expo prebuild` / [RELEASE.md](../../apps/mobile-host/RELEASE.md) checklist
 
-Bare RN CLI is deferred until EAS/`expo prebuild` (Task 3) — same RN screens, native folders generated when needed.
+Bare RN CLI workflow = `pnpm --filter @ai-commerce/mobile-host prebuild` (generates `ios/` / `android/`).
 
 ## Deferred
 
-- Native store builds / EAS production profiles
 - Push notification provider wiring
 - Live IdP session binding
 - Full theme compile at render time
+- Real DB / payment gateways behind the demo host

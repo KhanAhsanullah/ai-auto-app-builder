@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **EAS / prebuild release path** (Sprint 21 Task 3) — `@ai-commerce/mobile-host`
+  - `eas.json` profiles: development (dev client), preview, production
+  - `expo prebuild` / `prebuild:clean` scripts; `ios/` `android/` gitignored
+  - [RELEASE.md](apps/mobile-host/RELEASE.md) checklist for store / internal binaries
+
 - **Mobile host deep links + session** (Sprint 21 Task 2) — `@ai-commerce/mobile-host`
   - `aicommerce://` / path deep links → `store.*` routes
   - Guest `sessionId` persisted via AsyncStorage
