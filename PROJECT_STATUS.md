@@ -10,9 +10,7 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 **Sprint 22 — Durable Mobile Demo** (in progress)
 
-Task 2: reset/clear demo + snapshot export on the Expo host.
-
-**Branch:** `sprint/22/task2`
+Tasks 1–2 on `main`. Next: Task 3 — SQLite / local path beyond AsyncStorage.
 
 ## Completed Tasks
 
@@ -24,8 +22,8 @@ Task 2: reset/clear demo + snapshot export on the Expo host.
 
 ## Current Progress
 
-- Sprints 1–21 + Sprint 22 Task 1 on `main`
-- **Durable demo** Task 2 on branch
+- Sprints 1–21 + Sprint 22 Tasks 1–2 on `main`
+- Demo reset/export controls available on Expo host
 
 ## Next Tasks
 
@@ -48,6 +46,6 @@ sprint22-task2
 
 | Area       | Status        | Notes                                   |
 | ---------- | ------------- | --------------------------------------- |
-| Repository | ✅ Healthy    | Sprint 22 Task 2 on branch              |
+| Repository | ✅ Healthy    | Sprint 22 Task 2 merged to `main`       |
 | Mobile RN  | 🟡 End-result | Durable demo + reset/export controls    |
 | Tests      | ✅ Passing    | Clear + reseed + session clear coverage |
