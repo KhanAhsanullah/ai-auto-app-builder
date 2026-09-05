@@ -1,4 +1,11 @@
-import { useCallback, useEffect, useState, type ComponentType, type ReactNode } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ComponentType,
+  type ReactNode,
+} from 'react';
 import { ActivityIndicator, Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
@@ -15,6 +22,7 @@ import {
 } from '@ai-commerce/mobile-app';
 import { MobileAppRoot, type MobileAppRootProps } from '@ai-commerce/mobile-app/native';
 
+import { openDemoDurableStore, type DemoDurableBackend } from './src/open-demo-store.js';
 import {
   clearGuestSession,
   resolveGuestSessionId,
@@ -28,10 +36,14 @@ const AppRoot = MobileAppRoot as ComponentType<MobileAppRootProps>;
 // NodeNext resolves the CJS default export awkwardly; narrow to storage surfaces.
 const asyncStorage = AsyncStorageImport as unknown as SessionStore & DemoSnapshotStore;
 
+type DurableStore = SessionStore & DemoSnapshotStore;
+
 /**
- * Expo host — demo tenant with durable commerce snapshot + reset/export controls.
+ * Expo host — SQLite-backed durable demo (AsyncStorage fallback) + reset/export.
  */
 export default function App(): ReactNode {
+  const storeRef = useRef<DurableStore | null>(null);
+  const [backend, setBackend] = useState<DemoDurableBackend | null>(null);
   const [app, setApp] = useState<MobileApp | null>(null);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -40,17 +52,22 @@ export default function App(): ReactNode {
 
   const boot = useCallback(
     async (opts?: { clearFirst?: boolean }) => {
+      const store = storeRef.current;
+      if (!store) {
+        setError('Durable store is not ready.');
+        return;
+      }
       setBusy(true);
       setError(null);
       try {
         if (opts?.clearFirst) {
-          await clearDemoSnapshot(asyncStorage);
-          await clearGuestSession(asyncStorage);
+          await clearDemoSnapshot(store);
+          await clearGuestSession(store);
         }
-        const resolvedSession = await resolveGuestSessionId({ store: asyncStorage });
+        const resolvedSession = await resolveGuestSessionId({ store });
         const bundle = await createDemoMobileApp({
           sessionId: resolvedSession,
-          snapshotStore: asyncStorage,
+          snapshotStore: store,
         });
         setSessionId(bundle.sessionId);
         setApp(bundle.app);
@@ -70,10 +87,16 @@ export default function App(): ReactNode {
     let cancelled = false;
     void (async () => {
       try {
-        const resolvedSession = await resolveGuestSessionId({ store: asyncStorage });
+        const opened = await openDemoDurableStore({ asyncStorage });
+        if (cancelled) {
+          return;
+        }
+        storeRef.current = opened.store;
+        setBackend(opened.backend);
+        const resolvedSession = await resolveGuestSessionId({ store: opened.store });
         const bundle = await createDemoMobileApp({
           sessionId: resolvedSession,
-          snapshotStore: asyncStorage,
+          snapshotStore: opened.store,
         });
         if (!cancelled) {
           setSessionId(bundle.sessionId);
@@ -109,8 +132,13 @@ export default function App(): ReactNode {
 
   const onExportSnapshot = useCallback(() => {
     void (async () => {
+      const store = storeRef.current;
+      if (!store) {
+        Alert.alert('Export', 'Store is not ready.');
+        return;
+      }
       try {
-        const json = await exportDemoSnapshot(asyncStorage);
+        const json = await exportDemoSnapshot(store);
         if (!json) {
           Alert.alert('Export', 'No demo snapshot saved yet.');
           return;
@@ -161,6 +189,11 @@ export default function App(): ReactNode {
             >
               <Text style={styles.exportBtnText}>Export</Text>
             </Pressable>
+            {backend ? (
+              <Text style={styles.backend} testID="mobile-host-storage-backend">
+                {backend === 'sqlite' ? 'SQLite' : 'AsyncStorage'}
+              </Text>
+            ) : null}
           </View>
         ) : null}
         {error ? (
@@ -200,6 +233,7 @@ const styles = StyleSheet.create({
   },
   toolbar: {
     flexDirection: 'row',
+    alignItems: 'center',
     gap: 8,
     paddingHorizontal: 12,
     paddingVertical: 8,
@@ -230,6 +264,12 @@ const styles = StyleSheet.create({
     color: '#1d4ed8',
     fontWeight: '600',
     fontSize: 13,
+  },
+  backend: {
+    marginLeft: 'auto',
+    fontSize: 11,
+    color: '#94a3b8',
+    fontWeight: '600',
   },
   centered: {
     flex: 1,

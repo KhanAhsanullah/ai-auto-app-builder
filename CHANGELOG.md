@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **SQLite durable demo store** (Sprint 22 Task 3) — `@ai-commerce/mobile-host`
+  - `expo-sqlite` KV table for snapshot + guest session
+  - One-time migrate from AsyncStorage; AsyncStorage fallback if SQLite open fails
+  - Toolbar backend label (`SQLite` / `AsyncStorage`)
+
 - **Reset demo + snapshot export** (Sprint 22 Task 2) — `@ai-commerce/mobile-app` + host
   - `clearDemoSnapshot` / `exportDemoSnapshot` / `summarizeDemoSnapshot`
   - Host toolbar: Reset demo (clears snapshot + guest session, reseeds) and Export (Metro logs)

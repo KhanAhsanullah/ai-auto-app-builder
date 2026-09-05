@@ -17,6 +17,7 @@ describe('@ai-commerce/mobile-host package', () => {
     expect(pkg.main).toBe('index.js');
     expect(pkg.dependencies['@ai-commerce/mobile-app']).toBe('workspace:*');
     expect(pkg.dependencies.expo).toBeTruthy();
+    expect(pkg.dependencies['expo-sqlite']).toBeTruthy();
     expect(pkg.dependencies['react-native']).toBeTruthy();
   });
 });

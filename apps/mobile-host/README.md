@@ -48,7 +48,9 @@ Guest `sessionId` is stored in AsyncStorage so the same cart identity is reused.
 
 ### Durable demo data (Sprint 22)
 
-Catalog, cart, checkout, orders, and payments are snapshotted to AsyncStorage after each write. Cold-start restores the last buy-path state (not wiped on every launch).
+Catalog, cart, checkout, orders, and payments are snapshotted after each write.
+
+**Storage backend (Task 3):** prefers **SQLite** (`expo-sqlite`, `ai-commerce-demo.db` `kv` table). On first launch, migrates snapshot + guest session from AsyncStorage. Falls back to AsyncStorage if SQLite cannot open. Toolbar shows `SQLite` or `AsyncStorage`.
 
 Toolbar controls:
 

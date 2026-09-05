@@ -30,6 +30,7 @@
           "category": ["BROWSABLE", "DEFAULT"]
         }
       ]
-    }
+    },
+    "plugins": ["expo-sqlite"]
   }
 }

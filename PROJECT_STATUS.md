@@ -8,9 +8,11 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 22 — Durable Mobile Demo** (in progress)
+**Sprint 22 — Durable Mobile Demo** (complete on branch)
 
-Tasks 1–2 on `main`. Next: Task 3 — SQLite / local path beyond AsyncStorage.
+Task 3: SQLite durable demo store beyond AsyncStorage.
+
+**Branch:** `sprint/22/task3`
 
 ## Completed Tasks
 
@@ -19,33 +21,34 @@ Tasks 1–2 on `main`. Next: Task 3 — SQLite / local path beyond AsyncStorage.
 | Sprint 1–21 ✅      | Foundation through Expo mobile host  | `sprint*-task*`  |
 | Sprint 22 Task 1 ✅ | Durable demo snapshot (AsyncStorage) | `sprint22-task1` |
 | Sprint 22 Task 2 ✅ | Reset demo + export snapshot         | `sprint22-task2` |
+| Sprint 22 Task 3 ✅ | SQLite store + AsyncStorage migrate  | `sprint22-task3` |
 
 ## Current Progress
 
 - Sprints 1–21 + Sprint 22 Tasks 1–2 on `main`
-- Demo reset/export controls available on Expo host
+- **Durable demo** Task 3 on branch (Sprint 22 complete)
 
 ## Next Tasks
 
-1. Sprint 22 Task 3 — thin local HTTP API or SQLite beyond AsyncStorage
-2. Real backend persistence / web host when ready
+1. Real backend persistence / payment gateways
+2. Web store host when ready
 
 ## Latest Commit
 
 ```
-feat(mobile-host): add reset demo and snapshot export (Sprint 22 Task 2)
+feat(mobile-host): persist demo state in SQLite (Sprint 22 Task 3)
 ```
 
 ## Latest Tag
 
 ```
-sprint22-task2
+sprint22-task3
 ```
 
 ## Health Status
 
-| Area       | Status        | Notes                                   |
-| ---------- | ------------- | --------------------------------------- |
-| Repository | ✅ Healthy    | Sprint 22 Task 2 merged to `main`       |
-| Mobile RN  | 🟡 End-result | Durable demo + reset/export controls    |
-| Tests      | ✅ Passing    | Clear + reseed + session clear coverage |
+| Area       | Status        | Notes                                       |
+| ---------- | ------------- | ------------------------------------------- |
+| Repository | ✅ Healthy    | Sprint 22 Task 3 on branch                  |
+| Mobile RN  | 🟡 End-result | SQLite demo durability + reset/export       |
+| Tests      | ✅ Passing    | SQLite KV + migrate + AsyncStorage fallback |
