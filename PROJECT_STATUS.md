@@ -8,11 +8,9 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 21 — Mobile Host (Expo)** ✅ complete (Task 3 on branch)
+**Sprint 21 — Mobile Host (Expo)** ✅ complete (on `main`)
 
-EAS profiles + `expo prebuild` release path documented; next roadmap item is post–Sprint 21 (persistence / stubs / web host).
-
-**Branch:** `sprint/21/task3`
+Expo host + deep links/session + EAS/`prebuild` release path. Next: persistence, remaining core stubs, or web host.
 
 ## Completed Tasks
 
@@ -25,13 +23,14 @@ EAS profiles + `expo prebuild` release path documented; next roadmap item is pos
 
 ## Current Progress
 
-- Sprints 1–21 Task 2 on `main`
-- **Mobile Host** Task 3 on branch — release path ready
+- Sprints 1–21 on `main`
+- RN buy-path runnable via Expo; store binaries via EAS/prebuild
 
 ## Next Tasks
 
-1. Merge Sprint 21 Task 3 to `main`
-2. Next sprint: real persistence, remaining core stubs, or web host
+1. Real persistence / payment gateways, or
+2. Remaining core stubs (customer/inventory), or
+3. Web store host (Vite/Next)
 
 ## Latest Commit
 
@@ -47,8 +46,8 @@ sprint21-task3
 
 ## Health Status
 
-| Area       | Status     | Notes                                       |
-| ---------- | ---------- | ------------------------------------------- |
-| Repository | ✅ Healthy | Sprint 21 Task 3 on branch                  |
-| Mobile RN  | ✅ Hosted  | Expo + EAS/prebuild path; demo still in-mem |
-| Tests      | ✅ Passing | EAS config + deep-link/session tests        |
+| Area       | Status     | Notes                                     |
+| ---------- | ---------- | ----------------------------------------- |
+| Repository | ✅ Healthy | Sprint 21 complete on `main`              |
+| Mobile RN  | ✅ Hosted  | Expo + EAS/prebuild; demo still in-memory |
+| Tests      | ✅ Passing | Host + surface + screen tests             |
