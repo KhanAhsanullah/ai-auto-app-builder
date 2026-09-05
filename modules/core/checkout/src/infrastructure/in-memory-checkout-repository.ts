@@ -61,4 +61,17 @@ export class InMemoryCheckoutRepository implements CheckoutRepository {
       .filter((session) => session.tenantId === tenantId)
       .map((session) => structuredClone(session));
   }
+
+  /** Snapshot all checkout sessions (demo persistence / tests). */
+  dump(): CheckoutSession[] {
+    return [...this.sessions.values()].map((session) => structuredClone(session));
+  }
+
+  /** Replace all sessions from a snapshot. */
+  hydrate(sessions: readonly CheckoutSession[]): void {
+    this.sessions.clear();
+    for (const session of sessions) {
+      this.sessions.set(sessionKey(session.tenantId, session.id), structuredClone(session));
+    }
+  }
 }

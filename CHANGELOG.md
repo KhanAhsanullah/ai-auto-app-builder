@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Durable mobile demo snapshot** (Sprint 22 Task 1) — `@ai-commerce/mobile-app` + host
+  - Catalog/cart/checkout/order/payment survive Expo cold starts via AsyncStorage snapshot
+  - In-memory repos gain `dump` / `hydrate` for demo persistence
+  - `createDemoMobileApp({ snapshotStore })` restore path
+
 - **EAS / prebuild release path** (Sprint 21 Task 3) — `@ai-commerce/mobile-host`
   - `eas.json` profiles: development (dev client), preview, production
   - `expo prebuild` / `prebuild:clean` scripts; `ios/` `android/` gitignored

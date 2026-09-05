@@ -284,6 +284,20 @@ RN-first runnable surface over Sprint 19–20 facades and screens.
 
 ---
 
+## Sprint 22 — Durable Mobile Demo
+
+| Task   | Status | Deliverable                                                           |
+| ------ | ------ | --------------------------------------------------------------------- |
+| Task 1 | ✅     | Persist demo catalog/cart/checkout/order/payment across Expo restarts |
+| Task 2 | ⬜     | Clear-demo / reset controls + optional export                         |
+| Task 3 | ⬜     | Thin local HTTP API or SQLite path (beyond AsyncStorage snapshot)     |
+
+End-result focus: RN host keeps buy-path state after cold start (not just session id).
+
+**Tags:** `sprint22-task1`
+
+---
+
 ## Sprint Conventions
 
 - Each sprint task is committed with a Conventional Commit referencing the sprint and task number

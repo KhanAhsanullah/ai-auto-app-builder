@@ -48,6 +48,12 @@ export type {
   CreateDemoMobileAppOptions,
   DemoMobileAppBundle,
 } from './infrastructure/create-demo-mobile-app.js';
+export {
+  DEMO_SNAPSHOT_KEY,
+  createMemoryDemoSnapshotStore,
+  parseDemoSnapshot,
+} from './demo/demo-snapshot.js';
+export type { DemoCommerceSnapshot, DemoSnapshotStore } from './demo/demo-snapshot.js';
 export type {
   MobileNavItem,
   MobileNavStyle,

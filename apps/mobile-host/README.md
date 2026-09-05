@@ -44,7 +44,11 @@ Examples:
 
 ### Session
 
-Guest `sessionId` is stored in AsyncStorage so cart survives app reloads (in-memory commerce data still resets until a real backend exists).
+Guest `sessionId` is stored in AsyncStorage so the same cart identity is reused.
+
+### Durable demo data (Sprint 22)
+
+Catalog, cart, checkout, orders, and payments are snapshotted to AsyncStorage after each write. Cold-start restores the last buy-path state (not wiped on every launch).
 
 ## Native / EAS (Task 3)
 

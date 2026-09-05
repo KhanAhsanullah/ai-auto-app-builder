@@ -65,4 +65,17 @@ export class InMemoryOrderRepository implements OrderRepository {
       .filter((order) => order.tenantId === tenantId && order.status === status)
       .map((order) => structuredClone(order));
   }
+
+  /** Snapshot all orders (demo persistence / tests). */
+  dump(): Order[] {
+    return [...this.orders.values()].map((order) => structuredClone(order));
+  }
+
+  /** Replace all orders from a snapshot. */
+  hydrate(orders: readonly Order[]): void {
+    this.orders.clear();
+    for (const order of orders) {
+      this.orders.set(orderKey(order.tenantId, order.id), structuredClone(order));
+    }
+  }
 }

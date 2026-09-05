@@ -8,46 +8,45 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 21 — Mobile Host (Expo)** ✅ complete (on `main`)
+**Sprint 22 — Durable Mobile Demo** (in progress)
 
-Expo host + deep links/session + EAS/`prebuild` release path. Next: persistence, remaining core stubs, or web host.
+Task 1: demo commerce snapshot survives Expo cold starts (cart/orders keep working after restart).
+
+**Branch:** `sprint/22/task1`
 
 ## Completed Tasks
 
-| Task                | Description                            | Commit Tag       |
-| ------------------- | -------------------------------------- | ---------------- |
-| Sprint 1–20 ✅      | Foundation through commerce screens    | `sprint*-task*`  |
-| Sprint 21 Task 1 ✅ | Expo mobile-host + createDemoMobileApp | `sprint21-task1` |
-| Sprint 21 Task 2 ✅ | Deep links + session persistence       | `sprint21-task2` |
-| Sprint 21 Task 3 ✅ | EAS profiles + prebuild + RELEASE.md   | `sprint21-task3` |
+| Task                | Description                          | Commit Tag       |
+| ------------------- | ------------------------------------ | ---------------- |
+| Sprint 1–21 ✅      | Foundation through Expo mobile host  | `sprint*-task*`  |
+| Sprint 22 Task 1 ✅ | Durable demo snapshot (AsyncStorage) | `sprint22-task1` |
 
 ## Current Progress
 
 - Sprints 1–21 on `main`
-- RN buy-path runnable via Expo; store binaries via EAS/prebuild
+- **Durable demo** Task 1 on branch
 
 ## Next Tasks
 
-1. Real persistence / payment gateways, or
-2. Remaining core stubs (customer/inventory), or
-3. Web store host (Vite/Next)
+1. Sprint 22 Task 2 — reset/clear demo controls
+2. Real backend persistence / web host when ready
 
 ## Latest Commit
 
 ```
-feat(mobile-host): add EAS profiles and prebuild release path (Sprint 21 Task 3)
+feat(mobile-app): persist demo commerce snapshot across restarts (Sprint 22 Task 1)
 ```
 
 ## Latest Tag
 
 ```
-sprint21-task3
+sprint22-task1
 ```
 
 ## Health Status
 
-| Area       | Status     | Notes                                     |
-| ---------- | ---------- | ----------------------------------------- |
-| Repository | ✅ Healthy | Sprint 21 complete on `main`              |
-| Mobile RN  | ✅ Hosted  | Expo + EAS/prebuild; demo still in-memory |
-| Tests      | ✅ Passing | Host + surface + screen tests             |
+| Area       | Status        | Notes                                   |
+| ---------- | ------------- | --------------------------------------- |
+| Repository | ✅ Healthy    | Sprint 22 Task 1 on branch              |
+| Mobile RN  | 🟡 End-result | Buy path + durable demo state on device |
+| Tests      | ✅ Passing    | Snapshot restore round-trip             |

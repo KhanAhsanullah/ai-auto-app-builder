@@ -59,4 +59,17 @@ export class InMemoryPaymentRepository implements PaymentRepository {
       .filter((intent) => intent.tenantId === tenantId && intent.status === status)
       .map((intent) => structuredClone(intent));
   }
+
+  /** Snapshot all payment intents (demo persistence / tests). */
+  dump(): PaymentIntent[] {
+    return [...this.intents.values()].map((intent) => structuredClone(intent));
+  }
+
+  /** Replace all intents from a snapshot. */
+  hydrate(intents: readonly PaymentIntent[]): void {
+    this.intents.clear();
+    for (const intent of intents) {
+      this.intents.set(intentKey(intent.tenantId, intent.id), structuredClone(intent));
+    }
+  }
 }

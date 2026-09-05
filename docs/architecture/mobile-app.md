@@ -89,6 +89,8 @@ pnpm --filter @ai-commerce/mobile-host start
 - Task 2: persisted guest session (AsyncStorage) + deep links (`aicommerce://cart`, `/store/orders`, …)
 - Task 3: `eas.json` profiles + `expo prebuild` / [RELEASE.md](../../apps/mobile-host/RELEASE.md) checklist
 
+Durable demo (Sprint 22): `createDemoMobileApp({ snapshotStore })` persists commerce state across restarts.
+
 Bare RN CLI workflow = `pnpm --filter @ai-commerce/mobile-host prebuild` (generates `ios/` / `android/`).
 
 ## Deferred

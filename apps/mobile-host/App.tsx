@@ -4,7 +4,11 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import AsyncStorageImport from '@react-native-async-storage/async-storage';
 
-import { createDemoMobileApp, type MobileApp } from '@ai-commerce/mobile-app';
+import {
+  createDemoMobileApp,
+  type DemoSnapshotStore,
+  type MobileApp,
+} from '@ai-commerce/mobile-app';
 import { MobileAppRoot, type MobileAppRootProps } from '@ai-commerce/mobile-app/native';
 
 import { resolveGuestSessionId, type SessionStore } from './src/session-storage.js';
@@ -13,11 +17,11 @@ import { useDeepLinkRoute } from './src/use-deep-link-route.js';
 // Dual @types/react (Expo vs workspace) can diverge on ReactNode; cast keeps host build clean.
 const AppRoot = MobileAppRoot as ComponentType<MobileAppRootProps>;
 
-// NodeNext resolves the CJS default export awkwardly; narrow to the SessionStore surface.
-const asyncStorage = AsyncStorageImport as unknown as SessionStore;
+// NodeNext resolves the CJS default export awkwardly; narrow to storage surfaces.
+const asyncStorage = AsyncStorageImport as unknown as SessionStore & DemoSnapshotStore;
 
 /**
- * Expo host entry — demo tenant, persisted guest session, deep-link routes.
+ * Expo host — demo tenant with durable commerce snapshot + deep links.
  */
 export default function App(): ReactNode {
   const [app, setApp] = useState<MobileApp | null>(null);
@@ -30,7 +34,10 @@ export default function App(): ReactNode {
     void (async () => {
       try {
         const resolvedSession = await resolveGuestSessionId({ store: asyncStorage });
-        const bundle = await createDemoMobileApp({ sessionId: resolvedSession });
+        const bundle = await createDemoMobileApp({
+          sessionId: resolvedSession,
+          snapshotStore: asyncStorage,
+        });
         if (!cancelled) {
           setSessionId(bundle.sessionId);
           setApp(bundle.app);

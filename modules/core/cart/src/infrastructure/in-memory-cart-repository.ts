@@ -54,4 +54,17 @@ export class InMemoryCartRepository implements CartRepository {
     }
     return undefined;
   }
+
+  /** Snapshot all carts (demo persistence / tests). */
+  dump(): Cart[] {
+    return [...this.carts.values()].map((cart) => structuredClone(cart));
+  }
+
+  /** Replace all carts from a snapshot. */
+  hydrate(carts: readonly Cart[]): void {
+    this.carts.clear();
+    for (const cart of carts) {
+      this.carts.set(cartKey(cart.tenantId, cart.id), structuredClone(cart));
+    }
+  }
 }

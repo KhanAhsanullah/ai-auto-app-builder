@@ -109,4 +109,26 @@ export class InMemoryCatalogRepository implements CatalogRepository {
     }
     return undefined;
   }
+
+  /** Snapshot all products (demo persistence / tests). */
+  dumpProducts(): Product[] {
+    return [...this.products.values()].map((product) => structuredClone(product));
+  }
+
+  /** Snapshot all categories (demo persistence / tests). */
+  dumpCategories(): Category[] {
+    return [...this.categories.values()].map((category) => structuredClone(category));
+  }
+
+  /** Replace catalog rows from a snapshot. */
+  hydrate(input: { products?: readonly Product[]; categories?: readonly Category[] }): void {
+    this.products.clear();
+    this.categories.clear();
+    for (const category of input.categories ?? []) {
+      this.categories.set(categoryKey(category.tenantId, category.id), structuredClone(category));
+    }
+    for (const product of input.products ?? []) {
+      this.products.set(productKey(product.tenantId, product.id), structuredClone(product));
+    }
+  }
 }
