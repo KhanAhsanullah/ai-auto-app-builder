@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  clearGuestSession,
   createMemorySessionStore,
   MOBILE_HOST_SESSION_KEY,
   resolveGuestSessionId,
@@ -34,5 +35,18 @@ describe('resolveGuestSessionId', () => {
     });
     expect(id).toBe('preferred-session');
     await expect(store.getItem(MOBILE_HOST_SESSION_KEY)).resolves.toBe('preferred-session');
+  });
+
+  it('creates a new session after clearGuestSession', async () => {
+    const store = createMemorySessionStore({
+      [MOBILE_HOST_SESSION_KEY]: 'stale-session',
+    });
+    await clearGuestSession(store);
+    await expect(store.getItem(MOBILE_HOST_SESSION_KEY)).resolves.toBeNull();
+    const id = await resolveGuestSessionId({
+      store,
+      createId: () => 'after-clear',
+    });
+    expect(id).toBe('after-clear');
   });
 });

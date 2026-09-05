@@ -10,7 +10,9 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 **Sprint 22 — Durable Mobile Demo** (in progress)
 
-Task 1 on `main`. Next: Task 2 — reset/clear demo controls.
+Task 2: reset/clear demo + snapshot export on the Expo host.
+
+**Branch:** `sprint/22/task2`
 
 ## Completed Tasks
 
@@ -18,33 +20,34 @@ Task 1 on `main`. Next: Task 2 — reset/clear demo controls.
 | ------------------- | ------------------------------------ | ---------------- |
 | Sprint 1–21 ✅      | Foundation through Expo mobile host  | `sprint*-task*`  |
 | Sprint 22 Task 1 ✅ | Durable demo snapshot (AsyncStorage) | `sprint22-task1` |
+| Sprint 22 Task 2 ✅ | Reset demo + export snapshot         | `sprint22-task2` |
 
 ## Current Progress
 
 - Sprints 1–21 + Sprint 22 Task 1 on `main`
-- Demo cart/orders survive Expo cold starts
+- **Durable demo** Task 2 on branch
 
 ## Next Tasks
 
-1. Sprint 22 Task 2 — reset/clear demo controls
+1. Sprint 22 Task 3 — thin local HTTP API or SQLite beyond AsyncStorage
 2. Real backend persistence / web host when ready
 
 ## Latest Commit
 
 ```
-feat(mobile-app): persist demo commerce snapshot across restarts (Sprint 22 Task 1)
+feat(mobile-host): add reset demo and snapshot export (Sprint 22 Task 2)
 ```
 
 ## Latest Tag
 
 ```
-sprint22-task1
+sprint22-task2
 ```
 
 ## Health Status
 
 | Area       | Status        | Notes                                   |
 | ---------- | ------------- | --------------------------------------- |
-| Repository | ✅ Healthy    | Sprint 22 Task 1 merged to `main`       |
-| Mobile RN  | 🟡 End-result | Buy path + durable demo state on device |
-| Tests      | ✅ Passing    | Snapshot restore round-trip             |
+| Repository | ✅ Healthy    | Sprint 22 Task 2 on branch              |
+| Mobile RN  | 🟡 End-result | Durable demo + reset/export controls    |
+| Tests      | ✅ Passing    | Clear + reseed + session clear coverage |

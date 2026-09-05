@@ -8,7 +8,7 @@ import { parseDeepLinkRoute, type DeepLinkRoute } from './deep-link.js';
  */
 export function useDeepLinkRoute(initialRoute?: string): {
   route: string | undefined;
-  setRoute: (route: string) => void;
+  setRoute: (route: string | undefined) => void;
 } {
   const [route, setRoute] = useState<string | undefined>(initialRoute);
 
@@ -37,6 +37,6 @@ export function useDeepLinkRoute(initialRoute?: string): {
 
   return {
     route,
-    setRoute: (next: string) => setRoute(next as DeepLinkRoute | string),
+    setRoute: (next) => setRoute(next as DeepLinkRoute | string | undefined),
   };
 }

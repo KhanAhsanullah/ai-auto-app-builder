@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Reset demo + snapshot export** (Sprint 22 Task 2) — `@ai-commerce/mobile-app` + host
+  - `clearDemoSnapshot` / `exportDemoSnapshot` / `summarizeDemoSnapshot`
+  - Host toolbar: Reset demo (clears snapshot + guest session, reseeds) and Export (Metro logs)
+  - `clearGuestSession` on the Expo host session store
+
 - **Durable mobile demo snapshot** (Sprint 22 Task 1) — `@ai-commerce/mobile-app` + host
   - Catalog/cart/checkout/order/payment survive Expo cold starts via AsyncStorage snapshot
   - In-memory repos gain `dump` / `hydrate` for demo persistence

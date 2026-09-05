@@ -50,8 +50,11 @@ export type {
 } from './infrastructure/create-demo-mobile-app.js';
 export {
   DEMO_SNAPSHOT_KEY,
+  clearDemoSnapshot,
   createMemoryDemoSnapshotStore,
+  exportDemoSnapshot,
   parseDemoSnapshot,
+  summarizeDemoSnapshot,
 } from './demo/demo-snapshot.js';
 export type { DemoCommerceSnapshot, DemoSnapshotStore } from './demo/demo-snapshot.js';
 export type {

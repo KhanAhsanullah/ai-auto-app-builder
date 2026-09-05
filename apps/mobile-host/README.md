@@ -50,6 +50,11 @@ Guest `sessionId` is stored in AsyncStorage so the same cart identity is reused.
 
 Catalog, cart, checkout, orders, and payments are snapshotted to AsyncStorage after each write. Cold-start restores the last buy-path state (not wiped on every launch).
 
+Toolbar controls:
+
+- **Reset demo** — clears snapshot + guest session, reseeds catalog
+- **Export** — summarizes the snapshot and prints JSON to Metro logs
+
 ## Native / EAS (Task 3)
 
 ```bash
