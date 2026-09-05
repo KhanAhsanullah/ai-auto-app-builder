@@ -8,30 +8,27 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 22 — Durable Mobile Demo** (complete on branch)
+**Sprint 23 — Web Store Host** (starting)
 
-Task 3: SQLite durable demo store beyond AsyncStorage.
-
-**Branch:** `sprint/22/task3`
+Sprint 22 complete on `main`. Next: runnable Vite host for `@ai-commerce/web-store` (browser buy path).
 
 ## Completed Tasks
 
-| Task                | Description                          | Commit Tag       |
-| ------------------- | ------------------------------------ | ---------------- |
-| Sprint 1–21 ✅      | Foundation through Expo mobile host  | `sprint*-task*`  |
-| Sprint 22 Task 1 ✅ | Durable demo snapshot (AsyncStorage) | `sprint22-task1` |
-| Sprint 22 Task 2 ✅ | Reset demo + export snapshot         | `sprint22-task2` |
-| Sprint 22 Task 3 ✅ | SQLite store + AsyncStorage migrate  | `sprint22-task3` |
+| Task           | Description                          | Commit Tag       |
+| -------------- | ------------------------------------ | ---------------- |
+| Sprint 1–21 ✅ | Foundation through Expo mobile host  | `sprint*-task*`  |
+| Sprint 22 ✅   | Durable mobile demo (SQLite + reset) | `sprint22-task*` |
 
 ## Current Progress
 
-- Sprints 1–21 + Sprint 22 Tasks 1–2 on `main`
-- **Durable demo** Task 3 on branch (Sprint 22 complete)
+- Sprints 1–22 on `main`
+- Mobile RN demo: buy path + SQLite durability + reset/export
 
 ## Next Tasks
 
-1. Real backend persistence / payment gateways
-2. Web store host when ready
+1. Sprint 23 Task 1 — Vite `@ai-commerce/web-host` + `createDemoWebStore`
+2. Sprint 23 Task 2 — localStorage session + durable snapshot
+3. Real backend / payment gateways when ready
 
 ## Latest Commit
 
@@ -47,8 +44,9 @@ sprint22-task3
 
 ## Health Status
 
-| Area       | Status        | Notes                                       |
-| ---------- | ------------- | ------------------------------------------- |
-| Repository | ✅ Healthy    | Sprint 22 Task 3 on branch                  |
-| Mobile RN  | 🟡 End-result | SQLite demo durability + reset/export       |
-| Tests      | ✅ Passing    | SQLite KV + migrate + AsyncStorage fallback |
+| Area       | Status        | Notes                                  |
+| ---------- | ------------- | -------------------------------------- |
+| Repository | ✅ Healthy    | Sprint 22 merged to `main`             |
+| Mobile RN  | 🟡 End-result | Durable demo complete                  |
+| Web        | 🟡 Next       | Library ready; dedicated host starting |
+| Tests      | ✅ Passing    | SQLite KV + migrate + fallback         |
