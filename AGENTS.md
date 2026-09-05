@@ -8,7 +8,7 @@ Guidelines for AI assistants working on CommerceOS AI. Read this file before mak
 
 **CommerceOS AI** (`ai-commerce-platform`) is a configuration-driven, multi-tenant white-label commerce SaaS platform. It enables agencies, enterprises, and vertical operators to launch branded commerce experiences — Admin Dashboard, Web Store, Mobile App, and API Backend — from a single JSON Schema configuration contract.
 
-**Current state:** Sprint 22 Task 1 (durable mobile demo snapshot) on branch `sprint/22/task1`. Sprints 1–21 on `main`.
+**Current state:** Sprint 22 Task 1 (durable mobile demo snapshot) on `main`. Next: Task 2 — reset/clear demo controls.
 
 **Key packages (Sprint 1 deliverables):**
 

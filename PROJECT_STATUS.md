@@ -10,9 +10,7 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 **Sprint 22 — Durable Mobile Demo** (in progress)
 
-Task 1: demo commerce snapshot survives Expo cold starts (cart/orders keep working after restart).
-
-**Branch:** `sprint/22/task1`
+Task 1 on `main`. Next: Task 2 — reset/clear demo controls.
 
 ## Completed Tasks
 
@@ -23,8 +21,8 @@ Task 1: demo commerce snapshot survives Expo cold starts (cart/orders keep worki
 
 ## Current Progress
 
-- Sprints 1–21 on `main`
-- **Durable demo** Task 1 on branch
+- Sprints 1–21 + Sprint 22 Task 1 on `main`
+- Demo cart/orders survive Expo cold starts
 
 ## Next Tasks
 
@@ -47,6 +45,6 @@ sprint22-task1
 
 | Area       | Status        | Notes                                   |
 | ---------- | ------------- | --------------------------------------- |
-| Repository | ✅ Healthy    | Sprint 22 Task 1 on branch              |
+| Repository | ✅ Healthy    | Sprint 22 Task 1 merged to `main`       |
 | Mobile RN  | 🟡 End-result | Buy path + durable demo state on device |
 | Tests      | ✅ Passing    | Snapshot restore round-trip             |
