@@ -9,12 +9,14 @@ Config-driven consumer web storefront for CommerceOS AI — resolve tenant confi
 ## Status
 
 Sprint 11 complete — facade + shell. Sprint 20 complete — catalog/cart/checkout/payment/orders screens.
+Sprint 23 Task 1 — `createDemoWebStore` + runnable `@ai-commerce/web-host` (Vite).
 
 ## Modules
 
 | Module                      | Purpose                                           |
 | --------------------------- | ------------------------------------------------- |
 | `createWebStore`            | Config → shell + registry facade                  |
+| `createDemoWebStore`        | Seeded grocery demo (host / tests)                |
 | `WebStore`                  | `getViewModel`, screen registration               |
 | `WebStoreApp` (`./react`)   | Stateful React entry with branded default screens |
 | `mountWebStore` (`./react`) | DOM mount helper for SPA / embed hosts            |
@@ -24,21 +26,18 @@ Sprint 11 complete — facade + shell. Sprint 20 complete — catalog/cart/check
 ## Usage
 
 ```ts
-import { createWebStore } from '@ai-commerce/web-store';
+import { createWebStore, createDemoWebStore } from '@ai-commerce/web-store';
 import { WebStoreApp, mountWebStore } from '@ai-commerce/web-store/react';
-import { ConfigProvider } from '@ai-commerce/config-runtime';
 
-const result = new ConfigProvider({ cache: false }).resolve({ tenantConfig });
-const store = createWebStore({ config: result });
-
-// React tree
-<WebStoreApp store={store} />
-
-// Or mount into a host element
-mountWebStore({ store, container: '#root' });
+const { store, sessionId } = await createDemoWebStore();
+<WebStoreApp store={store} sessionId={sessionId} />
 ```
 
-Navigation, branding, SEO, and domain all come from tenant config — change config, not forks.
+Runnable host:
+
+```bash
+pnpm web
+```
 
 ## Scripts
 
@@ -51,9 +50,9 @@ pnpm --filter @ai-commerce/web-store build
 
 ## Out of scope
 
-- Dedicated Next.js / Vite host project (embed `WebStoreApp` / `mountWebStore`)
-- Live catalog / cart / checkout module wiring
-- Runtime Theme Engine token injection
+- localStorage durability (Sprint 23 Task 2)
+- URL deep links (Sprint 23 Task 3)
+- Live DB / payment gateways
 
 ## Architecture
 

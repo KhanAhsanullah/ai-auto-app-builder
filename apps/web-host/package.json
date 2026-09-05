@@ -1,0 +1,29 @@
+{
+  "name": "@ai-commerce/web-host",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Vite browser host for @ai-commerce/web-store demo buy path",
+  "scripts": {
+    "dev": "vite",
+    "start": "vite",
+    "build": "tsc -p tsconfig.json --noEmit && vite build",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@ai-commerce/web-store": "workspace:*",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.14",
+    "@types/react-dom": "^19.0.3",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "~5.8.3",
+    "vite": "^6.0.7",
+    "vitest": "^3.0.5"
+  }
+}

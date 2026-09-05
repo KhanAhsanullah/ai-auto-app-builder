@@ -19,6 +19,7 @@ export default tseslint.config(
       'apps/mobile-host/metro.config.cjs',
       'apps/mobile-host/shims/**',
       'apps/mobile-host/.expo/**',
+      'apps/web-host/shims/**',
       'packages/iconv-lite/**',
     ],
   },

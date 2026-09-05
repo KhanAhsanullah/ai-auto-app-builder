@@ -1,0 +1,506 @@
+{
+  "meta": {
+    "schemaVersion": "v1",
+    "configVersion": 1,
+    "createdAt": "2026-08-01T10:00:00.000Z",
+    "updatedAt": "2026-08-01T10:00:00.000Z",
+    "publishedAt": "2026-08-01T10:00:00.000Z",
+    "label": "Initial launch configuration",
+    "migrationHistory": []
+  },
+  "tenant": {
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "slug": "fresh-grocery-pk",
+    "name": "Fresh Grocery PK",
+    "vertical": "grocery",
+    "status": "active",
+    "defaultLocale": "en-PK",
+    "defaultTimezone": "Asia/Karachi",
+    "defaultCountry": "PK",
+    "subscriptionTier": "growth",
+    "stores": [
+      {
+        "id": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+        "slug": "main",
+        "name": "Main Store",
+        "isDefault": true,
+        "channels": ["web", "mobile", "admin"]
+      }
+    ]
+  },
+  "company": {
+    "legalName": "Fresh Grocery (Private) Limited",
+    "displayName": "Fresh Grocery",
+    "registrationNumber": "REG-123456",
+    "contactEmail": "support@freshgrocery.pk",
+    "contactPhone": "+923001234567",
+    "website": "https://freshgrocery.pk",
+    "address": {
+      "line1": "123 Main Boulevard",
+      "city": "Lahore",
+      "state": "Punjab",
+      "postalCode": "54000",
+      "country": "PK"
+    },
+    "supportHours": "Mon–Sat 9am–9pm PKT"
+  },
+  "branding": {
+    "appName": "Fresh Grocery",
+    "tagline": "Farm fresh delivered to your door",
+    "logo": {
+      "primary": "https://cdn.example.com/logo-primary.svg",
+      "inverse": "https://cdn.example.com/logo-inverse.svg",
+      "favicon": "https://cdn.example.com/favicon.ico"
+    },
+    "showPoweredBy": false,
+    "copyrightText": "© 2026 Fresh Grocery. All rights reserved."
+  },
+  "theme": {
+    "preset": "modern",
+    "colors": {
+      "primary": "#16A34A",
+      "secondary": "#F59E0B",
+      "background": "#FFFFFF",
+      "surface": "#F9FAFB",
+      "text": "#111827",
+      "textMuted": "#6B7280",
+      "border": "#E5E7EB",
+      "error": "#DC2626",
+      "success": "#16A34A",
+      "warning": "#F59E0B"
+    },
+    "typography": {
+      "fontFamily": {
+        "heading": "Inter",
+        "body": "Inter"
+      },
+      "scale": "default",
+      "baseFontSize": 16
+    },
+    "spacing": {
+      "unit": 4,
+      "density": "default"
+    },
+    "radius": {
+      "sm": 4,
+      "md": 8,
+      "lg": 12,
+      "full": 9999
+    },
+    "elevation": "subtle",
+    "darkMode": {
+      "enabled": true,
+      "strategy": "system"
+    }
+  },
+  "navigation": {
+    "web": {
+      "style": "top-bar",
+      "primary": [
+        {
+          "id": "home",
+          "label": "Home",
+          "route": "store.home",
+          "icon": "home"
+        },
+        {
+          "id": "shop",
+          "label": "Shop",
+          "route": "store.catalog",
+          "icon": "shopping-bag"
+        },
+        {
+          "id": "cart",
+          "label": "Cart",
+          "route": "store.cart",
+          "icon": "cart"
+        }
+      ],
+      "footer": [
+        {
+          "id": "about",
+          "label": "About",
+          "route": "store.about"
+        },
+        {
+          "id": "contact",
+          "label": "Contact",
+          "route": "store.contact"
+        }
+      ]
+    },
+    "mobile": {
+      "style": "bottom-bar",
+      "primary": [
+        {
+          "id": "home",
+          "label": "Home",
+          "route": "store.home",
+          "icon": "home"
+        },
+        {
+          "id": "shop",
+          "label": "Shop",
+          "route": "store.catalog",
+          "icon": "shopping-bag"
+        },
+        {
+          "id": "orders",
+          "label": "Orders",
+          "route": "store.orders",
+          "icon": "package"
+        },
+        {
+          "id": "profile",
+          "label": "Profile",
+          "route": "store.profile",
+          "icon": "user"
+        }
+      ]
+    },
+    "admin": {
+      "style": "sidebar",
+      "primary": [
+        {
+          "id": "dashboard",
+          "label": "Dashboard",
+          "route": "admin.dashboard",
+          "icon": "layout-dashboard"
+        },
+        {
+          "id": "orders",
+          "label": "Orders",
+          "route": "admin.orders",
+          "icon": "package"
+        },
+        {
+          "id": "catalog",
+          "label": "Catalog",
+          "route": "admin.catalog",
+          "icon": "tags"
+        },
+        {
+          "id": "settings",
+          "label": "Settings",
+          "route": "admin.settings",
+          "icon": "settings"
+        }
+      ]
+    }
+  },
+  "languages": {
+    "default": "en-PK",
+    "supported": ["en-PK", "ur-PK"],
+    "fallback": "en-PK",
+    "rtlLocales": ["ur-PK"],
+    "autoDetect": true,
+    "allowUserOverride": true
+  },
+  "currency": {
+    "default": "PKR",
+    "supported": ["PKR"],
+    "display": {
+      "symbolPosition": "before",
+      "decimalPlaces": 0,
+      "thousandsSeparator": ",",
+      "decimalSeparator": "."
+    },
+    "allowMultiCurrency": false,
+    "exchangeRateProvider": "none"
+  },
+  "featureFlags": {
+    "modules": {
+      "catalog": true,
+      "cart": true,
+      "checkout": true,
+      "order": true,
+      "payment": true,
+      "customer": true,
+      "inventory": true,
+      "notification": true,
+      "media": true,
+      "reviews": false,
+      "wishlist": true
+    },
+    "flags": {
+      "grocery.substitutions": true,
+      "grocery.deliverySlots": true
+    }
+  },
+  "authentication": {
+    "customer": {
+      "methods": {
+        "email": true,
+        "phone": true,
+        "guestCheckout": true,
+        "social": {
+          "google": true,
+          "apple": false,
+          "facebook": false
+        }
+      },
+      "session": {
+        "tokenTtlMinutes": 10080,
+        "refreshEnabled": true,
+        "maxDevices": 5
+      },
+      "mfa": {
+        "required": false,
+        "methods": ["sms"]
+      }
+    },
+    "admin": {
+      "methods": {
+        "email": true,
+        "sso": {
+          "enabled": false
+        }
+      },
+      "session": {
+        "tokenTtlMinutes": 480,
+        "idleTimeoutMinutes": 30
+      },
+      "mfa": {
+        "required": true,
+        "methods": ["totp"]
+      },
+      "defaultRoles": ["owner", "admin", "manager", "staff"]
+    },
+    "api": {
+      "enabled": false,
+      "keyRotationDays": 90
+    }
+  },
+  "payments": {
+    "defaultGateway": "jazzcash",
+    "methods": ["card", "cash_on_delivery", "wallet"],
+    "gateways": [
+      {
+        "provider": "jazzcash",
+        "enabled": true,
+        "mode": "sandbox",
+        "credentialsRef": "secrets/jazzcash"
+      }
+    ],
+    "checkout": {
+      "captureStrategy": "immediate",
+      "codEnabled": true,
+      "codMaxAmount": 10000,
+      "minimumOrderAmount": 500
+    },
+    "refunds": {
+      "autoApprove": false,
+      "windowDays": 7
+    }
+  },
+  "notifications": {
+    "channels": {
+      "email": true,
+      "sms": true,
+      "push": true,
+      "whatsapp": false
+    },
+    "sender": {
+      "fromName": "Fresh Grocery",
+      "fromEmail": "noreply@freshgrocery.pk",
+      "replyTo": "support@freshgrocery.pk",
+      "smsSenderId": "FRESH"
+    },
+    "events": {
+      "orderConfirmed": {
+        "email": true,
+        "sms": true,
+        "push": true
+      },
+      "orderShipped": {
+        "email": true,
+        "push": true
+      },
+      "passwordReset": {
+        "email": true
+      }
+    }
+  },
+  "integrations": {
+    "analytics": {
+      "enabled": true,
+      "providers": [
+        {
+          "name": "google_analytics",
+          "enabled": true,
+          "trackingId": "G-XXXXXXXXXX"
+        }
+      ]
+    },
+    "shipping": [
+      {
+        "provider": "tcs",
+        "enabled": true,
+        "default": true,
+        "credentialsRef": "secrets/tcs"
+      }
+    ],
+    "webhooks": [
+      {
+        "id": "c3d4e5f6-a7b8-9012-cdef-123456789012",
+        "url": "https://erp.example.com/webhooks/orders",
+        "events": ["order.created", "order.fulfilled"],
+        "enabled": true,
+        "secretRef": "secrets/webhook-erp"
+      }
+    ],
+    "plugins": []
+  },
+  "aiSettings": {
+    "enabled": true,
+    "provider": {
+      "name": "openai",
+      "model": "gpt-4o",
+      "credentialsRef": "secrets/openai"
+    },
+    "generation": {
+      "allowedTargets": ["config", "theme", "catalog", "menu_import"],
+      "autoApply": false,
+      "maxTokensPerRequest": 4096
+    },
+    "guardrails": {
+      "lockedFields": ["payments.checkout.captureStrategy", "company.legalName"],
+      "requireSchemaValidation": true,
+      "blockDirectDbWrites": true,
+      "auditAllSuggestions": true
+    },
+    "copilot": {
+      "adminEnabled": true,
+      "customerSupportEnabled": false,
+      "allowedActions": ["read_orders", "read_catalog", "update_catalog_draft"]
+    }
+  },
+  "mobileApp": {
+    "enabled": true,
+    "identity": {
+      "bundleId": "pk.freshgrocery.app",
+      "appName": "Fresh Grocery",
+      "version": "1.0.0",
+      "buildNumber": 1
+    },
+    "storeListing": {
+      "shortDescription": "Fresh groceries delivered fast",
+      "category": "Shopping",
+      "privacyPolicyUrl": "https://freshgrocery.pk/privacy"
+    },
+    "runtime": {
+      "minOsVersion": {
+        "ios": "15.0",
+        "android": 24
+      },
+      "otaUpdates": {
+        "enabled": true,
+        "channel": "production"
+      },
+      "pushNotifications": {
+        "enabled": true,
+        "provider": "firebase"
+      },
+      "deepLinking": {
+        "enabled": true,
+        "scheme": "freshgrocery",
+        "universalLinksDomain": "freshgrocery.pk"
+      }
+    }
+  },
+  "webStore": {
+    "enabled": true,
+    "domain": {
+      "primary": "shop.freshgrocery.pk",
+      "ssl": {
+        "autoProvision": true,
+        "forceHttps": true
+      }
+    },
+    "seo": {
+      "title": "Fresh Grocery — Online Grocery Delivery",
+      "description": "Order fresh groceries online with fast delivery in Lahore.",
+      "robotsIndex": true,
+      "sitemapEnabled": true
+    },
+    "pwa": {
+      "enabled": true,
+      "displayMode": "standalone",
+      "themeColor": "#16A34A"
+    },
+    "rendering": {
+      "mode": "ssr",
+      "cacheTtlSeconds": 60
+    },
+    "legal": {
+      "termsOfServiceUrl": "https://freshgrocery.pk/terms",
+      "privacyPolicyUrl": "https://freshgrocery.pk/privacy",
+      "cookieConsent": {
+        "enabled": true,
+        "regions": ["PK"]
+      }
+    }
+  },
+  "adminDashboard": {
+    "enabled": true,
+    "domain": {
+      "primary": "admin.freshgrocery.pk"
+    },
+    "layout": {
+      "sidebarStyle": "expanded",
+      "defaultLandingRoute": "admin.dashboard",
+      "widgets": [
+        {
+          "id": "orders-summary",
+          "enabled": true,
+          "position": 0,
+          "requiredRole": "staff"
+        },
+        {
+          "id": "revenue-chart",
+          "enabled": true,
+          "position": 1,
+          "requiredRole": "manager"
+        }
+      ]
+    },
+    "preferences": {
+      "dateFormat": "DD/MM/YYYY",
+      "timeFormat": "24h",
+      "rowsPerPage": 25,
+      "enableBulkActions": true,
+      "enableExport": true
+    },
+    "onboarding": {
+      "showWizard": true,
+      "completedSteps": ["company_profile", "branding"]
+    }
+  },
+  "environment": {
+    "current": "staging",
+    "targets": {
+      "development": {
+        "apiBaseUrl": "http://localhost:3000",
+        "cdnBaseUrl": "http://localhost:3001",
+        "debug": true,
+        "logLevel": "debug"
+      },
+      "staging": {
+        "apiBaseUrl": "https://api-staging.freshgrocery.pk",
+        "cdnBaseUrl": "https://cdn-staging.freshgrocery.pk",
+        "debug": false,
+        "logLevel": "info"
+      },
+      "production": {
+        "apiBaseUrl": "https://api.freshgrocery.pk",
+        "cdnBaseUrl": "https://cdn.freshgrocery.pk",
+        "debug": false,
+        "logLevel": "warn"
+      }
+    },
+    "promotionPolicy": {
+      "requireApproval": true,
+      "runValidationOnPromote": true
+    }
+  }
+}

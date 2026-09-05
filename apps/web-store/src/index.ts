@@ -34,6 +34,11 @@ export { adaptCheckoutLookup } from './domain/adapt-checkout-lookup.js';
 export { adaptOrderLookup } from './domain/adapt-order-lookup.js';
 export { createWebStore } from './infrastructure/create-web-store.js';
 export type { CreateWebStoreOptions } from './infrastructure/create-web-store.js';
+export { createDemoWebStore } from './infrastructure/create-demo-web-store.js';
+export type {
+  CreateDemoWebStoreOptions,
+  DemoWebStoreBundle,
+} from './infrastructure/create-demo-web-store.js';
 export {
   WebStoreException,
   WebStoreResolutionException,

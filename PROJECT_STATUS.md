@@ -8,45 +8,47 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 23 — Web Store Host** (starting)
+**Sprint 23 — Web Store Host** (in progress)
 
-Sprint 22 complete on `main`. Next: runnable Vite host for `@ai-commerce/web-store` (browser buy path).
+Task 1: Vite `@ai-commerce/web-host` + `createDemoWebStore` browser buy path.
+
+**Branch:** `sprint/23/task1`
 
 ## Completed Tasks
 
-| Task           | Description                          | Commit Tag       |
-| -------------- | ------------------------------------ | ---------------- |
-| Sprint 1–21 ✅ | Foundation through Expo mobile host  | `sprint*-task*`  |
-| Sprint 22 ✅   | Durable mobile demo (SQLite + reset) | `sprint22-task*` |
+| Task                | Description                       | Commit Tag       |
+| ------------------- | --------------------------------- | ---------------- |
+| Sprint 1–22 ✅      | Foundation through durable mobile | `sprint*-task*`  |
+| Sprint 23 Task 1 ✅ | Vite web host + demo web store    | `sprint23-task1` |
 
 ## Current Progress
 
 - Sprints 1–22 on `main`
-- Mobile RN demo: buy path + SQLite durability + reset/export
+- **Web Store Host** Task 1 on branch
 
 ## Next Tasks
 
-1. Sprint 23 Task 1 — Vite `@ai-commerce/web-host` + `createDemoWebStore`
-2. Sprint 23 Task 2 — localStorage session + durable snapshot
+1. Sprint 23 Task 2 — localStorage session + durable snapshot
+2. Sprint 23 Task 3 — URL deep links
 3. Real backend / payment gateways when ready
 
 ## Latest Commit
 
 ```
-feat(mobile-host): persist demo state in SQLite (Sprint 22 Task 3)
+feat(web-host): add Vite demo host for web store buy path (Sprint 23 Task 1)
 ```
 
 ## Latest Tag
 
 ```
-sprint22-task3
+sprint23-task1
 ```
 
 ## Health Status
 
-| Area       | Status        | Notes                                  |
-| ---------- | ------------- | -------------------------------------- |
-| Repository | ✅ Healthy    | Sprint 22 merged to `main`             |
-| Mobile RN  | 🟡 End-result | Durable demo complete                  |
-| Web        | 🟡 Next       | Library ready; dedicated host starting |
-| Tests      | ✅ Passing    | SQLite KV + migrate + fallback         |
+| Area       | Status        | Notes                                 |
+| ---------- | ------------- | ------------------------------------- |
+| Repository | ✅ Healthy    | Sprint 23 Task 1 on branch            |
+| Mobile RN  | 🟡 End-result | Durable demo on `main`                |
+| Web        | 🟡 Runnable   | `pnpm web` Vite host (in-memory demo) |
+| Tests      | ✅ Passing    | createDemoWebStore + host package     |

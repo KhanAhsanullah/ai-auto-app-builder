@@ -11,6 +11,8 @@ export interface MountWebStoreOptions {
   activeRoute?: WebStoreAppProps['activeRoute'];
   onNavigate?: WebStoreAppProps['onNavigate'];
   renderScreen?: WebStoreAppProps['renderScreen'];
+  sessionId?: WebStoreAppProps['sessionId'];
+  checkoutId?: WebStoreAppProps['checkoutId'];
 }
 
 export interface MountedWebStore {
@@ -42,6 +44,8 @@ export function mountWebStore(options: MountWebStoreOptions): MountedWebStore {
       activeRoute: options.activeRoute,
       onNavigate: options.onNavigate,
       renderScreen: options.renderScreen,
+      sessionId: options.sessionId,
+      checkoutId: options.checkoutId,
     }),
   );
 

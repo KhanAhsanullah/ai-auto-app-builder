@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Vite web store host** (Sprint 23 Task 1) — `@ai-commerce/web-host` + `@ai-commerce/web-store`
+  - `createDemoWebStore()` seeds grocery catalog/cart/checkout/order/payment
+  - Runnable Vite app via `pnpm web`
+  - `mountWebStore` accepts `sessionId` / `checkoutId`
+
 - **SQLite durable demo store** (Sprint 22 Task 3) — `@ai-commerce/mobile-host`
   - `expo-sqlite` KV table for snapshot + guest session
   - One-time migrate from AsyncStorage; AsyncStorage fallback if SQLite open fails
