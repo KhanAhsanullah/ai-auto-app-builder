@@ -59,3 +59,35 @@ body,
   text-align: center;
   max-width: 40rem;
 }
+
+.host-toolbar {
+  display: flex;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+.host-btn {
+  border: 0;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.host-btn:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.host-btn-danger {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.host-btn-export {
+  background: #eff6ff;
+  color: #1d4ed8;
+}

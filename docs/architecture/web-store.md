@@ -116,14 +116,14 @@ Checkout completion navigates to payment when orders are wired.
 
 ## Vite host (Sprint 23)
 
-Runnable shell: `@ai-commerce/web-host` + `createDemoWebStore()`.
+Runnable shell: `@ai-commerce/web-host` + `createDemoWebStore({ snapshotStore })`.
 
 ```bash
 pnpm web
 ```
 
 - Task 1: Vite host + seeded demo buy path
-- Task 2: localStorage session + durable snapshot _(planned)_
+- Task 2: localStorage guest session + durable snapshot + reset/export
 - Task 3: URL routing / deep links _(planned)_
 
 ## Deferred

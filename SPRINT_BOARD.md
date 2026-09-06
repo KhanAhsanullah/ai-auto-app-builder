@@ -300,15 +300,15 @@ End-result focus: RN host keeps buy-path state after cold start (not just sessio
 
 ## Sprint 23 — Web Store Host
 
-| Task   | Status | Deliverable                                                          |
-| ------ | ------ | -------------------------------------------------------------------- |
-| Task 1 | ✅     | Vite `@ai-commerce/web-host` + `createDemoWebStore` browser buy path |
-| Task 2 | ⬜     | localStorage guest session + durable commerce snapshot               |
-| Task 3 | ⬜     | URL routing / shareable deep links for store routes                  |
+| Task   | Status | Deliverable                                                           |
+| ------ | ------ | --------------------------------------------------------------------- |
+| Task 1 | ✅     | Vite `@ai-commerce/web-host` + `createDemoWebStore` browser buy path  |
+| Task 2 | ✅     | localStorage guest session + durable commerce snapshot + reset/export |
+| Task 3 | ⬜     | URL routing / shareable deep links for store routes                   |
 
 End-result focus: browser can run the same catalog → cart → checkout → pay → orders path as mobile.
 
-**Tags:** `sprint23-task1`
+**Tags:** `sprint23-task1`, `sprint23-task2`
 
 ---
 

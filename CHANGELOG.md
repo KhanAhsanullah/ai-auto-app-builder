@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Web demo localStorage durability** (Sprint 23 Task 2) — `@ai-commerce/web-store` + host
+  - `createDemoWebStore({ snapshotStore })` restore path + `clearWebDemoSnapshot` / `exportWebDemoSnapshot`
+  - Host: guest session + snapshot in localStorage, Reset/Export toolbar
+
 - **Vite web store host** (Sprint 23 Task 1) — `@ai-commerce/web-host` + `@ai-commerce/web-store`
   - `createDemoWebStore()` seeds grocery catalog/cart/checkout/order/payment
   - Runnable Vite app via `pnpm web`

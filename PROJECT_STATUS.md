@@ -10,43 +10,45 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 **Sprint 23 — Web Store Host** (in progress)
 
-Task 1 on `main`. Next: Task 2 — localStorage session + durable snapshot.
+Task 2: localStorage guest session + durable commerce snapshot.
+
+**Branch:** `sprint/23/task2`
 
 ## Completed Tasks
 
-| Task                | Description                       | Commit Tag       |
-| ------------------- | --------------------------------- | ---------------- |
-| Sprint 1–22 ✅      | Foundation through durable mobile | `sprint*-task*`  |
-| Sprint 23 Task 1 ✅ | Vite web host + demo web store    | `sprint23-task1` |
+| Task                | Description                             | Commit Tag       |
+| ------------------- | --------------------------------------- | ---------------- |
+| Sprint 1–22 ✅      | Foundation through durable mobile       | `sprint*-task*`  |
+| Sprint 23 Task 1 ✅ | Vite web host + demo web store          | `sprint23-task1` |
+| Sprint 23 Task 2 ✅ | localStorage session + durable snapshot | `sprint23-task2` |
 
 ## Current Progress
 
 - Sprints 1–22 + Sprint 23 Task 1 on `main`
-- Browser buy path runnable via `pnpm web`
+- **Web Store Host** Task 2 on branch
 
 ## Next Tasks
 
-1. Sprint 23 Task 2 — localStorage session + durable snapshot
-2. Sprint 23 Task 3 — URL deep links
-3. Real backend / payment gateways when ready
+1. Sprint 23 Task 3 — URL deep links
+2. Real backend / payment gateways when ready
 
 ## Latest Commit
 
 ```
-feat(web-host): add Vite demo host for web store buy path (Sprint 23 Task 1)
+feat(web-host): persist demo state in localStorage (Sprint 23 Task 2)
 ```
 
 ## Latest Tag
 
 ```
-sprint23-task1
+sprint23-task2
 ```
 
 ## Health Status
 
-| Area       | Status        | Notes                                 |
-| ---------- | ------------- | ------------------------------------- |
-| Repository | ✅ Healthy    | Sprint 23 Task 1 merged to `main`     |
-| Mobile RN  | 🟡 End-result | Durable demo on `main`                |
-| Web        | 🟡 Runnable   | `pnpm web` Vite host (in-memory demo) |
-| Tests      | ✅ Passing    | createDemoWebStore + host package     |
+| Area       | Status        | Notes                                     |
+| ---------- | ------------- | ----------------------------------------- |
+| Repository | ✅ Healthy    | Sprint 23 Task 2 on branch                |
+| Mobile RN  | 🟡 End-result | Durable demo on `main`                    |
+| Web        | 🟡 End-result | localStorage durability + reset/export    |
+| Tests      | ✅ Passing    | Snapshot restore + session clear coverage |

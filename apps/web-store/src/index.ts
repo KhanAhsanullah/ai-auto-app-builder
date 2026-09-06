@@ -40,6 +40,15 @@ export type {
   DemoWebStoreBundle,
 } from './infrastructure/create-demo-web-store.js';
 export {
+  WEB_DEMO_SNAPSHOT_KEY,
+  clearWebDemoSnapshot,
+  createMemoryWebDemoSnapshotStore,
+  exportWebDemoSnapshot,
+  parseWebDemoSnapshot,
+  summarizeWebDemoSnapshot,
+} from './demo/demo-snapshot.js';
+export type { WebDemoCommerceSnapshot, WebDemoSnapshotStore } from './demo/demo-snapshot.js';
+export {
   WebStoreException,
   WebStoreResolutionException,
   WebStoreCatalogUnavailableException,

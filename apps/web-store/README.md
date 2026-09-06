@@ -10,13 +10,14 @@ Config-driven consumer web storefront for CommerceOS AI — resolve tenant confi
 
 Sprint 11 complete — facade + shell. Sprint 20 complete — catalog/cart/checkout/payment/orders screens.
 Sprint 23 Task 1 — `createDemoWebStore` + runnable `@ai-commerce/web-host` (Vite).
+Sprint 23 Task 2 — localStorage guest session + durable snapshot + reset/export.
 
 ## Modules
 
 | Module                      | Purpose                                           |
 | --------------------------- | ------------------------------------------------- |
 | `createWebStore`            | Config → shell + registry facade                  |
-| `createDemoWebStore`        | Seeded grocery demo (host / tests)                |
+| `createDemoWebStore`        | Seeded grocery demo (+ optional snapshot store)   |
 | `WebStore`                  | `getViewModel`, screen registration               |
 | `WebStoreApp` (`./react`)   | Stateful React entry with branded default screens |
 | `mountWebStore` (`./react`) | DOM mount helper for SPA / embed hosts            |
@@ -26,10 +27,10 @@ Sprint 23 Task 1 — `createDemoWebStore` + runnable `@ai-commerce/web-host` (Vi
 ## Usage
 
 ```ts
-import { createWebStore, createDemoWebStore } from '@ai-commerce/web-store';
-import { WebStoreApp, mountWebStore } from '@ai-commerce/web-store/react';
+import { createDemoWebStore } from '@ai-commerce/web-store';
+import { WebStoreApp } from '@ai-commerce/web-store/react';
 
-const { store, sessionId } = await createDemoWebStore();
+const { store, sessionId } = await createDemoWebStore({ snapshotStore });
 <WebStoreApp store={store} sessionId={sessionId} />
 ```
 
@@ -50,7 +51,6 @@ pnpm --filter @ai-commerce/web-store build
 
 ## Out of scope
 
-- localStorage durability (Sprint 23 Task 2)
 - URL deep links (Sprint 23 Task 3)
 - Live DB / payment gateways
 
