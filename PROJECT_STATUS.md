@@ -10,9 +10,7 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 **Sprint 23 — Web Store Host** (in progress)
 
-Task 2: localStorage guest session + durable commerce snapshot.
-
-**Branch:** `sprint/23/task2`
+Tasks 1–2 on `main`. Next: Task 3 — URL deep links.
 
 ## Completed Tasks
 
@@ -24,8 +22,8 @@ Task 2: localStorage guest session + durable commerce snapshot.
 
 ## Current Progress
 
-- Sprints 1–22 + Sprint 23 Task 1 on `main`
-- **Web Store Host** Task 2 on branch
+- Sprints 1–22 + Sprint 23 Tasks 1–2 on `main`
+- Browser buy path with localStorage durability
 
 ## Next Tasks
 
@@ -48,7 +46,7 @@ sprint23-task2
 
 | Area       | Status        | Notes                                     |
 | ---------- | ------------- | ----------------------------------------- |
-| Repository | ✅ Healthy    | Sprint 23 Task 2 on branch                |
+| Repository | ✅ Healthy    | Sprint 23 Task 2 merged to `main`         |
 | Mobile RN  | 🟡 End-result | Durable demo on `main`                    |
 | Web        | 🟡 End-result | localStorage durability + reset/export    |
 | Tests      | ✅ Passing    | Snapshot restore + session clear coverage |
