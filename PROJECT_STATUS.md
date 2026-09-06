@@ -10,9 +10,7 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 **Sprint 23 — Web Store Host** (in progress)
 
-Task 1: Vite `@ai-commerce/web-host` + `createDemoWebStore` browser buy path.
-
-**Branch:** `sprint/23/task1`
+Task 1 on `main`. Next: Task 2 — localStorage session + durable snapshot.
 
 ## Completed Tasks
 
@@ -23,8 +21,8 @@ Task 1: Vite `@ai-commerce/web-host` + `createDemoWebStore` browser buy path.
 
 ## Current Progress
 
-- Sprints 1–22 on `main`
-- **Web Store Host** Task 1 on branch
+- Sprints 1–22 + Sprint 23 Task 1 on `main`
+- Browser buy path runnable via `pnpm web`
 
 ## Next Tasks
 
@@ -48,7 +46,7 @@ sprint23-task1
 
 | Area       | Status        | Notes                                 |
 | ---------- | ------------- | ------------------------------------- |
-| Repository | ✅ Healthy    | Sprint 23 Task 1 on branch            |
+| Repository | ✅ Healthy    | Sprint 23 Task 1 merged to `main`     |
 | Mobile RN  | 🟡 End-result | Durable demo on `main`                |
 | Web        | 🟡 Runnable   | `pnpm web` Vite host (in-memory demo) |
 | Tests      | ✅ Passing    | createDemoWebStore + host package     |
