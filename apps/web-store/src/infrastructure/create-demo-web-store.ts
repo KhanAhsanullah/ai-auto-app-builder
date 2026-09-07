@@ -11,7 +11,11 @@ import { adaptCatalogProductLookup } from '../domain/adapt-catalog-product-looku
 import { adaptCheckoutLookup } from '../domain/adapt-checkout-lookup.js';
 import { adaptOrderLookup } from '../domain/adapt-order-lookup.js';
 import type { WebStore } from '../domain/web-store.js';
-import demoTenantLayerJson from '../demo/full.example.json' with { type: 'json' };
+import {
+  buildDemoLaunchConfig,
+  type DemoLaunchInput,
+  type DemoLaunchVertical,
+} from '../demo/build-launch-config.js';
 import {
   WEB_DEMO_SNAPSHOT_KEY,
   parseWebDemoSnapshot,
@@ -19,6 +23,8 @@ import {
   type WebDemoSnapshotStore,
 } from '../demo/demo-snapshot.js';
 import { persistOnWrite } from '../demo/persist-on-write.js';
+import { seedVerticalDemoCatalog } from '../demo/seed-vertical-catalog.js';
+import demoTenantLayerJson from '../demo/full.example.json' with { type: 'json' };
 import { createWebStore } from './create-web-store.js';
 
 const demoTenantLayer = demoTenantLayerJson as ConfigLayer;
@@ -35,6 +41,11 @@ export interface CreateDemoWebStoreOptions {
    * survive browser reloads for the demo host.
    */
   snapshotStore?: WebDemoSnapshotStore;
+  /**
+   * Launch wizard input (business name + app type + optional logo).
+   * When set, builds a fresh tenant layer instead of the fixed grocery example.
+   */
+  launch?: DemoLaunchInput;
 }
 
 export interface DemoWebStoreBundle {
@@ -43,11 +54,15 @@ export interface DemoWebStoreBundle {
   config: TenantConfiguration;
   /** True when state was restored from `snapshotStore`. */
   restoredFromSnapshot: boolean;
+  /** Active vertical for the running demo. */
+  vertical: DemoLaunchVertical | 'grocery';
+  /** Display name from launch / config. */
+  businessName: string;
 }
 
 /**
  * Demo storefront: config + catalog/cart/checkout/order/payment wired and seeded.
- * Optionally persists a commerce snapshot for Vite host reloads.
+ * Pass `launch` for Boom wizard (any vertical); otherwise uses the grocery example.
  */
 export async function createDemoWebStore(
   options: CreateDemoWebStoreOptions = {},
@@ -57,16 +72,24 @@ export async function createDemoWebStore(
   const createId = options.createId ?? (() => `demo-${++idSeq}`);
   const now = options.now ?? (() => new Date().toISOString());
 
+  const built = options.launch ? buildDemoLaunchConfig(options.launch) : undefined;
+  const tenantLayer = built?.tenantLayer ?? demoTenantLayer;
+
   const provider = new ConfigProvider({ cache: false });
   const resolved = provider.resolve({
-    tenantConfig: demoTenantLayer,
+    tenantConfig: tenantLayer,
     skipCache: true,
   });
   if (!resolved.validation.success || !resolved.config) {
-    throw new Error('Demo tenant config failed ConfigProvider validation.');
+    const details = resolved.validation.errors?.map((e) => e.message).join('; ');
+    throw new Error(
+      `Demo tenant config failed ConfigProvider validation.${details ? ` ${details}` : ''}`,
+    );
   }
   const config = resolved.config;
   const tenantId = config.tenant.id;
+  const vertical = (built?.vertical ?? config.tenant.vertical) as DemoLaunchVertical | 'grocery';
+  const businessName = built?.businessName ?? config.company.displayName ?? config.tenant.name;
 
   const catalogRepo = new InMemoryCatalogRepository();
   const cartRepo = new InMemoryCartRepository();
@@ -144,26 +167,10 @@ export async function createDemoWebStore(
     paymentRepo.hydrate(snapshot.payments);
     restoredFromSnapshot = true;
   } else {
-    await catalog.createProduct({
+    await seedVerticalDemoCatalog({
+      catalog,
       tenantId,
-      slug: 'atta',
-      name: 'Atta Flour',
-      status: 'active',
-      variants: [{ sku: 'ATTA-5KG', title: '5kg', price: { amount: 1200, currency: 'PKR' } }],
-    });
-    await catalog.createProduct({
-      tenantId,
-      slug: 'milk',
-      name: 'Fresh Milk',
-      status: 'active',
-      variants: [{ sku: 'MILK-1L', title: '1L', price: { amount: 280, currency: 'PKR' } }],
-    });
-    await catalog.createProduct({
-      tenantId,
-      slug: 'eggs',
-      name: 'Farm Eggs',
-      status: 'active',
-      variants: [{ sku: 'EGG-12', title: 'Dozen', price: { amount: 450, currency: 'PKR' } }],
+      vertical: vertical === 'grocery' ? 'grocery' : vertical,
     });
   }
 
@@ -177,5 +184,12 @@ export async function createDemoWebStore(
     initialRoute: 'store.catalog',
   });
 
-  return { store, sessionId, config, restoredFromSnapshot };
+  return {
+    store,
+    sessionId,
+    config,
+    restoredFromSnapshot,
+    vertical,
+    businessName,
+  };
 }

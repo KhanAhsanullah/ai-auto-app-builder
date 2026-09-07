@@ -312,6 +312,20 @@ End-result focus: browser can run the same catalog → cart → checkout → pay
 
 ---
 
+## Sprint 24 — Launch Wizard (Boom)
+
+| Task   | Status | Deliverable                                                                 |
+| ------ | ------ | --------------------------------------------------------------------------- |
+| Task 1 | ✅     | Web launch wizard: name + logo + any vertical → config apply + seeded store |
+| Task 2 | ⬜     | Persist multi-profile switcher / preview theme tokens live                  |
+| Task 3 | ⬜     | Wire same launch flow into mobile host                                      |
+
+End-result focus: client picks app type → Boom storefront matches that vertical (not a fixed grocery demo).
+
+**Tags:** `sprint24-task1`
+
+---
+
 ## Sprint Conventions
 
 - Each sprint task is committed with a Conventional Commit referencing the sprint and task number

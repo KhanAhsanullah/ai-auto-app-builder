@@ -17,48 +17,67 @@ import {
 } from '@ai-commerce/web-store';
 import { WebStoreApp, type WebStoreAppProps } from '@ai-commerce/web-store/react';
 
+import { LaunchWizard, type LaunchWizardSubmit } from './LaunchWizard.js';
 import { createLocalStorageKvStore, type WebHostKvStore } from './local-storage-kv.js';
+import {
+  clearLaunchProfile,
+  loadLaunchProfile,
+  saveLaunchProfile,
+  type StoredLaunchProfile,
+} from './launch-profile.js';
 import { clearGuestSession, resolveGuestSessionId } from './session-storage.js';
 
 // Dual @types/react (Vite host vs workspace) can diverge on ReactNode; cast keeps host build clean.
 const StoreApp = WebStoreApp as ComponentType<WebStoreAppProps>;
 
+type Phase = 'booting' | 'wizard' | 'store';
+
 /**
- * Vite host — localStorage-backed durable demo + reset/export (Sprint 23 Task 2).
+ * Vite host — launch wizard (any vertical) → durable demo storefront.
  */
 export function App(): ReactNode {
   const storeRef = useRef<WebHostKvStore | null>(null);
+  const [phase, setPhase] = useState<Phase>('booting');
   const [store, setStore] = useState<WebStore | null>(null);
   const [sessionId, setSessionId] = useState<string | null>(null);
+  const [businessName, setBusinessName] = useState<string | null>(null);
+  const [vertical, setVertical] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [restored, setRestored] = useState(false);
 
-  const boot = useCallback(async (opts?: { clearFirst?: boolean }) => {
+  const bootFromProfile = useCallback(async (profile: StoredLaunchProfile) => {
     const kv = storeRef.current;
     if (!kv) {
       setError('Durable store is not ready.');
+      setPhase('wizard');
       return;
     }
     setBusy(true);
     setError(null);
     try {
-      if (opts?.clearFirst) {
-        await clearWebDemoSnapshot(kv);
-        await clearGuestSession(kv);
-      }
       const resolvedSession = await resolveGuestSessionId({ store: kv });
       const bundle = await createDemoWebStore({
         sessionId: resolvedSession,
         snapshotStore: kv,
+        launch: {
+          businessName: profile.businessName,
+          vertical: profile.vertical,
+          logoUrl: profile.logoUrl,
+          tenantId: profile.tenantId,
+        },
       });
       setSessionId(bundle.sessionId);
       setStore(bundle.store);
+      setBusinessName(bundle.businessName);
+      setVertical(bundle.vertical);
       setRestored(bundle.restoredFromSnapshot);
+      setPhase('store');
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to start demo store.');
       setStore(null);
       setSessionId(null);
+      setPhase('wizard');
     } finally {
       setBusy(false);
     }
@@ -70,35 +89,112 @@ export function App(): ReactNode {
       try {
         const kv = createLocalStorageKvStore();
         storeRef.current = kv;
-        const resolvedSession = await resolveGuestSessionId({ store: kv });
-        const bundle = await createDemoWebStore({
-          sessionId: resolvedSession,
-          snapshotStore: kv,
-        });
-        if (!cancelled) {
-          setSessionId(bundle.sessionId);
-          setStore(bundle.store);
-          setRestored(bundle.restoredFromSnapshot);
+        const profile = await loadLaunchProfile(kv);
+        if (cancelled) {
+          return;
         }
+        if (!profile) {
+          setPhase('wizard');
+          return;
+        }
+        await bootFromProfile(profile);
       } catch (err: unknown) {
         if (!cancelled) {
           setError(err instanceof Error ? err.message : 'Failed to start demo store.');
+          setPhase('wizard');
         }
       }
     })();
     return () => {
       cancelled = true;
     };
+  }, [bootFromProfile]);
+
+  const onLaunch = useCallback(
+    (input: LaunchWizardSubmit) => {
+      void (async () => {
+        const kv = storeRef.current;
+        if (!kv) {
+          setError('Durable store is not ready.');
+          return;
+        }
+        setBusy(true);
+        setError(null);
+        try {
+          await clearWebDemoSnapshot(kv);
+          await clearGuestSession(kv);
+          const tenantId =
+            typeof globalThis.crypto?.randomUUID === 'function'
+              ? globalThis.crypto.randomUUID()
+              : `11111111-1111-4111-8111-${Date.now().toString(16).padStart(12, '0').slice(-12)}`;
+          const profile: StoredLaunchProfile = {
+            businessName: input.businessName,
+            vertical: input.vertical,
+            logoUrl: input.logoUrl,
+            tenantId,
+            createdAt: new Date().toISOString(),
+          };
+          await saveLaunchProfile(kv, profile);
+          await bootFromProfile(profile);
+        } catch (err: unknown) {
+          setError(err instanceof Error ? err.message : 'Launch failed.');
+          setPhase('wizard');
+          setBusy(false);
+        }
+      })();
+    },
+    [bootFromProfile],
+  );
+
+  const onNewApp = useCallback(() => {
+    const ok = window.confirm(
+      'Create a new app? This clears the current demo cart/orders and opens the launch wizard.',
+    );
+    if (!ok) {
+      return;
+    }
+    void (async () => {
+      const kv = storeRef.current;
+      if (!kv) {
+        return;
+      }
+      setBusy(true);
+      try {
+        await clearWebDemoSnapshot(kv);
+        await clearGuestSession(kv);
+        await clearLaunchProfile(kv);
+        setStore(null);
+        setSessionId(null);
+        setBusinessName(null);
+        setVertical(null);
+        setRestored(false);
+        setError(null);
+        setPhase('wizard');
+      } finally {
+        setBusy(false);
+      }
+    })();
   }, []);
 
   const onResetDemo = useCallback(() => {
     const ok = window.confirm(
-      'Reset demo? Clears saved cart, orders, and guest session, then reseeds the catalog.',
+      'Reset demo data? Clears cart/orders and reseeds the catalog for this app type.',
     );
-    if (ok) {
-      void boot({ clearFirst: true });
+    if (!ok) {
+      return;
     }
-  }, [boot]);
+    void (async () => {
+      const kv = storeRef.current;
+      const profile = kv ? await loadLaunchProfile(kv) : undefined;
+      if (!kv || !profile) {
+        setPhase('wizard');
+        return;
+      }
+      await clearWebDemoSnapshot(kv);
+      await clearGuestSession(kv);
+      await bootFromProfile(profile);
+    })();
+  }, [bootFromProfile]);
 
   const onExportSnapshot = useCallback(() => {
     void (async () => {
@@ -124,26 +220,37 @@ export function App(): ReactNode {
     })();
   }, []);
 
-  if (error) {
+  if (phase === 'booting' || (phase === 'store' && busy && !store)) {
+    return (
+      <div className="host-centered" data-testid="web-host-loading">
+        <p className="host-muted">{busy ? 'Launching…' : 'Starting…'}</p>
+      </div>
+    );
+  }
+
+  if (phase === 'wizard') {
+    return <LaunchWizard busy={busy} error={error} onLaunch={onLaunch} />;
+  }
+
+  if (error && !store) {
     return (
       <div className="host-centered" data-testid="web-host-error">
         <p className="host-error">{error}</p>
         <button
           type="button"
           className="host-btn host-btn-danger"
-          data-testid="web-host-retry"
-          onClick={() => void boot({ clearFirst: true })}
+          onClick={() => setPhase('wizard')}
         >
-          Retry reset
+          Back to wizard
         </button>
       </div>
     );
   }
 
-  if (!store || !sessionId || busy) {
+  if (!store || !sessionId) {
     return (
       <div className="host-centered" data-testid="web-host-loading">
-        <p className="host-muted">{busy ? 'Resetting demo…' : 'Starting demo store…'}</p>
+        <p className="host-muted">Starting demo store…</p>
       </div>
     );
   }
@@ -151,12 +258,23 @@ export function App(): ReactNode {
   return (
     <div className="host-shell" data-testid="web-host-ready">
       <header className="host-banner">
-        <span>CommerceOS web demo</span>
+        <span>
+          {businessName ?? 'CommerceOS'} · {vertical}
+        </span>
         <span className="host-banner-meta" data-testid="web-host-storage-backend">
           localStorage{restored ? ' · restored' : ''}
         </span>
       </header>
       <div className="host-toolbar" data-testid="web-host-demo-toolbar">
+        <button
+          type="button"
+          className="host-btn host-btn-new"
+          data-testid="web-host-new-app"
+          disabled={busy}
+          onClick={onNewApp}
+        >
+          New app
+        </button>
         <button
           type="button"
           className="host-btn host-btn-danger"

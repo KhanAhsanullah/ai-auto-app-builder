@@ -114,17 +114,16 @@ When modules are wired and no custom `renderScreen` is provided:
 Guest session defaults to `web-guest` via `WebStoreApp` `sessionId` prop.
 Checkout completion navigates to payment when orders are wired.
 
-## Vite host (Sprint 23)
+## Vite host (Sprint 23–24)
 
-Runnable shell: `@ai-commerce/web-host` + `createDemoWebStore({ snapshotStore })`.
+Runnable shell: `@ai-commerce/web-host`.
 
 ```bash
 pnpm web
 ```
 
-- Task 1: Vite host + seeded demo buy path
-- Task 2: localStorage guest session + durable snapshot + reset/export
-- Task 3: URL routing / deep links _(planned)_
+- Sprint 23: Vite host, localStorage session + snapshot, reset/export
+- Sprint 24 Task 1: **Boom launch wizard** — business name + logo + any vertical → seeded storefront
 
 ## Deferred
 

@@ -8,45 +8,47 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 23 — Web Store Host** (in progress)
+**Sprint 24 — Launch Wizard (Boom)** (in progress)
 
-Tasks 1–2 on `main`. Next: Task 3 — URL deep links.
+Task 1: web wizard — business name + logo + any app type → ready storefront.
+
+**Branch:** `sprint/24/task1`
 
 ## Completed Tasks
 
-| Task                | Description                             | Commit Tag       |
-| ------------------- | --------------------------------------- | ---------------- |
-| Sprint 1–22 ✅      | Foundation through durable mobile       | `sprint*-task*`  |
-| Sprint 23 Task 1 ✅ | Vite web host + demo web store          | `sprint23-task1` |
-| Sprint 23 Task 2 ✅ | localStorage session + durable snapshot | `sprint23-task2` |
+| Task                | Description                                | Commit Tag       |
+| ------------------- | ------------------------------------------ | ---------------- |
+| Sprint 1–23 ✅      | Foundation through durable web/mobile demo | `sprint*-task*`  |
+| Sprint 24 Task 1 ✅ | Launch wizard (any vertical) on web-host   | `sprint24-task1` |
 
 ## Current Progress
 
-- Sprints 1–22 + Sprint 23 Tasks 1–2 on `main`
-- Browser buy path with localStorage durability
+- Sprints 1–23 Tasks 1–2 on `main`
+- **Launch Wizard** Task 1 on branch
 
 ## Next Tasks
 
-1. Sprint 23 Task 3 — URL deep links
-2. Real backend / payment gateways when ready
+1. Sprint 24 Task 2 — multi-profile / live theme preview
+2. Sprint 24 Task 3 — mobile host launch wizard
+3. Real backend / payment gateways when ready
 
 ## Latest Commit
 
 ```
-feat(web-host): persist demo state in localStorage (Sprint 23 Task 2)
+feat(web-host): add Boom launch wizard for any vertical (Sprint 24 Task 1)
 ```
 
 ## Latest Tag
 
 ```
-sprint23-task2
+sprint24-task1
 ```
 
 ## Health Status
 
 | Area       | Status        | Notes                                     |
 | ---------- | ------------- | ----------------------------------------- |
-| Repository | ✅ Healthy    | Sprint 23 Task 2 merged to `main`         |
-| Mobile RN  | 🟡 End-result | Durable demo on `main`                    |
-| Web        | 🟡 End-result | localStorage durability + reset/export    |
-| Tests      | ✅ Passing    | Snapshot restore + session clear coverage |
+| Repository | ✅ Healthy    | Sprint 24 Task 1 on branch                |
+| Web        | 🟡 End-result | Wizard → grocery/restaurant/… storefronts |
+| Mobile RN  | 🟡 End-result | Durable demo; wizard pending Task 3       |
+| Tests      | ✅ Passing    | Launch config + vertical seed coverage    |

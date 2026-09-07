@@ -1,6 +1,6 @@
 # Web Host (Vite)
 
-Runnable browser shell for `@ai-commerce/web-store` — open the buy path in a desktop browser.
+Runnable browser shell for `@ai-commerce/web-store` — launch any vertical storefront from a Boom wizard.
 
 ## Package
 
@@ -8,7 +8,7 @@ Runnable browser shell for `@ai-commerce/web-store` — open the buy path in a d
 
 ## Status
 
-Sprint 23 Task 2 — localStorage guest session + durable commerce snapshot, reset/export toolbar.
+Sprint 24 Task 1 — launch wizard (name + logo + app type) → durable demo store.
 
 ## Run
 
@@ -20,20 +20,23 @@ pnpm --filter @ai-commerce/web-host start
 
 Opens Vite at http://localhost:5173.
 
-Demo flow: **Shop → Add → Cart → Checkout → Payment → Orders**.
+1. Enter **business name**, optional **logo URL**, pick an **app type**
+2. Click **Boom — launch app**
+3. Shop → Cart → Checkout → Payment → Orders
 
-### Durable demo data
+### App types
 
-Catalog, cart, checkout, orders, and payments are snapshotted to **localStorage** after each write. Reload restores the last buy-path state.
+Grocery, Restaurant, Pharmacy/Clinic, Ecommerce, Fashion, Electronics — each gets its own branding colors, nav labels, and seeded catalog.
 
 Toolbar:
 
-- **Reset demo** — clears snapshot + guest session, reseeds catalog
-- **Export** — summarizes the snapshot and prints JSON to the console
+- **New app** — back to wizard (clears current demo)
+- **Reset demo** — clear cart/orders, keep this app
+- **Export** — snapshot JSON to console
 
 ## Notes
 
-- Durability via `localStorage` (Task 2); URL deep links are Task 3
+- Durability via `localStorage`
 - Workspace packages resolve from source via pnpm + Vite
-- Vite shims `node:fs` / `node:crypto` for browser bundles (ConfigProvider / modules)
-- Mobile equivalent: `pnpm mobile` (`@ai-commerce/mobile-host`)
+- Vite shims `node:fs` / `node:crypto` for browser bundles
+- Mobile equivalent: `pnpm mobile` (wizard wiring = Sprint 24 Task 3)

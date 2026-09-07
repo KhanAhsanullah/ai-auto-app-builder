@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Boom launch wizard** (Sprint 24 Task 1) — `@ai-commerce/web-host` + `@ai-commerce/web-store`
+  - Client enters business name, optional logo, and any app type (grocery / restaurant / pharmacy / ecommerce / fashion / electronics)
+  - `buildDemoLaunchConfig` + vertical catalog seeds → ready storefront
+  - Host: wizard first run, New app / Reset / Export toolbar
+
 - **Web demo localStorage durability** (Sprint 23 Task 2) — `@ai-commerce/web-store` + host
   - `createDemoWebStore({ snapshotStore })` restore path + `clearWebDemoSnapshot` / `exportWebDemoSnapshot`
   - Host: guest session + snapshot in localStorage, Reset/Export toolbar
