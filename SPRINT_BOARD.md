@@ -318,11 +318,11 @@ End-result focus: browser can run the same catalog → cart → checkout → pay
 | ------ | ------ | --------------------------------------------------------------------------- |
 | Task 1 | ✅     | Web launch wizard: name + logo + any vertical → config apply + seeded store |
 | Task 2 | ⬜     | Persist multi-profile switcher / preview theme tokens live                  |
-| Task 3 | ⬜     | Wire same launch flow into mobile host                                      |
+| Task 3 | ✅     | Boom launch wizard on Expo `@ai-commerce/mobile-host`                       |
 
 End-result focus: client picks app type → Boom storefront matches that vertical (not a fixed grocery demo).
 
-**Tags:** `sprint24-task1`
+**Tags:** `sprint24-task1`, `sprint24-task3`
 
 ---
 

@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Mobile Boom launch wizard** (Sprint 24 Task 3) — `@ai-commerce/mobile-host` + `@ai-commerce/mobile-app`
+  - Same name + logo + any vertical flow as web, on Expo
+  - `createDemoMobileApp({ launch })` + New app / Reset / Export toolbar
+
 - **Boom launch wizard** (Sprint 24 Task 1) — `@ai-commerce/web-host` + `@ai-commerce/web-store`
   - Client enters business name, optional logo, and any app type (grocery / restaurant / pharmacy / ecommerce / fashion / electronics)
   - `buildDemoLaunchConfig` + vertical catalog seeds → ready storefront

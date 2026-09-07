@@ -8,7 +8,9 @@ Runnable Expo shell for `@ai-commerce/mobile-app` — the RN developer entry poi
 
 ## Status
 
-Sprint 21 complete — Expo host, deep links/session, EAS profiles + `expo prebuild` release path.
+Sprint 24 Task 3 — Boom launch wizard on Expo (name + logo + any app type).
+
+Sprint 21–22 — Expo host, deep links/session, EAS/prebuild, SQLite durability.
 
 ## Why Expo (not bare React Native CLI)?
 
@@ -30,7 +32,11 @@ pnpm mobile
 pnpm --filter @ai-commerce/mobile-host start
 ```
 
-Demo flow: **Shop → Add → Cart → Checkout → Payment → Orders**.
+1. Enter **business name**, optional logo, pick **app type**
+2. **Boom — launch app**
+3. Demo flow: **Shop → Add → Cart → Checkout → Payment → Orders**
+
+Toolbar: **New app** / **Reset demo** / **Export**.
 
 ### Deep links
 

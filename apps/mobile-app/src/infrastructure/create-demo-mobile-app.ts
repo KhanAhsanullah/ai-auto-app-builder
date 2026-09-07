@@ -11,6 +11,11 @@ import { adaptCatalogProductLookup } from '../domain/adapt-catalog-product-looku
 import { adaptCheckoutLookup } from '../domain/adapt-checkout-lookup.js';
 import { adaptOrderLookup } from '../domain/adapt-order-lookup.js';
 import type { MobileApp } from '../domain/mobile-app.js';
+import {
+  buildDemoLaunchConfig,
+  type DemoLaunchInput,
+  type DemoLaunchVertical,
+} from '../demo/build-launch-config.js';
 import demoTenantLayerJson from '../demo/full.example.json' with { type: 'json' };
 import {
   DEMO_SNAPSHOT_KEY,
@@ -19,6 +24,7 @@ import {
   type DemoSnapshotStore,
 } from '../demo/demo-snapshot.js';
 import { persistOnWrite } from '../demo/persist-on-write.js';
+import { seedVerticalDemoCatalog } from '../demo/seed-vertical-catalog.js';
 import { createMobileApp } from './create-mobile-app.js';
 
 const demoTenantLayer = demoTenantLayerJson as ConfigLayer;
@@ -35,6 +41,11 @@ export interface CreateDemoMobileAppOptions {
    * survive app restarts for the demo host.
    */
   snapshotStore?: DemoSnapshotStore;
+  /**
+   * Launch wizard input (business name + app type + optional logo).
+   * When set, builds a fresh tenant layer instead of the fixed grocery example.
+   */
+  launch?: DemoLaunchInput;
 }
 
 export interface DemoMobileAppBundle {
@@ -43,11 +54,15 @@ export interface DemoMobileAppBundle {
   config: TenantConfiguration;
   /** True when state was restored from `snapshotStore`. */
   restoredFromSnapshot: boolean;
+  /** Active vertical for the running demo. */
+  vertical: DemoLaunchVertical | 'grocery';
+  /** Display name from launch / config. */
+  businessName: string;
 }
 
 /**
  * Demo store: config + catalog/cart/checkout/order/payment wired and seeded.
- * Optionally persists a commerce snapshot for Expo host restarts.
+ * Pass `launch` for Boom wizard (any vertical); otherwise uses the grocery example.
  */
 export async function createDemoMobileApp(
   options: CreateDemoMobileAppOptions = {},
@@ -57,9 +72,12 @@ export async function createDemoMobileApp(
   const createId = options.createId ?? (() => `demo-${++idSeq}`);
   const now = options.now ?? (() => new Date().toISOString());
 
+  const built = options.launch ? buildDemoLaunchConfig(options.launch) : undefined;
+  const tenantLayer = built?.tenantLayer ?? demoTenantLayer;
+
   const provider = new ConfigProvider({ cache: false });
   const resolved = provider.resolve({
-    tenantConfig: demoTenantLayer,
+    tenantConfig: tenantLayer,
     skipCache: true,
   });
   if (!resolved.validation.success || !resolved.config) {
@@ -67,6 +85,8 @@ export async function createDemoMobileApp(
   }
   const config = resolved.config;
   const tenantId = config.tenant.id;
+  const vertical = (built?.vertical ?? config.tenant.vertical) as DemoLaunchVertical | 'grocery';
+  const businessName = built?.businessName ?? config.company.displayName ?? config.tenant.name;
 
   const catalogRepo = new InMemoryCatalogRepository();
   const cartRepo = new InMemoryCartRepository();
@@ -142,26 +162,10 @@ export async function createDemoMobileApp(
     paymentRepo.hydrate(snapshot.payments);
     restoredFromSnapshot = true;
   } else {
-    await catalog.createProduct({
+    await seedVerticalDemoCatalog({
+      catalog,
       tenantId,
-      slug: 'atta',
-      name: 'Atta Flour',
-      status: 'active',
-      variants: [{ sku: 'ATTA-5KG', title: '5kg', price: { amount: 1200, currency: 'PKR' } }],
-    });
-    await catalog.createProduct({
-      tenantId,
-      slug: 'milk',
-      name: 'Fresh Milk',
-      status: 'active',
-      variants: [{ sku: 'MILK-1L', title: '1L', price: { amount: 280, currency: 'PKR' } }],
-    });
-    await catalog.createProduct({
-      tenantId,
-      slug: 'eggs',
-      name: 'Farm Eggs',
-      status: 'active',
-      variants: [{ sku: 'EGG-12', title: 'Dozen', price: { amount: 450, currency: 'PKR' } }],
+      vertical: vertical === 'grocery' ? 'grocery' : vertical,
     });
   }
 
@@ -175,5 +179,5 @@ export async function createDemoMobileApp(
     initialRoute: 'store.catalog',
   });
 
-  return { app, sessionId, config, restoredFromSnapshot };
+  return { app, sessionId, config, restoredFromSnapshot, vertical, businessName };
 }

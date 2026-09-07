@@ -57,6 +57,16 @@ export {
   summarizeDemoSnapshot,
 } from './demo/demo-snapshot.js';
 export type { DemoCommerceSnapshot, DemoSnapshotStore } from './demo/demo-snapshot.js';
+export {
+  DEMO_LAUNCH_VERTICALS,
+  buildDemoLaunchConfig,
+  slugifyBusinessName,
+} from './demo/build-launch-config.js';
+export type {
+  BuiltDemoLaunch,
+  DemoLaunchInput,
+  DemoLaunchVertical,
+} from './demo/build-launch-config.js';
 export type {
   MobileNavItem,
   MobileNavStyle,

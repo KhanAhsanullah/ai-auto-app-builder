@@ -10,7 +10,9 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 **Sprint 24 — Launch Wizard (Boom)** (in progress)
 
-Task 1 on `main`. Next: Task 3 — same Boom wizard on Expo mobile host.
+Task 3: Boom launch wizard on Expo mobile host.
+
+**Branch:** `sprint/24/task3`
 
 ## Completed Tasks
 
@@ -18,34 +20,35 @@ Task 1 on `main`. Next: Task 3 — same Boom wizard on Expo mobile host.
 | ------------------- | ------------------------------------- | ---------------- |
 | Sprint 1–23 ✅      | Foundation through durable web/mobile | `sprint*-task*`  |
 | Sprint 24 Task 1 ✅ | Web Boom wizard (any vertical)        | `sprint24-task1` |
+| Sprint 24 Task 3 ✅ | Mobile Boom wizard (Expo host)        | `sprint24-task3` |
 
 ## Current Progress
 
-- Sprint 24 Task 1 on `main` (web wizard)
-- Mobile host still boots fixed grocery demo — wizard wiring next
+- Sprint 24 Task 1 on `main`
+- **Mobile Boom wizard** Task 3 on branch
 
 ## Next Tasks
 
-1. Sprint 24 Task 3 — Boom launch wizard on `@ai-commerce/mobile-host`
+1. Sprint 24 Task 2 — multi-profile switcher (optional)
 2. Real backend / richer vertical UX when ready
 
 ## Latest Commit
 
 ```
-feat(web-host): add Boom launch wizard for any vertical (Sprint 24 Task 1)
+feat(mobile-host): add Boom launch wizard for any vertical (Sprint 24 Task 3)
 ```
 
 ## Latest Tag
 
 ```
-sprint24-task1
+sprint24-task3
 ```
 
 ## Health Status
 
-| Area       | Status        | Notes                                 |
-| ---------- | ------------- | ------------------------------------- |
-| Repository | ✅ Healthy    | Sprint 24 Task 1 merged to `main`     |
-| Web        | 🟡 End-result | Boom wizard live                      |
-| Mobile RN  | 🟡 Partial    | Buy path durable; Boom wizard not yet |
-| Tests      | ✅ Passing    | Launch config + vertical seeds        |
+| Area       | Status        | Notes                                    |
+| ---------- | ------------- | ---------------------------------------- |
+| Repository | ✅ Healthy    | Sprint 24 Task 3 on branch               |
+| Web        | 🟡 End-result | Boom wizard on `main`                    |
+| Mobile RN  | 🟡 End-result | Boom wizard on Expo host (this branch)   |
+| Tests      | ✅ Passing    | Mobile launch + restaurant seed coverage |
