@@ -10,27 +10,24 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 **Sprint 24 — Launch Wizard (Boom)** (in progress)
 
-Task 1: web wizard — business name + logo + any app type → ready storefront.
-
-**Branch:** `sprint/24/task1`
+Task 1 on `main`. Next: Task 3 — same Boom wizard on Expo mobile host.
 
 ## Completed Tasks
 
-| Task                | Description                                | Commit Tag       |
-| ------------------- | ------------------------------------------ | ---------------- |
-| Sprint 1–23 ✅      | Foundation through durable web/mobile demo | `sprint*-task*`  |
-| Sprint 24 Task 1 ✅ | Launch wizard (any vertical) on web-host   | `sprint24-task1` |
+| Task                | Description                           | Commit Tag       |
+| ------------------- | ------------------------------------- | ---------------- |
+| Sprint 1–23 ✅      | Foundation through durable web/mobile | `sprint*-task*`  |
+| Sprint 24 Task 1 ✅ | Web Boom wizard (any vertical)        | `sprint24-task1` |
 
 ## Current Progress
 
-- Sprints 1–23 Tasks 1–2 on `main`
-- **Launch Wizard** Task 1 on branch
+- Sprint 24 Task 1 on `main` (web wizard)
+- Mobile host still boots fixed grocery demo — wizard wiring next
 
 ## Next Tasks
 
-1. Sprint 24 Task 2 — multi-profile / live theme preview
-2. Sprint 24 Task 3 — mobile host launch wizard
-3. Real backend / payment gateways when ready
+1. Sprint 24 Task 3 — Boom launch wizard on `@ai-commerce/mobile-host`
+2. Real backend / richer vertical UX when ready
 
 ## Latest Commit
 
@@ -46,9 +43,9 @@ sprint24-task1
 
 ## Health Status
 
-| Area       | Status        | Notes                                     |
-| ---------- | ------------- | ----------------------------------------- |
-| Repository | ✅ Healthy    | Sprint 24 Task 1 on branch                |
-| Web        | 🟡 End-result | Wizard → grocery/restaurant/… storefronts |
-| Mobile RN  | 🟡 End-result | Durable demo; wizard pending Task 3       |
-| Tests      | ✅ Passing    | Launch config + vertical seed coverage    |
+| Area       | Status        | Notes                                 |
+| ---------- | ------------- | ------------------------------------- |
+| Repository | ✅ Healthy    | Sprint 24 Task 1 merged to `main`     |
+| Web        | 🟡 End-result | Boom wizard live                      |
+| Mobile RN  | 🟡 Partial    | Buy path durable; Boom wizard not yet |
+| Tests      | ✅ Passing    | Launch config + vertical seeds        |
