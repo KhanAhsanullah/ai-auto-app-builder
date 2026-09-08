@@ -47,6 +47,8 @@ describe('createDemoWebStore launch', () => {
     const products = await store.catalogSurface.listActiveProducts();
     expect(products.some((p) => p.slug === 'biryani')).toBe(true);
     expect(products.some((p) => p.slug === 'atta')).toBe(false);
+    const biryani = products.find((p) => p.slug === 'biryani');
+    expect(biryani?.variants[0]?.attributes?.imageUrl).toMatch(/^https:\/\//);
   });
 
   it('seeds pharmacy catalog for pharmacy vertical', async () => {

@@ -136,6 +136,7 @@ export function WebCatalogScreen(props: WebCatalogScreenProps): ReactNode {
         {products.map((product) => {
           const price = product.variants[0]?.price;
           const sku = product.variants[0]?.sku;
+          const imageUrl = product.variants[0]?.attributes?.imageUrl;
           const priceLabel = price
             ? `${price.currency} ${price.amount.toFixed(price.currency === 'PKR' ? 0 : 2)}`
             : null;
@@ -153,23 +154,38 @@ export function WebCatalogScreen(props: WebCatalogScreenProps): ReactNode {
                 border: '1px solid var(--web-border, #e5e7eb)',
               }}
             >
-              <div
-                aria-hidden
-                data-testid={`web-catalog-swatch-${product.slug}`}
-                style={{
-                  aspectRatio: '4 / 3',
-                  borderRadius: '0.45rem',
-                  display: 'grid',
-                  placeItems: 'center',
-                  background: swatchBackground(product.slug),
-                  color: '#fff',
-                  fontWeight: 700,
-                  fontSize: '1.5rem',
-                  letterSpacing: '0.04em',
-                }}
-              >
-                {initials(product.name)}
-              </div>
+              {imageUrl ? (
+                <img
+                  data-testid={`web-catalog-image-${product.slug}`}
+                  src={imageUrl}
+                  alt=""
+                  style={{
+                    aspectRatio: '4 / 3',
+                    width: '100%',
+                    objectFit: 'cover',
+                    borderRadius: '0.45rem',
+                    background: 'var(--web-border, #e5e7eb)',
+                  }}
+                />
+              ) : (
+                <div
+                  aria-hidden
+                  data-testid={`web-catalog-swatch-${product.slug}`}
+                  style={{
+                    aspectRatio: '4 / 3',
+                    borderRadius: '0.45rem',
+                    display: 'grid',
+                    placeItems: 'center',
+                    background: swatchBackground(product.slug),
+                    color: '#fff',
+                    fontWeight: 700,
+                    fontSize: '1.5rem',
+                    letterSpacing: '0.04em',
+                  }}
+                >
+                  {initials(product.name)}
+                </div>
+              )}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', flex: 1 }}>
                 <div style={{ fontWeight: 650, color: 'var(--web-text, #0f172a)' }}>
                   {product.name}

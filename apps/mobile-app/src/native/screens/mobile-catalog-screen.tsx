@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import type { Product } from '@ai-commerce/module-catalog';
 
@@ -14,7 +14,7 @@ export interface MobileCatalogScreenProps {
 }
 
 /**
- * Mobile catalog — product cards with brand-tinted media placeholders.
+ * Mobile catalog — product cards with images when seeded, initials fallback.
  */
 export function MobileCatalogScreen(props: MobileCatalogScreenProps): ReactNode {
   const { app, sessionId } = props;
@@ -115,12 +115,22 @@ export function MobileCatalogScreen(props: MobileCatalogScreenProps): ReactNode 
       {products.map((product) => {
         const price = product.variants[0]?.price;
         const sku = product.variants[0]?.sku;
+        const imageUrl = product.variants[0]?.attributes?.imageUrl;
         const priceLabel = price ? `${price.currency} ${price.amount}` : null;
         return (
           <View key={product.id} testID={`mobile-catalog-item-${product.slug}`} style={styles.card}>
-            <View style={[styles.swatch, { backgroundColor: mixAccent(accent, product.slug) }]}>
-              <Text style={styles.swatchText}>{initials(product.name)}</Text>
-            </View>
+            {imageUrl ? (
+              <Image
+                testID={`mobile-catalog-image-${product.slug}`}
+                source={{ uri: imageUrl }}
+                style={styles.image}
+                accessibilityIgnoresInvertColors
+              />
+            ) : (
+              <View style={[styles.swatch, { backgroundColor: mixAccent(accent, product.slug) }]}>
+                <Text style={styles.swatchText}>{initials(product.name)}</Text>
+              </View>
+            )}
             <View style={styles.itemText}>
               <Text style={styles.name}>{product.name}</Text>
               {priceLabel ? (
@@ -163,7 +173,6 @@ function mixAccent(accent: string, slug: string): string {
   for (let i = 0; i < slug.length; i += 1) {
     hash = (hash * 31 + slug.charCodeAt(i)) >>> 0;
   }
-  // Darken toward slate using opacity layers — RN has no color-mix
   const opacity = 0.55 + (hash % 30) / 100;
   return accent.length === 7
     ? `${accent}${Math.round(opacity * 255)
@@ -186,9 +195,15 @@ const styles = StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: '#e5e7eb',
   },
+  image: {
+    width: 64,
+    height: 64,
+    borderRadius: 10,
+    backgroundColor: '#e5e7eb',
+  },
   swatch: {
-    width: 56,
-    height: 56,
+    width: 64,
+    height: 64,
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',

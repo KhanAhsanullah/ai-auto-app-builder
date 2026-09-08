@@ -5,7 +5,7 @@ import type { Order } from '@ai-commerce/module-order';
 import type { PaymentIntent } from '@ai-commerce/module-payment';
 
 /** localStorage / memory key for the web demo commerce snapshot. */
-export const WEB_DEMO_SNAPSHOT_KEY = '@ai-commerce/web-demo/snapshot/v1';
+export const WEB_DEMO_SNAPSHOT_KEY = '@ai-commerce/web-demo/snapshot/v2';
 
 export interface WebDemoSnapshotStore {
   getItem(key: string): Promise<string | null>;

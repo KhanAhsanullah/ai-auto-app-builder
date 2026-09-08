@@ -5,7 +5,7 @@ import type { Order } from '@ai-commerce/module-order';
 import type { PaymentIntent } from '@ai-commerce/module-payment';
 
 /** AsyncStorage / memory key for the mobile demo commerce snapshot. */
-export const DEMO_SNAPSHOT_KEY = '@ai-commerce/mobile-demo/snapshot/v1';
+export const DEMO_SNAPSHOT_KEY = '@ai-commerce/mobile-demo/snapshot/v2';
 
 export interface DemoSnapshotStore {
   getItem(key: string): Promise<string | null>;
