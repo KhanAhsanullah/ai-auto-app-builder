@@ -73,6 +73,7 @@ export type {
   ResolvedWebNavItem,
   ResolvedWebNavigation,
   ResolvedWebStoreShell,
+  ResolvedWebThemeColors,
   WebNavItem,
   WebNavStyle,
 } from './types.js';

@@ -16,10 +16,11 @@ describe('WebStoreApp', () => {
 
     render(<WebStoreApp store={store} onNavigate={onNavigate} />);
 
-    expect(screen.getByTestId('web-app-welcome').textContent).toContain(
-      store.shell.branding.displayName,
+    expect(screen.getByTestId('web-home-brand').textContent).toBe(store.shell.branding.displayName);
+    expect(screen.getByTestId('web-home-tagline').textContent).toBe(store.shell.branding.tagline);
+    expect(screen.getByTestId('web-shell-layout').style.getPropertyValue('--web-brand')).toBe(
+      store.shell.theme.primary,
     );
-    expect(screen.getByTestId('web-app-seo-title').textContent).toBe(store.shell.seo.title);
 
     fireEvent.click(screen.getByTestId('web-nav-shop'));
     expect(onNavigate).toHaveBeenCalledWith('store.catalog');

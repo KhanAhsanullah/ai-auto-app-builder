@@ -53,6 +53,7 @@ export class WebStoreShellResolver {
         vertical: input.tenant.vertical,
       },
       branding,
+      theme: input.theme,
       navigation,
       domain: settings.domain,
       seo: settings.seo,

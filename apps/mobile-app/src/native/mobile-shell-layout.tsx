@@ -14,13 +14,15 @@ export interface MobileShellLayoutProps {
 
 /**
  * React Native mobile shell: header + content + config-driven bottom bar.
+ * Theme colors come from resolved tenant theme (Sprint 25).
  */
 export function MobileShellLayout(props: MobileShellLayoutProps): ReactNode {
   const { viewModel, onNavigate, children } = props;
   const { shell, activeScreen, tabItems } = viewModel;
+  const { theme } = shell;
 
   return (
-    <View testID="mobile-shell-layout" style={styles.root}>
+    <View testID="mobile-shell-layout" style={[styles.root, { backgroundColor: theme.background }]}>
       <MobileHeader
         brandName={shell.branding.displayName}
         title={activeScreen.title}
@@ -40,6 +42,7 @@ export function MobileShellLayout(props: MobileShellLayoutProps): ReactNode {
         items={tabItems}
         activeRoute={viewModel.activeRoute}
         onNavigate={onNavigate}
+        accentColor={theme.primary}
       />
     </View>
   );
@@ -71,7 +74,6 @@ function DefaultScreenContent(props: {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: 'var(--mobile-content-bg, #f8fafc)',
   },
   content: {
     flex: 1,
@@ -82,16 +84,16 @@ const styles = StyleSheet.create({
   },
   welcome: {
     fontSize: 14,
-    color: 'var(--mobile-text-muted, #64748b)',
+    color: '#64748b',
   },
   screenTitle: {
     fontSize: 20,
     fontWeight: '700',
-    color: 'var(--mobile-text, #0f172a)',
+    color: '#0f172a',
   },
   description: {
     fontSize: 15,
     lineHeight: 22,
-    color: 'var(--mobile-text-muted, #64748b)',
+    color: '#64748b',
   },
 });

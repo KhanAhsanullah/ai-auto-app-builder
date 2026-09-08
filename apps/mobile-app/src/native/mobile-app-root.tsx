@@ -6,6 +6,7 @@ import { MobileShellLayout } from './mobile-shell-layout.js';
 import { MobileCartScreen } from './screens/mobile-cart-screen.js';
 import { MobileCatalogScreen } from './screens/mobile-catalog-screen.js';
 import { MobileCheckoutScreen } from './screens/mobile-checkout-screen.js';
+import { MobileHomeScreen } from './screens/mobile-home-screen.js';
 import { MobileOrdersScreen } from './screens/mobile-orders-screen.js';
 import { MobilePaymentConfirmScreen } from './screens/mobile-payment-confirm-screen.js';
 
@@ -81,6 +82,9 @@ export function MobileAppRoot(props: MobileAppRootProps): ReactNode {
       sessionId={sessionId}
       checkoutId={checkoutId}
       brandName={viewModel.shell.branding.displayName}
+      tagline={viewModel.shell.branding.tagline}
+      vertical={viewModel.shell.tenant.vertical}
+      accentColor={viewModel.shell.theme.primary}
       title={viewModel.activeScreen.title}
       description={viewModel.activeScreen.description}
       appName={viewModel.shell.identity.appName}
@@ -105,6 +109,9 @@ function DefaultCommerceContent(props: {
   sessionId: string;
   checkoutId?: string;
   brandName: string;
+  tagline?: string;
+  vertical?: string;
+  accentColor: string;
   title: string;
   description?: string;
   appName: string;
@@ -113,8 +120,19 @@ function DefaultCommerceContent(props: {
 }): ReactNode {
   const { app, route, sessionId, checkoutId, onNavigate, onCheckoutComplete } = props;
 
+  if (route === 'store.home') {
+    return (
+      <MobileHomeScreen
+        brandName={props.brandName}
+        tagline={props.tagline}
+        verticalLabel={props.vertical}
+        accentColor={props.accentColor}
+        onShop={app.isCatalogAvailable() ? () => onNavigate('store.catalog') : undefined}
+      />
+    );
+  }
   if (route === 'store.catalog' && app.isCatalogAvailable()) {
-    return <MobileCatalogScreen app={app} sessionId={sessionId} />;
+    return <MobileCatalogScreen app={app} sessionId={sessionId} accentColor={props.accentColor} />;
   }
   if (route === 'store.cart' && app.isCartAvailable()) {
     return (

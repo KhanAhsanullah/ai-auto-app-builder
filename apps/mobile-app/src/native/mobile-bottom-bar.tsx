@@ -7,10 +7,14 @@ export interface MobileBottomBarProps {
   items: readonly ResolvedMobileNavItem[];
   activeRoute: string;
   onNavigate?: (route: string) => void;
+  /** Tenant theme primary for active tab accent. */
+  accentColor?: string;
 }
 
 /** Config-driven bottom tab bar for the consumer mobile shell. */
 export function MobileBottomBar(props: MobileBottomBarProps): ReactNode {
+  const accent = props.accentColor ?? '#16A34A';
+
   return (
     <View testID="mobile-bottom-bar" accessibilityRole="tablist" style={styles.bar}>
       {props.items.map((item) => {
@@ -22,14 +26,17 @@ export function MobileBottomBar(props: MobileBottomBarProps): ReactNode {
             accessibilityRole="tab"
             accessibilityState={{ selected: active }}
             onPress={() => props.onNavigate?.(item.route)}
-            style={[styles.tab, active ? styles.tabActive : null]}
+            style={styles.tab}
           >
-            <Text testID={`mobile-tab-icon-${item.id}`} style={styles.icon}>
+            <Text
+              testID={`mobile-tab-icon-${item.id}`}
+              style={[styles.icon, active ? { color: accent } : null]}
+            >
               {item.icon ?? item.label.slice(0, 1)}
             </Text>
             <Text
               testID={`mobile-tab-label-${item.id}`}
-              style={[styles.label, active ? styles.labelActive : null]}
+              style={[styles.label, active ? { color: accent, fontWeight: '600' } : null]}
               numberOfLines={1}
             >
               {item.label}
@@ -45,8 +52,8 @@ const styles = StyleSheet.create({
   bar: {
     flexDirection: 'row',
     borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: 'var(--mobile-border, #e2e8f0)',
-    backgroundColor: 'var(--mobile-tab-bg, #ffffff)',
+    borderTopColor: '#e2e8f0',
+    backgroundColor: '#ffffff',
     paddingBottom: 8,
     paddingTop: 6,
   },
@@ -57,19 +64,12 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     gap: 2,
   },
-  tabActive: {
-    opacity: 1,
-  },
   icon: {
     fontSize: 12,
-    color: 'var(--mobile-tab-muted, #64748b)',
+    color: '#64748b',
   },
   label: {
     fontSize: 11,
-    color: 'var(--mobile-tab-muted, #64748b)',
-  },
-  labelActive: {
-    color: 'var(--mobile-tab-active, #2563eb)',
-    fontWeight: '600',
+    color: '#64748b',
   },
 });

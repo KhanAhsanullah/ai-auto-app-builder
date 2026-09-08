@@ -14,10 +14,12 @@ export interface WebShellLayoutProps {
 
 /**
  * React web storefront shell: header + top nav + content + footer.
+ * Theme CSS variables come from resolved tenant theme (Sprint 25).
  */
 export function WebShellLayout(props: WebShellLayoutProps): ReactNode {
   const { viewModel, onNavigate, children } = props;
   const { shell, activeScreen, primaryNav, footerNav } = viewModel;
+  const { theme } = shell;
 
   return (
     <div
@@ -27,9 +29,21 @@ export function WebShellLayout(props: WebShellLayoutProps): ReactNode {
         display: 'flex',
         flexDirection: 'column',
         minHeight: '100vh',
-        background: 'var(--web-content-bg, #ffffff)',
-        color: 'var(--web-text, #0f172a)',
-        fontFamily: 'var(--web-font-sans, system-ui, sans-serif)',
+        background: `var(--web-content-bg, ${theme.background})`,
+        color: `var(--web-text, ${theme.text})`,
+        fontFamily: 'var(--web-font-sans, "Segoe UI", "Helvetica Neue", sans-serif)',
+        // Tenant theme → CSS custom properties used across screens
+        ['--web-brand' as string]: theme.primary,
+        ['--web-brand-secondary' as string]: theme.secondary,
+        ['--web-content-bg' as string]: theme.background,
+        ['--web-surface' as string]: theme.surface,
+        ['--web-text' as string]: theme.text,
+        ['--web-text-muted' as string]: theme.textMuted,
+        ['--web-border' as string]: theme.border,
+        ['--web-nav-bg' as string]: theme.text,
+        ['--web-nav-text' as string]: theme.surface,
+        ['--web-nav-active' as string]: theme.primary,
+        ['--web-header-bg' as string]: theme.surface,
       }}
     >
       <WebHeader

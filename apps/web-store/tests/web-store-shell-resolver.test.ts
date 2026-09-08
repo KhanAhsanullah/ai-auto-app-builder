@@ -21,6 +21,7 @@ describe('WebStoreShellResolver', () => {
     expect(shell.navigation.style).toBe('top-bar');
     expect(shell.navigation.primary.length).toBeGreaterThan(0);
     expect(shell.defaultLandingRoute).toBe('store.home');
+    expect(shell.theme.primary).toBe(config.theme.colors.primary);
     expect(shell.pwa?.enabled).toBe(true);
     expect(shell.legal?.termsOfServiceUrl).toBeDefined();
   });

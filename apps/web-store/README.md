@@ -11,6 +11,8 @@ Config-driven consumer web storefront for CommerceOS AI — resolve tenant confi
 Sprint 11 complete — facade + shell. Sprint 20 complete — catalog/cart/checkout/payment/orders screens.
 Sprint 23 Task 1 — `createDemoWebStore` + runnable `@ai-commerce/web-host` (Vite).
 Sprint 23 Task 2 — localStorage guest session + durable snapshot + reset/export.
+Sprint 24 Task 1 — Boom launch wizard (any vertical).
+Sprint 25 Task 1 — theme-driven shell + home hero + catalog product cards.
 
 ## Modules
 

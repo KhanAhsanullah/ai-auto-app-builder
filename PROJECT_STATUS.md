@@ -8,32 +8,29 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 25 — Storefront UI Polish** (starting)
-
-Sprint 24 Boom wizards on `main`. Next: make web + mobile stores look like real apps (not skeleton lists).
+**Sprint 25 — Storefront UI Polish** (Task 1 on branch)
 
 ## Completed Tasks
 
-| Task                | Description                      | Commit Tag       |
-| ------------------- | -------------------------------- | ---------------- |
-| Sprint 1–23 ✅      | Foundation through durable demos | `sprint*-task*`  |
-| Sprint 24 Task 1 ✅ | Web Boom wizard                  | `sprint24-task1` |
-| Sprint 24 Task 3 ✅ | Mobile Boom wizard               | `sprint24-task3` |
+| Task             | Description                       | Commit Tag        |
+| ---------------- | --------------------------------- | ----------------- |
+| Sprint 1–24 ✅   | Foundation through Boom wizards   | `sprint*-task*`   |
+| Sprint 25 Task 1 | Theme + home hero + catalog cards | _(pending merge)_ |
 
 ## Current Progress
 
-- Sprint 24 on `main` (web + mobile Boom)
-- UI still skeletal — polish sprint next
+- Branch `sprint/25/task1`: tenant theme on shell, home hero, product cards (web + mobile)
 
 ## Next Tasks
 
-1. Sprint 25 Task 1 — branded catalog cards + home hero + theme accent (web + mobile)
-2. Real backend when ready
+1. Merge Sprint 25 Task 1
+2. Cart / checkout visual polish
+3. Real backend when ready
 
 ## Latest Commit
 
 ```
-feat(mobile-host): add Boom launch wizard for any vertical (Sprint 24 Task 3)
+feat(storefront): theme accent, home hero, catalog cards (Sprint 25 Task 1)
 ```
 
 ## Latest Tag
@@ -44,8 +41,8 @@ sprint24-task3
 
 ## Health Status
 
-| Area       | Status      | Notes                             |
-| ---------- | ----------- | --------------------------------- |
-| Repository | ✅ Healthy  | Sprint 24 Task 3 merged to `main` |
-| Web/Mobile | 🟡 Runnable | Boom works; UI polish next        |
-| Tests      | ✅ Passing  | Launch + commerce screens         |
+| Area       | Status      | Notes                         |
+| ---------- | ----------- | ----------------------------- |
+| Repository | ✅ Healthy  | Sprint 25 Task 1 on branch    |
+| Web/Mobile | 🟡 Runnable | Boom + polished storefront UI |
+| Tests      | ✅ Passing  | web-store + mobile-app        |

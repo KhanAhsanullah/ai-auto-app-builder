@@ -53,6 +53,7 @@ export class MobileAppShellResolver {
         vertical: input.tenant.vertical,
       },
       branding,
+      theme: input.theme,
       navigation,
       identity: settings.identity,
       runtime: settings.runtime,

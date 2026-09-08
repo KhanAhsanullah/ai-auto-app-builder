@@ -75,4 +75,5 @@ export type {
   ResolvedMobileBranding,
   ResolvedMobileNavItem,
   ResolvedMobileNavigation,
+  ResolvedMobileThemeColors,
 } from './types.js';

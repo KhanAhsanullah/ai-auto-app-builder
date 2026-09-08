@@ -42,6 +42,17 @@ export interface ResolvedMobileBranding {
   showPoweredBy: boolean;
 }
 
+/** Theme color tokens surfaced to the mobile shell (Sprint 25). */
+export interface ResolvedMobileThemeColors {
+  primary: string;
+  secondary: string;
+  background: string;
+  surface: string;
+  text: string;
+  textMuted: string;
+  border: string;
+}
+
 /** Fully resolved mobile app shell model (Sprint 9 Task 1). */
 export interface ResolvedMobileAppShell {
   enabled: boolean;
@@ -52,6 +63,7 @@ export interface ResolvedMobileAppShell {
     vertical: Tenant['vertical'];
   };
   branding: ResolvedMobileBranding;
+  theme: ResolvedMobileThemeColors;
   navigation: ResolvedMobileNavigation;
   identity: MobileAppSettings['identity'];
   runtime: MobileAppSettings['runtime'];
@@ -66,6 +78,7 @@ export interface ResolveMobileAppShellInput {
   tenant: Pick<Tenant, 'id' | 'slug' | 'name' | 'vertical'>;
   branding: Branding;
   companyDisplayName?: string;
+  theme: ResolvedMobileThemeColors;
   navigationMobile: {
     primary: readonly MobileNavItem[];
     secondary?: readonly MobileNavItem[];

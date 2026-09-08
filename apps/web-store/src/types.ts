@@ -44,6 +44,17 @@ export interface ResolvedWebBranding {
   showPoweredBy: boolean;
 }
 
+/** Theme color tokens surfaced to the storefront shell (Sprint 25). */
+export interface ResolvedWebThemeColors {
+  primary: string;
+  secondary: string;
+  background: string;
+  surface: string;
+  text: string;
+  textMuted: string;
+  border: string;
+}
+
 /** Fully resolved web store shell model (Sprint 11 Task 1). */
 export interface ResolvedWebStoreShell {
   enabled: boolean;
@@ -54,6 +65,7 @@ export interface ResolvedWebStoreShell {
     vertical: Tenant['vertical'];
   };
   branding: ResolvedWebBranding;
+  theme: ResolvedWebThemeColors;
   navigation: ResolvedWebNavigation;
   domain: WebStoreSettings['domain'];
   seo: WebStoreSettings['seo'];
@@ -70,6 +82,7 @@ export interface ResolveWebStoreShellInput {
   tenant: Pick<Tenant, 'id' | 'slug' | 'name' | 'vertical'>;
   branding: Branding;
   companyDisplayName?: string;
+  theme: ResolvedWebThemeColors;
   navigationWeb: {
     primary: readonly WebNavItem[];
     secondary?: readonly WebNavItem[];

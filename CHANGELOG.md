@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Storefront UI polish** (Sprint 25 Task 1) — `@ai-commerce/web-store` + `@ai-commerce/mobile-app`
+  - Tenant theme colors on shell (CSS vars / accent props)
+  - Brand-first home hero with Shop CTA
+  - Catalog product cards with tinted initials placeholders
+
 - **Mobile Boom launch wizard** (Sprint 24 Task 3) — `@ai-commerce/mobile-host` + `@ai-commerce/mobile-app`
   - Same name + logo + any vertical flow as web, on Expo
   - `createDemoMobileApp({ launch })` + New app / Reset / Export toolbar

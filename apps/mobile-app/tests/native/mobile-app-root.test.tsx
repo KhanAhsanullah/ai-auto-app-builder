@@ -18,12 +18,10 @@ describe('MobileAppRoot', () => {
 
     render(<MobileAppRoot app={app} onNavigate={onNavigate} />);
 
-    expect(screen.getByTestId('mobile-app-welcome').textContent).toContain(
+    expect(screen.getByTestId('mobile-home-brand').textContent).toBe(
       app.shell.branding.displayName,
     );
-    expect(screen.getByTestId('mobile-app-store-name').textContent).toBe(
-      app.shell.identity.appName,
-    );
+    expect(screen.getByTestId('mobile-home-tagline').textContent).toBe(app.shell.branding.tagline);
     expect(screen.getByTestId('mobile-header-title').textContent).toBe('Home');
 
     fireEvent.click(screen.getByTestId('mobile-tab-orders'));

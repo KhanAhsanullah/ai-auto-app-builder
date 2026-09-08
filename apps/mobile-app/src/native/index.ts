@@ -2,6 +2,8 @@ export { MobileAppRoot } from './mobile-app-root.js';
 export type { MobileAppRootProps } from './mobile-app-root.js';
 export { MobileCatalogScreen } from './screens/mobile-catalog-screen.js';
 export type { MobileCatalogScreenProps } from './screens/mobile-catalog-screen.js';
+export { MobileHomeScreen } from './screens/mobile-home-screen.js';
+export type { MobileHomeScreenProps } from './screens/mobile-home-screen.js';
 export { MobileCartScreen } from './screens/mobile-cart-screen.js';
 export type { MobileCartScreenProps } from './screens/mobile-cart-screen.js';
 export { MobileCheckoutScreen } from './screens/mobile-checkout-screen.js';

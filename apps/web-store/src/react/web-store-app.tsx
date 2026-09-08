@@ -4,6 +4,7 @@ import type { WebStore } from '../domain/web-store.js';
 import { WebCartScreen } from './screens/web-cart-screen.js';
 import { WebCatalogScreen } from './screens/web-catalog-screen.js';
 import { WebCheckoutScreen } from './screens/web-checkout-screen.js';
+import { WebHomeScreen } from './screens/web-home-screen.js';
 import { WebOrdersScreen } from './screens/web-orders-screen.js';
 import { WebPaymentConfirmScreen } from './screens/web-payment-confirm-screen.js';
 import { WebShellLayout } from './web-shell-layout.js';
@@ -86,6 +87,9 @@ export function WebStoreApp(props: WebStoreAppProps): ReactNode {
       sessionId={sessionId}
       checkoutId={checkoutId}
       brandName={viewModel.shell.branding.displayName}
+      tagline={viewModel.shell.branding.tagline}
+      logoUrl={viewModel.shell.branding.logoPrimary}
+      vertical={viewModel.shell.tenant.vertical}
       title={viewModel.activeScreen.title}
       description={viewModel.activeScreen.description}
       seoTitle={viewModel.shell.seo.title}
@@ -110,6 +114,9 @@ function DefaultCommerceContent(props: {
   sessionId: string;
   checkoutId?: string;
   brandName: string;
+  tagline?: string;
+  logoUrl?: string;
+  vertical?: string;
   title: string;
   description?: string;
   seoTitle: string;
@@ -118,6 +125,17 @@ function DefaultCommerceContent(props: {
 }): ReactNode {
   const { store, route, sessionId, checkoutId, onNavigate, onCheckoutComplete } = props;
 
+  if (route === 'store.home') {
+    return (
+      <WebHomeScreen
+        brandName={props.brandName}
+        tagline={props.tagline}
+        logoUrl={props.logoUrl}
+        verticalLabel={props.vertical}
+        onShop={store.isCatalogAvailable() ? () => onNavigate('store.catalog') : undefined}
+      />
+    );
+  }
   if (route === 'store.catalog' && store.isCatalogAvailable()) {
     return <WebCatalogScreen store={store} sessionId={sessionId} />;
   }

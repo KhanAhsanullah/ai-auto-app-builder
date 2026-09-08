@@ -20,6 +20,7 @@ describe('MobileAppShellResolver', () => {
     expect(shell.navigation.style).toBe('bottom-bar');
     expect(shell.navigation.primary.length).toBeGreaterThan(0);
     expect(shell.defaultLandingRoute).toBe('store.home');
+    expect(shell.theme.primary).toBe(config.theme.colors.primary);
     expect(shell.runtime.deepLinking?.scheme).toBe('freshgrocery');
   });
 

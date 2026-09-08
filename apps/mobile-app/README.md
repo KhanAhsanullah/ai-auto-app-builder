@@ -9,6 +9,8 @@ Config-driven React Native consumer app for CommerceOS AI — resolve tenant con
 ## Status
 
 Sprint 9 complete — facade + shell. Sprint 20 complete — commerce screens. Sprint 21 — use `@ai-commerce/mobile-host` to run on device.
+Sprint 24 Task 3 — Boom launch wizard (any vertical).
+Sprint 25 Task 1 — theme-driven shell + home hero + catalog product cards.
 
 ## Modules
 

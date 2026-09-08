@@ -11,7 +11,7 @@ export interface WebCatalogScreenProps {
 }
 
 /**
- * Storefront catalog screen — lists active products via `catalogSurface`.
+ * Storefront catalog — product cards with brand-tinted media placeholders.
  */
 export function WebCatalogScreen(props: WebCatalogScreenProps): ReactNode {
   const { store, sessionId } = props;
@@ -114,42 +114,77 @@ export function WebCatalogScreen(props: WebCatalogScreenProps): ReactNode {
           {message}
         </p>
       ) : null}
+      {error ? (
+        <p
+          data-testid="web-catalog-inline-error"
+          style={{ margin: '0 0 0.75rem', color: '#b91c1c' }}
+        >
+          {error}
+        </p>
+      ) : null}
       <ul
         data-testid="web-catalog-list"
-        style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gap: '0.75rem' }}
+        style={{
+          listStyle: 'none',
+          margin: 0,
+          padding: 0,
+          display: 'grid',
+          gap: '1rem',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(15rem, 1fr))',
+        }}
       >
         {products.map((product) => {
           const price = product.variants[0]?.price;
           const sku = product.variants[0]?.sku;
+          const priceLabel = price
+            ? `${price.currency} ${price.amount.toFixed(price.currency === 'PKR' ? 0 : 2)}`
+            : null;
           return (
             <li
               key={product.id}
               data-testid={`web-catalog-item-${product.slug}`}
               style={{
                 display: 'flex',
-                justifyContent: 'space-between',
-                gap: '1rem',
-                alignItems: 'center',
-                padding: '0.85rem 0',
-                borderBottom: '1px solid var(--web-border, #e2e8f0)',
+                flexDirection: 'column',
+                gap: '0.85rem',
+                padding: '0.85rem',
+                borderRadius: '0.65rem',
+                background: 'var(--web-surface, #f9fafb)',
+                border: '1px solid var(--web-border, #e5e7eb)',
               }}
             >
-              <div>
-                <div style={{ fontWeight: 600, color: 'var(--web-text, #0f172a)' }}>
+              <div
+                aria-hidden
+                data-testid={`web-catalog-swatch-${product.slug}`}
+                style={{
+                  aspectRatio: '4 / 3',
+                  borderRadius: '0.45rem',
+                  display: 'grid',
+                  placeItems: 'center',
+                  background: swatchBackground(product.slug),
+                  color: '#fff',
+                  fontWeight: 700,
+                  fontSize: '1.5rem',
+                  letterSpacing: '0.04em',
+                }}
+              >
+                {initials(product.name)}
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', flex: 1 }}>
+                <div style={{ fontWeight: 650, color: 'var(--web-text, #0f172a)' }}>
                   {product.name}
                 </div>
-                <div
-                  style={{
-                    marginTop: '0.25rem',
-                    fontSize: '0.85rem',
-                    color: 'var(--web-text-muted, #64748b)',
-                  }}
-                >
-                  {product.slug}
-                  {price
-                    ? ` · ${price.currency} ${price.amount.toFixed(price.currency === 'PKR' ? 0 : 2)}`
-                    : ''}
-                </div>
+                {priceLabel ? (
+                  <div
+                    style={{
+                      fontSize: '0.95rem',
+                      fontWeight: 600,
+                      color: 'var(--web-brand, #16a34a)',
+                    }}
+                  >
+                    {priceLabel}
+                  </div>
+                ) : null}
               </div>
               {canAdd && sku ? (
                 <button
@@ -158,14 +193,17 @@ export function WebCatalogScreen(props: WebCatalogScreenProps): ReactNode {
                   disabled={busySku === sku}
                   onClick={() => void addToCart(product)}
                   style={{
-                    padding: '0.4rem 0.75rem',
-                    border: '1px solid var(--web-border, #e2e8f0)',
-                    borderRadius: '0.35rem',
-                    background: '#fff',
+                    padding: '0.55rem 0.75rem',
+                    border: 'none',
+                    borderRadius: '0.4rem',
+                    background: 'var(--web-brand, #16a34a)',
+                    color: '#fff',
                     cursor: 'pointer',
+                    fontWeight: 600,
+                    opacity: busySku === sku ? 0.7 : 1,
                   }}
                 >
-                  Add
+                  {busySku === sku ? 'Adding…' : 'Add to cart'}
                 </button>
               ) : null}
             </li>
@@ -174,4 +212,25 @@ export function WebCatalogScreen(props: WebCatalogScreenProps): ReactNode {
       </ul>
     </div>
   );
+}
+
+function initials(name: string): string {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) {
+    return '?';
+  }
+  if (parts.length === 1) {
+    return parts[0]!.slice(0, 2).toUpperCase();
+  }
+  return `${parts[0]![0] ?? ''}${parts[1]![0] ?? ''}`.toUpperCase();
+}
+
+/** Stable tint from slug so cards feel distinct without product images. */
+function swatchBackground(slug: string): string {
+  let hash = 0;
+  for (let i = 0; i < slug.length; i += 1) {
+    hash = (hash * 31 + slug.charCodeAt(i)) >>> 0;
+  }
+  const mix = 18 + (hash % 28);
+  return `color-mix(in srgb, var(--web-brand, #16a34a) ${mix}%, #1f2937)`;
 }
