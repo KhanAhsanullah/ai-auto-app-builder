@@ -8,41 +8,42 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 25 — Storefront UI Polish** (Task 1 on branch)
+**Sprint 25 — Storefront UI Polish** (Task 2 starting)
 
 ## Completed Tasks
 
-| Task             | Description                       | Commit Tag        |
-| ---------------- | --------------------------------- | ----------------- |
-| Sprint 1–24 ✅   | Foundation through Boom wizards   | `sprint*-task*`   |
-| Sprint 25 Task 1 | Theme + home hero + catalog cards | _(pending merge)_ |
+| Task                | Description                        | Commit Tag       |
+| ------------------- | ---------------------------------- | ---------------- |
+| Sprint 1–24 ✅      | Foundation through Boom wizards    | `sprint*-task*`  |
+| Sprint 25 Task 1 ✅ | Theme + home hero + catalog images | `sprint25-task1` |
 
 ## Current Progress
 
-- Branch `sprint/25/task1`: tenant theme on shell, home hero, product cards (web + mobile)
+- Task 1 on `main` (theme, hero, product images)
+- Next: cart / checkout visual polish
 
 ## Next Tasks
 
-1. Merge Sprint 25 Task 1
-2. Cart / checkout visual polish
+1. Sprint 25 Task 2 — cart / checkout polish
+2. Wizard visual polish
 3. Real backend when ready
 
 ## Latest Commit
 
 ```
-feat(storefront): theme accent, home hero, catalog cards (Sprint 25 Task 1)
+fix(storefront): seed catalog with product images (Sprint 25 Task 1)
 ```
 
 ## Latest Tag
 
 ```
-sprint24-task3
+sprint25-task1
 ```
 
 ## Health Status
 
-| Area       | Status      | Notes                         |
-| ---------- | ----------- | ----------------------------- |
-| Repository | ✅ Healthy  | Sprint 25 Task 1 on branch    |
-| Web/Mobile | 🟡 Runnable | Boom + polished storefront UI |
-| Tests      | ✅ Passing  | web-store + mobile-app        |
+| Area       | Status      | Notes                       |
+| ---------- | ----------- | --------------------------- |
+| Repository | ✅ Healthy  | Sprint 25 Task 1 on `main`  |
+| Web/Mobile | ✅ Runnable | Boom + imaged catalog cards |
+| Tests      | ✅ Passing  | web-store + mobile-app      |

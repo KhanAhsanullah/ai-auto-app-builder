@@ -27,5 +27,7 @@ describe('mobile Boom launch', () => {
     expect(businessName).toBe('Spice Route');
     const products = await app.catalogSurface.listActiveProducts();
     expect(products.some((p) => p.slug === 'biryani')).toBe(true);
+    const biryani = products.find((p) => p.slug === 'biryani');
+    expect(biryani?.variants[0]?.attributes?.imageUrl).toMatch(/^https:\/\//);
   });
 });
