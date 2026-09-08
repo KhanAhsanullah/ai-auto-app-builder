@@ -1,4 +1,11 @@
-import { useCallback, useEffect, useState, type FormEvent, type ReactNode } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useState,
+  type CSSProperties,
+  type FormEvent,
+  type ReactNode,
+} from 'react';
 
 import type { CheckoutSession } from '@ai-commerce/module-checkout';
 
@@ -11,7 +18,7 @@ export interface WebCheckoutScreenProps {
 }
 
 /**
- * Storefront checkout screen — address + shipping + complete via `checkoutSurface`.
+ * Storefront checkout — order summary + shipping form with brand CTA.
  */
 export function WebCheckoutScreen(props: WebCheckoutScreenProps): ReactNode {
   const { store, sessionId, onComplete } = props;
@@ -107,79 +114,177 @@ export function WebCheckoutScreen(props: WebCheckoutScreenProps): ReactNode {
 
   if (session.status === 'completed') {
     return (
-      <div data-testid="web-checkout-screen" data-state="completed">
-        <p data-testid="web-checkout-done" style={{ margin: 0, fontWeight: 600 }}>
-          Checkout complete ({session.id}).
+      <div
+        data-testid="web-checkout-screen"
+        data-state="completed"
+        style={{
+          padding: '1.25rem',
+          borderRadius: '0.65rem',
+          background: 'color-mix(in srgb, var(--web-brand, #16a34a) 12%, #fff)',
+          border: '1px solid var(--web-border, #e5e7eb)',
+          maxWidth: '28rem',
+        }}
+      >
+        <p
+          data-testid="web-checkout-done"
+          style={{ margin: 0, fontWeight: 700, fontSize: '1.15rem' }}
+        >
+          Order placed
         </p>
-        <p style={{ margin: '0.5rem 0 0', color: 'var(--web-text-muted, #64748b)' }}>
-          Total: {session.total.currency} {session.total.amount}
+        <p style={{ margin: '0.45rem 0 0', color: 'var(--web-text-muted, #64748b)' }}>
+          Total: {session.total.currency}{' '}
+          {formatMoney(session.total.amount, session.total.currency)}
         </p>
       </div>
     );
   }
 
+  const fieldStyle: CSSProperties = {
+    display: 'block',
+    width: '100%',
+    marginTop: '0.35rem',
+    padding: '0.65rem 0.75rem',
+    borderRadius: '0.45rem',
+    border: '1px solid var(--web-border, #e5e7eb)',
+    background: '#fff',
+    fontSize: '1rem',
+    boxSizing: 'border-box',
+  };
+
   return (
-    <div data-testid="web-checkout-screen" data-state="ready">
-      <p data-testid="web-checkout-summary" style={{ margin: '0 0 1rem' }}>
-        {session.lines.length} item(s) · {session.subtotal.currency} {session.subtotal.amount}
-      </p>
+    <div
+      data-testid="web-checkout-screen"
+      data-state="ready"
+      style={{
+        display: 'grid',
+        gap: '1.25rem',
+        maxWidth: '36rem',
+      }}
+    >
+      <div
+        style={{
+          padding: '1rem',
+          borderRadius: '0.65rem',
+          background: 'var(--web-surface, #f9fafb)',
+          border: '1px solid var(--web-border, #e5e7eb)',
+        }}
+      >
+        <p data-testid="web-checkout-summary" style={{ margin: 0, fontWeight: 650 }}>
+          {session.lines.length} item(s) · {session.subtotal.currency}{' '}
+          {formatMoney(session.subtotal.amount, session.subtotal.currency)}
+        </p>
+        <ul
+          style={{
+            listStyle: 'none',
+            margin: '0.75rem 0 0',
+            padding: 0,
+            display: 'grid',
+            gap: '0.35rem',
+          }}
+        >
+          {session.lines.map((line) => (
+            <li
+              key={line.id}
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                gap: '1rem',
+                fontSize: '0.9rem',
+                color: 'var(--web-text-muted, #64748b)',
+              }}
+            >
+              <span>
+                {line.title} × {line.quantity}
+              </span>
+              <span>
+                {line.lineTotal.currency}{' '}
+                {formatMoney(line.lineTotal.amount, line.lineTotal.currency)}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
       {error ? (
-        <p data-testid="web-checkout-error" style={{ margin: '0 0 0.75rem', color: '#b91c1c' }}>
+        <p data-testid="web-checkout-error" style={{ margin: 0, color: '#b91c1c' }}>
           {error}
         </p>
       ) : null}
       <form data-testid="web-checkout-form" onSubmit={(e) => void onSubmit(e)}>
-        <label style={{ display: 'block', marginBottom: '0.5rem' }}>
+        <label
+          style={{ display: 'block', marginBottom: '0.75rem', fontWeight: 600, fontSize: '0.9rem' }}
+        >
           Address
           <input
             data-testid="web-checkout-line1"
             value={line1}
             onChange={(e) => setLine1(e.target.value)}
             required
-            style={{ display: 'block', width: '100%', marginTop: '0.25rem' }}
+            style={fieldStyle}
           />
         </label>
-        <label style={{ display: 'block', marginBottom: '0.5rem' }}>
+        <label
+          style={{ display: 'block', marginBottom: '0.75rem', fontWeight: 600, fontSize: '0.9rem' }}
+        >
           City
           <input
             data-testid="web-checkout-city"
             value={city}
             onChange={(e) => setCity(e.target.value)}
             required
-            style={{ display: 'block', width: '100%', marginTop: '0.25rem' }}
+            style={fieldStyle}
           />
         </label>
-        <label style={{ display: 'block', marginBottom: '0.5rem' }}>
-          Postal code
-          <input
-            data-testid="web-checkout-postal"
-            value={postalCode}
-            onChange={(e) => setPostalCode(e.target.value)}
-            required
-            style={{ display: 'block', width: '100%', marginTop: '0.25rem' }}
-          />
-        </label>
-        <label style={{ display: 'block', marginBottom: '0.75rem' }}>
-          Country
-          <input
-            data-testid="web-checkout-country"
-            value={country}
-            onChange={(e) => setCountry(e.target.value)}
-            required
-            style={{ display: 'block', width: '100%', marginTop: '0.25rem' }}
-          />
-        </label>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+          <label
+            style={{
+              display: 'block',
+              marginBottom: '0.75rem',
+              fontWeight: 600,
+              fontSize: '0.9rem',
+            }}
+          >
+            Postal code
+            <input
+              data-testid="web-checkout-postal"
+              value={postalCode}
+              onChange={(e) => setPostalCode(e.target.value)}
+              required
+              style={fieldStyle}
+            />
+          </label>
+          <label
+            style={{
+              display: 'block',
+              marginBottom: '0.75rem',
+              fontWeight: 600,
+              fontSize: '0.9rem',
+            }}
+          >
+            Country
+            <input
+              data-testid="web-checkout-country"
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+              required
+              style={fieldStyle}
+            />
+          </label>
+        </div>
         <button
           type="submit"
           data-testid="web-checkout-submit"
           disabled={busy}
           style={{
-            padding: '0.6rem 1rem',
+            marginTop: '0.5rem',
+            padding: '0.85rem 1.35rem',
             border: 'none',
-            borderRadius: '0.4rem',
-            background: 'var(--web-text, #0f172a)',
+            borderRadius: '0.5rem',
+            background: 'var(--web-brand, #16a34a)',
             color: '#fff',
             cursor: 'pointer',
+            fontWeight: 650,
+            fontSize: '1rem',
+            opacity: busy ? 0.75 : 1,
           }}
         >
           {busy ? 'Placing…' : 'Place order'}
@@ -187,4 +292,8 @@ export function WebCheckoutScreen(props: WebCheckoutScreenProps): ReactNode {
       </form>
     </div>
   );
+}
+
+function formatMoney(amount: number, currency: string): string {
+  return amount.toFixed(currency === 'PKR' ? 0 : 2);
 }

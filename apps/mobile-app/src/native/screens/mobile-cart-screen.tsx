@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState, type ReactNode } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import type { Cart } from '@ai-commerce/module-cart';
 
@@ -11,16 +11,20 @@ export interface MobileCartScreenProps {
   sessionId: string;
   /** Navigate to checkout when cart has lines. */
   onCheckout?: () => void;
+  /** Tenant theme primary for CTA. */
+  accentColor?: string;
 }
 
 /**
- * Mobile cart screen — session cart lines via `cartSurface`.
+ * Mobile cart — line cards with qty controls and brand checkout CTA.
  */
 export function MobileCartScreen(props: MobileCartScreenProps): ReactNode {
   const { app, sessionId, onCheckout } = props;
+  const accent = props.accentColor ?? '#16A34A';
   const [cart, setCart] = useState<Cart | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [imageByProductId, setImageByProductId] = useState<Record<string, string>>({});
 
   const reload = useCallback(async () => {
     if (!app.isCartAvailable()) {
@@ -45,6 +49,29 @@ export function MobileCartScreen(props: MobileCartScreenProps): ReactNode {
       cancelled = true;
     };
   }, [reload]);
+
+  useEffect(() => {
+    if (!app.isCatalogAvailable()) {
+      return;
+    }
+    let cancelled = false;
+    void app.catalogSurface.listActiveProducts().then((list) => {
+      if (cancelled) {
+        return;
+      }
+      const next: Record<string, string> = {};
+      for (const product of list) {
+        const url = product.variants[0]?.attributes?.imageUrl;
+        if (url) {
+          next[product.id] = url;
+        }
+      }
+      setImageByProductId(next);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [app]);
 
   async function changeQty(lineId: string, quantity: number) {
     if (!cart) {
@@ -102,48 +129,72 @@ export function MobileCartScreen(props: MobileCartScreenProps): ReactNode {
           {error}
         </Text>
       ) : null}
-      {cart.lines.map((line) => (
-        <View key={line.id} testID={`mobile-cart-line-${line.sku}`} style={styles.item}>
-          <View style={styles.itemText}>
-            <Text style={styles.name}>{line.title}</Text>
-            <Text style={styles.meta}>
-              {line.sku} · {line.unitPrice.currency} {line.unitPrice.amount}
+      {cart.lines.map((line) => {
+        const imageUrl = imageByProductId[line.productId];
+        return (
+          <View key={line.id} testID={`mobile-cart-line-${line.sku}`} style={styles.card}>
+            {imageUrl ? (
+              <Image
+                source={{ uri: imageUrl }}
+                style={styles.thumb}
+                accessibilityIgnoresInvertColors
+              />
+            ) : (
+              <View style={[styles.thumbFallback, { backgroundColor: accent }]}>
+                <Text style={styles.thumbText}>{line.title.slice(0, 2).toUpperCase()}</Text>
+              </View>
+            )}
+            <View style={styles.itemText}>
+              <Text style={styles.name}>{line.title}</Text>
+              <Text style={styles.meta}>
+                {line.unitPrice.currency} {line.unitPrice.amount} each
+              </Text>
+              <View style={styles.qtyRow}>
+                <Pressable
+                  testID={`mobile-cart-dec-${line.sku}`}
+                  disabled={busy}
+                  onPress={() => void changeQty(line.id, line.quantity - 1)}
+                  style={styles.qtyBtn}
+                >
+                  <Text style={styles.qtyLabel}>−</Text>
+                </Pressable>
+                <Text testID={`mobile-cart-qty-${line.sku}`} style={styles.qtyValue}>
+                  {line.quantity}
+                </Text>
+                <Pressable
+                  testID={`mobile-cart-inc-${line.sku}`}
+                  disabled={busy}
+                  onPress={() => void changeQty(line.id, line.quantity + 1)}
+                  style={styles.qtyBtn}
+                >
+                  <Text style={styles.qtyLabel}>+</Text>
+                </Pressable>
+              </View>
+            </View>
+            <Text style={styles.lineTotal}>
+              {line.lineTotal.currency} {line.lineTotal.amount}
             </Text>
           </View>
-          <View style={styles.qtyRow}>
-            <Pressable
-              testID={`mobile-cart-dec-${line.sku}`}
-              disabled={busy}
-              onPress={() => void changeQty(line.id, line.quantity - 1)}
-              style={styles.qtyBtn}
-            >
-              <Text>−</Text>
-            </Pressable>
-            <Text testID={`mobile-cart-qty-${line.sku}`}>{line.quantity}</Text>
-            <Pressable
-              testID={`mobile-cart-inc-${line.sku}`}
-              disabled={busy}
-              onPress={() => void changeQty(line.id, line.quantity + 1)}
-              style={styles.qtyBtn}
-            >
-              <Text>+</Text>
-            </Pressable>
-          </View>
-        </View>
-      ))}
-      <Text testID="mobile-cart-subtotal" style={styles.subtotal}>
-        Subtotal: {cart.subtotal.currency} {cart.subtotal.amount}
-      </Text>
-      {onCheckout ? (
-        <Pressable
-          testID="mobile-cart-checkout"
-          disabled={busy}
-          onPress={onCheckout}
-          style={styles.checkout}
-        >
-          <Text style={styles.checkoutLabel}>Checkout</Text>
-        </Pressable>
-      ) : null}
+        );
+      })}
+      <View style={styles.footer}>
+        <Text testID="mobile-cart-subtotal" style={styles.subtotal}>
+          Subtotal:{' '}
+          <Text style={{ color: accent }}>
+            {cart.subtotal.currency} {cart.subtotal.amount}
+          </Text>
+        </Text>
+        {onCheckout ? (
+          <Pressable
+            testID="mobile-cart-checkout"
+            disabled={busy}
+            onPress={onCheckout}
+            style={[styles.checkout, { backgroundColor: accent }]}
+          >
+            <Text style={styles.checkoutLabel}>Checkout</Text>
+          </Pressable>
+        ) : null}
+      </View>
     </View>
   );
 }
@@ -152,58 +203,97 @@ const styles = StyleSheet.create({
   list: {
     gap: 12,
   },
-  item: {
+  card: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     gap: 12,
-    paddingBottom: 12,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#e2e8f0',
+    padding: 12,
+    borderRadius: 12,
+    backgroundColor: '#f9fafb',
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: '#e5e7eb',
+  },
+  thumb: {
+    width: 64,
+    height: 64,
+    borderRadius: 10,
+    backgroundColor: '#e5e7eb',
+  },
+  thumbFallback: {
+    width: 64,
+    height: 64,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  thumbText: {
+    color: '#fff',
+    fontWeight: '700',
   },
   itemText: {
     flex: 1,
+    gap: 4,
   },
   name: {
     fontSize: 16,
     fontWeight: '600',
-    color: 'var(--mobile-text, #0f172a)',
+    color: '#0f172a',
   },
   meta: {
-    marginTop: 4,
     fontSize: 13,
-    color: 'var(--mobile-text-muted, #64748b)',
+    color: '#64748b',
   },
   qtyRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
+    marginTop: 4,
   },
   qtyBtn: {
-    paddingHorizontal: 10,
-    paddingVertical: 4,
+    width: 32,
+    height: 32,
+    borderRadius: 8,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: '#e2e8f0',
+    borderColor: '#e5e7eb',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
   },
-  subtotal: {
-    marginTop: 8,
+  qtyLabel: {
     fontSize: 16,
     fontWeight: '600',
   },
+  qtyValue: {
+    minWidth: 20,
+    textAlign: 'center',
+    fontWeight: '600',
+  },
+  lineTotal: {
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  footer: {
+    marginTop: 4,
+    gap: 12,
+  },
+  subtotal: {
+    fontSize: 16,
+    fontWeight: '700',
+  },
   checkout: {
-    marginTop: 8,
-    paddingVertical: 12,
+    paddingVertical: 14,
     paddingHorizontal: 16,
-    backgroundColor: '#0f172a',
+    borderRadius: 10,
     alignItems: 'center',
   },
   checkoutLabel: {
     color: '#fff',
     fontWeight: '600',
+    fontSize: 16,
   },
   muted: {
     fontSize: 14,
-    color: 'var(--mobile-text-muted, #64748b)',
+    color: '#64748b',
   },
   error: {
     fontSize: 14,

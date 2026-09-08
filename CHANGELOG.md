@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Cart / checkout polish** (Sprint 25 Task 2) — web + mobile
+  - Cart line cards with product thumbs, qty steppers, brand Checkout CTA
+  - Checkout order summary + spaced form + brand Place order CTA
+
 - **Storefront UI polish** (Sprint 25 Task 1) — `@ai-commerce/web-store` + `@ai-commerce/mobile-app`
   - Tenant theme colors on shell (CSS vars / accent props)
   - Brand-first home hero with Shop CTA

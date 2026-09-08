@@ -139,12 +139,20 @@ function DefaultCommerceContent(props: {
       <MobileCartScreen
         app={app}
         sessionId={sessionId}
+        accentColor={props.accentColor}
         onCheckout={app.isCheckoutAvailable() ? () => onNavigate('store.checkout') : undefined}
       />
     );
   }
   if (route === 'store.checkout' && app.isCheckoutAvailable() && app.isCartAvailable()) {
-    return <MobileCheckoutScreen app={app} sessionId={sessionId} onComplete={onCheckoutComplete} />;
+    return (
+      <MobileCheckoutScreen
+        app={app}
+        sessionId={sessionId}
+        accentColor={props.accentColor}
+        onComplete={onCheckoutComplete}
+      />
+    );
   }
   if (route === 'store.payment' && app.isOrderAvailable() && checkoutId) {
     return (

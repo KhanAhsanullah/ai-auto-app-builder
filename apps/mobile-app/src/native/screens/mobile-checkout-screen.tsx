@@ -9,13 +9,16 @@ export interface MobileCheckoutScreenProps {
   app: MobileApp;
   sessionId: string;
   onComplete?: (checkoutId: string) => void;
+  /** Tenant theme primary for CTA. */
+  accentColor?: string;
 }
 
 /**
- * Mobile checkout screen — address + shipping + complete via `checkoutSurface`.
+ * Mobile checkout — order summary + shipping form with brand CTA.
  */
 export function MobileCheckoutScreen(props: MobileCheckoutScreenProps): ReactNode {
   const { app, sessionId, onComplete } = props;
+  const accent = props.accentColor ?? '#16A34A';
   const [session, setSession] = useState<CheckoutSession | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -104,9 +107,16 @@ export function MobileCheckoutScreen(props: MobileCheckoutScreenProps): ReactNod
 
   if (session.status === 'completed') {
     return (
-      <View testID="mobile-checkout-screen" accessibilityLabel="completed">
-        <Text testID="mobile-checkout-done" style={styles.done}>
-          Order placed. Checkout {session.id}
+      <View
+        testID="mobile-checkout-screen"
+        accessibilityLabel="completed"
+        style={[styles.doneBox, { borderColor: accent }]}
+      >
+        <Text testID="mobile-checkout-done" style={[styles.done, { color: accent }]}>
+          Order placed
+        </Text>
+        <Text style={styles.muted}>
+          Total: {session.total.currency} {session.total.amount}
         </Text>
       </View>
     );
@@ -114,6 +124,16 @@ export function MobileCheckoutScreen(props: MobileCheckoutScreenProps): ReactNod
 
   return (
     <View testID="mobile-checkout-screen" accessibilityLabel="ready" style={styles.form}>
+      <View style={styles.summary}>
+        <Text style={styles.summaryTitle}>
+          {session.lines.length} item(s) · {session.subtotal.currency} {session.subtotal.amount}
+        </Text>
+        {session.lines.map((line) => (
+          <Text key={line.id} style={styles.summaryLine}>
+            {line.title} × {line.quantity}
+          </Text>
+        ))}
+      </View>
       {error ? (
         <Text testID="mobile-checkout-error" style={styles.error}>
           {error}
@@ -151,7 +171,7 @@ export function MobileCheckoutScreen(props: MobileCheckoutScreenProps): ReactNod
         testID="mobile-checkout-submit"
         disabled={busy}
         onPress={() => void submit()}
-        style={styles.submit}
+        style={[styles.submit, { backgroundColor: accent, opacity: busy ? 0.75 : 1 }]}
       >
         <Text style={styles.submitLabel}>{busy ? 'Placing…' : 'Place order'}</Text>
       </Pressable>
@@ -163,40 +183,66 @@ const styles = StyleSheet.create({
   form: {
     gap: 8,
   },
-  label: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: 'var(--mobile-text-muted, #64748b)',
-  },
-  input: {
+  summary: {
+    padding: 12,
+    borderRadius: 12,
+    backgroundColor: '#f9fafb',
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: '#e2e8f0',
-    paddingHorizontal: 10,
-    paddingVertical: 8,
+    borderColor: '#e5e7eb',
+    gap: 4,
+    marginBottom: 8,
+  },
+  summaryTitle: {
+    fontWeight: '700',
     fontSize: 15,
     marginBottom: 4,
   },
+  summaryLine: {
+    fontSize: 13,
+    color: '#64748b',
+  },
+  label: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#64748b',
+  },
+  input: {
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: '#e5e7eb',
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    fontSize: 15,
+    marginBottom: 4,
+    backgroundColor: '#fff',
+  },
   submit: {
     marginTop: 12,
-    paddingVertical: 12,
-    backgroundColor: '#0f172a',
+    paddingVertical: 14,
+    borderRadius: 10,
     alignItems: 'center',
   },
   submitLabel: {
     color: '#fff',
     fontWeight: '600',
+    fontSize: 16,
   },
   muted: {
     fontSize: 14,
-    color: 'var(--mobile-text-muted, #64748b)',
+    color: '#64748b',
   },
   error: {
     fontSize: 14,
     color: '#b91c1c',
   },
+  doneBox: {
+    padding: 16,
+    borderRadius: 12,
+    borderWidth: 1,
+    gap: 6,
+  },
   done: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: '#047857',
+    fontSize: 18,
+    fontWeight: '700',
   },
 });
