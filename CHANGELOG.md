@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Control Plane Boom API** (Sprint 26 Task 1) — `@ai-commerce/platform-api`
+  - Runnable Node HTTP: `POST /v1/boom/launch`, `GET /v1/tenants/:id`, `GET /health`
+  - Maps Boom wizard input → `TenantProvisioner` provision + activate (in-memory)
+
 - **Launch wizard polish** (Sprint 25 Task 3) — `@ai-commerce/web-host` + `@ai-commerce/mobile-host`
   - Live brand preview (name / logo / vertical)
   - Accent wash + type chips + Boom CTA follow each vertical’s theme primary

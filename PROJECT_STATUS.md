@@ -6,24 +6,20 @@
 
 ## Current Sprint
 
-**Sprint 26 — Control Plane API** (starting)
-
-Sprint 25 storefront polish complete on `main`.
+**Sprint 26 — Control Plane API** (Task 1 on branch)
 
 ## Completed Tasks
 
-| Task                | Description                     | Commit Tag       |
-| ------------------- | ------------------------------- | ---------------- |
-| Sprint 1–24 ✅      | Foundation through Boom wizards | `sprint*-task*`  |
-| Sprint 25 Task 1 ✅ | Theme + hero + catalog images   | `sprint25-task1` |
-| Sprint 25 Task 2 ✅ | Cart / checkout polish          | `sprint25-task2` |
-| Sprint 25 Task 3 ✅ | Wizard visual polish            | `sprint25-task3` |
+| Task             | Description                          | Commit Tag        |
+| ---------------- | ------------------------------------ | ----------------- |
+| Sprint 1–25 ✅   | Foundation through storefront polish | `sprint*-task*`   |
+| Sprint 26 Task 1 | Boom provision HTTP API              | _(pending merge)_ |
 
 ## Next Tasks
 
-1. Sprint 26 Task 1 — runnable `platform-api` Boom provision HTTP endpoint
-2. Wire hosts to call control plane (later)
-3. Durable storage / commerce gateway routes
+1. Merge Sprint 26 Task 1
+2. Task 2 — durable tenant store
+3. Task 3 — hosts call platform-api
 
 ## Latest Tag
 
@@ -33,8 +29,7 @@ sprint25-task3
 
 ## Health Status
 
-| Area       | Status      | Notes                        |
-| ---------- | ----------- | ---------------------------- |
-| Repository | ✅ Healthy  | Sprint 25 complete on `main` |
-| Web/Mobile | ✅ Runnable | Boom + polished storefronts  |
-| Backend    | 🟡 Next     | Control-plane HTTP entry     |
+| Area         | Status      | Notes                             |
+| ------------ | ----------- | --------------------------------- |
+| Repository   | ✅ Healthy  | Task 1 on `sprint/26/task1`       |
+| Platform API | 🟡 Runnable | In-memory Boom provision endpoint |

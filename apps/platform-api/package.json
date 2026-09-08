@@ -10,9 +10,20 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "build": "echo \"build not configured yet\"",
-    "dev": "echo \"dev not configured yet\"",
+    "build": "tsc -p tsconfig.json --noEmit",
+    "dev": "node --experimental-strip-types ./src/infrastructure/start-server.ts",
+    "start": "node --experimental-strip-types ./src/infrastructure/start-server.ts",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit -p tsconfig.json"
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@ai-commerce/config-schema": "workspace:*",
+    "@ai-commerce/tenant-provisioner": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "vitest": "^3.0.5"
   }
 }
