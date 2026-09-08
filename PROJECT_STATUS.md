@@ -6,30 +6,29 @@
 
 ## Current Sprint
 
-**Sprint 26 — Control Plane API** (Task 1 on branch)
+**Sprint 26 — Control Plane API** (Task 1 on `main`)
 
 ## Completed Tasks
 
-| Task             | Description                          | Commit Tag        |
-| ---------------- | ------------------------------------ | ----------------- |
-| Sprint 1–25 ✅   | Foundation through storefront polish | `sprint*-task*`   |
-| Sprint 26 Task 1 | Boom provision HTTP API              | _(pending merge)_ |
+| Task                | Description                          | Commit Tag       |
+| ------------------- | ------------------------------------ | ---------------- |
+| Sprint 1–25 ✅      | Foundation through storefront polish | `sprint*-task*`  |
+| Sprint 26 Task 1 ✅ | Boom provision HTTP API              | `sprint26-task1` |
 
 ## Next Tasks
 
-1. Merge Sprint 26 Task 1
-2. Task 2 — durable tenant store
-3. Task 3 — hosts call platform-api
+1. Sprint 26 Task 2 — durable tenant store
+2. Task 3 — web/mobile hosts call platform-api
 
 ## Latest Tag
 
 ```
-sprint25-task3
+sprint26-task1
 ```
 
 ## Health Status
 
 | Area         | Status      | Notes                             |
 | ------------ | ----------- | --------------------------------- |
-| Repository   | ✅ Healthy  | Task 1 on `sprint/26/task1`       |
-| Platform API | 🟡 Runnable | In-memory Boom provision endpoint |
+| Repository   | ✅ Healthy  | Sprint 26 Task 1 on `main`        |
+| Platform API | ✅ Runnable | In-memory Boom provision endpoint |
