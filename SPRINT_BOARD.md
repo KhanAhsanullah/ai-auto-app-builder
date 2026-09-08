@@ -326,6 +326,20 @@ End-result focus: client picks app type → Boom storefront matches that vertica
 
 ---
 
+## Sprint 25 — Storefront UI Polish
+
+| Task   | Status | Deliverable                                             |
+| ------ | ------ | ------------------------------------------------------- |
+| Task 1 | ⬜     | Theme accent + product cards + home hero (web + mobile) |
+| Task 2 | ⬜     | Cart / checkout visual polish                           |
+| Task 3 | ⬜     | Wizard visual polish aligned with vertical brand        |
+
+End-result focus: Boom launch feels like a real storefront, not a skeleton list.
+
+**Tags:** _(pending)_
+
+---
+
 ## Sprint Conventions
 
 - Each sprint task is committed with a Conventional Commit referencing the sprint and task number

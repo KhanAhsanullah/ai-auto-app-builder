@@ -8,29 +8,27 @@ The repository (`ai-commerce-platform`) is organized as a Turborepo monorepo wit
 
 ## Current Sprint
 
-**Sprint 24 — Launch Wizard (Boom)** (in progress)
+**Sprint 25 — Storefront UI Polish** (starting)
 
-Task 3: Boom launch wizard on Expo mobile host.
-
-**Branch:** `sprint/24/task3`
+Sprint 24 Boom wizards on `main`. Next: make web + mobile stores look like real apps (not skeleton lists).
 
 ## Completed Tasks
 
-| Task                | Description                           | Commit Tag       |
-| ------------------- | ------------------------------------- | ---------------- |
-| Sprint 1–23 ✅      | Foundation through durable web/mobile | `sprint*-task*`  |
-| Sprint 24 Task 1 ✅ | Web Boom wizard (any vertical)        | `sprint24-task1` |
-| Sprint 24 Task 3 ✅ | Mobile Boom wizard (Expo host)        | `sprint24-task3` |
+| Task                | Description                      | Commit Tag       |
+| ------------------- | -------------------------------- | ---------------- |
+| Sprint 1–23 ✅      | Foundation through durable demos | `sprint*-task*`  |
+| Sprint 24 Task 1 ✅ | Web Boom wizard                  | `sprint24-task1` |
+| Sprint 24 Task 3 ✅ | Mobile Boom wizard               | `sprint24-task3` |
 
 ## Current Progress
 
-- Sprint 24 Task 1 on `main`
-- **Mobile Boom wizard** Task 3 on branch
+- Sprint 24 on `main` (web + mobile Boom)
+- UI still skeletal — polish sprint next
 
 ## Next Tasks
 
-1. Sprint 24 Task 2 — multi-profile switcher (optional)
-2. Real backend / richer vertical UX when ready
+1. Sprint 25 Task 1 — branded catalog cards + home hero + theme accent (web + mobile)
+2. Real backend when ready
 
 ## Latest Commit
 
@@ -46,9 +44,8 @@ sprint24-task3
 
 ## Health Status
 
-| Area       | Status        | Notes                                    |
-| ---------- | ------------- | ---------------------------------------- |
-| Repository | ✅ Healthy    | Sprint 24 Task 3 on branch               |
-| Web        | 🟡 End-result | Boom wizard on `main`                    |
-| Mobile RN  | 🟡 End-result | Boom wizard on Expo host (this branch)   |
-| Tests      | ✅ Passing    | Mobile launch + restaurant seed coverage |
+| Area       | Status      | Notes                             |
+| ---------- | ----------- | --------------------------------- |
+| Repository | ✅ Healthy  | Sprint 24 Task 3 merged to `main` |
+| Web/Mobile | 🟡 Runnable | Boom works; UI polish next        |
+| Tests      | ✅ Passing  | Launch + commerce screens         |
