@@ -344,13 +344,13 @@ End-result focus: Boom launch feels like a real storefront, not a skeleton list.
 
 | Task   | Status | Deliverable                                                               |
 | ------ | ------ | ------------------------------------------------------------------------- |
-| Task 1 | ⬜     | Runnable `@ai-commerce/platform-api` — Boom launch → provision + activate |
+| Task 1 | ✅     | Runnable `@ai-commerce/platform-api` — Boom launch → provision + activate |
 | Task 2 | ⬜     | Persist tenants beyond in-memory (file or Postgres adapter)               |
 | Task 3 | ⬜     | Web/mobile hosts call platform-api instead of local-only demo provision   |
 
 End-result focus: Boom creates a real platform-owned tenant, not only a browser demo.
 
-**Tags:** _(pending)_
+**Tags:** `sprint26-task1`
 
 ---
 
