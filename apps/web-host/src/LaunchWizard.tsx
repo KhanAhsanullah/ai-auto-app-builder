@@ -1,4 +1,4 @@
-import { useMemo, useState, type FormEvent, type ReactNode } from 'react';
+import { useMemo, useState, type CSSProperties, type FormEvent, type ReactNode } from 'react';
 
 import type { DemoLaunchVertical } from '@ai-commerce/web-store';
 
@@ -17,7 +17,7 @@ export interface LaunchWizardProps {
 }
 
 /**
- * Boom launch form — business name, logo URL, any app type (vertical).
+ * Boom launch form — live brand preview tinted by the selected vertical.
  */
 export function LaunchWizard(props: LaunchWizardProps): ReactNode {
   const { busy = false, error, onLaunch } = props;
@@ -26,9 +26,15 @@ export function LaunchWizard(props: LaunchWizardProps): ReactNode {
   const [vertical, setVertical] = useState<DemoLaunchVertical>('grocery');
 
   const selected = useMemo(
-    () => LAUNCH_VERTICAL_OPTIONS.find((o) => o.id === vertical),
+    () => LAUNCH_VERTICAL_OPTIONS.find((o) => o.id === vertical) ?? LAUNCH_VERTICAL_OPTIONS[0]!,
     [vertical],
   );
+
+  const previewName = businessName.trim() || 'Your business';
+  const accent = selected.accent;
+  const pageStyle = {
+    ['--launch-accent' as string]: accent,
+  } as CSSProperties;
 
   const onSubmit = (event: FormEvent) => {
     event.preventDefault();
@@ -44,16 +50,39 @@ export function LaunchWizard(props: LaunchWizardProps): ReactNode {
   };
 
   return (
-    <div className="launch-page" data-testid="web-host-launch-wizard">
-      <div className="launch-card">
-        <p className="launch-eyebrow">CommerceOS</p>
-        <h1 className="launch-title">Launch your app</h1>
-        <p className="launch-sub">
-          Enter your business name, optional logo, and app type — then Boom, your storefront is
-          ready.
-        </p>
+    <div
+      className="launch-page"
+      data-testid="web-host-launch-wizard"
+      data-vertical={vertical}
+      style={pageStyle}
+    >
+      <div className="launch-shell">
+        <section className="launch-preview" aria-live="polite">
+          {logoUrl.trim() ? (
+            <img
+              className="launch-preview-logo"
+              src={logoUrl.trim()}
+              alt=""
+              width={64}
+              height={64}
+            />
+          ) : (
+            <div className="launch-preview-mark" aria-hidden>
+              {initials(previewName)}
+            </div>
+          )}
+          <p className="launch-preview-kicker">{selected.label}</p>
+          <h1 className="launch-preview-brand" data-testid="launch-preview-brand">
+            {previewName}
+          </h1>
+          <p className="launch-preview-tagline">{selected.hint}</p>
+        </section>
 
         <form className="launch-form" onSubmit={onSubmit}>
+          <p className="launch-eyebrow">CommerceOS</p>
+          <h2 className="launch-title">Launch your app</h2>
+          <p className="launch-sub">Name, logo, app type — then Boom.</p>
+
           <label className="launch-field">
             <span>Business name</span>
             <input
@@ -88,6 +117,7 @@ export function LaunchWizard(props: LaunchWizardProps): ReactNode {
                   key={option.id}
                   className={`launch-type ${vertical === option.id ? 'is-selected' : ''}`}
                   data-testid={`launch-type-${option.id}`}
+                  style={{ ['--type-accent' as string]: option.accent }}
                 >
                   <input
                     type="radio"
@@ -96,6 +126,7 @@ export function LaunchWizard(props: LaunchWizardProps): ReactNode {
                     checked={vertical === option.id}
                     onChange={() => setVertical(option.id)}
                   />
+                  <span className="launch-type-swatch" aria-hidden />
                   <span className="launch-type-label">{option.label}</span>
                   <span className="launch-type-hint">{option.hint}</span>
                 </label>
@@ -103,7 +134,6 @@ export function LaunchWizard(props: LaunchWizardProps): ReactNode {
             </div>
           </fieldset>
 
-          {selected ? <p className="launch-selected-hint">Selected: {selected.label}</p> : null}
           {error ? (
             <p className="launch-error" data-testid="launch-error">
               {error}
@@ -122,4 +152,15 @@ export function LaunchWizard(props: LaunchWizardProps): ReactNode {
       </div>
     </div>
   );
+}
+
+function initials(name: string): string {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) {
+    return '?';
+  }
+  if (parts.length === 1) {
+    return parts[0]!.slice(0, 2).toUpperCase();
+  }
+  return `${parts[0]![0] ?? ''}${parts[1]![0] ?? ''}`.toUpperCase();
 }

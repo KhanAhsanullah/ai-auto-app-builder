@@ -50,6 +50,7 @@ export {
 export type { WebDemoCommerceSnapshot, WebDemoSnapshotStore } from './demo/demo-snapshot.js';
 export {
   DEMO_LAUNCH_VERTICALS,
+  DEMO_LAUNCH_VERTICAL_PRIMARY,
   buildDemoLaunchConfig,
   slugifyBusinessName,
 } from './demo/build-launch-config.js';

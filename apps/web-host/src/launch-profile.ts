@@ -1,4 +1,5 @@
 import {
+  DEMO_LAUNCH_VERTICAL_PRIMARY,
   DEMO_LAUNCH_VERTICALS,
   type DemoLaunchInput,
   type DemoLaunchVertical,
@@ -61,11 +62,42 @@ export const LAUNCH_VERTICAL_OPTIONS: ReadonlyArray<{
   id: DemoLaunchVertical;
   label: string;
   hint: string;
+  accent: string;
 }> = [
-  { id: 'grocery', label: 'Grocery', hint: 'Fresh food & essentials delivery' },
-  { id: 'restaurant', label: 'Restaurant', hint: 'Menu ordering & takeaway' },
-  { id: 'pharmacy', label: 'Pharmacy / Clinic', hint: 'Medicines & care products' },
-  { id: 'ecommerce', label: 'Ecommerce', hint: 'General online store' },
-  { id: 'fashion', label: 'Fashion', hint: 'Apparel & style' },
-  { id: 'electronics', label: 'Electronics', hint: 'Gadgets & devices' },
+  {
+    id: 'grocery',
+    label: 'Grocery',
+    hint: 'Fresh food & essentials delivery',
+    accent: DEMO_LAUNCH_VERTICAL_PRIMARY.grocery,
+  },
+  {
+    id: 'restaurant',
+    label: 'Restaurant',
+    hint: 'Menu ordering & takeaway',
+    accent: DEMO_LAUNCH_VERTICAL_PRIMARY.restaurant,
+  },
+  {
+    id: 'pharmacy',
+    label: 'Pharmacy / Clinic',
+    hint: 'Medicines & care products',
+    accent: DEMO_LAUNCH_VERTICAL_PRIMARY.pharmacy,
+  },
+  {
+    id: 'ecommerce',
+    label: 'Ecommerce',
+    hint: 'General online store',
+    accent: DEMO_LAUNCH_VERTICAL_PRIMARY.ecommerce,
+  },
+  {
+    id: 'fashion',
+    label: 'Fashion',
+    hint: 'Apparel & style',
+    accent: DEMO_LAUNCH_VERTICAL_PRIMARY.fashion,
+  },
+  {
+    id: 'electronics',
+    label: 'Electronics',
+    hint: 'Gadgets & devices',
+    accent: DEMO_LAUNCH_VERTICAL_PRIMARY.electronics,
+  },
 ];

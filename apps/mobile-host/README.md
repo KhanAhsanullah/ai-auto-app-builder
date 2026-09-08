@@ -9,6 +9,7 @@ Runnable Expo shell for `@ai-commerce/mobile-app` — the RN developer entry poi
 ## Status
 
 Sprint 24 Task 3 — Boom launch wizard on Expo (name + logo + any app type).
+Sprint 25 Task 3 — wizard UI tinted by selected vertical brand accent.
 
 Sprint 21–22 — Expo host, deep links/session, EAS/prebuild, SQLite durability.
 

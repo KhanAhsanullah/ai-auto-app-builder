@@ -9,6 +9,7 @@ Runnable browser shell for `@ai-commerce/web-store` — launch any vertical stor
 ## Status
 
 Sprint 24 Task 1 — launch wizard (name + logo + app type) → durable demo store.
+Sprint 25 Task 3 — wizard UI tinted by selected vertical brand accent.
 
 ## Run
 

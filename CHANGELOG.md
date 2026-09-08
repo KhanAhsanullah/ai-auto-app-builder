@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Launch wizard polish** (Sprint 25 Task 3) — `@ai-commerce/web-host` + `@ai-commerce/mobile-host`
+  - Live brand preview (name / logo / vertical)
+  - Accent wash + type chips + Boom CTA follow each vertical’s theme primary
+
 - **Cart / checkout polish** (Sprint 25 Task 2) — web + mobile
   - Cart line cards with product thumbs, qty steppers, brand Checkout CTA
   - Checkout order summary + spaced form + brand Place order CTA

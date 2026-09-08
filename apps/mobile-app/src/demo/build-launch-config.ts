@@ -38,7 +38,7 @@ export interface BuiltDemoLaunch {
   businessName: string;
 }
 
-const VERTICAL_THEME_PRIMARY: Record<DemoLaunchVertical, string> = {
+export const DEMO_LAUNCH_VERTICAL_PRIMARY: Record<DemoLaunchVertical, string> = {
   grocery: '#16A34A',
   restaurant: '#DC2626',
   pharmacy: '#0D9488',
@@ -96,7 +96,7 @@ export function buildDemoLaunchConfig(input: DemoLaunchInput): BuiltDemoLaunch {
   const tagline =
     input.tagline?.trim() || brandDefaults.tagline || `${businessName} — powered by CommerceOS`;
   const logoUrl = input.logoUrl?.trim();
-  const primary = VERTICAL_THEME_PRIMARY[vertical];
+  const primary = DEMO_LAUNCH_VERTICAL_PRIMARY[vertical];
   const shopLabel = VERTICAL_SHOP_LABEL[vertical];
 
   const base = structuredClone(demoTenantLayerJson) as ConfigLayer & Record<string, unknown>;

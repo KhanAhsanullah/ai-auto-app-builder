@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import {
   clearLaunchProfile,
+  LAUNCH_VERTICAL_OPTIONS,
   parseLaunchProfile,
   saveLaunchProfile,
   WEB_HOST_LAUNCH_KEY,
@@ -9,6 +10,10 @@ import {
 import { createMemorySessionStore } from '../src/session-storage.js';
 
 describe('launch profile', () => {
+  it('exposes vertical brand accents for the wizard', () => {
+    expect(LAUNCH_VERTICAL_OPTIONS.find((o) => o.id === 'grocery')?.accent).toBe('#16A34A');
+    expect(LAUNCH_VERTICAL_OPTIONS.find((o) => o.id === 'restaurant')?.accent).toBe('#DC2626');
+  });
   it('round-trips a saved profile', async () => {
     const store = createMemorySessionStore();
     await saveLaunchProfile(store, {
