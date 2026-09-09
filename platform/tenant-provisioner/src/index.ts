@@ -5,6 +5,8 @@ export type { TenantRepository } from './domain/tenant-repository.js';
 export { createTenantProvisioner } from './infrastructure/create-tenant-provisioner.js';
 export type { CreateTenantProvisionerOptions } from './infrastructure/create-tenant-provisioner.js';
 export { InMemoryTenantRepository } from './infrastructure/in-memory-tenant-repository.js';
+export { FileTenantRepository } from './infrastructure/file-tenant-repository.js';
+export type { FileTenantRepositoryOptions } from './infrastructure/file-tenant-repository.js';
 export {
   InvalidLifecycleTransitionException,
   TenantAlreadyExistsException,

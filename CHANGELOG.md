@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Durable tenant registry** (Sprint 26 Task 2) — `@ai-commerce/tenant-provisioner` + platform-api
+  - `FileTenantRepository` JSON store with atomic writes
+  - Server defaults to `.data/tenants.json` (`TENANT_STORE_PATH` override)
+
 - **Control Plane Boom API** (Sprint 26 Task 1) — `@ai-commerce/platform-api`
   - Runnable Node HTTP: `POST /v1/boom/launch`, `GET /v1/tenants/:id`, `GET /health`
   - Maps Boom wizard input → `TenantProvisioner` provision + activate (in-memory)

@@ -9,6 +9,7 @@ Control-plane service for tenant onboarding, seed data injection, and initial ve
 ## Status
 
 Sprint 4 Task 3 — `TenantProvisioner` facade, provisioning orchestration, activation workflow, Config Runtime integration tests.
+Sprint 26 Task 2 — `FileTenantRepository` JSON durable registry.
 
 ## Modules
 
@@ -24,6 +25,7 @@ Sprint 4 Task 3 — `TenantProvisioner` facade, provisioning orchestration, acti
 | `EnvironmentBuilder`        | Build slug-derived environment settings (internal)                  |
 | `TenantRepository`          | Persistence port for tenant registry records                        |
 | `InMemoryTenantRepository`  | Map-backed in-memory repository adapter                             |
+| `FileTenantRepository`      | JSON file durable registry (atomic write)                           |
 | `computeRequestFingerprint` | Deterministic request fingerprint for idempotency                   |
 
 ## Provisioning Workflow

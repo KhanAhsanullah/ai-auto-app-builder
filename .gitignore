@@ -33,5 +33,4 @@ pnpm-debug.log*
 coverage
 .nyc_output
 
-# Misc
-*.tsbuildinfo
+.data/

@@ -8,19 +8,21 @@ Control-plane HTTP API for Boom tenant provisioning and platform administration.
 
 ## Status
 
-Sprint 26 Task 1 — runnable Node HTTP server:
+Sprint 26 Task 1 — runnable Node HTTP server.
+Sprint 26 Task 2 — durable JSON tenant store (survives restarts).
+
+Routes:
 
 - `POST /v1/boom/launch` — business name + vertical (+ optional logo) → provision + activate
 - `GET /v1/tenants/:id` — fetch provisioned tenant summary
 - `GET /health` — liveness
-
-Uses in-memory `@ai-commerce/tenant-provisioner` (durable store in Task 2).
 
 ## Run
 
 ```bash
 pnpm --filter @ai-commerce/platform-api start
 # default http://127.0.0.1:8787
+# default store: .data/tenants.json (override with TENANT_STORE_PATH)
 ```
 
 Example:

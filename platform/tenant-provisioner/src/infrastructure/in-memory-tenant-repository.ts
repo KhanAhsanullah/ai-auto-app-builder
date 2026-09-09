@@ -51,4 +51,9 @@ export class InMemoryTenantRepository implements TenantRepository {
     this.byId.set(record.tenantId, record);
     this.bySlug.set(record.slug, record);
   }
+
+  /** Snapshot of all registry records (used by durable adapters). */
+  listAll(): TenantRecord[] {
+    return [...this.byId.values()];
+  }
 }
