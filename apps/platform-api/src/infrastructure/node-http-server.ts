@@ -13,8 +13,20 @@ function sendJson(res: ServerResponse, statusCode: number, body: unknown): void 
   const payload = JSON.stringify(body);
   res.statusCode = statusCode;
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Accept');
   res.setHeader('Content-Length', Buffer.byteLength(payload));
   res.end(payload);
+}
+
+function sendCorsNoContent(res: ServerResponse): void {
+  res.statusCode = 204;
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Accept');
+  res.setHeader('Access-Control-Max-Age', '86400');
+  res.end();
 }
 
 async function readJsonBody(req: IncomingMessage): Promise<unknown> {
@@ -59,6 +71,11 @@ async function handleRequest(
     const method = (req.method ?? 'GET').toUpperCase();
     const url = new URL(req.url ?? '/', 'http://127.0.0.1');
     const pathname = url.pathname.replace(/\/+$/, '') || '/';
+
+    if (method === 'OPTIONS') {
+      sendCorsNoContent(res);
+      return;
+    }
 
     if (method === 'GET' && (pathname === '/health' || pathname === '/v1/health')) {
       sendJson(res, 200, api.health());

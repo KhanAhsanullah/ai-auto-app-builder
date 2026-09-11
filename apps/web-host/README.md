@@ -10,14 +10,19 @@ Runnable browser shell for `@ai-commerce/web-store` — launch any vertical stor
 
 Sprint 24 Task 1 — launch wizard (name + logo + app type) → durable demo store.
 Sprint 25 Task 3 — wizard UI tinted by selected vertical brand accent.
+Sprint 26 Task 3 — Boom calls `platform-api` (`POST /v1/boom/launch`) then seeds the local demo.
 
 ## Run
 
 ```bash
+# Terminal 1 — control plane (required for Boom)
+pnpm --filter @ai-commerce/platform-api start
+
+# Terminal 2 — storefront
 pnpm web
-# or
-pnpm --filter @ai-commerce/web-host start
 ```
+
+Optional: `VITE_PLATFORM_API_URL=http://127.0.0.1:8787` (default).
 
 Opens Vite at http://localhost:5173.
 

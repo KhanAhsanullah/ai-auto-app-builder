@@ -59,4 +59,16 @@ describe('platform-api HTTP', () => {
     });
     expect(res.status).toBe(400);
   });
+
+  it('answers CORS preflight for browser hosts', async () => {
+    const api = createPlatformApi();
+    const listening = await listenPlatformApi(api, 0);
+    closers.push(listening.close);
+
+    const res = await fetch(`http://127.0.0.1:${listening.port}/v1/boom/launch`, {
+      method: 'OPTIONS',
+    });
+    expect(res.status).toBe(204);
+    expect(res.headers.get('access-control-allow-origin')).toBe('*');
+  });
 });

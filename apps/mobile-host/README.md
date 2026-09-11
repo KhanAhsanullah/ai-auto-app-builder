@@ -10,6 +10,7 @@ Runnable Expo shell for `@ai-commerce/mobile-app` — the RN developer entry poi
 
 Sprint 24 Task 3 — Boom launch wizard on Expo (name + logo + any app type).
 Sprint 25 Task 3 — wizard UI tinted by selected vertical brand accent.
+Sprint 26 Task 3 — Boom calls `platform-api` then seeds the local demo.
 
 Sprint 21–22 — Expo host, deep links/session, EAS/prebuild, SQLite durability.
 
@@ -28,13 +29,17 @@ Store / TestFlight / Play binaries: see [RELEASE.md](./RELEASE.md) (EAS profiles
 ## Run (dev)
 
 ```bash
+# Terminal 1 — control plane (required for Boom)
+pnpm --filter @ai-commerce/platform-api start
+
+# Terminal 2 — Expo
 pnpm mobile
-# or
-pnpm --filter @ai-commerce/mobile-host start
 ```
 
+Optional: `EXPO_PUBLIC_PLATFORM_API_URL=http://127.0.0.1:8787` (default). On a physical device, point this at your machine’s LAN IP.
+
 1. Enter **business name**, optional logo, pick **app type**
-2. **Boom — launch app**
+2. **Boom — launch app** (provisions via platform-api, then seeds local demo)
 3. Demo flow: **Shop → Add → Cart → Checkout → Payment → Orders**
 
 Toolbar: **New app** / **Reset demo** / **Export**.

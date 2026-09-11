@@ -10,6 +10,7 @@ Control-plane HTTP API for Boom tenant provisioning and platform administration.
 
 Sprint 26 Task 1 — runnable Node HTTP server.
 Sprint 26 Task 2 — durable JSON tenant store (survives restarts).
+Sprint 26 Task 3 — CORS enabled so browser hosts can call Boom launch.
 
 Routes:
 

@@ -23,6 +23,7 @@ import {
 import { MobileAppRoot, type MobileAppRootProps } from '@ai-commerce/mobile-app/native';
 
 import { LaunchWizard, type LaunchWizardSubmit } from './src/LaunchWizard.js';
+import { launchBoomViaPlatformApi } from './src/boom-client.js';
 import {
   clearLaunchProfile,
   loadLaunchProfile,
@@ -78,6 +79,7 @@ export default function App(): ReactNode {
             vertical: profile.vertical,
             logoUrl: profile.logoUrl,
             tenantId: profile.tenantId,
+            slug: profile.slug,
           },
         });
         setSessionId(bundle.sessionId);
@@ -142,15 +144,17 @@ export default function App(): ReactNode {
         try {
           await clearDemoSnapshot(store);
           await clearGuestSession(store);
-          const tenantId =
-            typeof globalThis.crypto?.randomUUID === 'function'
-              ? globalThis.crypto.randomUUID()
-              : `11111111-1111-4111-8111-${Date.now().toString(16).padStart(12, '0').slice(-12)}`;
-          const profile: StoredLaunchProfile = {
+          const launched = await launchBoomViaPlatformApi({
             businessName: input.businessName,
             vertical: input.vertical,
             logoUrl: input.logoUrl,
-            tenantId,
+          });
+          const profile: StoredLaunchProfile = {
+            businessName: launched.name,
+            vertical: launched.vertical,
+            logoUrl: input.logoUrl,
+            tenantId: launched.tenantId,
+            slug: launched.slug,
             createdAt: new Date().toISOString(),
           };
           await saveLaunchProfile(store, profile);

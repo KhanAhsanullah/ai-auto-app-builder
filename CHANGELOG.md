@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Hosts call platform-api on Boom** (Sprint 26 Task 3) — web-host + mobile-host
+  - Wizard launch → `POST /v1/boom/launch` then seed local demo with returned tenantId/slug
+  - platform-api CORS for browser hosts; `VITE_PLATFORM_API_URL` / `EXPO_PUBLIC_PLATFORM_API_URL`
+
 - **Durable tenant registry** (Sprint 26 Task 2) — `@ai-commerce/tenant-provisioner` + platform-api
   - `FileTenantRepository` JSON store with atomic writes
   - Server defaults to `.data/tenants.json` (`TENANT_STORE_PATH` override)
