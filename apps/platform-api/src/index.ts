@@ -19,4 +19,6 @@ export type {
   BoomLaunchInput,
   BoomLaunchVertical,
   PlatformApiListenResult,
+  TenantConfigResponse,
+  TenantSummary,
 } from './types.js';

@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Platform tenant config serving** (Sprint 27 Task 1) — `@ai-commerce/platform-api`
+  - `GET /v1/tenants` lists provisioned tenants
+  - `GET /v1/tenants/:id/config` returns the registry config document
+
 - **Hosts call platform-api on Boom** (Sprint 26 Task 3) — web-host + mobile-host
   - Wizard launch → `POST /v1/boom/launch` then seed local demo with returned tenantId/slug
   - platform-api CORS for browser hosts; `VITE_PLATFORM_API_URL` / `EXPO_PUBLIC_PLATFORM_API_URL`

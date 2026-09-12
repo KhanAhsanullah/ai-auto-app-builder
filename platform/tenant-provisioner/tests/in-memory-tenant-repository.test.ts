@@ -72,6 +72,28 @@ describe('InMemoryTenantRepository', () => {
     await expect(repository.findBySlug('missing-slug')).resolves.toBeUndefined();
   });
 
+  it('lists all saved tenants', async () => {
+    const repository = new InMemoryTenantRepository();
+    const first = createRecord();
+    const second = createRecord({
+      id: OTHER_TENANT_ID,
+      slug: OTHER_TENANT_SLUG,
+      name: 'Other Tenant',
+      vertical: 'ecommerce',
+      defaultLocale: 'en',
+      defaultTimezone: 'UTC',
+    });
+
+    await repository.save(first);
+    await repository.save(second);
+
+    const listed = await repository.list();
+    expect(listed).toHaveLength(2);
+    expect(listed.map((row) => row.tenantId).sort()).toEqual(
+      [first.tenantId, OTHER_TENANT_ID].sort(),
+    );
+  });
+
   it('rejects duplicate tenant IDs', async () => {
     const repository = new InMemoryTenantRepository();
     const record = createRecord();

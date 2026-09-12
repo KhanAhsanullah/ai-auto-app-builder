@@ -11,11 +11,14 @@ Control-plane HTTP API for Boom tenant provisioning and platform administration.
 Sprint 26 Task 1 — runnable Node HTTP server.
 Sprint 26 Task 2 — durable JSON tenant store (survives restarts).
 Sprint 26 Task 3 — CORS enabled so browser hosts can call Boom launch.
+Sprint 27 Task 1 — list tenants + serve registry config documents.
 
 Routes:
 
 - `POST /v1/boom/launch` — business name + vertical (+ optional logo) → provision + activate
+- `GET /v1/tenants` — list provisioned tenant summaries
 - `GET /v1/tenants/:id` — fetch provisioned tenant summary
+- `GET /v1/tenants/:id/config` — fetch registry config document
 - `GET /health` — liveness
 
 ## Run

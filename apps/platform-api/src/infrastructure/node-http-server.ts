@@ -48,12 +48,17 @@ async function readJsonBody(req: IncomingMessage): Promise<unknown> {
   }
 }
 
+function matchTenantConfigGet(pathname: string): string | undefined {
+  const match = /^\/v1\/tenants\/([^/]+)\/config\/?$/.exec(pathname);
+  return match?.[1] ? decodeURIComponent(match[1]) : undefined;
+}
+
 function matchTenantGet(pathname: string): string | undefined {
   const match = /^\/v1\/tenants\/([^/]+)\/?$/.exec(pathname);
   return match?.[1] ? decodeURIComponent(match[1]) : undefined;
 }
 
-/** Node HTTP adapter for PlatformApi (health + Boom launch + tenant get). */
+/** Node HTTP adapter for PlatformApi (health + Boom launch + tenant reads). */
 export function createPlatformHttpServer(options: CreatePlatformHttpServerOptions): Server {
   const { api } = options;
 
@@ -87,6 +92,19 @@ async function handleRequest(
       const input = parseBoomLaunchBody(body);
       const result = await api.launchBoom(input);
       sendJson(res, result.created ? 201 : 200, result);
+      return;
+    }
+
+    if (method === 'GET' && pathname === '/v1/tenants') {
+      const listed = await api.listTenants();
+      sendJson(res, 200, listed);
+      return;
+    }
+
+    const configTenantId = matchTenantConfigGet(pathname);
+    if (method === 'GET' && configTenantId) {
+      const config = await api.getTenantConfig(configTenantId);
+      sendJson(res, 200, config);
       return;
     }
 

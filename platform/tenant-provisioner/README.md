@@ -10,6 +10,7 @@ Control-plane service for tenant onboarding, seed data injection, and initial ve
 
 Sprint 4 Task 3 — `TenantProvisioner` facade, provisioning orchestration, activation workflow, Config Runtime integration tests.
 Sprint 26 Task 2 — `FileTenantRepository` JSON durable registry.
+Sprint 27 Task 1 — `TenantRepository.list()` for control-plane tenant listing.
 
 ## Modules
 

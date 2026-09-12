@@ -33,3 +33,22 @@ export interface PlatformApiListenResult {
   host: string;
   close: () => Promise<void>;
 }
+
+/** Summary row for list/get tenant endpoints. */
+export interface TenantSummary {
+  tenantId: string;
+  slug: string;
+  status: string;
+  vertical: string;
+  name: string;
+}
+
+/** Config document payload for GET /v1/tenants/:id/config. */
+export interface TenantConfigResponse {
+  tenantId: string;
+  slug: string;
+  status: string;
+  updatedAt: string;
+  /** Tenant-layer config document from the registry. */
+  document: Record<string, unknown>;
+}

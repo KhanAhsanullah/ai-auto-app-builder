@@ -8,6 +8,9 @@ export interface TenantRepository {
   /** Find a tenant record by unique slug. */
   findBySlug(slug: string): Promise<TenantRecord | undefined>;
 
+  /** List all tenant registry records (order not guaranteed). */
+  list(): Promise<TenantRecord[]>;
+
   /**
    * Persist a new tenant record.
    * Must reject duplicate tenant IDs and slugs without overwriting.

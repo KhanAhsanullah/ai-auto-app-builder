@@ -41,6 +41,11 @@ export class FileTenantRepository implements TenantRepository {
     return this.memory.findBySlug(slug);
   }
 
+  async list(): Promise<TenantRecord[]> {
+    await this.ensureLoaded();
+    return this.memory.list();
+  }
+
   async save(record: TenantRecord): Promise<void> {
     await this.ensureLoaded();
     await this.memory.save(record);

@@ -19,6 +19,10 @@ export class InMemoryTenantRepository implements TenantRepository {
     return this.bySlug.get(slug);
   }
 
+  async list(): Promise<TenantRecord[]> {
+    return this.listAll();
+  }
+
   async save(record: TenantRecord): Promise<void> {
     if (this.byId.has(record.tenantId)) {
       throw new TenantAlreadyExistsException(

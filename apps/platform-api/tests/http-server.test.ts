@@ -60,6 +60,55 @@ describe('platform-api HTTP', () => {
     expect(res.status).toBe(400);
   });
 
+  it('lists tenants and serves config documents', async () => {
+    const api = createPlatformApi({
+      clock: () => '2026-09-12T00:00:00.000Z',
+    });
+    const listening = await listenPlatformApi(api, 0);
+    closers.push(listening.close);
+
+    const launch = await fetch(`http://127.0.0.1:${listening.port}/v1/boom/launch`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        businessName: 'Spice Route',
+        vertical: 'restaurant',
+        tenantId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+      }),
+    });
+    expect(launch.status).toBe(201);
+    const launched = (await launch.json()) as { tenantId: string; slug: string };
+
+    const listed = await fetch(`http://127.0.0.1:${listening.port}/v1/tenants`);
+    expect(listed.status).toBe(200);
+    const listBody = (await listed.json()) as {
+      tenants: Array<{ tenantId: string; slug: string; vertical: string }>;
+    };
+    expect(listBody.tenants).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          tenantId: launched.tenantId,
+          slug: 'spice-route',
+          vertical: 'restaurant',
+        }),
+      ]),
+    );
+
+    const config = await fetch(
+      `http://127.0.0.1:${listening.port}/v1/tenants/${launched.tenantId}/config`,
+    );
+    expect(config.status).toBe(200);
+    const configBody = (await config.json()) as {
+      tenantId: string;
+      document: { tenant?: { name?: string; vertical?: string } };
+    };
+    expect(configBody.tenantId).toBe(launched.tenantId);
+    expect(configBody.document.tenant).toMatchObject({
+      name: 'Spice Route',
+      vertical: 'restaurant',
+    });
+  });
+
   it('answers CORS preflight for browser hosts', async () => {
     const api = createPlatformApi();
     const listening = await listenPlatformApi(api, 0);

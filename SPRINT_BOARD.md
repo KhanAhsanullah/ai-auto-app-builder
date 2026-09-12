@@ -354,6 +354,20 @@ End-result focus: Boom creates a real platform-owned tenant, not only a browser 
 
 ---
 
+## Sprint 27 — Platform Config Serving
+
+| Task   | Status | Deliverable                                                                     |
+| ------ | ------ | ------------------------------------------------------------------------------- |
+| Task 1 | ✅     | `GET /v1/tenants` + `GET /v1/tenants/:id/config` from durable registry          |
+| Task 2 | ⬜     | Boom launch publishes via `@ai-commerce/config-engine` (draft → publish)        |
+| Task 3 | ⬜     | Web/mobile hosts boot storefront shell from platform config (not local rebuild) |
+
+End-result focus: after Boom, branding/vertical identity comes from **platform-owned config**, not a second local `buildDemoLaunchConfig`.
+
+**Tags:** `sprint27-task1`
+
+---
+
 ## Sprint Conventions
 
 - Each sprint task is committed with a Conventional Commit referencing the sprint and task number

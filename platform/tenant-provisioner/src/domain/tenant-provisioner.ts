@@ -32,4 +32,9 @@ export class TenantProvisioner {
   async findBySlug(slug: string): Promise<TenantRecord | undefined> {
     return this.repository.findBySlug(slug);
   }
+
+  /** List all tenant registry records. */
+  async list(): Promise<TenantRecord[]> {
+    return this.repository.list();
+  }
 }

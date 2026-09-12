@@ -1,8 +1,8 @@
 import type { ProvisioningResult } from '@ai-commerce/config-schema';
-import type { TenantProvisioner } from '@ai-commerce/tenant-provisioner';
+import type { TenantProvisioner, TenantRecord } from '@ai-commerce/tenant-provisioner';
 
 import { PlatformApiException, TenantNotFoundException } from '../errors.js';
-import type { BoomLaunchInput } from '../types.js';
+import type { BoomLaunchInput, TenantConfigResponse, TenantSummary } from '../types.js';
 import { toProvisioningRequest } from './map-boom-launch.js';
 
 export interface PlatformApiDeps {
@@ -43,14 +43,34 @@ export class PlatformApi {
     };
   }
 
+  /** List provisioned tenant summaries. */
+  async listTenants(): Promise<{ tenants: TenantSummary[] }> {
+    const records = await this.deps.provisioner.list();
+    const tenants = records
+      .map((record) => toTenantSummary(record))
+      .sort((a, b) => a.slug.localeCompare(b.slug));
+    return { tenants };
+  }
+
   /** Fetch a provisioned tenant summary by id. */
-  async getTenant(tenantId: string): Promise<{
-    tenantId: string;
-    slug: string;
-    status: string;
-    vertical: string;
-    name: string;
-  }> {
+  async getTenant(tenantId: string): Promise<TenantSummary> {
+    const record = await this.requireTenant(tenantId);
+    return toTenantSummary(record);
+  }
+
+  /** Fetch the registry config document for a tenant. */
+  async getTenantConfig(tenantId: string): Promise<TenantConfigResponse> {
+    const record = await this.requireTenant(tenantId);
+    return {
+      tenantId: record.tenantId,
+      slug: record.slug,
+      status: record.status,
+      updatedAt: record.updatedAt,
+      document: record.configDocument,
+    };
+  }
+
+  private async requireTenant(tenantId: string): Promise<TenantRecord> {
     const id = tenantId.trim();
     if (!id) {
       throw new PlatformApiException('tenantId is required.', 400);
@@ -59,20 +79,24 @@ export class PlatformApi {
     if (!record) {
       throw new TenantNotFoundException(id);
     }
-    const name =
-      typeof record.configDocument.tenant?.name === 'string'
-        ? record.configDocument.tenant.name
-        : record.slug;
-    const vertical =
-      typeof record.configDocument.tenant?.vertical === 'string'
-        ? record.configDocument.tenant.vertical
-        : 'ecommerce';
-    return {
-      tenantId: record.tenantId,
-      slug: record.slug,
-      status: record.status,
-      vertical,
-      name,
-    };
+    return record;
   }
+}
+
+function toTenantSummary(record: TenantRecord): TenantSummary {
+  const name =
+    typeof record.configDocument.tenant?.name === 'string'
+      ? record.configDocument.tenant.name
+      : record.slug;
+  const vertical =
+    typeof record.configDocument.tenant?.vertical === 'string'
+      ? record.configDocument.tenant.vertical
+      : 'ecommerce';
+  return {
+    tenantId: record.tenantId,
+    slug: record.slug,
+    status: record.status,
+    vertical,
+    name,
+  };
 }

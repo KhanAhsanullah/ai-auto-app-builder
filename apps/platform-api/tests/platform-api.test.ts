@@ -29,4 +29,38 @@ describe('PlatformApi', () => {
     const api = createPlatformApi();
     await expect(api.getTenant('missing-tenant')).rejects.toThrow(TenantNotFoundException);
   });
+
+  it('lists tenants and returns config documents', async () => {
+    const api = createPlatformApi({
+      clock: () => '2026-09-12T00:00:00.000Z',
+    });
+
+    const empty = await api.listTenants();
+    expect(empty.tenants).toEqual([]);
+
+    const launched = await api.launchBoom({
+      businessName: 'Byte Hub',
+      vertical: 'electronics',
+      tenantId: 'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee',
+    });
+
+    const listed = await api.listTenants();
+    expect(listed.tenants).toHaveLength(1);
+    expect(listed.tenants[0]).toMatchObject({
+      tenantId: launched.tenantId,
+      slug: 'byte-hub',
+      vertical: 'electronics',
+      name: 'Byte Hub',
+    });
+
+    const config = await api.getTenantConfig(launched.tenantId);
+    expect(config).toMatchObject({
+      tenantId: launched.tenantId,
+      slug: 'byte-hub',
+      status: 'active',
+    });
+    expect(config.document).toMatchObject({
+      tenant: { name: 'Byte Hub', vertical: 'electronics' },
+    });
+  });
 });
