@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Hosts boot from platform config** (Sprint 27 Task 3) — web-host + mobile-host
+  - After Boom / on restore: `GET /v1/tenants/:id/config` → `createDemo*({ tenantConfig })`
+  - Local `buildDemoLaunchConfig` kept for tests / offline demos only
+
 - **Boom publishes via ConfigEngine** (Sprint 27 Task 2) — platform-api + config-engine
   - Boom launch → `saveDraft` → `publish`; GET config prefers latest published revision
   - `FileConfigRepository` + `CONFIG_STORE_PATH` (default `.data/configs.json`)

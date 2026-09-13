@@ -64,4 +64,33 @@ describe('createDemoWebStore launch', () => {
     const products = await store.catalogSurface.listActiveProducts();
     expect(products.some((p) => p.slug === 'paracetamol')).toBe(true);
   });
+
+  it('boots from platform tenantConfig without local launch rebuild', async () => {
+    const built = buildDemoLaunchConfig({
+      businessName: 'Platform Spice',
+      vertical: 'restaurant',
+      tenantId: '44444444-4444-4444-8444-444444444444',
+    });
+    const platformLayer = {
+      ...built.tenantLayer,
+      mobileApp: { ...built.tenantLayer.mobileApp, enabled: false },
+      webStore: { ...built.tenantLayer.webStore, enabled: false },
+    };
+
+    const { store, businessName, vertical } = await createDemoWebStore({
+      tenantConfig: platformLayer,
+      launch: {
+        businessName: 'Should Not Win',
+        vertical: 'grocery',
+        tenantId: '55555555-5555-4555-8555-555555555555',
+      },
+      now: () => '2026-09-08T00:00:00.000Z',
+    });
+
+    expect(businessName).toBe('Platform Spice');
+    expect(vertical).toBe('restaurant');
+    expect(store.getViewModel('store.catalog').shell.branding.displayName).toBe('Platform Spice');
+    const products = await store.catalogSurface.listActiveProducts();
+    expect(products.some((p) => p.slug === 'biryani')).toBe(true);
+  });
 });

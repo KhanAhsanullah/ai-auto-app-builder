@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import {
   BoomLaunchClientError,
+  fetchTenantConfigViaPlatformApi,
   launchBoomViaPlatformApi,
   resolvePlatformApiBaseUrl,
 } from '../src/boom-client.js';
@@ -49,5 +50,28 @@ describe('boom-client (mobile-host)', () => {
         { fetchImpl: fetchImpl as unknown as typeof fetch },
       ),
     ).rejects.toBeInstanceOf(BoomLaunchClientError);
+  });
+
+  it('fetches tenant config documents', async () => {
+    const fetchImpl = vi.fn(async () =>
+      Response.json(
+        {
+          tenantId: 'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee',
+          slug: 'careplus',
+          status: 'active',
+          updatedAt: '2026-09-13T00:00:00.000Z',
+          configVersion: 1,
+          document: { tenant: { name: 'CarePlus', vertical: 'pharmacy' } },
+        },
+        { status: 200 },
+      ),
+    );
+
+    const result = await fetchTenantConfigViaPlatformApi('eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee', {
+      fetchImpl: fetchImpl as unknown as typeof fetch,
+    });
+
+    expect(result.configVersion).toBe(1);
+    expect(result.document).toMatchObject({ tenant: { name: 'CarePlus' } });
   });
 });

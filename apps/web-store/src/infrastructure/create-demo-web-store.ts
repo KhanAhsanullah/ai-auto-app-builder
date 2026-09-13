@@ -43,11 +43,15 @@ export interface CreateDemoWebStoreOptions {
   snapshotStore?: WebDemoSnapshotStore;
   /**
    * Launch wizard input (business name + app type + optional logo).
-   * When set, builds a fresh tenant layer instead of the fixed grocery example.
+   * When set (and `tenantConfig` is omitted), builds a fresh tenant layer locally.
    */
   launch?: DemoLaunchInput;
+  /**
+   * Platform-owned tenant config layer (from GET /v1/tenants/:id/config).
+   * Preferred over `launch` when both are provided.
+   */
+  tenantConfig?: ConfigLayer | Record<string, unknown>;
 }
-
 export interface DemoWebStoreBundle {
   store: WebStore;
   sessionId: string;
@@ -62,7 +66,7 @@ export interface DemoWebStoreBundle {
 
 /**
  * Demo storefront: config + catalog/cart/checkout/order/payment wired and seeded.
- * Pass `launch` for Boom wizard (any vertical); otherwise uses the grocery example.
+ * Prefer `tenantConfig` (platform path); else `launch` (local Boom rebuild); else grocery example.
  */
 export async function createDemoWebStore(
   options: CreateDemoWebStoreOptions = {},
@@ -72,8 +76,11 @@ export async function createDemoWebStore(
   const createId = options.createId ?? (() => `demo-${++idSeq}`);
   const now = options.now ?? (() => new Date().toISOString());
 
-  const built = options.launch ? buildDemoLaunchConfig(options.launch) : undefined;
-  const tenantLayer = built?.tenantLayer ?? demoTenantLayer;
+  const built =
+    !options.tenantConfig && options.launch ? buildDemoLaunchConfig(options.launch) : undefined;
+  const tenantLayer = withDemoSurfaceFlags(
+    (options.tenantConfig as ConfigLayer | undefined) ?? built?.tenantLayer ?? demoTenantLayer,
+  );
 
   const provider = new ConfigProvider({ cache: false });
   const resolved = provider.resolve({
@@ -191,5 +198,20 @@ export async function createDemoWebStore(
     restoredFromSnapshot,
     vertical,
     businessName,
+  };
+}
+
+/** Ensure demo hosts can open web/mobile shells even when provisioned config disables them. */
+function withDemoSurfaceFlags(layer: ConfigLayer): ConfigLayer {
+  return {
+    ...layer,
+    webStore: {
+      ...layer.webStore,
+      enabled: true,
+    },
+    mobileApp: {
+      ...layer.mobileApp,
+      enabled: true,
+    },
   };
 }

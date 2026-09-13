@@ -11,6 +11,7 @@ Runnable Expo shell for `@ai-commerce/mobile-app` — the RN developer entry poi
 Sprint 24 Task 3 — Boom launch wizard on Expo (name + logo + any app type).
 Sprint 25 Task 3 — wizard UI tinted by selected vertical brand accent.
 Sprint 26 Task 3 — Boom calls `platform-api` then seeds the local demo.
+Sprint 27 Task 3 — Boot storefront from platform config (`GET /v1/tenants/:id/config`).
 
 Sprint 21–22 — Expo host, deep links/session, EAS/prebuild, SQLite durability.
 

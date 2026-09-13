@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import {
   BoomLaunchClientError,
+  fetchTenantConfigViaPlatformApi,
   launchBoomViaPlatformApi,
   resolvePlatformApiBaseUrl,
 } from '../src/boom-client.js';
@@ -55,6 +56,52 @@ describe('boom-client (web-host)', () => {
         { businessName: 'X', vertical: 'grocery' },
         { fetchImpl: fetchImpl as unknown as typeof fetch },
       ),
+    ).rejects.toThrow(BoomLaunchClientError);
+  });
+
+  it('fetches tenant config documents', async () => {
+    const fetchImpl = vi.fn(async () =>
+      Response.json(
+        {
+          tenantId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+          slug: 'spice-route',
+          status: 'active',
+          updatedAt: '2026-09-13T00:00:00.000Z',
+          configVersion: 1,
+          publishId: 'pub-1',
+          document: {
+            tenant: { name: 'Spice Route', vertical: 'restaurant' },
+            meta: { configVersion: 1 },
+          },
+        },
+        { status: 200 },
+      ),
+    );
+
+    const result = await fetchTenantConfigViaPlatformApi('dddddddd-dddd-4ddd-8ddd-dddddddddddd', {
+      baseUrl: 'http://127.0.0.1:8787',
+      fetchImpl: fetchImpl as unknown as typeof fetch,
+    });
+
+    expect(fetchImpl).toHaveBeenCalledWith(
+      'http://127.0.0.1:8787/v1/tenants/dddddddd-dddd-4ddd-8ddd-dddddddddddd/config',
+      expect.objectContaining({ method: 'GET' }),
+    );
+    expect(result).toMatchObject({
+      configVersion: 1,
+      document: { tenant: { name: 'Spice Route' } },
+    });
+  });
+
+  it('surfaces config fetch errors', async () => {
+    const fetchImpl = vi.fn(async () =>
+      Response.json({ error: 'Tenant not found.' }, { status: 404 }),
+    );
+
+    await expect(
+      fetchTenantConfigViaPlatformApi('missing', {
+        fetchImpl: fetchImpl as unknown as typeof fetch,
+      }),
     ).rejects.toThrow(BoomLaunchClientError);
   });
 });

@@ -15,6 +15,16 @@ export interface BoomLaunchClientResult {
   created: boolean;
 }
 
+export interface TenantConfigClientResult {
+  tenantId: string;
+  slug: string;
+  status: string;
+  updatedAt: string;
+  document: Record<string, unknown>;
+  configVersion?: number;
+  publishId?: string;
+}
+
 export class BoomLaunchClientError extends Error {
   readonly statusCode?: number;
 
@@ -94,5 +104,63 @@ export async function launchBoomViaPlatformApi(
     vertical: vertical as DemoLaunchVertical,
     status: typeof payload.status === 'string' ? payload.status : 'active',
     created: Boolean(payload.created),
+  };
+}
+
+/**
+ * Fetch the published (or registry) tenant config document from platform-api.
+ */
+export async function fetchTenantConfigViaPlatformApi(
+  tenantId: string,
+  options: {
+    baseUrl?: string;
+    fetchImpl?: typeof fetch;
+  } = {},
+): Promise<TenantConfigClientResult> {
+  const id = tenantId.trim();
+  if (!id) {
+    throw new BoomLaunchClientError('tenantId is required.');
+  }
+
+  const baseUrl = (options.baseUrl ?? resolvePlatformApiBaseUrl()).replace(/\/+$/, '');
+  const fetchImpl = options.fetchImpl ?? globalThis.fetch;
+  if (typeof fetchImpl !== 'function') {
+    throw new BoomLaunchClientError('fetch is not available in this environment.');
+  }
+
+  let response: Response;
+  try {
+    response = await fetchImpl(`${baseUrl}/v1/tenants/${encodeURIComponent(id)}/config`, {
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+    });
+  } catch {
+    throw new BoomLaunchClientError(
+      `Could not reach platform-api at ${baseUrl}. Start it with: pnpm --filter @ai-commerce/platform-api start`,
+    );
+  }
+
+  const payload = (await response.json().catch(() => ({}))) as Record<string, unknown>;
+  if (!response.ok) {
+    const message =
+      typeof payload.error === 'string'
+        ? payload.error
+        : `Tenant config fetch failed (${response.status}).`;
+    throw new BoomLaunchClientError(message, response.status);
+  }
+
+  const document = payload.document;
+  if (!document || typeof document !== 'object' || Array.isArray(document)) {
+    throw new BoomLaunchClientError('platform-api returned an incomplete tenant config.');
+  }
+
+  return {
+    tenantId: typeof payload.tenantId === 'string' ? payload.tenantId : id,
+    slug: typeof payload.slug === 'string' ? payload.slug : '',
+    status: typeof payload.status === 'string' ? payload.status : 'active',
+    updatedAt: typeof payload.updatedAt === 'string' ? payload.updatedAt : '',
+    document: document as Record<string, unknown>,
+    ...(typeof payload.configVersion === 'number' ? { configVersion: payload.configVersion } : {}),
+    ...(typeof payload.publishId === 'string' ? { publishId: payload.publishId } : {}),
   };
 }
