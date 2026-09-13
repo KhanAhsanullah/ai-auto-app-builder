@@ -40,7 +40,7 @@ createConfigEngine() → ConfigEngine
 
 ## Deferred
 
-- Real database adapters
-- HTTP / platform-api routes
+- Real database adapters (Postgres, etc.)
+- Dedicated HTTP CRUD routes for drafts/publish (platform-api currently consumes ConfigEngine **in-process** on Boom launch)
 - Worker queue consumers
 - Hard dependency on Build Orchestrator package (wire via emitter listener)

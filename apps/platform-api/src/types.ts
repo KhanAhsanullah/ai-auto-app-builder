@@ -49,6 +49,9 @@ export interface TenantConfigResponse {
   slug: string;
   status: string;
   updatedAt: string;
-  /** Tenant-layer config document from the registry. */
+  /** Prefer published ConfigEngine revision; falls back to registry layer. */
   document: Record<string, unknown>;
+  /** Present when served from a published ConfigEngine revision. */
+  configVersion?: number;
+  publishId?: string;
 }

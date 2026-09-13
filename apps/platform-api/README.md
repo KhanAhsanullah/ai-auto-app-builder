@@ -12,13 +12,14 @@ Sprint 26 Task 1 — runnable Node HTTP server.
 Sprint 26 Task 2 — durable JSON tenant store (survives restarts).
 Sprint 26 Task 3 — CORS enabled so browser hosts can call Boom launch.
 Sprint 27 Task 1 — list tenants + serve registry config documents.
+Sprint 27 Task 2 — Boom launch publishes via ConfigEngine; GET config prefers published.
 
 Routes:
 
-- `POST /v1/boom/launch` — business name + vertical (+ optional logo) → provision + activate
+- `POST /v1/boom/launch` — business name + vertical (+ optional logo) → provision + activate + publish
 - `GET /v1/tenants` — list provisioned tenant summaries
 - `GET /v1/tenants/:id` — fetch provisioned tenant summary
-- `GET /v1/tenants/:id/config` — fetch registry config document
+- `GET /v1/tenants/:id/config` — latest **published** config (registry fallback)
 - `GET /health` — liveness
 
 ## Run
@@ -26,7 +27,8 @@ Routes:
 ```bash
 pnpm --filter @ai-commerce/platform-api start
 # default http://127.0.0.1:8787
-# default store: .data/tenants.json (override with TENANT_STORE_PATH)
+# default tenant store: .data/tenants.json (TENANT_STORE_PATH)
+# default config store: .data/configs.json (CONFIG_STORE_PATH)
 ```
 
 Example:

@@ -1,3 +1,5 @@
+import type { ConfigEngine } from '@ai-commerce/config-engine';
+import { ConfigDocumentNotFoundException } from '@ai-commerce/config-engine';
 import type { ProvisioningResult } from '@ai-commerce/config-schema';
 import type { TenantProvisioner, TenantRecord } from '@ai-commerce/tenant-provisioner';
 
@@ -7,12 +9,14 @@ import { toProvisioningRequest } from './map-boom-launch.js';
 
 export interface PlatformApiDeps {
   provisioner: TenantProvisioner;
+  configEngine: ConfigEngine;
   /** When true (default), activate the tenant after provision. */
   activateOnLaunch?: boolean;
 }
 
 /**
- * Control-plane facade — Boom launch provisions (and optionally activates) a tenant.
+ * Control-plane facade — Boom launch provisions (and optionally activates) a tenant,
+ * then publishes the config document via ConfigEngine.
  */
 export class PlatformApi {
   private readonly activateOnLaunch: boolean;
@@ -27,20 +31,25 @@ export class PlatformApi {
   }
 
   /**
-   * Boom launch: provision from wizard input, then activate when configured.
+   * Boom launch: provision from wizard input, activate when configured,
+   * then ensure a published ConfigEngine revision exists.
    * `created` reflects whether provision created a new registry row (not activation).
    */
   async launchBoom(input: BoomLaunchInput): Promise<ProvisioningResult> {
     const request = toProvisioningRequest(input);
     const provisioned = await this.deps.provisioner.provision(request);
-    if (!this.activateOnLaunch || provisioned.status === 'active') {
-      return provisioned;
+    let result: ProvisioningResult = provisioned;
+
+    if (this.activateOnLaunch && provisioned.status !== 'active') {
+      const activated = await this.deps.provisioner.activate({ tenantId: provisioned.tenantId });
+      result = {
+        ...activated,
+        created: provisioned.created,
+      };
     }
-    const activated = await this.deps.provisioner.activate({ tenantId: provisioned.tenantId });
-    return {
-      ...activated,
-      created: provisioned.created,
-    };
+
+    await this.ensurePublishedConfig(result.tenantId);
+    return result;
   }
 
   /** List provisioned tenant summaries. */
@@ -58,16 +67,61 @@ export class PlatformApi {
     return toTenantSummary(record);
   }
 
-  /** Fetch the registry config document for a tenant. */
+  /**
+   * Fetch tenant config — prefers latest published ConfigEngine revision,
+   * falls back to the registry document when nothing is published yet.
+   */
   async getTenantConfig(tenantId: string): Promise<TenantConfigResponse> {
     const record = await this.requireTenant(tenantId);
+    try {
+      const published = await this.deps.configEngine.getLatestPublished(record.tenantId);
+      return {
+        tenantId: record.tenantId,
+        slug: record.slug,
+        status: record.status,
+        updatedAt: published.updatedAt,
+        document: published.document as TenantConfigResponse['document'],
+        configVersion: published.version,
+        publishId: published.publishId,
+      };
+    } catch (err: unknown) {
+      if (!(err instanceof ConfigDocumentNotFoundException)) {
+        throw err;
+      }
+    }
+
     return {
       tenantId: record.tenantId,
       slug: record.slug,
       status: record.status,
       updatedAt: record.updatedAt,
-      document: record.configDocument,
+      document: record.configDocument as TenantConfigResponse['document'],
     };
+  }
+
+  private async ensurePublishedConfig(tenantId: string): Promise<void> {
+    try {
+      await this.deps.configEngine.getLatestPublished(tenantId);
+      return;
+    } catch (err: unknown) {
+      if (!(err instanceof ConfigDocumentNotFoundException)) {
+        throw err;
+      }
+    }
+
+    const record = await this.deps.provisioner.findById(tenantId);
+    if (!record) {
+      throw new TenantNotFoundException(tenantId);
+    }
+
+    await this.deps.configEngine.saveDraft({
+      tenantId,
+      document: record.configDocument,
+    });
+    await this.deps.configEngine.publish({
+      tenantId,
+      surfaces: ['web', 'mobile'],
+    });
   }
 
   private async requireTenant(tenantId: string): Promise<TenantRecord> {

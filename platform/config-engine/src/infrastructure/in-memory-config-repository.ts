@@ -70,6 +70,11 @@ export class InMemoryConfigRepository implements ConfigRepository {
       .map((doc) => structuredClone(doc));
   }
 
+  /** Snapshot of all revisions (used by durable adapters). */
+  listAll(): ConfigDocument[] {
+    return [...this.byKey.values()].map((doc) => structuredClone(doc));
+  }
+
   private async findLatestWithStatus(
     tenantId: string,
     status: ConfigDocument['status'],

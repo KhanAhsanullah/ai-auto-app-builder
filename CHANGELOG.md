@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Boom publishes via ConfigEngine** (Sprint 27 Task 2) — platform-api + config-engine
+  - Boom launch → `saveDraft` → `publish`; GET config prefers latest published revision
+  - `FileConfigRepository` + `CONFIG_STORE_PATH` (default `.data/configs.json`)
+
 - **Platform tenant config serving** (Sprint 27 Task 1) — `@ai-commerce/platform-api`
   - `GET /v1/tenants` lists provisioned tenants
   - `GET /v1/tenants/:id/config` returns the registry config document

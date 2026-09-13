@@ -100,13 +100,19 @@ describe('platform-api HTTP', () => {
     expect(config.status).toBe(200);
     const configBody = (await config.json()) as {
       tenantId: string;
-      document: { tenant?: { name?: string; vertical?: string } };
+      configVersion?: number;
+      document: {
+        tenant?: { name?: string; vertical?: string };
+        meta?: { configVersion?: number };
+      };
     };
     expect(configBody.tenantId).toBe(launched.tenantId);
+    expect(configBody.configVersion).toBe(1);
     expect(configBody.document.tenant).toMatchObject({
       name: 'Spice Route',
       vertical: 'restaurant',
     });
+    expect(configBody.document.meta?.configVersion).toBe(1);
   });
 
   it('answers CORS preflight for browser hosts', async () => {

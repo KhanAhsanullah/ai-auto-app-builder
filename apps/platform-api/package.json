@@ -19,6 +19,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@ai-commerce/config-engine": "workspace:*",
     "@ai-commerce/config-schema": "workspace:*",
     "@ai-commerce/tenant-provisioner": "workspace:*"
   },

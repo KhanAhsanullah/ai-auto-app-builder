@@ -5,7 +5,11 @@ export {
   slugifyBusinessName,
   toProvisioningRequest,
 } from './domain/map-boom-launch.js';
-export { createPlatformApi, resolveTenantStorePath } from './infrastructure/create-platform-api.js';
+export {
+  createPlatformApi,
+  resolveConfigStorePath,
+  resolveTenantStorePath,
+} from './infrastructure/create-platform-api.js';
 export type { CreatePlatformApiOptions } from './infrastructure/create-platform-api.js';
 export { createPlatformHttpServer, listenPlatformApi } from './infrastructure/node-http-server.js';
 export type { CreatePlatformHttpServerOptions } from './infrastructure/node-http-server.js';

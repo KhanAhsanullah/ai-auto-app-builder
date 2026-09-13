@@ -204,6 +204,9 @@ importers:
 
   apps/platform-api:
     dependencies:
+      '@ai-commerce/config-engine':
+        specifier: workspace:*
+        version: link:../../platform/config-engine
       '@ai-commerce/config-schema':
         specifier: workspace:*
         version: link:../../packages/config-schema

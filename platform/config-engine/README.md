@@ -9,6 +9,7 @@ Control-plane service for tenant configuration CRUD, versioning, validation, and
 ## Status
 
 **Sprint 13 complete** — Task 3 delivers `ConfigEngine` / `createConfigEngine` facade.
+**Sprint 27 Task 2** — `FileConfigRepository` durable revision store; consumed in-process by `platform-api` Boom launch.
 
 ## Modules
 
@@ -21,6 +22,7 @@ Control-plane service for tenant configuration CRUD, versioning, validation, and
 | `ConfigValidationService`      | Validate via Config Runtime            |
 | `InMemoryConfigPublishEmitter` | Collect/fan-out publish events         |
 | `InMemoryConfigRepository`     | Versioned document store               |
+| `FileConfigRepository`         | JSON durable revision store            |
 
 ## Usage
 
