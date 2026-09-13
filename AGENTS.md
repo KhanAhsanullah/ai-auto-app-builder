@@ -175,7 +175,7 @@ Sprints are sequential and tagged. Each sprint delivers a cohesive milestone.
 | 24     | Launch Wizard           | ✅ Complete (Tasks 1, 3) |
 | 25     | Storefront UI Polish    | ✅ Complete              |
 | 26     | Control Plane API       | ✅ Complete              |
-| 27     | Platform Config Serving | In progress (Task 1)     |
+| 27     | Platform Config Serving | In progress (Task 2)     |
 
 ### Sprint Task Checklist
 
