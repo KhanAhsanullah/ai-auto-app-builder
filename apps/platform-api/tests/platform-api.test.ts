@@ -10,6 +10,7 @@ import { InMemoryTenantRepository } from '@ai-commerce/tenant-provisioner';
 import { createPlatformApi } from '../src/infrastructure/create-platform-api.js';
 import { TenantNotFoundException } from '../src/errors.js';
 import { PlatformApi } from '../src/domain/platform-api.js';
+import { InMemoryTenantCatalogRepository } from '../src/infrastructure/in-memory-tenant-catalog-repository.js';
 import { createTenantProvisioner } from '@ai-commerce/tenant-provisioner';
 
 describe('PlatformApi', () => {
@@ -78,7 +79,12 @@ describe('PlatformApi', () => {
       now: () => '2026-09-09T00:00:00.000Z',
       createPublishId: () => 'pub-prefer',
     });
-    const api = new PlatformApi({ provisioner, configEngine });
+    const api = new PlatformApi({
+      provisioner,
+      configEngine,
+      catalogRepository: new InMemoryTenantCatalogRepository(),
+      now: () => '2026-09-09T00:00:00.000Z',
+    });
 
     const launched = await api.launchBoom({
       businessName: 'Byte Hub',
@@ -126,7 +132,9 @@ describe('PlatformApi', () => {
     const api = new PlatformApi({
       provisioner,
       configEngine,
+      catalogRepository: new InMemoryTenantCatalogRepository(),
       activateOnLaunch: true,
+      now: () => '2026-09-09T00:00:00.000Z',
     });
 
     const provisioned = await provisioner.provision({
@@ -188,5 +196,36 @@ describe('PlatformApi', () => {
     expect(config.document).toMatchObject({
       tenant: { name: 'Byte Hub', vertical: 'electronics' },
     });
+  });
+
+  it('seeds and serves a vertical catalog on Boom launch', async () => {
+    const api = createPlatformApi({
+      clock: () => '2026-09-13T00:00:00.000Z',
+    });
+
+    const launched = await api.launchBoom({
+      businessName: 'Spice Route',
+      vertical: 'restaurant',
+      tenantId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+    });
+
+    const catalog = await api.getTenantCatalog(launched.tenantId);
+    expect(catalog.vertical).toBe('restaurant');
+    expect(catalog.products).toHaveLength(3);
+    expect(catalog.products.map((p) => p.slug).sort()).toEqual(['biryani', 'burger', 'chai']);
+    expect(catalog.products.find((p) => p.slug === 'biryani')).toMatchObject({
+      name: 'Chicken Biryani',
+      currency: 'PKR',
+      amount: 650,
+    });
+
+    // Idempotent relaunch keeps the same catalog
+    await api.launchBoom({
+      businessName: 'Spice Route',
+      vertical: 'restaurant',
+      tenantId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+    });
+    const again = await api.getTenantCatalog(launched.tenantId);
+    expect(again.products).toHaveLength(3);
   });
 });

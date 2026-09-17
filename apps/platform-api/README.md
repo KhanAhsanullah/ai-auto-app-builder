@@ -13,13 +13,15 @@ Sprint 26 Task 2 — durable JSON tenant store (survives restarts).
 Sprint 26 Task 3 — CORS enabled so browser hosts can call Boom launch.
 Sprint 27 Task 1 — list tenants + serve registry config documents.
 Sprint 27 Task 2 — Boom launch publishes via ConfigEngine; GET config prefers published.
+Sprint 28 Task 1 — Boom seeds vertical catalog; `GET /v1/tenants/:id/catalog/products`.
 
 Routes:
 
-- `POST /v1/boom/launch` — business name + vertical (+ optional logo) → provision + activate + publish
+- `POST /v1/boom/launch` — business name + vertical (+ optional logo) → provision + activate + publish + catalog seed
 - `GET /v1/tenants` — list provisioned tenant summaries
 - `GET /v1/tenants/:id` — fetch provisioned tenant summary
 - `GET /v1/tenants/:id/config` — latest **published** config (registry fallback)
+- `GET /v1/tenants/:id/catalog/products` — platform-owned demo catalog products
 - `GET /health` — liveness
 
 ## Run
@@ -29,6 +31,7 @@ pnpm --filter @ai-commerce/platform-api start
 # default http://127.0.0.1:8787
 # default tenant store: .data/tenants.json (TENANT_STORE_PATH)
 # default config store: .data/configs.json (CONFIG_STORE_PATH)
+# default catalog store: .data/catalogs.json (CATALOG_STORE_PATH)
 ```
 
 Example:

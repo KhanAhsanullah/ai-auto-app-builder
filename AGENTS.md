@@ -8,7 +8,7 @@ Guidelines for AI assistants working on CommerceOS AI. Read this file before mak
 
 **CommerceOS AI** (`ai-commerce-platform`) is a configuration-driven, multi-tenant white-label commerce SaaS platform. It enables agencies, enterprises, and vertical operators to launch branded commerce experiences — Admin Dashboard, Web Store, Mobile App, and API Backend — from a single JSON Schema configuration contract.
 
-**Current state:** Sprint 27 Task 3 (hosts boot from platform config) on branch `sprint/27/task3`. Tasks 1–2 on `main`.
+**Current state:** Sprint 28 Task 1 (Boom catalog seed + GET products) on branch `sprint/28/task1`. Sprint 27 complete on `main`.
 
 **Key packages (Sprint 1 deliverables):**
 
@@ -147,35 +147,36 @@ Full rules: [ARCHITECTURE_RULES.md](./ARCHITECTURE_RULES.md)
 
 Sprints are sequential and tagged. Each sprint delivers a cohesive milestone.
 
-| Sprint | Theme                   | Status                   |
-| ------ | ----------------------- | ------------------------ |
-| 1      | Monorepo Foundation     | ✅ Complete              |
-| 2      | Theme Engine            | ✅ Complete              |
-| 3      | White Label Engine      | ✅ Complete              |
-| 4      | Tenant Provisioning     | ✅ Complete              |
-| 5      | Plugin Engine           | ✅ Complete              |
-| 6      | Authentication          | ✅ Complete              |
-| 7      | API Gateway             | ✅ Complete              |
-| 8      | Dashboard               | ✅ Complete              |
-| 9      | Mobile App              | ✅ Complete              |
-| 10     | AI Commerce Engine      | ✅ Complete              |
-| 11     | Web Store               | ✅ Complete              |
-| 12     | Build Orchestrator      | ✅ Complete              |
-| 13     | Config Engine           | ✅ Complete              |
-| 14     | Core Catalog            | ✅ Complete              |
-| 15     | Core Cart               | ✅ Complete              |
-| 16     | Core Checkout           | ✅ Complete              |
-| 17     | Core Order              | ✅ Complete              |
-| 18     | Core Payment            | ✅ Complete              |
-| 19     | Surface Wiring          | ✅ Complete              |
-| 20     | Commerce Screens        | ✅ Complete              |
-| 21     | Mobile Host (Expo)      | ✅ Complete              |
-| 22     | Durable Mobile Demo     | ✅ Complete              |
-| 23     | Web Store Host          | ✅ Complete              |
-| 24     | Launch Wizard           | ✅ Complete (Tasks 1, 3) |
-| 25     | Storefront UI Polish    | ✅ Complete              |
-| 26     | Control Plane API       | ✅ Complete              |
-| 27     | Platform Config Serving | In progress (Task 3)     |
+| Sprint | Theme                    | Status                   |
+| ------ | ------------------------ | ------------------------ |
+| 1      | Monorepo Foundation      | ✅ Complete              |
+| 2      | Theme Engine             | ✅ Complete              |
+| 3      | White Label Engine       | ✅ Complete              |
+| 4      | Tenant Provisioning      | ✅ Complete              |
+| 5      | Plugin Engine            | ✅ Complete              |
+| 6      | Authentication           | ✅ Complete              |
+| 7      | API Gateway              | ✅ Complete              |
+| 8      | Dashboard                | ✅ Complete              |
+| 9      | Mobile App               | ✅ Complete              |
+| 10     | AI Commerce Engine       | ✅ Complete              |
+| 11     | Web Store                | ✅ Complete              |
+| 12     | Build Orchestrator       | ✅ Complete              |
+| 13     | Config Engine            | ✅ Complete              |
+| 14     | Core Catalog             | ✅ Complete              |
+| 15     | Core Cart                | ✅ Complete              |
+| 16     | Core Checkout            | ✅ Complete              |
+| 17     | Core Order               | ✅ Complete              |
+| 18     | Core Payment             | ✅ Complete              |
+| 19     | Surface Wiring           | ✅ Complete              |
+| 20     | Commerce Screens         | ✅ Complete              |
+| 21     | Mobile Host (Expo)       | ✅ Complete              |
+| 22     | Durable Mobile Demo      | ✅ Complete              |
+| 23     | Web Store Host           | ✅ Complete              |
+| 24     | Launch Wizard            | ✅ Complete (Tasks 1, 3) |
+| 25     | Storefront UI Polish     | ✅ Complete              |
+| 26     | Control Plane API        | ✅ Complete              |
+| 27     | Platform Config Serving  | ✅ Complete              |
+| 28     | Platform Catalog Serving | In progress (Task 1)     |
 
 ### Sprint Task Checklist
 
@@ -235,5 +236,5 @@ All four must pass.
 | [CHANGELOG.md](./CHANGELOG.md)                               | Version history                  |
 | [docs/architecture/README.md](./docs/architecture/README.md) | System architecture              |
 
-**Latest tag:** `sprint27-task3`
+**Latest tag:** `sprint28-task1`
 **Schema version:** v1 (`SCHEMA_VERSION`)

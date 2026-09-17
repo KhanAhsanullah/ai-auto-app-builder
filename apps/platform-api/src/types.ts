@@ -55,3 +55,20 @@ export interface TenantConfigResponse {
   configVersion?: number;
   publishId?: string;
 }
+
+/** Catalog payload for GET /v1/tenants/:id/catalog/products. */
+export interface TenantCatalogResponse {
+  tenantId: string;
+  vertical: BoomLaunchVertical;
+  updatedAt: string;
+  products: Array<{
+    id: string;
+    slug: string;
+    name: string;
+    sku: string;
+    title: string;
+    amount: number;
+    currency: string;
+    imageUrl: string;
+  }>;
+}

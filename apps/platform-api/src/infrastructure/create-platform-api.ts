@@ -18,11 +18,15 @@ import {
 } from '@ai-commerce/tenant-provisioner';
 
 import { PlatformApi, type PlatformApiDeps } from '../domain/platform-api.js';
+import type { TenantCatalogRepository } from '../domain/tenant-catalog-repository.js';
+import { FileTenantCatalogRepository } from './file-tenant-catalog-repository.js';
+import { InMemoryTenantCatalogRepository } from './in-memory-tenant-catalog-repository.js';
 
 export interface CreatePlatformApiOptions extends CreateTenantProvisionerOptions {
   provisioner?: TenantProvisioner;
   configEngine?: ConfigEngine;
   configRepository?: ConfigRepository;
+  catalogRepository?: TenantCatalogRepository;
   activateOnLaunch?: boolean;
   /**
    * When set, use a JSON file tenant registry.
@@ -34,6 +38,11 @@ export interface CreatePlatformApiOptions extends CreateTenantProvisionerOptions
    * Defaults from `CONFIG_STORE_PATH` in the process server entry.
    */
   configStorePath?: string;
+  /**
+   * When set, use a JSON file catalog store.
+   * Defaults from `CATALOG_STORE_PATH` in the process server entry.
+   */
+  catalogStorePath?: string;
   /** Forwarded to createConfigEngine when configEngine is not injected. */
   now?: CreateConfigEngineOptions['now'];
   createPublishId?: CreateConfigEngineOptions['createPublishId'];
@@ -45,15 +54,7 @@ export function resolveTenantStorePath(
   explicit?: string,
   env: NodeJS.ProcessEnv = process.env,
 ): string | undefined {
-  const fromExplicit = explicit?.trim();
-  if (fromExplicit) {
-    return resolve(fromExplicit);
-  }
-  const fromEnv = env.TENANT_STORE_PATH?.trim();
-  if (fromEnv) {
-    return resolve(fromEnv);
-  }
-  return undefined;
+  return resolveOptionalPath(explicit, env.TENANT_STORE_PATH);
 }
 
 /** Resolve the durable config store path (empty → in-memory). */
@@ -61,13 +62,25 @@ export function resolveConfigStorePath(
   explicit?: string,
   env: NodeJS.ProcessEnv = process.env,
 ): string | undefined {
+  return resolveOptionalPath(explicit, env.CONFIG_STORE_PATH);
+}
+
+/** Resolve the durable catalog store path (empty → in-memory). */
+export function resolveCatalogStorePath(
+  explicit?: string,
+  env: NodeJS.ProcessEnv = process.env,
+): string | undefined {
+  return resolveOptionalPath(explicit, env.CATALOG_STORE_PATH);
+}
+
+function resolveOptionalPath(explicit?: string, fromEnv?: string): string | undefined {
   const fromExplicit = explicit?.trim();
   if (fromExplicit) {
     return resolve(fromExplicit);
   }
-  const fromEnv = env.CONFIG_STORE_PATH?.trim();
-  if (fromEnv) {
-    return resolve(fromEnv);
+  const envValue = fromEnv?.trim();
+  if (envValue) {
+    return resolve(envValue);
   }
   return undefined;
 }
@@ -94,9 +107,21 @@ function createConfigRepository(options: CreatePlatformApiOptions): ConfigReposi
   return new InMemoryConfigRepository();
 }
 
-/** Wire PlatformApi with TenantProvisioner + ConfigEngine (in-memory or file-backed). */
+function createCatalogRepository(options: CreatePlatformApiOptions): TenantCatalogRepository {
+  if (options.catalogRepository) {
+    return options.catalogRepository;
+  }
+  const storePath = resolveCatalogStorePath(options.catalogStorePath);
+  if (storePath) {
+    return new FileTenantCatalogRepository({ filePath: storePath });
+  }
+  return new InMemoryTenantCatalogRepository();
+}
+
+/** Wire PlatformApi with TenantProvisioner + ConfigEngine + catalog store. */
 export function createPlatformApi(options: CreatePlatformApiOptions = {}): PlatformApi {
   const repository = createTenantRepository(options);
+  const clock = options.clock ?? options.now;
   const provisioner =
     options.provisioner ??
     createTenantProvisioner({
@@ -104,7 +129,7 @@ export function createPlatformApi(options: CreatePlatformApiOptions = {}): Platf
       configProvider: options.configProvider,
       identityValidator: options.identityValidator,
       configBuilder: options.configBuilder,
-      clock: options.clock,
+      clock,
     });
 
   const configEngine =
@@ -120,7 +145,9 @@ export function createPlatformApi(options: CreatePlatformApiOptions = {}): Platf
   const deps: PlatformApiDeps = {
     provisioner,
     configEngine,
+    catalogRepository: createCatalogRepository(options),
     activateOnLaunch: options.activateOnLaunch,
+    now: options.now ?? options.clock,
   };
 
   return new PlatformApi(deps);

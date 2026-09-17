@@ -6,6 +6,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 
 import {
   createPlatformApi,
+  resolveCatalogStorePath,
   resolveConfigStorePath,
   resolveTenantStorePath,
 } from '../src/infrastructure/create-platform-api.js';
@@ -36,15 +37,24 @@ describe('createPlatformApi durable store', () => {
     expect(resolved).toMatch(/configs\.json$/);
   });
 
+  it('resolves CATALOG_STORE_PATH from env', () => {
+    const resolved = resolveCatalogStorePath(undefined, {
+      CATALOG_STORE_PATH: 'relative/catalogs.json',
+    });
+    expect(resolved).toMatch(/catalogs\.json$/);
+  });
+
   it('survives process restarts via file stores', async () => {
     const dir = await mkdtemp(join(tmpdir(), 'platform-api-store-'));
     dirs.push(dir);
     const tenantStorePath = join(dir, 'tenants.json');
     const configStorePath = join(dir, 'configs.json');
+    const catalogStorePath = join(dir, 'catalogs.json');
 
     const first = createPlatformApi({
       tenantStorePath,
       configStorePath,
+      catalogStorePath,
       clock: () => '2026-09-10T00:00:00.000Z',
       createPublishId: () => 'durable-publish-1',
     });
@@ -55,7 +65,7 @@ describe('createPlatformApi durable store', () => {
     });
     expect(launched.status).toBe('active');
 
-    const second = createPlatformApi({ tenantStorePath, configStorePath });
+    const second = createPlatformApi({ tenantStorePath, configStorePath, catalogStorePath });
     const tenant = await second.getTenant(launched.tenantId);
     expect(tenant).toMatchObject({
       tenantId: launched.tenantId,
@@ -74,5 +84,9 @@ describe('createPlatformApi durable store', () => {
       tenant: { name: 'Durable Mart', vertical: 'grocery' },
       meta: { configVersion: 1 },
     });
+
+    const catalog = await second.getTenantCatalog(launched.tenantId);
+    expect(catalog.vertical).toBe('grocery');
+    expect(catalog.products.some((p) => p.slug === 'atta')).toBe(true);
   });
 });

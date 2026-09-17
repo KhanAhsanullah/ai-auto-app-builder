@@ -2,6 +2,7 @@ import { resolve } from 'node:path';
 
 import {
   createPlatformApi,
+  resolveCatalogStorePath,
   resolveConfigStorePath,
   resolveTenantStorePath,
 } from './create-platform-api.js';
@@ -13,13 +14,17 @@ const tenantStorePath =
   resolveTenantStorePath(undefined, process.env) ?? resolve(process.cwd(), '.data', 'tenants.json');
 const configStorePath =
   resolveConfigStorePath(undefined, process.env) ?? resolve(process.cwd(), '.data', 'configs.json');
+const catalogStorePath =
+  resolveCatalogStorePath(undefined, process.env) ??
+  resolve(process.cwd(), '.data', 'catalogs.json');
 
-const api = createPlatformApi({ tenantStorePath, configStorePath });
+const api = createPlatformApi({ tenantStorePath, configStorePath, catalogStorePath });
 const listening = await listenPlatformApi(api, Number.isFinite(port) ? port : 8787, host);
 
 console.log(`[platform-api] listening on http://${listening.host}:${listening.port}`);
 console.log(`[platform-api] tenant store: ${tenantStorePath}`);
 console.log(`[platform-api] config store: ${configStorePath}`);
+console.log(`[platform-api] catalog store: ${catalogStorePath}`);
 console.log(
-  `[platform-api] POST /v1/boom/launch  GET /health  GET /v1/tenants  GET /v1/tenants/:id/config`,
+  `[platform-api] POST /v1/boom/launch  GET /v1/tenants/:id/config  GET /v1/tenants/:id/catalog/products`,
 );

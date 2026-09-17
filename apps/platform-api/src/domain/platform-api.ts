@@ -4,25 +4,38 @@ import type { ProvisioningResult } from '@ai-commerce/config-schema';
 import type { TenantProvisioner, TenantRecord } from '@ai-commerce/tenant-provisioner';
 
 import { PlatformApiException, TenantNotFoundException } from '../errors.js';
-import type { BoomLaunchInput, TenantConfigResponse, TenantSummary } from '../types.js';
+import type {
+  BoomLaunchInput,
+  BoomLaunchVertical,
+  TenantCatalogResponse,
+  TenantConfigResponse,
+  TenantSummary,
+} from '../types.js';
 import { toProvisioningRequest } from './map-boom-launch.js';
+import type { TenantCatalogRepository } from './tenant-catalog-repository.js';
+import { buildVerticalCatalogRecord } from './vertical-catalog-seeds.js';
 
 export interface PlatformApiDeps {
   provisioner: TenantProvisioner;
   configEngine: ConfigEngine;
+  catalogRepository: TenantCatalogRepository;
   /** When true (default), activate the tenant after provision. */
   activateOnLaunch?: boolean;
+  /** Clock for catalog timestamps (defaults to Date ISO). */
+  now?: () => string;
 }
 
 /**
- * Control-plane facade — Boom launch provisions (and optionally activates) a tenant,
- * then publishes the config document via ConfigEngine.
+ * Control-plane facade — Boom launch provisions, activates, publishes config,
+ * and seeds a vertical demo catalog.
  */
 export class PlatformApi {
   private readonly activateOnLaunch: boolean;
+  private readonly now: () => string;
 
   constructor(private readonly deps: PlatformApiDeps) {
     this.activateOnLaunch = deps.activateOnLaunch ?? true;
+    this.now = deps.now ?? (() => new Date().toISOString());
   }
 
   /** Health probe for HTTP / process monitors. */
@@ -32,7 +45,7 @@ export class PlatformApi {
 
   /**
    * Boom launch: provision from wizard input, activate when configured,
-   * then ensure a published ConfigEngine revision exists.
+   * ensure a published ConfigEngine revision, and seed the vertical catalog.
    * `created` reflects whether provision created a new registry row (not activation).
    */
   async launchBoom(input: BoomLaunchInput): Promise<ProvisioningResult> {
@@ -49,6 +62,7 @@ export class PlatformApi {
     }
 
     await this.ensurePublishedConfig(result.tenantId);
+    await this.ensureCatalogSeeded(result.tenantId, input.vertical);
     return result;
   }
 
@@ -99,6 +113,21 @@ export class PlatformApi {
     };
   }
 
+  /** Fetch the platform-owned catalog products for a tenant. */
+  async getTenantCatalog(tenantId: string): Promise<TenantCatalogResponse> {
+    const record = await this.requireTenant(tenantId);
+    const catalog = await this.deps.catalogRepository.findByTenantId(record.tenantId);
+    if (!catalog) {
+      throw new PlatformApiException(`No catalog found for tenant '${record.tenantId}'.`, 404);
+    }
+    return {
+      tenantId: catalog.tenantId,
+      vertical: catalog.vertical,
+      updatedAt: catalog.updatedAt,
+      products: catalog.products,
+    };
+  }
+
   private async ensurePublishedConfig(tenantId: string): Promise<void> {
     try {
       await this.deps.configEngine.getLatestPublished(tenantId);
@@ -122,6 +151,19 @@ export class PlatformApi {
       tenantId,
       surfaces: ['web', 'mobile'],
     });
+  }
+
+  private async ensureCatalogSeeded(tenantId: string, vertical: BoomLaunchVertical): Promise<void> {
+    const existing = await this.deps.catalogRepository.findByTenantId(tenantId);
+    if (existing && existing.products.length > 0) {
+      return;
+    }
+    const record = buildVerticalCatalogRecord({
+      tenantId,
+      vertical,
+      updatedAt: this.now(),
+    });
+    await this.deps.catalogRepository.save(record);
   }
 
   private async requireTenant(tenantId: string): Promise<TenantRecord> {

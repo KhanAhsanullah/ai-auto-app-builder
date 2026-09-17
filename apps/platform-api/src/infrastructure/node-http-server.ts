@@ -48,6 +48,11 @@ async function readJsonBody(req: IncomingMessage): Promise<unknown> {
   }
 }
 
+function matchTenantCatalogGet(pathname: string): string | undefined {
+  const match = /^\/v1\/tenants\/([^/]+)\/catalog\/products\/?$/.exec(pathname);
+  return match?.[1] ? decodeURIComponent(match[1]) : undefined;
+}
+
 function matchTenantConfigGet(pathname: string): string | undefined {
   const match = /^\/v1\/tenants\/([^/]+)\/config\/?$/.exec(pathname);
   return match?.[1] ? decodeURIComponent(match[1]) : undefined;
@@ -98,6 +103,13 @@ async function handleRequest(
     if (method === 'GET' && pathname === '/v1/tenants') {
       const listed = await api.listTenants();
       sendJson(res, 200, listed);
+      return;
+    }
+
+    const catalogTenantId = matchTenantCatalogGet(pathname);
+    if (method === 'GET' && catalogTenantId) {
+      const catalog = await api.getTenantCatalog(catalogTenantId);
+      sendJson(res, 200, catalog);
       return;
     }
 

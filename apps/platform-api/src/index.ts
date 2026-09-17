@@ -7,6 +7,7 @@ export {
 } from './domain/map-boom-launch.js';
 export {
   createPlatformApi,
+  resolveCatalogStorePath,
   resolveConfigStorePath,
   resolveTenantStorePath,
 } from './infrastructure/create-platform-api.js';
@@ -23,6 +24,16 @@ export type {
   BoomLaunchInput,
   BoomLaunchVertical,
   PlatformApiListenResult,
+  TenantCatalogResponse,
   TenantConfigResponse,
   TenantSummary,
 } from './types.js';
+export type { TenantCatalogRepository } from './domain/tenant-catalog-repository.js';
+export type {
+  PlatformCatalogProduct,
+  TenantCatalogRecord,
+} from './domain/vertical-catalog-seeds.js';
+export { buildVerticalCatalogRecord } from './domain/vertical-catalog-seeds.js';
+export { InMemoryTenantCatalogRepository } from './infrastructure/in-memory-tenant-catalog-repository.js';
+export { FileTenantCatalogRepository } from './infrastructure/file-tenant-catalog-repository.js';
+export type { FileTenantCatalogRepositoryOptions } from './infrastructure/file-tenant-catalog-repository.js';

@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Platform catalog seed + GET** (Sprint 28 Task 1) — `@ai-commerce/platform-api`
+  - Boom launch seeds vertical demo products into durable catalog store
+  - `GET /v1/tenants/:id/catalog/products`; `CATALOG_STORE_PATH` (default `.data/catalogs.json`)
+
 - **Hosts boot from platform config** (Sprint 27 Task 3) — web-host + mobile-host
   - After Boom / on restore: `GET /v1/tenants/:id/config` → `createDemo*({ tenantConfig })`
   - Local `buildDemoLaunchConfig` kept for tests / offline demos only

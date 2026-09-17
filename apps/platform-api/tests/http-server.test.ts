@@ -113,6 +113,17 @@ describe('platform-api HTTP', () => {
       vertical: 'restaurant',
     });
     expect(configBody.document.meta?.configVersion).toBe(1);
+
+    const catalog = await fetch(
+      `http://127.0.0.1:${listening.port}/v1/tenants/${launched.tenantId}/catalog/products`,
+    );
+    expect(catalog.status).toBe(200);
+    const catalogBody = (await catalog.json()) as {
+      vertical: string;
+      products: Array<{ slug: string }>;
+    };
+    expect(catalogBody.vertical).toBe('restaurant');
+    expect(catalogBody.products.map((p) => p.slug).sort()).toEqual(['biryani', 'burger', 'chai']);
   });
 
   it('answers CORS preflight for browser hosts', async () => {
