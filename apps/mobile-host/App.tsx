@@ -23,7 +23,11 @@ import {
 import { MobileAppRoot, type MobileAppRootProps } from '@ai-commerce/mobile-app/native';
 
 import { LaunchWizard, type LaunchWizardSubmit } from './src/LaunchWizard.js';
-import { fetchTenantConfigViaPlatformApi, launchBoomViaPlatformApi } from './src/boom-client.js';
+import {
+  fetchTenantCatalogViaPlatformApi,
+  fetchTenantConfigViaPlatformApi,
+  launchBoomViaPlatformApi,
+} from './src/boom-client.js';
 import {
   clearLaunchProfile,
   loadLaunchProfile,
@@ -71,11 +75,15 @@ export default function App(): ReactNode {
       setError(null);
       try {
         const resolvedSession = await resolveGuestSessionId({ store });
-        const platformConfig = await fetchTenantConfigViaPlatformApi(profile.tenantId);
+        const [platformConfig, platformCatalog] = await Promise.all([
+          fetchTenantConfigViaPlatformApi(profile.tenantId),
+          fetchTenantCatalogViaPlatformApi(profile.tenantId),
+        ]);
         const bundle = await createDemoMobileApp({
           sessionId: resolvedSession,
           snapshotStore: store,
           tenantConfig: platformConfig.document,
+          catalogProducts: platformCatalog.products,
         });
         setSessionId(bundle.sessionId);
         setApp(bundle.app);

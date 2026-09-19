@@ -68,6 +68,8 @@ export type {
   DemoLaunchInput,
   DemoLaunchVertical,
 } from './demo/build-launch-config.js';
+export { seedPlatformDemoCatalog } from './demo/seed-platform-catalog.js';
+export type { PlatformSeedProduct } from './demo/seed-platform-catalog.js';
 export type {
   MobileNavItem,
   MobileNavStyle,

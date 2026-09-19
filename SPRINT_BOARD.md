@@ -373,12 +373,13 @@ End-result focus: after Boom, branding/vertical identity comes from **platform-o
 | Task   | Status | Deliverable                                                                       |
 | ------ | ------ | --------------------------------------------------------------------------------- |
 | Task 1 | ✅     | Boom seeds vertical catalog; `GET /v1/tenants/:id/catalog/products`               |
-| Task 2 | ⬜     | Web/mobile hosts load products from platform-api (not primary local seed)         |
+| Task 2 | ✅     | Web/mobile hosts load products from platform-api (not primary local seed)         |
 | Task 3 | ⬜     | Web shareable routes (`/t/:slug` + store paths) boot from platform config+catalog |
 
 End-result focus: after Boom, store **products** are platform-owned and reopenable via a shareable URL.
 
-**Tags:** `sprint28-task1`
+**Tags:** `sprint28-task1`, `sprint28-task2`
+
 ---
 
 ## Sprint Conventions

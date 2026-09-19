@@ -18,7 +18,11 @@ import {
 import { WebStoreApp, type WebStoreAppProps } from '@ai-commerce/web-store/react';
 
 import { LaunchWizard, type LaunchWizardSubmit } from './LaunchWizard.js';
-import { fetchTenantConfigViaPlatformApi, launchBoomViaPlatformApi } from './boom-client.js';
+import {
+  fetchTenantCatalogViaPlatformApi,
+  fetchTenantConfigViaPlatformApi,
+  launchBoomViaPlatformApi,
+} from './boom-client.js';
 import { createLocalStorageKvStore, type WebHostKvStore } from './local-storage-kv.js';
 import {
   clearLaunchProfile,
@@ -58,11 +62,15 @@ export function App(): ReactNode {
     setError(null);
     try {
       const resolvedSession = await resolveGuestSessionId({ store: kv });
-      const platformConfig = await fetchTenantConfigViaPlatformApi(profile.tenantId);
+      const [platformConfig, platformCatalog] = await Promise.all([
+        fetchTenantConfigViaPlatformApi(profile.tenantId),
+        fetchTenantCatalogViaPlatformApi(profile.tenantId),
+      ]);
       const bundle = await createDemoWebStore({
         sessionId: resolvedSession,
         snapshotStore: kv,
         tenantConfig: platformConfig.document,
+        catalogProducts: platformCatalog.products,
       });
       setSessionId(bundle.sessionId);
       setStore(bundle.store);

@@ -25,6 +25,24 @@ export interface TenantConfigClientResult {
   publishId?: string;
 }
 
+export interface TenantCatalogClientProduct {
+  id: string;
+  slug: string;
+  name: string;
+  sku: string;
+  title: string;
+  amount: number;
+  currency: string;
+  imageUrl: string;
+}
+
+export interface TenantCatalogClientResult {
+  tenantId: string;
+  vertical: string;
+  updatedAt: string;
+  products: TenantCatalogClientProduct[];
+}
+
 export class BoomLaunchClientError extends Error {
   readonly statusCode?: number;
 
@@ -160,5 +178,88 @@ export async function fetchTenantConfigViaPlatformApi(
     document: document as Record<string, unknown>,
     ...(typeof payload.configVersion === 'number' ? { configVersion: payload.configVersion } : {}),
     ...(typeof payload.publishId === 'string' ? { publishId: payload.publishId } : {}),
+  };
+}
+
+/**
+ * Fetch the platform-owned catalog products for a tenant.
+ */
+export async function fetchTenantCatalogViaPlatformApi(
+  tenantId: string,
+  options: {
+    baseUrl?: string;
+    fetchImpl?: typeof fetch;
+  } = {},
+): Promise<TenantCatalogClientResult> {
+  const id = tenantId.trim();
+  if (!id) {
+    throw new BoomLaunchClientError('tenantId is required.');
+  }
+
+  const baseUrl = (options.baseUrl ?? resolvePlatformApiBaseUrl()).replace(/\/+$/, '');
+  const fetchImpl = options.fetchImpl ?? globalThis.fetch;
+  if (typeof fetchImpl !== 'function') {
+    throw new BoomLaunchClientError('fetch is not available in this environment.');
+  }
+
+  let response: Response;
+  try {
+    response = await fetchImpl(`${baseUrl}/v1/tenants/${encodeURIComponent(id)}/catalog/products`, {
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+    });
+  } catch {
+    throw new BoomLaunchClientError(
+      `Could not reach platform-api at ${baseUrl}. Start it with: pnpm --filter @ai-commerce/platform-api start`,
+    );
+  }
+
+  const payload = (await response.json().catch(() => ({}))) as Record<string, unknown>;
+  if (!response.ok) {
+    const message =
+      typeof payload.error === 'string'
+        ? payload.error
+        : `Tenant catalog fetch failed (${response.status}).`;
+    throw new BoomLaunchClientError(message, response.status);
+  }
+
+  if (!Array.isArray(payload.products)) {
+    throw new BoomLaunchClientError('platform-api returned an incomplete tenant catalog.');
+  }
+
+  const products: TenantCatalogClientProduct[] = [];
+  for (const row of payload.products) {
+    if (!row || typeof row !== 'object' || Array.isArray(row)) {
+      throw new BoomLaunchClientError('platform-api returned an incomplete tenant catalog.');
+    }
+    const product = row as Record<string, unknown>;
+    const idValue = typeof product.id === 'string' ? product.id : '';
+    const slug = typeof product.slug === 'string' ? product.slug : '';
+    const name = typeof product.name === 'string' ? product.name : '';
+    const sku = typeof product.sku === 'string' ? product.sku : '';
+    const title = typeof product.title === 'string' ? product.title : '';
+    const amount = typeof product.amount === 'number' ? product.amount : NaN;
+    const currency = typeof product.currency === 'string' ? product.currency : '';
+    const imageUrl = typeof product.imageUrl === 'string' ? product.imageUrl : '';
+    if (!idValue || !slug || !name || !sku || !title || !Number.isFinite(amount) || !currency) {
+      throw new BoomLaunchClientError('platform-api returned an incomplete tenant catalog.');
+    }
+    products.push({
+      id: idValue,
+      slug,
+      name,
+      sku,
+      title,
+      amount,
+      currency,
+      imageUrl,
+    });
+  }
+
+  return {
+    tenantId: typeof payload.tenantId === 'string' ? payload.tenantId : id,
+    vertical: typeof payload.vertical === 'string' ? payload.vertical : '',
+    updatedAt: typeof payload.updatedAt === 'string' ? payload.updatedAt : '',
+    products,
   };
 }

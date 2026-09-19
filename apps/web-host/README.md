@@ -12,6 +12,7 @@ Sprint 24 Task 1 — launch wizard (name + logo + app type) → durable demo sto
 Sprint 25 Task 3 — wizard UI tinted by selected vertical brand accent.
 Sprint 26 Task 3 — Boom calls `platform-api` (`POST /v1/boom/launch`) then seeds the local demo.
 Sprint 27 Task 3 — Boot storefront from `GET /v1/tenants/:id/config` (platform-owned branding).
+Sprint 28 Task 2 — Boot catalog from `GET /v1/tenants/:id/catalog/products`.
 
 ## Run
 

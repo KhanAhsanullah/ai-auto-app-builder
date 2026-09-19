@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import {
   BoomLaunchClientError,
+  fetchTenantCatalogViaPlatformApi,
   fetchTenantConfigViaPlatformApi,
   launchBoomViaPlatformApi,
   resolvePlatformApiBaseUrl,
@@ -103,5 +104,42 @@ describe('boom-client (web-host)', () => {
         fetchImpl: fetchImpl as unknown as typeof fetch,
       }),
     ).rejects.toThrow(BoomLaunchClientError);
+  });
+
+  it('fetches tenant catalog products', async () => {
+    const fetchImpl = vi.fn(async () =>
+      Response.json(
+        {
+          tenantId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+          vertical: 'restaurant',
+          updatedAt: '2026-09-13T00:00:00.000Z',
+          products: [
+            {
+              id: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd:biryani',
+              slug: 'biryani',
+              name: 'Chicken Biryani',
+              sku: 'BRY-1',
+              title: 'Plate',
+              amount: 650,
+              currency: 'PKR',
+              imageUrl: 'https://example.com/biryani.jpg',
+            },
+          ],
+        },
+        { status: 200 },
+      ),
+    );
+
+    const result = await fetchTenantCatalogViaPlatformApi('dddddddd-dddd-4ddd-8ddd-dddddddddddd', {
+      baseUrl: 'http://127.0.0.1:8787',
+      fetchImpl: fetchImpl as unknown as typeof fetch,
+    });
+
+    expect(fetchImpl).toHaveBeenCalledWith(
+      'http://127.0.0.1:8787/v1/tenants/dddddddd-dddd-4ddd-8ddd-dddddddddddd/catalog/products',
+      expect.objectContaining({ method: 'GET' }),
+    );
+    expect(result.products).toHaveLength(1);
+    expect(result.products[0]?.slug).toBe('biryani');
   });
 });

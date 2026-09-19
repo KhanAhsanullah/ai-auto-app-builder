@@ -24,6 +24,10 @@ import {
   type DemoSnapshotStore,
 } from '../demo/demo-snapshot.js';
 import { persistOnWrite } from '../demo/persist-on-write.js';
+import {
+  seedPlatformDemoCatalog,
+  type PlatformSeedProduct,
+} from '../demo/seed-platform-catalog.js';
 import { seedVerticalDemoCatalog } from '../demo/seed-vertical-catalog.js';
 import { createMobileApp } from './create-mobile-app.js';
 
@@ -51,6 +55,11 @@ export interface CreateDemoMobileAppOptions {
    * Preferred over `launch` when both are provided.
    */
   tenantConfig?: ConfigLayer | Record<string, unknown>;
+  /**
+   * Platform-owned products (from GET /v1/tenants/:id/catalog/products).
+   * Preferred over local vertical seed when snapshot restore misses.
+   */
+  catalogProducts?: readonly PlatformSeedProduct[];
 }
 
 export interface DemoMobileAppBundle {
@@ -169,6 +178,12 @@ export async function createDemoMobileApp(
     orderRepo.hydrate(snapshot.orders);
     paymentRepo.hydrate(snapshot.payments);
     restoredFromSnapshot = true;
+  } else if (options.catalogProducts) {
+    await seedPlatformDemoCatalog({
+      catalog,
+      tenantId,
+      products: options.catalogProducts,
+    });
   } else {
     await seedVerticalDemoCatalog({
       catalog,

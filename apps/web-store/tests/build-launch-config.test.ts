@@ -79,6 +79,18 @@ describe('createDemoWebStore launch', () => {
 
     const { store, businessName, vertical } = await createDemoWebStore({
       tenantConfig: platformLayer,
+      catalogProducts: [
+        {
+          id: '44444444-4444-4444-8444-444444444444:biryani',
+          slug: 'biryani',
+          name: 'Chicken Biryani',
+          sku: 'BRY-1',
+          title: 'Plate',
+          amount: 650,
+          currency: 'PKR',
+          imageUrl: 'https://images.unsplash.com/photo-1563379091339-03b544bad65d',
+        },
+      ],
       launch: {
         businessName: 'Should Not Win',
         vertical: 'grocery',
@@ -91,6 +103,8 @@ describe('createDemoWebStore launch', () => {
     expect(vertical).toBe('restaurant');
     expect(store.getViewModel('store.catalog').shell.branding.displayName).toBe('Platform Spice');
     const products = await store.catalogSurface.listActiveProducts();
-    expect(products.some((p) => p.slug === 'biryani')).toBe(true);
+    expect(products).toHaveLength(1);
+    expect(products[0]?.id).toBe('44444444-4444-4444-8444-444444444444:biryani');
+    expect(products[0]?.slug).toBe('biryani');
   });
 });

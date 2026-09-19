@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import {
   BoomLaunchClientError,
+  fetchTenantCatalogViaPlatformApi,
   fetchTenantConfigViaPlatformApi,
   launchBoomViaPlatformApi,
   resolvePlatformApiBaseUrl,
@@ -73,5 +74,37 @@ describe('boom-client (mobile-host)', () => {
 
     expect(result.configVersion).toBe(1);
     expect(result.document).toMatchObject({ tenant: { name: 'CarePlus' } });
+  });
+
+  it('fetches tenant catalog products', async () => {
+    const fetchImpl = vi.fn(async () =>
+      Response.json(
+        {
+          tenantId: 'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee',
+          vertical: 'pharmacy',
+          updatedAt: '2026-09-13T00:00:00.000Z',
+          products: [
+            {
+              id: 'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee:paracetamol',
+              slug: 'paracetamol',
+              name: 'Paracetamol 500mg',
+              sku: 'PCM-500',
+              title: 'Pack',
+              amount: 120,
+              currency: 'PKR',
+              imageUrl: 'https://example.com/pcm.jpg',
+            },
+          ],
+        },
+        { status: 200 },
+      ),
+    );
+
+    const result = await fetchTenantCatalogViaPlatformApi('eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee', {
+      fetchImpl: fetchImpl as unknown as typeof fetch,
+    });
+
+    expect(result.vertical).toBe('pharmacy');
+    expect(result.products[0]?.slug).toBe('paracetamol');
   });
 });
