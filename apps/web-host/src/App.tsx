@@ -13,6 +13,7 @@ import {
   exportWebDemoSnapshot,
   parseWebDemoSnapshot,
   summarizeWebDemoSnapshot,
+  type DemoLaunchVertical,
   type WebStore,
 } from '@ai-commerce/web-store';
 import { WebStoreApp, type WebStoreAppProps } from '@ai-commerce/web-store/react';
@@ -31,6 +32,12 @@ import {
   type StoredLaunchProfile,
 } from './launch-profile.js';
 import { clearGuestSession, resolveGuestSessionId } from './session-storage.js';
+import {
+  buildShareablePath,
+  parseShareablePath,
+  toShareableStoreRoute,
+  type ShareableStoreRoute,
+} from './shareable-route.js';
 
 // Dual @types/react (Vite host vs workspace) can diverge on ReactNode; cast keeps host build clean.
 const StoreApp = WebStoreApp as ComponentType<WebStoreAppProps>;
@@ -39,6 +46,7 @@ type Phase = 'booting' | 'wizard' | 'store';
 
 /**
  * Vite host — launch wizard (any vertical) → durable demo storefront.
+ * Shareable URLs: `/t/:slug` and `/t/:slug/:screen`.
  */
 export function App(): ReactNode {
   const storeRef = useRef<WebHostKvStore | null>(null);
@@ -47,46 +55,73 @@ export function App(): ReactNode {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [businessName, setBusinessName] = useState<string | null>(null);
   const [vertical, setVertical] = useState<string | null>(null);
+  const [tenantSlug, setTenantSlug] = useState<string | null>(null);
+  const [activeRoute, setActiveRoute] = useState<ShareableStoreRoute>('store.catalog');
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [restored, setRestored] = useState(false);
 
-  const bootFromProfile = useCallback(async (profile: StoredLaunchProfile) => {
-    const kv = storeRef.current;
-    if (!kv) {
-      setError('Durable store is not ready.');
-      setPhase('wizard');
-      return;
-    }
-    setBusy(true);
-    setError(null);
-    try {
-      const resolvedSession = await resolveGuestSessionId({ store: kv });
-      const [platformConfig, platformCatalog] = await Promise.all([
-        fetchTenantConfigViaPlatformApi(profile.tenantId),
-        fetchTenantCatalogViaPlatformApi(profile.tenantId),
-      ]);
-      const bundle = await createDemoWebStore({
-        sessionId: resolvedSession,
-        snapshotStore: kv,
-        tenantConfig: platformConfig.document,
-        catalogProducts: platformCatalog.products,
-      });
-      setSessionId(bundle.sessionId);
-      setStore(bundle.store);
-      setBusinessName(bundle.businessName);
-      setVertical(bundle.vertical);
-      setRestored(bundle.restoredFromSnapshot);
-      setPhase('store');
-    } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Failed to start demo store.');
-      setStore(null);
-      setSessionId(null);
-      setPhase('wizard');
-    } finally {
-      setBusy(false);
-    }
-  }, []);
+  const bootFromLookup = useCallback(
+    async (lookup: string, preferredRoute: ShareableStoreRoute = 'store.catalog') => {
+      const kv = storeRef.current;
+      if (!kv) {
+        setError('Durable store is not ready.');
+        setPhase('wizard');
+        return;
+      }
+      setBusy(true);
+      setError(null);
+      try {
+        const resolvedSession = await resolveGuestSessionId({ store: kv });
+        const [platformConfig, platformCatalog] = await Promise.all([
+          fetchTenantConfigViaPlatformApi(lookup),
+          fetchTenantCatalogViaPlatformApi(lookup),
+        ]);
+        const bundle = await createDemoWebStore({
+          sessionId: resolvedSession,
+          snapshotStore: kv,
+          tenantConfig: platformConfig.document,
+          catalogProducts: platformCatalog.products,
+        });
+        const slug = (platformConfig.slug || lookup).trim().toLowerCase();
+        const profile: StoredLaunchProfile = {
+          businessName: bundle.businessName,
+          vertical: bundle.vertical as DemoLaunchVertical,
+          tenantId: platformConfig.tenantId,
+          slug,
+          createdAt: new Date().toISOString(),
+        };
+        await saveLaunchProfile(kv, profile);
+
+        setSessionId(bundle.sessionId);
+        setStore(bundle.store);
+        setBusinessName(bundle.businessName);
+        setVertical(bundle.vertical);
+        setTenantSlug(slug);
+        setActiveRoute(preferredRoute);
+        setRestored(bundle.restoredFromSnapshot);
+        setPhase('store');
+        window.history.replaceState(null, '', buildShareablePath(slug, preferredRoute));
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : 'Failed to start demo store.');
+        setStore(null);
+        setSessionId(null);
+        setTenantSlug(null);
+        setPhase('wizard');
+      } finally {
+        setBusy(false);
+      }
+    },
+    [],
+  );
+
+  const bootFromProfile = useCallback(
+    async (profile: StoredLaunchProfile, preferredRoute: ShareableStoreRoute = 'store.catalog') => {
+      const lookup = profile.slug?.trim() || profile.tenantId;
+      await bootFromLookup(lookup, preferredRoute);
+    },
+    [bootFromLookup],
+  );
 
   useEffect(() => {
     let cancelled = false;
@@ -94,6 +129,14 @@ export function App(): ReactNode {
       try {
         const kv = createLocalStorageKvStore();
         storeRef.current = kv;
+        const shared = parseShareablePath(window.location.pathname);
+        if (cancelled) {
+          return;
+        }
+        if (shared) {
+          await bootFromLookup(shared.slug, shared.route);
+          return;
+        }
         const profile = await loadLaunchProfile(kv);
         if (cancelled) {
           return;
@@ -113,7 +156,35 @@ export function App(): ReactNode {
     return () => {
       cancelled = true;
     };
-  }, [bootFromProfile]);
+  }, [bootFromLookup, bootFromProfile]);
+
+  useEffect(() => {
+    const onPopState = () => {
+      const shared = parseShareablePath(window.location.pathname);
+      if (!shared) {
+        setPhase('wizard');
+        return;
+      }
+      if (tenantSlug && shared.slug === tenantSlug && store) {
+        setActiveRoute(shared.route);
+        return;
+      }
+      void bootFromLookup(shared.slug, shared.route);
+    };
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, [bootFromLookup, store, tenantSlug]);
+
+  const onNavigate = useCallback(
+    (route: string) => {
+      const next = toShareableStoreRoute(route);
+      setActiveRoute(next);
+      if (tenantSlug) {
+        window.history.pushState(null, '', buildShareablePath(tenantSlug, next));
+      }
+    },
+    [tenantSlug],
+  );
 
   const onLaunch = useCallback(
     (input: LaunchWizardSubmit) => {
@@ -142,7 +213,8 @@ export function App(): ReactNode {
             createdAt: new Date().toISOString(),
           };
           await saveLaunchProfile(kv, profile);
-          await bootFromProfile(profile);
+          window.history.replaceState(null, '', buildShareablePath(launched.slug));
+          await bootFromProfile(profile, 'store.catalog');
         } catch (err: unknown) {
           setError(err instanceof Error ? err.message : 'Launch failed.');
           setPhase('wizard');
@@ -174,9 +246,11 @@ export function App(): ReactNode {
         setSessionId(null);
         setBusinessName(null);
         setVertical(null);
+        setTenantSlug(null);
         setRestored(false);
         setError(null);
         setPhase('wizard');
+        window.history.replaceState(null, '', '/');
       } finally {
         setBusy(false);
       }
@@ -199,9 +273,9 @@ export function App(): ReactNode {
       }
       await clearWebDemoSnapshot(kv);
       await clearGuestSession(kv);
-      await bootFromProfile(profile);
+      await bootFromProfile(profile, activeRoute);
     })();
-  }, [bootFromProfile]);
+  }, [activeRoute, bootFromProfile]);
 
   const onExportSnapshot = useCallback(() => {
     void (async () => {
@@ -246,7 +320,10 @@ export function App(): ReactNode {
         <button
           type="button"
           className="host-btn host-btn-danger"
-          onClick={() => setPhase('wizard')}
+          onClick={() => {
+            window.history.replaceState(null, '', '/');
+            setPhase('wizard');
+          }}
         >
           Back to wizard
         </button>
@@ -267,6 +344,7 @@ export function App(): ReactNode {
       <header className="host-banner">
         <span>
           {businessName ?? 'CommerceOS'} · {vertical}
+          {tenantSlug ? ` · /t/${tenantSlug}` : ''}
         </span>
         <span className="host-banner-meta" data-testid="web-host-storage-backend">
           localStorage{restored ? ' · restored' : ''}
@@ -301,7 +379,12 @@ export function App(): ReactNode {
           Export
         </button>
       </div>
-      <StoreApp store={store} sessionId={sessionId} />
+      <StoreApp
+        store={store}
+        sessionId={sessionId}
+        activeRoute={activeRoute}
+        onNavigate={onNavigate}
+      />
     </div>
   );
 }

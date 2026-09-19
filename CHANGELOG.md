@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Shareable web store URLs** (Sprint 28 Task 3) — web-host + platform-api
+  - `/t/:slug` (+ `/cart`, `/orders`, …) boots from platform config + catalog
+  - Tenant GETs accept id **or** slug; closes Sprint 23 Task 3 routing gap
+
 - **Hosts load platform catalog** (Sprint 28 Task 2) — web-host + mobile-host
   - Boot fetches `GET /v1/tenants/:id/catalog/products` → `createDemo*({ catalogProducts })`
   - Local `seedVerticalDemoCatalog` kept for tests / offline demos only

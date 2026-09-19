@@ -304,11 +304,11 @@ End-result focus: RN host keeps buy-path state after cold start (not just sessio
 | ------ | ------ | --------------------------------------------------------------------- |
 | Task 1 | ✅     | Vite `@ai-commerce/web-host` + `createDemoWebStore` browser buy path  |
 | Task 2 | ✅     | localStorage guest session + durable commerce snapshot + reset/export |
-| Task 3 | ⬜     | URL routing / shareable deep links for store routes                   |
+| Task 3 | ✅     | URL routing / shareable deep links for store routes                   |
 
 End-result focus: browser can run the same catalog → cart → checkout → pay → orders path as mobile.
 
-**Tags:** `sprint23-task1`, `sprint23-task2`
+**Tags:** `sprint23-task1`, `sprint23-task2`, `sprint23-task3` (completed via Sprint 28 Task 3 `/t/:slug`)
 
 ---
 
@@ -374,11 +374,11 @@ End-result focus: after Boom, branding/vertical identity comes from **platform-o
 | ------ | ------ | --------------------------------------------------------------------------------- |
 | Task 1 | ✅     | Boom seeds vertical catalog; `GET /v1/tenants/:id/catalog/products`               |
 | Task 2 | ✅     | Web/mobile hosts load products from platform-api (not primary local seed)         |
-| Task 3 | ⬜     | Web shareable routes (`/t/:slug` + store paths) boot from platform config+catalog |
+| Task 3 | ✅     | Web shareable routes (`/t/:slug` + store paths) boot from platform config+catalog |
 
 End-result focus: after Boom, store **products** are platform-owned and reopenable via a shareable URL.
 
-**Tags:** `sprint28-task1`, `sprint28-task2`
+**Tags:** `sprint28-task1`, `sprint28-task2`, `sprint28-task3`
 
 ---
 

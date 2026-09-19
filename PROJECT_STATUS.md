@@ -6,7 +6,7 @@
 
 ## Current Sprint
 
-**Sprint 28 — Platform Catalog Serving** (Task 2 on branch)
+**Sprint 28 — Platform Catalog Serving** (Task 3 on branch)
 
 ## Completed Tasks
 
@@ -14,22 +14,23 @@
 | ------------------- | ---------------------------------- | ----------------- |
 | Sprint 1–27 ✅      | Foundation through platform config | `sprint*-task*`   |
 | Sprint 28 Task 1 ✅ | Boom catalog seed + GET products   | `sprint28-task1`  |
-| Sprint 28 Task 2    | Hosts load products from platform  | _(pending merge)_ |
+| Sprint 28 Task 2 ✅ | Hosts load products from platform  | `sprint28-task2`  |
+| Sprint 28 Task 3    | Shareable `/t/:slug` web routes    | _(pending merge)_ |
 
 ## Next Tasks
 
-1. Merge Sprint 28 Task 2
-2. Task 3 — Shareable web routes
+1. Merge Sprint 28 Task 3 (Sprint 28 complete)
+2. Next product milestone after Sprint 28
 
 ## Latest Tag
 
 ```
-sprint28-task2
+sprint28-task3
 ```
 
 ## Health Status
 
-| Area         | Status     | Notes                                           |
-| ------------ | ---------- | ----------------------------------------------- |
-| Repository   | ✅ Healthy | Task 2 on `sprint/28/task2`                     |
-| Catalog path | ✅ Wired   | Hosts fetch config + products from platform-api |
+| Area       | Status     | Notes                                      |
+| ---------- | ---------- | ------------------------------------------ |
+| Repository | ✅ Healthy | Task 3 on `sprint/28/task3`                |
+| Share URLs | ✅ Ready   | `/t/:slug` boots platform config + catalog |

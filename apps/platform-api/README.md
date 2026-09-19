@@ -19,7 +19,7 @@ Routes:
 
 - `POST /v1/boom/launch` — business name + vertical (+ optional logo) → provision + activate + publish + catalog seed
 - `GET /v1/tenants` — list provisioned tenant summaries
-- `GET /v1/tenants/:id` — fetch provisioned tenant summary
+- `GET /v1/tenants/:id` — fetch provisioned tenant summary (`:id` may be tenant id **or** slug)
 - `GET /v1/tenants/:id/config` — latest **published** config (registry fallback)
 - `GET /v1/tenants/:id/catalog/products` — platform-owned demo catalog products
 - `GET /health` — liveness

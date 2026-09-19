@@ -13,6 +13,7 @@ Sprint 25 Task 3 — wizard UI tinted by selected vertical brand accent.
 Sprint 26 Task 3 — Boom calls `platform-api` (`POST /v1/boom/launch`) then seeds the local demo.
 Sprint 27 Task 3 — Boot storefront from `GET /v1/tenants/:id/config` (platform-owned branding).
 Sprint 28 Task 2 — Boot catalog from `GET /v1/tenants/:id/catalog/products`.
+Sprint 28 Task 3 — Shareable routes `/t/:slug` (+ `/cart`, `/orders`, …).
 
 ## Run
 
@@ -30,7 +31,18 @@ Opens Vite at http://localhost:5173.
 
 1. Enter **business name**, optional **logo URL**, pick an **app type**
 2. Click **Boom — launch app**
-3. Shop → Cart → Checkout → Payment → Orders
+3. URL becomes `/t/<slug>` — shareable; `/t/<slug>/cart` opens cart
+
+### Shareable URLs
+
+| Path                | Screen   |
+| ------------------- | -------- |
+| `/t/:slug`          | Catalog  |
+| `/t/:slug/cart`     | Cart     |
+| `/t/:slug/checkout` | Checkout |
+| `/t/:slug/orders`   | Orders   |
+
+Requires platform-api running (config + catalog resolved by slug).
 
 ### App types
 

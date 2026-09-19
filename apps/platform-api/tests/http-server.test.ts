@@ -124,6 +124,13 @@ describe('platform-api HTTP', () => {
     };
     expect(catalogBody.vertical).toBe('restaurant');
     expect(catalogBody.products.map((p) => p.slug).sort()).toEqual(['biryani', 'burger', 'chai']);
+
+    const bySlug = await fetch(
+      `http://127.0.0.1:${listening.port}/v1/tenants/spice-route/catalog/products`,
+    );
+    expect(bySlug.status).toBe(200);
+    const slugBody = (await bySlug.json()) as { tenantId: string };
+    expect(slugBody.tenantId).toBe(launched.tenantId);
   });
 
   it('answers CORS preflight for browser hosts', async () => {

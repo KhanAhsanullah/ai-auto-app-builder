@@ -227,5 +227,11 @@ describe('PlatformApi', () => {
     });
     const again = await api.getTenantCatalog(launched.tenantId);
     expect(again.products).toHaveLength(3);
+
+    // Lookup by slug works for config + catalog
+    const bySlug = await api.getTenantConfig('spice-route');
+    expect(bySlug.tenantId).toBe(launched.tenantId);
+    const catalogBySlug = await api.getTenantCatalog('spice-route');
+    expect(catalogBySlug.products).toHaveLength(3);
   });
 });

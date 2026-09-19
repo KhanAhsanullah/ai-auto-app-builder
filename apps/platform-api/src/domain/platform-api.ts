@@ -171,11 +171,15 @@ export class PlatformApi {
     if (!id) {
       throw new PlatformApiException('tenantId is required.', 400);
     }
-    const record = await this.deps.provisioner.findById(id);
-    if (!record) {
-      throw new TenantNotFoundException(id);
+    const byId = await this.deps.provisioner.findById(id);
+    if (byId) {
+      return byId;
     }
-    return record;
+    const bySlug = await this.deps.provisioner.findBySlug(id);
+    if (bySlug) {
+      return bySlug;
+    }
+    throw new TenantNotFoundException(id);
   }
 }
 
