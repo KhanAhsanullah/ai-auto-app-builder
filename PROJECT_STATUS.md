@@ -4,23 +4,26 @@
 
 **CommerceOS AI** is a production monorepo for a configuration-driven, multi-tenant white-label commerce SaaS platform.
 
-## Current Sprint
+## Current milestone
 
-**Sprint 28 — Platform Catalog Serving** (Task 3 on branch)
+**Client-ready Boom MVP** on `main` (Sprint 28 complete).
+
+Demo path: wizard → Boom → branded web/mobile store → shareable `/t/:slug`.
+
+See [CLIENT_DEMO.md](./CLIENT_DEMO.md) for the pitch + run script.
 
 ## Completed Tasks
 
-| Task                | Description                        | Commit Tag        |
-| ------------------- | ---------------------------------- | ----------------- |
-| Sprint 1–27 ✅      | Foundation through platform config | `sprint*-task*`   |
-| Sprint 28 Task 1 ✅ | Boom catalog seed + GET products   | `sprint28-task1`  |
-| Sprint 28 Task 2 ✅ | Hosts load products from platform  | `sprint28-task2`  |
-| Sprint 28 Task 3    | Shareable `/t/:slug` web routes    | _(pending merge)_ |
+| Task           | Description                          | Commit Tag       |
+| -------------- | ------------------------------------ | ---------------- |
+| Sprint 1–28 ✅ | Foundation through platform catalog  | `sprint*-task*`  |
+| Sprint 28 ✅   | Catalog serving + shareable web URLs | `sprint28-task3` |
 
-## Next Tasks
+## Next Tasks (optional, post-MVP)
 
-1. Merge Sprint 28 Task 3 (Sprint 28 complete)
-2. Next product milestone after Sprint 28
+1. Merchant admin / catalog CRUD for real client data
+2. Real payments + domains
+3. Deployable staging environment for demos
 
 ## Latest Tag
 
@@ -30,7 +33,7 @@ sprint28-task3
 
 ## Health Status
 
-| Area       | Status     | Notes                                      |
-| ---------- | ---------- | ------------------------------------------ |
-| Repository | ✅ Healthy | Task 3 on `sprint/28/task3`                |
-| Share URLs | ✅ Ready   | `/t/:slug` boots platform config + catalog |
+| Area       | Status     | Notes                                    |
+| ---------- | ---------- | ---------------------------------------- |
+| Repository | ✅ Healthy | Sprint 28 on `main`                      |
+| Client MVP | ✅ Ready   | Use CLIENT_DEMO.md for live walkthroughs |
