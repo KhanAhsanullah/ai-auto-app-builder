@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Client demo guide** — [CLIENT_DEMO.md](./CLIENT_DEMO.md) for Boom MVP pitch + local walkthrough
+
 - **Shareable web store URLs** (Sprint 28 Task 3) — web-host + platform-api
   - `/t/:slug` (+ `/cart`, `/orders`, …) boots from platform config + catalog
   - Tenant GETs accept id **or** slug; closes Sprint 23 Task 3 routing gap

@@ -28,6 +28,15 @@ pnpm typecheck
 pnpm lint
 ```
 
+## Client demo (MVP)
+
+Boom → branded store in minutes. See **[CLIENT_DEMO.md](./CLIENT_DEMO.md)**.
+
+```bash
+pnpm --filter @ai-commerce/platform-api start   # terminal 1
+pnpm web                                       # terminal 2 → http://localhost:5173
+```
+
 ## Scripts
 
 | Script              | Description                      |
