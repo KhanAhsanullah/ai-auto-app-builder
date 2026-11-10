@@ -7,13 +7,20 @@ import { PlatformApiException, TenantNotFoundException } from '../errors.js';
 import type {
   BoomLaunchInput,
   BoomLaunchVertical,
+  CatalogProductCreateInput,
+  CatalogProductDto,
+  CatalogProductPatchInput,
   TenantCatalogResponse,
   TenantConfigResponse,
   TenantSummary,
 } from '../types.js';
 import { toProvisioningRequest } from './map-boom-launch.js';
 import type { TenantCatalogRepository } from './tenant-catalog-repository.js';
-import { buildVerticalCatalogRecord } from './vertical-catalog-seeds.js';
+import {
+  buildVerticalCatalogRecord,
+  type PlatformCatalogProduct,
+  type TenantCatalogRecord,
+} from './vertical-catalog-seeds.js';
 
 export interface PlatformApiDeps {
   provisioner: TenantProvisioner;
@@ -115,17 +122,117 @@ export class PlatformApi {
 
   /** Fetch the platform-owned catalog products for a tenant. */
   async getTenantCatalog(tenantId: string): Promise<TenantCatalogResponse> {
+    const catalog = await this.requireCatalog(tenantId);
+    return toCatalogResponse(catalog);
+  }
+
+  /** Create a product in the tenant catalog (merchant admin write path). */
+  async createCatalogProduct(
+    tenantId: string,
+    input: CatalogProductCreateInput,
+  ): Promise<CatalogProductDto> {
+    const catalog = await this.requireCatalog(tenantId);
+    const productId = `${catalog.tenantId}:${input.slug}`;
+    if (
+      catalog.products.some((product) => product.slug === input.slug || product.id === productId)
+    ) {
+      throw new PlatformApiException(`Product slug '${input.slug}' already exists.`, 409);
+    }
+    if (catalog.products.some((product) => product.sku === input.sku)) {
+      throw new PlatformApiException(`Product sku '${input.sku}' already exists.`, 409);
+    }
+
+    const product: PlatformCatalogProduct = {
+      id: productId,
+      slug: input.slug,
+      name: input.name,
+      sku: input.sku,
+      title: input.title,
+      amount: input.amount,
+      currency: input.currency,
+      imageUrl: input.imageUrl,
+    };
+    const next: TenantCatalogRecord = {
+      ...catalog,
+      products: [...catalog.products, product],
+      updatedAt: this.now(),
+    };
+    await this.deps.catalogRepository.save(next);
+    return product;
+  }
+
+  /** Patch an existing catalog product by id (or `${tenantId}:${slug}`). */
+  async updateCatalogProduct(
+    tenantId: string,
+    productId: string,
+    input: CatalogProductPatchInput,
+  ): Promise<CatalogProductDto> {
+    const catalog = await this.requireCatalog(tenantId);
+    const index = findProductIndex(catalog, productId);
+    if (index < 0) {
+      throw new PlatformApiException(`Product '${productId}' not found.`, 404);
+    }
+
+    const current = catalog.products[index]!;
+    const nextSlug = input.slug ?? current.slug;
+    const nextSku = input.sku ?? current.sku;
+    const nextId = `${catalog.tenantId}:${nextSlug}`;
+
+    for (let i = 0; i < catalog.products.length; i += 1) {
+      if (i === index) {
+        continue;
+      }
+      const other = catalog.products[i]!;
+      if (other.slug === nextSlug || other.id === nextId) {
+        throw new PlatformApiException(`Product slug '${nextSlug}' already exists.`, 409);
+      }
+      if (other.sku === nextSku) {
+        throw new PlatformApiException(`Product sku '${nextSku}' already exists.`, 409);
+      }
+    }
+
+    const updated: PlatformCatalogProduct = {
+      id: nextId,
+      slug: nextSlug,
+      name: input.name ?? current.name,
+      sku: nextSku,
+      title: input.title ?? current.title,
+      amount: input.amount ?? current.amount,
+      currency: input.currency ?? current.currency,
+      imageUrl: input.imageUrl ?? current.imageUrl,
+    };
+    const products = catalog.products.slice();
+    products[index] = updated;
+    await this.deps.catalogRepository.save({
+      ...catalog,
+      products,
+      updatedAt: this.now(),
+    });
+    return updated;
+  }
+
+  /** Delete a catalog product by id (or `${tenantId}:${slug}` / slug). */
+  async deleteCatalogProduct(tenantId: string, productId: string): Promise<void> {
+    const catalog = await this.requireCatalog(tenantId);
+    const index = findProductIndex(catalog, productId);
+    if (index < 0) {
+      throw new PlatformApiException(`Product '${productId}' not found.`, 404);
+    }
+    const products = catalog.products.filter((_, i) => i !== index);
+    await this.deps.catalogRepository.save({
+      ...catalog,
+      products,
+      updatedAt: this.now(),
+    });
+  }
+
+  private async requireCatalog(tenantId: string): Promise<TenantCatalogRecord> {
     const record = await this.requireTenant(tenantId);
     const catalog = await this.deps.catalogRepository.findByTenantId(record.tenantId);
     if (!catalog) {
       throw new PlatformApiException(`No catalog found for tenant '${record.tenantId}'.`, 404);
     }
-    return {
-      tenantId: catalog.tenantId,
-      vertical: catalog.vertical,
-      updatedAt: catalog.updatedAt,
-      products: catalog.products,
-    };
+    return catalog;
   }
 
   private async ensurePublishedConfig(tenantId: string): Promise<void> {
@@ -199,4 +306,23 @@ function toTenantSummary(record: TenantRecord): TenantSummary {
     vertical,
     name,
   };
+}
+
+function toCatalogResponse(catalog: TenantCatalogRecord): TenantCatalogResponse {
+  return {
+    tenantId: catalog.tenantId,
+    vertical: catalog.vertical,
+    updatedAt: catalog.updatedAt,
+    products: catalog.products,
+  };
+}
+
+function findProductIndex(catalog: TenantCatalogRecord, productId: string): number {
+  const key = productId.trim();
+  if (!key) {
+    return -1;
+  }
+  return catalog.products.findIndex(
+    (product) => product.id === key || product.slug === key || product.id.endsWith(`:${key}`),
+  );
 }

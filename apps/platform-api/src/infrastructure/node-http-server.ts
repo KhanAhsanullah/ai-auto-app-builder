@@ -2,19 +2,30 @@ import { createServer, type IncomingMessage, type Server, type ServerResponse } 
 
 import type { PlatformApi } from '../domain/platform-api.js';
 import { parseBoomLaunchBody } from '../domain/map-boom-launch.js';
+import {
+  parseCatalogProductCreateBody,
+  parseCatalogProductPatchBody,
+} from '../domain/map-catalog-product.js';
 import { PlatformApiException } from '../errors.js';
-import type { BoomLaunchHttpBody, PlatformApiListenResult } from '../types.js';
+import type {
+  BoomLaunchHttpBody,
+  CatalogProductCreateHttpBody,
+  CatalogProductPatchHttpBody,
+  PlatformApiListenResult,
+} from '../types.js';
 
 export interface CreatePlatformHttpServerOptions {
   api: PlatformApi;
 }
+
+const CORS_METHODS = 'GET, POST, PATCH, DELETE, OPTIONS';
 
 function sendJson(res: ServerResponse, statusCode: number, body: unknown): void {
   const payload = JSON.stringify(body);
   res.statusCode = statusCode;
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', CORS_METHODS);
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Accept');
   res.setHeader('Content-Length', Buffer.byteLength(payload));
   res.end(payload);
@@ -23,7 +34,7 @@ function sendJson(res: ServerResponse, statusCode: number, body: unknown): void 
 function sendCorsNoContent(res: ServerResponse): void {
   res.statusCode = 204;
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', CORS_METHODS);
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Accept');
   res.setHeader('Access-Control-Max-Age', '86400');
   res.end();
@@ -48,9 +59,22 @@ async function readJsonBody(req: IncomingMessage): Promise<unknown> {
   }
 }
 
-function matchTenantCatalogGet(pathname: string): string | undefined {
+function matchTenantCatalogCollection(pathname: string): string | undefined {
   const match = /^\/v1\/tenants\/([^/]+)\/catalog\/products\/?$/.exec(pathname);
   return match?.[1] ? decodeURIComponent(match[1]) : undefined;
+}
+
+function matchTenantCatalogProduct(
+  pathname: string,
+): { tenantId: string; productId: string } | undefined {
+  const match = /^\/v1\/tenants\/([^/]+)\/catalog\/products\/([^/]+)\/?$/.exec(pathname);
+  if (!match?.[1] || !match[2]) {
+    return undefined;
+  }
+  return {
+    tenantId: decodeURIComponent(match[1]),
+    productId: decodeURIComponent(match[2]),
+  };
 }
 
 function matchTenantConfigGet(pathname: string): string | undefined {
@@ -106,11 +130,40 @@ async function handleRequest(
       return;
     }
 
-    const catalogTenantId = matchTenantCatalogGet(pathname);
-    if (method === 'GET' && catalogTenantId) {
-      const catalog = await api.getTenantCatalog(catalogTenantId);
-      sendJson(res, 200, catalog);
-      return;
+    const catalogProduct = matchTenantCatalogProduct(pathname);
+    if (catalogProduct) {
+      if (method === 'PATCH') {
+        const body = (await readJsonBody(req)) as CatalogProductPatchHttpBody;
+        const input = parseCatalogProductPatchBody(body);
+        const product = await api.updateCatalogProduct(
+          catalogProduct.tenantId,
+          catalogProduct.productId,
+          input,
+        );
+        sendJson(res, 200, { product });
+        return;
+      }
+      if (method === 'DELETE') {
+        await api.deleteCatalogProduct(catalogProduct.tenantId, catalogProduct.productId);
+        sendJson(res, 200, { deleted: true, productId: catalogProduct.productId });
+        return;
+      }
+    }
+
+    const catalogTenantId = matchTenantCatalogCollection(pathname);
+    if (catalogTenantId) {
+      if (method === 'GET') {
+        const catalog = await api.getTenantCatalog(catalogTenantId);
+        sendJson(res, 200, catalog);
+        return;
+      }
+      if (method === 'POST') {
+        const body = (await readJsonBody(req)) as CatalogProductCreateHttpBody;
+        const input = parseCatalogProductCreateBody(body);
+        const product = await api.createCatalogProduct(catalogTenantId, input);
+        sendJson(res, 201, { product });
+        return;
+      }
     }
 
     const configTenantId = matchTenantConfigGet(pathname);

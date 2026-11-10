@@ -6,6 +6,10 @@ export {
   toProvisioningRequest,
 } from './domain/map-boom-launch.js';
 export {
+  parseCatalogProductCreateBody,
+  parseCatalogProductPatchBody,
+} from './domain/map-catalog-product.js';
+export {
   createPlatformApi,
   resolveCatalogStorePath,
   resolveConfigStorePath,
@@ -23,6 +27,11 @@ export type {
   BoomLaunchHttpBody,
   BoomLaunchInput,
   BoomLaunchVertical,
+  CatalogProductCreateHttpBody,
+  CatalogProductCreateInput,
+  CatalogProductDto,
+  CatalogProductPatchHttpBody,
+  CatalogProductPatchInput,
   PlatformApiListenResult,
   TenantCatalogResponse,
   TenantConfigResponse,

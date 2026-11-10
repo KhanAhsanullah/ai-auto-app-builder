@@ -6,11 +6,9 @@
 
 ## Current milestone
 
-**Client-ready Boom MVP** on `main` (Sprint 28 complete).
+**Sprint 29 — Merchant Catalog Admin** (in progress on `sprint/29/task1`).
 
-Demo path: wizard → Boom → branded web/mobile store → shareable `/t/:slug`.
-
-See [CLIENT_DEMO.md](./CLIENT_DEMO.md) for the pitch + run script.
+Client Boom MVP remains ready on `main` (Sprint 28). See [CLIENT_DEMO.md](./CLIENT_DEMO.md).
 
 ## Completed Tasks
 
@@ -19,11 +17,18 @@ See [CLIENT_DEMO.md](./CLIENT_DEMO.md) for the pitch + run script.
 | Sprint 1–28 ✅ | Foundation through platform catalog  | `sprint*-task*`  |
 | Sprint 28 ✅   | Catalog serving + shareable web URLs | `sprint28-task3` |
 
-## Next Tasks (optional, post-MVP)
+## Active Tasks
 
-1. Merchant admin / catalog CRUD for real client data
-2. Real payments + domains
-3. Deployable staging environment for demos
+| Task             | Description                                           | Status |
+| ---------------- | ----------------------------------------------------- | ------ |
+| Sprint 29 Task 1 | platform-api catalog product create / update / delete | ✅     |
+| Sprint 29 Task 2 | Admin host boots from platform-api                    | ✅     |
+| Sprint 29 Task 3 | Admin UI mutations + storefront reflects changes      | ⬜     |
+
+## Next after Sprint 29
+
+1. Real payments + domains
+2. Deployable staging environment for demos
 
 ## Latest Tag
 
@@ -35,5 +40,5 @@ sprint28-task3
 
 | Area       | Status     | Notes                                    |
 | ---------- | ---------- | ---------------------------------------- |
-| Repository | ✅ Healthy | Sprint 28 on `main`                      |
+| Repository | ✅ Healthy | Sprint 29 Task 1 in progress             |
 | Client MVP | ✅ Ready   | Use CLIENT_DEMO.md for live walkthroughs |

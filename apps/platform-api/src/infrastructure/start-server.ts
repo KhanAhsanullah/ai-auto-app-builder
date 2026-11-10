@@ -26,5 +26,5 @@ console.log(`[platform-api] tenant store: ${tenantStorePath}`);
 console.log(`[platform-api] config store: ${configStorePath}`);
 console.log(`[platform-api] catalog store: ${catalogStorePath}`);
 console.log(
-  `[platform-api] POST /v1/boom/launch  GET /v1/tenants/:id/config  GET /v1/tenants/:id/catalog/products`,
+  `[platform-api] POST /v1/boom/launch  GET|POST /v1/tenants/:id/catalog/products  PATCH|DELETE .../products/:productId`,
 );

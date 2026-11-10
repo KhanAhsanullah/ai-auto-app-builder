@@ -382,6 +382,20 @@ End-result focus: after Boom, store **products** are platform-owned and reopenab
 
 ---
 
+## Sprint 29 — Merchant Catalog Admin
+
+| Task   | Status | Deliverable                                                       |
+| ------ | ------ | ----------------------------------------------------------------- |
+| Task 1 | ✅     | platform-api catalog writes: `POST` / `PATCH` / `DELETE` products |
+| Task 2 | ✅     | Admin host boots tenant list + catalog from platform-api          |
+| Task 3 | ⬜     | Admin UI create/edit/delete products; storefront reflects changes |
+
+End-result focus: after Boom, merchant can change real catalog data (not only seeded demo products).
+
+**Tags:** _(pending — tag after commit)_
+
+---
+
 ## Sprint Conventions
 
 - Each sprint task is committed with a Conventional Commit referencing the sprint and task number

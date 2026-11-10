@@ -20,6 +20,7 @@ export default tseslint.config(
       'apps/mobile-host/shims/**',
       'apps/mobile-host/.expo/**',
       'apps/web-host/shims/**',
+      'apps/admin-host/shims/**',
       'packages/iconv-lite/**',
     ],
   },
