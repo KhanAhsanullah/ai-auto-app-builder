@@ -98,3 +98,88 @@ body {
 .admin-ready > :last-child {
   flex: 1;
 }
+
+.admin-storefront-link {
+  margin-left: auto;
+  color: #1d4ed8;
+  font-size: 0.9rem;
+}
+
+.catalog-editor {
+  padding: 0.25rem 0.5rem 1.5rem;
+}
+
+.catalog-editor-hint {
+  color: #64748b;
+  margin: 0 0 1rem;
+}
+
+.catalog-editor-error {
+  color: #b91c1c;
+}
+
+.catalog-create {
+  display: grid;
+  gap: 0.65rem;
+  max-width: 28rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  background: #fff;
+}
+
+.catalog-create h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.catalog-create label {
+  display: grid;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+.catalog-create input,
+.catalog-amount-cell input {
+  border: 1px solid #cbd5e1;
+  border-radius: 0.4rem;
+  padding: 0.4rem 0.55rem;
+  font: inherit;
+}
+
+.catalog-create button,
+.catalog-table button,
+.catalog-amount-cell button {
+  border: 1px solid #cbd5e1;
+  border-radius: 0.4rem;
+  background: #f8fafc;
+  padding: 0.4rem 0.7rem;
+  cursor: pointer;
+  font: inherit;
+}
+
+.catalog-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  background: #fff;
+}
+
+.catalog-table th,
+.catalog-table td {
+  text-align: left;
+  padding: 0.55rem 0.4rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.catalog-amount-cell {
+  display: inline-flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.catalog-amount-cell input {
+  width: 6rem;
+}

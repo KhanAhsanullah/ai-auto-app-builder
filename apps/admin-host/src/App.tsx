@@ -1,17 +1,26 @@
 import { useCallback, useEffect, useState, type ComponentType, type ReactNode } from 'react';
-import { AdminDashboardApp } from '@ai-commerce/admin-dashboard/react';
 import type { AdminDashboard } from '@ai-commerce/admin-dashboard';
+import { AdminDashboardApp } from '@ai-commerce/admin-dashboard/react';
 
 import { createAdminSessionFromPlatform, type AdminSession } from './create-admin-session.js';
+import { PlatformCatalogEditor } from './PlatformCatalogEditor.js';
 import {
   listTenantsViaPlatformApi,
   PlatformClientError,
+  type PlatformCatalogProduct,
   type PlatformTenantSummary,
 } from './platform-client.js';
 
 // Dual @types/react (Vite host vs workspace) can diverge on ReactNode; cast keeps host build clean.
 const DashboardApp = AdminDashboardApp as unknown as ComponentType<{
   dashboard: AdminDashboard;
+  renderScreen?: (input: {
+    route: string;
+    title: string;
+    description?: string;
+    widgets: readonly { id: string; position: number }[];
+    brandName: string;
+  }) => ReactNode;
 }>;
 
 type BootState =
@@ -55,6 +64,21 @@ export function App(): ReactNode {
     }
   }, []);
 
+  const onProductsChanged = useCallback((products: PlatformCatalogProduct[]) => {
+    setState((current) => {
+      if (current.status !== 'ready') {
+        return current;
+      }
+      return {
+        ...current,
+        session: {
+          ...current.session,
+          catalog: { ...current.session.catalog, products },
+        },
+      };
+    });
+  }, []);
+
   if (state.status === 'loading-tenants') {
     return (
       <div className="admin-boot" data-testid="admin-boot-loading">
@@ -83,20 +107,39 @@ export function App(): ReactNode {
   }
 
   if (state.status === 'ready') {
+    const { session, tenants } = state;
     return (
       <div className="admin-ready" data-testid="admin-ready">
         <div className="admin-topbar">
-          <button
-            type="button"
-            onClick={() => setState({ status: 'pick-tenant', tenants: state.tenants })}
-          >
+          <button type="button" onClick={() => setState({ status: 'pick-tenant', tenants })}>
             Switch tenant
           </button>
           <span>
-            {state.session.config.slug} · {state.session.catalog.products.length} products
+            {session.config.slug} · {session.catalog.products.length} products
           </span>
+          <a
+            className="admin-storefront-link"
+            href={`http://localhost:5173/t/${session.config.slug}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Open storefront
+          </a>
         </div>
-        <DashboardApp dashboard={state.session.dashboard} />
+        <DashboardApp
+          dashboard={session.dashboard}
+          renderScreen={({ route }) =>
+            route === 'admin.catalog' ? (
+              <PlatformCatalogEditor
+                tenantId={session.config.tenantId}
+                tenantSlug={session.config.slug}
+                onProductsChanged={onProductsChanged}
+              />
+            ) : (
+              <p>Select Catalog to manage products.</p>
+            )
+          }
+        />
       </div>
     );
   }

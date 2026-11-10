@@ -388,7 +388,7 @@ End-result focus: after Boom, store **products** are platform-owned and reopenab
 | ------ | ------ | ----------------------------------------------------------------- |
 | Task 1 | ✅     | platform-api catalog writes: `POST` / `PATCH` / `DELETE` products |
 | Task 2 | ✅     | Admin host boots tenant list + catalog from platform-api          |
-| Task 3 | ⬜     | Admin UI create/edit/delete products; storefront reflects changes |
+| Task 3 | ✅     | Admin UI create/edit/delete products; storefront reflects changes |
 
 End-result focus: after Boom, merchant can change real catalog data (not only seeded demo products).
 

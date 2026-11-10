@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Merchant catalog CRUD UI** (Sprint 29 Task 3) — `@ai-commerce/admin-host`
+  - Admin Catalog screen: create / patch amount / delete via platform-api
+  - Storefront reflects changes after refresh of `/t/:slug`
+
 - **Merchant admin host** (Sprint 29 Task 2) — `@ai-commerce/admin-host`
   - `pnpm admin` → http://localhost:5174
   - Lists Boom tenants from platform-api; opens catalog from platform products

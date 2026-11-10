@@ -59,6 +59,8 @@ async function requestJson(
   options: {
     baseUrl?: string;
     fetchImpl?: typeof fetch;
+    method?: string;
+    body?: unknown;
   } = {},
 ): Promise<{ status: number; payload: Record<string, unknown> }> {
   const baseUrl = (options.baseUrl ?? resolvePlatformApiBaseUrl()).replace(/\/+$/, '');
@@ -67,12 +69,17 @@ async function requestJson(
     throw new PlatformClientError('fetch is not available in this environment.');
   }
 
+  const method = (options.method ?? 'GET').toUpperCase();
+  const headers: Record<string, string> = { Accept: 'application/json' };
+  let body: string | undefined;
+  if (options.body !== undefined) {
+    headers['Content-Type'] = 'application/json';
+    body = JSON.stringify(options.body);
+  }
+
   let response: Response;
   try {
-    response = await fetchImpl(`${baseUrl}${path}`, {
-      method: 'GET',
-      headers: { Accept: 'application/json' },
-    });
+    response = await fetchImpl(`${baseUrl}${path}`, { method, headers, body });
   } catch {
     throw new PlatformClientError(
       `Could not reach platform-api at ${baseUrl}. Start it with: pnpm --filter @ai-commerce/platform-api start`,
@@ -81,6 +88,54 @@ async function requestJson(
 
   const payload = (await response.json().catch(() => ({}))) as Record<string, unknown>;
   return { status: response.status, payload };
+}
+
+function parseProductRow(row: unknown, context: string): PlatformCatalogProduct {
+  if (!row || typeof row !== 'object' || Array.isArray(row)) {
+    throw new PlatformClientError(`platform-api returned an incomplete ${context}.`);
+  }
+  const product = row as Record<string, unknown>;
+  const productId = typeof product.id === 'string' ? product.id : '';
+  const slug = typeof product.slug === 'string' ? product.slug : '';
+  const name = typeof product.name === 'string' ? product.name : '';
+  const sku = typeof product.sku === 'string' ? product.sku : '';
+  const title = typeof product.title === 'string' ? product.title : '';
+  const amount = typeof product.amount === 'number' ? product.amount : NaN;
+  const currency = typeof product.currency === 'string' ? product.currency : '';
+  const imageUrl = typeof product.imageUrl === 'string' ? product.imageUrl : '';
+  if (!productId || !slug || !name || !sku || !title || !Number.isFinite(amount) || !currency) {
+    throw new PlatformClientError(`platform-api returned an incomplete ${context}.`);
+  }
+  return {
+    id: productId,
+    slug,
+    name,
+    sku,
+    title,
+    amount,
+    currency,
+    imageUrl,
+  };
+}
+
+export interface CatalogProductWriteInput {
+  name: string;
+  sku: string;
+  title: string;
+  amount: number;
+  slug?: string;
+  currency?: string;
+  imageUrl?: string;
+}
+
+export interface CatalogProductPatchInput {
+  name?: string;
+  sku?: string;
+  title?: string;
+  amount?: number;
+  slug?: string;
+  currency?: string;
+  imageUrl?: string;
 }
 
 /** List provisioned tenants from platform-api. */
@@ -188,34 +243,7 @@ export async function fetchTenantCatalogViaPlatformApi(
     throw new PlatformClientError('platform-api returned an incomplete tenant catalog.');
   }
 
-  const products: PlatformCatalogProduct[] = [];
-  for (const row of payload.products) {
-    if (!row || typeof row !== 'object' || Array.isArray(row)) {
-      throw new PlatformClientError('platform-api returned an incomplete tenant catalog.');
-    }
-    const product = row as Record<string, unknown>;
-    const productId = typeof product.id === 'string' ? product.id : '';
-    const slug = typeof product.slug === 'string' ? product.slug : '';
-    const name = typeof product.name === 'string' ? product.name : '';
-    const sku = typeof product.sku === 'string' ? product.sku : '';
-    const title = typeof product.title === 'string' ? product.title : '';
-    const amount = typeof product.amount === 'number' ? product.amount : NaN;
-    const currency = typeof product.currency === 'string' ? product.currency : '';
-    const imageUrl = typeof product.imageUrl === 'string' ? product.imageUrl : '';
-    if (!productId || !slug || !name || !sku || !title || !Number.isFinite(amount) || !currency) {
-      throw new PlatformClientError('platform-api returned an incomplete tenant catalog.');
-    }
-    products.push({
-      id: productId,
-      slug,
-      name,
-      sku,
-      title,
-      amount,
-      currency,
-      imageUrl,
-    });
-  }
+  const products = payload.products.map((row) => parseProductRow(row, 'tenant catalog'));
 
   return {
     tenantId: typeof payload.tenantId === 'string' ? payload.tenantId : id,
@@ -223,4 +251,86 @@ export async function fetchTenantCatalogViaPlatformApi(
     updatedAt: typeof payload.updatedAt === 'string' ? payload.updatedAt : '',
     products,
   };
+}
+
+/** Create a catalog product via platform-api. */
+export async function createCatalogProductViaPlatformApi(
+  tenantId: string,
+  input: CatalogProductWriteInput,
+  options: {
+    baseUrl?: string;
+    fetchImpl?: typeof fetch;
+  } = {},
+): Promise<PlatformCatalogProduct> {
+  const id = tenantId.trim();
+  if (!id) {
+    throw new PlatformClientError('tenantId is required.');
+  }
+
+  const { status, payload } = await requestJson(
+    `/v1/tenants/${encodeURIComponent(id)}/catalog/products`,
+    { ...options, method: 'POST', body: input },
+  );
+  if (status !== 201 && status !== 200) {
+    const message =
+      typeof payload.error === 'string' ? payload.error : `Create product failed (${status}).`;
+    throw new PlatformClientError(message, status);
+  }
+
+  return parseProductRow(payload.product, 'created product');
+}
+
+/** Patch a catalog product via platform-api. */
+export async function patchCatalogProductViaPlatformApi(
+  tenantId: string,
+  productId: string,
+  input: CatalogProductPatchInput,
+  options: {
+    baseUrl?: string;
+    fetchImpl?: typeof fetch;
+  } = {},
+): Promise<PlatformCatalogProduct> {
+  const id = tenantId.trim();
+  const pid = productId.trim();
+  if (!id || !pid) {
+    throw new PlatformClientError('tenantId and productId are required.');
+  }
+
+  const { status, payload } = await requestJson(
+    `/v1/tenants/${encodeURIComponent(id)}/catalog/products/${encodeURIComponent(pid)}`,
+    { ...options, method: 'PATCH', body: input },
+  );
+  if (status !== 200) {
+    const message =
+      typeof payload.error === 'string' ? payload.error : `Update product failed (${status}).`;
+    throw new PlatformClientError(message, status);
+  }
+
+  return parseProductRow(payload.product, 'updated product');
+}
+
+/** Delete a catalog product via platform-api. */
+export async function deleteCatalogProductViaPlatformApi(
+  tenantId: string,
+  productId: string,
+  options: {
+    baseUrl?: string;
+    fetchImpl?: typeof fetch;
+  } = {},
+): Promise<void> {
+  const id = tenantId.trim();
+  const pid = productId.trim();
+  if (!id || !pid) {
+    throw new PlatformClientError('tenantId and productId are required.');
+  }
+
+  const { status, payload } = await requestJson(
+    `/v1/tenants/${encodeURIComponent(id)}/catalog/products/${encodeURIComponent(pid)}`,
+    { ...options, method: 'DELETE' },
+  );
+  if (status !== 200) {
+    const message =
+      typeof payload.error === 'string' ? payload.error : `Delete product failed (${status}).`;
+    throw new PlatformClientError(message, status);
+  }
 }
