@@ -234,4 +234,36 @@ describe('PlatformApi', () => {
     const catalogBySlug = await api.getTenantCatalog('spice-route');
     expect(catalogBySlug.products).toHaveLength(3);
   });
+
+  it('creates, updates, and deletes catalog products', async () => {
+    const api = createPlatformApi({
+      clock: () => '2026-11-01T00:00:00.000Z',
+    });
+
+    const launched = await api.launchBoom({
+      businessName: 'Fresh Daily',
+      vertical: 'grocery',
+      tenantId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+    });
+
+    const created = await api.createCatalogProduct(launched.tenantId, {
+      name: 'Olive Oil',
+      sku: 'OIL-1L',
+      title: '1L',
+      amount: 1800,
+      slug: 'olive-oil',
+      currency: 'PKR',
+      imageUrl: 'https://example.com/oil.jpg',
+    });
+    expect(created.id).toBe(`${launched.tenantId}:olive-oil`);
+
+    const updated = await api.updateCatalogProduct(launched.tenantId, 'olive-oil', {
+      amount: 1700,
+    });
+    expect(updated.amount).toBe(1700);
+
+    await api.deleteCatalogProduct(launched.tenantId, created.id);
+    const catalog = await api.getTenantCatalog(launched.tenantId);
+    expect(catalog.products.map((p) => p.slug)).not.toContain('olive-oil');
+  });
 });

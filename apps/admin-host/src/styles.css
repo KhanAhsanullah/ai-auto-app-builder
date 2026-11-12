@@ -1,0 +1,185 @@
+:root {
+  color-scheme: light;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  line-height: 1.45;
+  color: #0f172a;
+  background: #f8fafc;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+.admin-boot {
+  max-width: 40rem;
+  margin: 3rem auto;
+  padding: 1.5rem;
+}
+
+.admin-boot h1 {
+  margin: 0 0 0.5rem;
+  font-size: 1.75rem;
+}
+
+.admin-boot-error {
+  color: #b91c1c;
+}
+
+.admin-boot-empty {
+  color: #64748b;
+}
+
+.admin-tenant-list {
+  list-style: none;
+  margin: 1.25rem 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.admin-tenant-list button {
+  width: 100%;
+  text-align: left;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.75rem;
+  background: #fff;
+  padding: 0.9rem 1rem;
+  cursor: pointer;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.admin-tenant-list button:hover {
+  border-color: #64748b;
+}
+
+.admin-tenant-list span {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.admin-refresh,
+.admin-boot button {
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+  background: #fff;
+  padding: 0.5rem 0.85rem;
+  cursor: pointer;
+}
+
+.admin-ready {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-topbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  background: #fff;
+}
+
+.admin-topbar button {
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+  background: #f8fafc;
+  padding: 0.4rem 0.75rem;
+  cursor: pointer;
+}
+
+.admin-ready > :last-child {
+  flex: 1;
+}
+
+.admin-storefront-link {
+  margin-left: auto;
+  color: #1d4ed8;
+  font-size: 0.9rem;
+}
+
+.catalog-editor {
+  padding: 0.25rem 0.5rem 1.5rem;
+}
+
+.catalog-editor-hint {
+  color: #64748b;
+  margin: 0 0 1rem;
+}
+
+.catalog-editor-error {
+  color: #b91c1c;
+}
+
+.catalog-create {
+  display: grid;
+  gap: 0.65rem;
+  max-width: 28rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  background: #fff;
+}
+
+.catalog-create h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.catalog-create label {
+  display: grid;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+.catalog-create input,
+.catalog-amount-cell input {
+  border: 1px solid #cbd5e1;
+  border-radius: 0.4rem;
+  padding: 0.4rem 0.55rem;
+  font: inherit;
+}
+
+.catalog-create button,
+.catalog-table button,
+.catalog-amount-cell button {
+  border: 1px solid #cbd5e1;
+  border-radius: 0.4rem;
+  background: #f8fafc;
+  padding: 0.4rem 0.7rem;
+  cursor: pointer;
+  font: inherit;
+}
+
+.catalog-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  background: #fff;
+}
+
+.catalog-table th,
+.catalog-table td {
+  text-align: left;
+  padding: 0.55rem 0.4rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.catalog-amount-cell {
+  display: inline-flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.catalog-amount-cell input {
+  width: 6rem;
+}

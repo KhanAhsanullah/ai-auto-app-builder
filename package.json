@@ -17,6 +17,7 @@
     "test": "turbo run test",
     "mobile": "pnpm --filter @ai-commerce/mobile-host start",
     "web": "pnpm --filter @ai-commerce/web-host start",
+    "admin": "pnpm --filter @ai-commerce/admin-host start",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,mjs,cjs,json,md,yml,yaml}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,mjs,cjs,json,md,yml,yaml}\"",
     "prepare": "husky"

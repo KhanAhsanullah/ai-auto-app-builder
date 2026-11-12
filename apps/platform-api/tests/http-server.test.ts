@@ -143,5 +143,80 @@ describe('platform-api HTTP', () => {
     });
     expect(res.status).toBe(204);
     expect(res.headers.get('access-control-allow-origin')).toBe('*');
+    expect(res.headers.get('access-control-allow-methods')).toContain('PATCH');
+    expect(res.headers.get('access-control-allow-methods')).toContain('DELETE');
+  });
+
+  it('creates, patches, and deletes catalog products', async () => {
+    const api = createPlatformApi({
+      clock: () => '2026-11-01T00:00:00.000Z',
+    });
+    const listening = await listenPlatformApi(api, 0);
+    closers.push(listening.close);
+
+    const launch = await fetch(`http://127.0.0.1:${listening.port}/v1/boom/launch`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        businessName: 'Admin Mart',
+        vertical: 'grocery',
+        tenantId: 'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee',
+      }),
+    });
+    expect(launch.status).toBe(201);
+    const launched = (await launch.json()) as { tenantId: string; slug: string };
+
+    const created = await fetch(
+      `http://127.0.0.1:${listening.port}/v1/tenants/${launched.tenantId}/catalog/products`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: 'Olive Oil',
+          sku: 'OIL-1L',
+          title: '1L',
+          amount: 1800,
+        }),
+      },
+    );
+    expect(created.status).toBe(201);
+    const createdBody = (await created.json()) as {
+      product: { id: string; slug: string; amount: number };
+    };
+    expect(createdBody.product.slug).toBe('olive-oil');
+    expect(createdBody.product.amount).toBe(1800);
+
+    const patched = await fetch(
+      `http://127.0.0.1:${listening.port}/v1/tenants/${launched.slug}/catalog/products/${createdBody.product.id}`,
+      {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: 1650, title: 'Bottle' }),
+      },
+    );
+    expect(patched.status).toBe(200);
+    const patchedBody = (await patched.json()) as {
+      product: { amount: number; title: string };
+    };
+    expect(patchedBody.product.amount).toBe(1650);
+    expect(patchedBody.product.title).toBe('Bottle');
+
+    const listed = await fetch(
+      `http://127.0.0.1:${listening.port}/v1/tenants/${launched.tenantId}/catalog/products`,
+    );
+    const listBody = (await listed.json()) as { products: Array<{ slug: string }> };
+    expect(listBody.products.map((p) => p.slug)).toContain('olive-oil');
+
+    const deleted = await fetch(
+      `http://127.0.0.1:${listening.port}/v1/tenants/${launched.tenantId}/catalog/products/olive-oil`,
+      { method: 'DELETE' },
+    );
+    expect(deleted.status).toBe(200);
+
+    const after = await fetch(
+      `http://127.0.0.1:${listening.port}/v1/tenants/${launched.tenantId}/catalog/products`,
+    );
+    const afterBody = (await after.json()) as { products: Array<{ slug: string }> };
+    expect(afterBody.products.map((p) => p.slug)).not.toContain('olive-oil');
   });
 });

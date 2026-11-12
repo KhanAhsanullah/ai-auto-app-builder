@@ -14,6 +14,7 @@ Sprint 26 Task 3 — CORS enabled so browser hosts can call Boom launch.
 Sprint 27 Task 1 — list tenants + serve registry config documents.
 Sprint 27 Task 2 — Boom launch publishes via ConfigEngine; GET config prefers published.
 Sprint 28 Task 1 — Boom seeds vertical catalog; `GET /v1/tenants/:id/catalog/products`.
+Sprint 29 Task 1 — merchant catalog writes: `POST` / `PATCH` / `DELETE` products.
 
 Routes:
 
@@ -21,7 +22,10 @@ Routes:
 - `GET /v1/tenants` — list provisioned tenant summaries
 - `GET /v1/tenants/:id` — fetch provisioned tenant summary (`:id` may be tenant id **or** slug)
 - `GET /v1/tenants/:id/config` — latest **published** config (registry fallback)
-- `GET /v1/tenants/:id/catalog/products` — platform-owned demo catalog products
+- `GET /v1/tenants/:id/catalog/products` — platform-owned catalog products
+- `POST /v1/tenants/:id/catalog/products` — create product (`name`, `sku`, `title`, `amount`, optional `slug` / `currency` / `imageUrl`)
+- `PATCH /v1/tenants/:id/catalog/products/:productId` — update product fields (`:productId` = id or slug)
+- `DELETE /v1/tenants/:id/catalog/products/:productId` — remove product
 - `GET /health` — liveness
 
 ## Run

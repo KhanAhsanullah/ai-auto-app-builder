@@ -56,19 +56,66 @@ export interface TenantConfigResponse {
   publishId?: string;
 }
 
+/** Catalog product row returned by catalog endpoints. */
+export interface CatalogProductDto {
+  id: string;
+  slug: string;
+  name: string;
+  sku: string;
+  title: string;
+  amount: number;
+  currency: string;
+  imageUrl: string;
+}
+
 /** Catalog payload for GET /v1/tenants/:id/catalog/products. */
 export interface TenantCatalogResponse {
   tenantId: string;
   vertical: BoomLaunchVertical;
   updatedAt: string;
-  products: Array<{
-    id: string;
-    slug: string;
-    name: string;
-    sku: string;
-    title: string;
-    amount: number;
-    currency: string;
-    imageUrl: string;
-  }>;
+  products: CatalogProductDto[];
+}
+
+/** JSON body for POST /v1/tenants/:id/catalog/products. */
+export interface CatalogProductCreateHttpBody {
+  name?: unknown;
+  sku?: unknown;
+  title?: unknown;
+  amount?: unknown;
+  slug?: unknown;
+  currency?: unknown;
+  imageUrl?: unknown;
+}
+
+/** Validated create-product input. */
+export interface CatalogProductCreateInput {
+  name: string;
+  sku: string;
+  title: string;
+  amount: number;
+  slug: string;
+  currency: string;
+  imageUrl: string;
+}
+
+/** JSON body for PATCH /v1/tenants/:id/catalog/products/:productId. */
+export interface CatalogProductPatchHttpBody {
+  name?: unknown;
+  sku?: unknown;
+  title?: unknown;
+  amount?: unknown;
+  slug?: unknown;
+  currency?: unknown;
+  imageUrl?: unknown;
+}
+
+/** Validated patch-product input (at least one field). */
+export interface CatalogProductPatchInput {
+  name?: string;
+  sku?: string;
+  title?: string;
+  amount?: number;
+  slug?: string;
+  currency?: string;
+  imageUrl?: string;
 }
