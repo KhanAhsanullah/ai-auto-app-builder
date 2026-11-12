@@ -392,7 +392,21 @@ End-result focus: after Boom, store **products** are platform-owned and reopenab
 
 End-result focus: after Boom, merchant can change real catalog data (not only seeded demo products).
 
-**Tags:** _(pending — tag after commit)_
+**Tags:** `sprint29-task1`, `sprint29-task2`, `sprint29-task3`
+
+---
+
+## Sprint 30 — Staging Demo Deploy
+
+| Task   | Status | Deliverable                                                              |
+| ------ | ------ | ------------------------------------------------------------------------ |
+| Task 1 | ✅     | Docker Compose demo stack — platform-api + web-host (`pnpm demo:docker`) |
+| Task 2 | ⬜     | Admin host in demo compose + shared data volume docs                     |
+| Task 3 | ⬜     | Hosted staging runbook (env vars, smoke checklist, client URL)           |
+
+End-result focus: client demo without juggling local terminals — one compose (or clear staging URL).
+
+**Tags:** _(pending)_
 
 ---
 

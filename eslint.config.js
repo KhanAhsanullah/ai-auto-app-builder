@@ -21,6 +21,7 @@ export default tseslint.config(
       'apps/mobile-host/.expo/**',
       'apps/web-host/shims/**',
       'apps/admin-host/shims/**',
+      'infra/docker/validate-demo-compose.mjs',
       'packages/iconv-lite/**',
     ],
   },
