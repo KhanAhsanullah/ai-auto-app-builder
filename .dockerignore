@@ -9,7 +9,6 @@
 **/ios
 apps/mobile-host
 apps/mobile-app
-apps/admin-host
 apps/worker
 apps/api-gateway
 **/*.md

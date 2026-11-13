@@ -6,9 +6,9 @@
 
 ## Current milestone
 
-**Sprint 30 — Staging Demo Deploy** (in progress on `sprint/30/task1`).
+**Sprint 30 — Staging Demo Deploy** (Task 2 on `sprint/30/task2`).
 
-Sprint 29 merchant catalog admin is on `main`. Client Boom MVP: [CLIENT_DEMO.md](./CLIENT_DEMO.md).
+Sprint 29 + Task 1 demo Docker on `main`. Client Boom MVP: [CLIENT_DEMO.md](./CLIENT_DEMO.md).
 
 ## Completed Tasks
 
@@ -20,11 +20,11 @@ Sprint 29 merchant catalog admin is on `main`. Client Boom MVP: [CLIENT_DEMO.md]
 
 ## Active Tasks
 
-| Task             | Description                           | Status |
-| ---------------- | ------------------------------------- | ------ |
-| Sprint 30 Task 1 | Docker Compose demo stack (API + web) | ✅     |
-| Sprint 30 Task 2 | Admin in demo compose                 | ⬜     |
-| Sprint 30 Task 3 | Hosted staging runbook                | ⬜     |
+| Task             | Description                                | Status |
+| ---------------- | ------------------------------------------ | ------ |
+| Sprint 30 Task 1 | Docker Compose demo stack (API + web)      | ✅     |
+| Sprint 30 Task 2 | Admin in demo compose + shared volume docs | ✅     |
+| Sprint 30 Task 3 | Hosted staging runbook                     | ⬜     |
 
 ## Next after Sprint 30
 
@@ -34,12 +34,12 @@ Sprint 29 merchant catalog admin is on `main`. Client Boom MVP: [CLIENT_DEMO.md]
 ## Latest Tag
 
 ```
-sprint29-task3
+sprint30-task1
 ```
 
 ## Health Status
 
-| Area       | Status     | Notes                       |
-| ---------- | ---------- | --------------------------- |
-| Repository | ✅ Healthy | Sprint 29 merged to `main`  |
-| Client MVP | ✅ Ready   | Local or `pnpm demo:docker` |
+| Area       | Status     | Notes                                  |
+| ---------- | ---------- | -------------------------------------- |
+| Repository | ✅ Healthy | Sprint 30 Task 1 on `main`; Task 2 WIP |
+| Client MVP | ✅ Ready   | `pnpm demo:docker` → web + admin + API |
