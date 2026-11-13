@@ -1,10 +1,16 @@
-/** Storage key for the guest commerce session id. */
+/** Storage key for the guest commerce session id (legacy / unscoped). */
 export const WEB_HOST_SESSION_KEY = '@ai-commerce/web-host/session-id';
 
 export interface SessionStore {
   getItem(key: string): Promise<string | null>;
   setItem(key: string, value: string): Promise<void>;
   removeItem?(key: string): Promise<void>;
+}
+
+/** Per-tenant session key (falls back to legacy global key when id omitted). */
+export function webHostSessionKey(tenantId?: string): string {
+  const id = tenantId?.trim();
+  return id ? `${WEB_HOST_SESSION_KEY}:${id}` : WEB_HOST_SESSION_KEY;
 }
 
 /** In-memory store for unit tests. */
@@ -24,12 +30,16 @@ export function createMemorySessionStore(seed: Record<string, string> = {}): Ses
 }
 
 /** Drop the persisted guest session so the next resolve creates a new id. */
-export async function clearGuestSession(store: SessionStore): Promise<void> {
+export async function clearGuestSession(
+  store: SessionStore,
+  options?: { tenantId?: string },
+): Promise<void> {
+  const key = webHostSessionKey(options?.tenantId);
   if (typeof store.removeItem === 'function') {
-    await store.removeItem(WEB_HOST_SESSION_KEY);
+    await store.removeItem(key);
     return;
   }
-  await store.setItem(WEB_HOST_SESSION_KEY, '');
+  await store.setItem(key, '');
 }
 
 /**
@@ -37,16 +47,18 @@ export async function clearGuestSession(store: SessionStore): Promise<void> {
  */
 export async function resolveGuestSessionId(input: {
   store: SessionStore;
+  tenantId?: string;
   preferred?: string;
   createId?: () => string;
 }): Promise<string> {
+  const key = webHostSessionKey(input.tenantId);
   const preferred = input.preferred?.trim();
   if (preferred) {
-    await input.store.setItem(WEB_HOST_SESSION_KEY, preferred);
+    await input.store.setItem(key, preferred);
     return preferred;
   }
 
-  const existing = (await input.store.getItem(WEB_HOST_SESSION_KEY))?.trim();
+  const existing = (await input.store.getItem(key))?.trim();
   if (existing) {
     return existing;
   }
@@ -54,6 +66,6 @@ export async function resolveGuestSessionId(input: {
   const created =
     input.createId?.().trim() ||
     `web-demo-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
-  await input.store.setItem(WEB_HOST_SESSION_KEY, created);
+  await input.store.setItem(key, created);
   return created;
 }

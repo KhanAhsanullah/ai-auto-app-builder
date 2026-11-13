@@ -6,33 +6,35 @@
 
 ## Current milestone
 
-**Sprint 30 + 31 ✅** on `main`. Next board gap: Sprint 24 Task 2 (multi-profile switcher) or new sprint.
+**Sprint 24 Task 2** on `sprint/24/task2` — multi-profile switcher + live theme preview.
 
 See [CLIENT_DEMO.md](./CLIENT_DEMO.md) + [docs/runbooks/staging-demo.md](./docs/runbooks/staging-demo.md).
 
 ## Completed Tasks
 
-| Task           | Description                       | Commit Tag       |
-| -------------- | --------------------------------- | ---------------- |
-| Sprint 1–29 ✅ | Foundation through merchant admin | `sprint*-task*`  |
-| Sprint 30 ✅   | Demo Docker + staging runbook     | `sprint30-task3` |
-| Sprint 31 ✅   | Richer storefront                 | `sprint31-task3` |
+| Task            | Description                      | Commit Tag       |
+| --------------- | -------------------------------- | ---------------- |
+| Sprint 1–23 ✅  | Foundation through web shareable | `sprint*-task*`  |
+| Sprint 24 T1/T3 | Boom wizard web + mobile         | `sprint24-task3` |
+| Sprint 25–29 ✅ | Polish → merchant admin          | `sprint29-task3` |
+| Sprint 30 ✅    | Demo Docker + staging runbook    | `sprint30-task3` |
+| Sprint 31 ✅    | Richer storefront                | `sprint31-task3` |
 
 ## Active Tasks
 
-| Task             | Description                              | Status |
-| ---------------- | ---------------------------------------- | ------ |
-| Sprint 30 Task 3 | Hosted staging runbook + smoke checklist | ✅     |
+| Task             | Description                                        | Status |
+| ---------------- | -------------------------------------------------- | ------ |
+| Sprint 24 Task 2 | Persist multi-profile switcher / live theme tokens | ✅     |
 
 ## Latest Tag
 
 ```
-sprint30-task3
+sprint24-task2
 ```
 
 ## Health Status
 
-| Area       | Status     | Notes                               |
-| ---------- | ---------- | ----------------------------------- |
-| Repository | ✅ Healthy | Sprint 30 Task 3 complete           |
-| Client MVP | ✅ Ready   | Docker demo + staging runbook ready |
+| Area       | Status     | Notes                                       |
+| ---------- | ---------- | ------------------------------------------- |
+| Repository | ✅ Healthy | Sprint 24 Task 2 complete                   |
+| Client MVP | ✅ Ready   | Multi-app switcher + richer Boom storefront |

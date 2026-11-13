@@ -38,6 +38,25 @@ describe('resolveGuestSessionId', () => {
     });
     expect(id).toBe('after-clear');
   });
+
+  it('isolates guest sessions per tenant', async () => {
+    const store = createMemorySessionStore();
+    const a = await resolveGuestSessionId({
+      store,
+      tenantId: 'tenant-a',
+      createId: () => 'session-a',
+    });
+    const b = await resolveGuestSessionId({
+      store,
+      tenantId: 'tenant-b',
+      createId: () => 'session-b',
+    });
+    expect(a).toBe('session-a');
+    expect(b).toBe('session-b');
+    await clearGuestSession(store, { tenantId: 'tenant-a' });
+    await expect(store.getItem(`${WEB_HOST_SESSION_KEY}:tenant-a`)).resolves.toBeNull();
+    await expect(store.getItem(`${WEB_HOST_SESSION_KEY}:tenant-b`)).resolves.toBe('session-b');
+  });
 });
 
 describe('createLocalStorageKvStore', () => {

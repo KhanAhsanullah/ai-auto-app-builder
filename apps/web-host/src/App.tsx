@@ -26,9 +26,11 @@ import {
 } from './boom-client.js';
 import { createLocalStorageKvStore, type WebHostKvStore } from './local-storage-kv.js';
 import {
-  clearLaunchProfile,
+  clearActiveLaunchProfile,
+  listLaunchProfiles,
   loadLaunchProfile,
-  saveLaunchProfile,
+  setActiveLaunchProfile,
+  upsertLaunchProfile,
   type StoredLaunchProfile,
 } from './launch-profile.js';
 import { clearGuestSession, resolveGuestSessionId } from './session-storage.js';
@@ -47,6 +49,7 @@ type Phase = 'booting' | 'wizard' | 'store';
 /**
  * Vite host — launch wizard (any vertical) → durable demo storefront.
  * Shareable URLs: `/t/:slug` and `/t/:slug/:screen`.
+ * Multi-profile switcher persists recent Boom apps (Sprint 24 Task 2).
  */
 export function App(): ReactNode {
   const storeRef = useRef<WebHostKvStore | null>(null);
@@ -56,10 +59,16 @@ export function App(): ReactNode {
   const [businessName, setBusinessName] = useState<string | null>(null);
   const [vertical, setVertical] = useState<string | null>(null);
   const [tenantSlug, setTenantSlug] = useState<string | null>(null);
+  const [tenantId, setTenantId] = useState<string | null>(null);
+  const [profiles, setProfiles] = useState<StoredLaunchProfile[]>([]);
   const [activeRoute, setActiveRoute] = useState<ShareableStoreRoute>('store.home');
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [restored, setRestored] = useState(false);
+
+  const refreshProfiles = useCallback(async (kv: WebHostKvStore) => {
+    setProfiles(await listLaunchProfiles(kv));
+  }, []);
 
   const bootFromLookup = useCallback(
     async (lookup: string, preferredRoute: ShareableStoreRoute = 'store.home') => {
@@ -72,11 +81,14 @@ export function App(): ReactNode {
       setBusy(true);
       setError(null);
       try {
-        const resolvedSession = await resolveGuestSessionId({ store: kv });
         const [platformConfig, platformCatalog] = await Promise.all([
           fetchTenantConfigViaPlatformApi(lookup),
           fetchTenantCatalogViaPlatformApi(lookup),
         ]);
+        const resolvedSession = await resolveGuestSessionId({
+          store: kv,
+          tenantId: platformConfig.tenantId,
+        });
         const bundle = await createDemoWebStore({
           sessionId: resolvedSession,
           snapshotStore: kv,
@@ -91,13 +103,15 @@ export function App(): ReactNode {
           slug,
           createdAt: new Date().toISOString(),
         };
-        await saveLaunchProfile(kv, profile);
+        await upsertLaunchProfile(kv, profile);
+        await refreshProfiles(kv);
 
         setSessionId(bundle.sessionId);
         setStore(bundle.store);
         setBusinessName(bundle.businessName);
         setVertical(bundle.vertical);
         setTenantSlug(slug);
+        setTenantId(platformConfig.tenantId);
         setActiveRoute(preferredRoute);
         setRestored(bundle.restoredFromSnapshot);
         setPhase('store');
@@ -107,12 +121,13 @@ export function App(): ReactNode {
         setStore(null);
         setSessionId(null);
         setTenantSlug(null);
+        setTenantId(null);
         setPhase('wizard');
       } finally {
         setBusy(false);
       }
     },
-    [],
+    [refreshProfiles],
   );
 
   const bootFromProfile = useCallback(
@@ -129,6 +144,7 @@ export function App(): ReactNode {
       try {
         const kv = createLocalStorageKvStore();
         storeRef.current = kv;
+        await refreshProfiles(kv);
         const shared = parseShareablePath(window.location.pathname);
         if (cancelled) {
           return;
@@ -156,7 +172,7 @@ export function App(): ReactNode {
     return () => {
       cancelled = true;
     };
-  }, [bootFromLookup, bootFromProfile]);
+  }, [bootFromLookup, bootFromProfile, refreshProfiles]);
 
   useEffect(() => {
     const onPopState = () => {
@@ -197,13 +213,13 @@ export function App(): ReactNode {
         setBusy(true);
         setError(null);
         try {
-          await clearWebDemoSnapshot(kv);
-          await clearGuestSession(kv);
           const launched = await launchBoomViaPlatformApi({
             businessName: input.businessName,
             vertical: input.vertical,
             logoUrl: input.logoUrl,
           });
+          await clearWebDemoSnapshot(kv, { tenantId: launched.tenantId });
+          await clearGuestSession(kv, { tenantId: launched.tenantId });
           const profile: StoredLaunchProfile = {
             businessName: launched.name,
             vertical: launched.vertical,
@@ -212,7 +228,8 @@ export function App(): ReactNode {
             slug: launched.slug,
             createdAt: new Date().toISOString(),
           };
-          await saveLaunchProfile(kv, profile);
+          await upsertLaunchProfile(kv, profile);
+          await refreshProfiles(kv);
           window.history.replaceState(null, '', buildShareablePath(launched.slug));
           await bootFromProfile(profile, 'store.home');
         } catch (err: unknown) {
@@ -222,16 +239,30 @@ export function App(): ReactNode {
         }
       })();
     },
-    [bootFromProfile],
+    [bootFromProfile, refreshProfiles],
+  );
+
+  const onSwitchProfile = useCallback(
+    (nextTenantId: string) => {
+      if (!nextTenantId || nextTenantId === tenantId) {
+        return;
+      }
+      void (async () => {
+        const kv = storeRef.current;
+        if (!kv) {
+          return;
+        }
+        const profile = await setActiveLaunchProfile(kv, nextTenantId);
+        if (!profile) {
+          return;
+        }
+        await bootFromProfile(profile, 'store.home');
+      })();
+    },
+    [bootFromProfile, tenantId],
   );
 
   const onNewApp = useCallback(() => {
-    const ok = window.confirm(
-      'Create a new app? This clears the current demo cart/orders and opens the launch wizard.',
-    );
-    if (!ok) {
-      return;
-    }
     void (async () => {
       const kv = storeRef.current;
       if (!kv) {
@@ -239,14 +270,14 @@ export function App(): ReactNode {
       }
       setBusy(true);
       try {
-        await clearWebDemoSnapshot(kv);
-        await clearGuestSession(kv);
-        await clearLaunchProfile(kv);
+        await clearActiveLaunchProfile(kv);
+        await refreshProfiles(kv);
         setStore(null);
         setSessionId(null);
         setBusinessName(null);
         setVertical(null);
         setTenantSlug(null);
+        setTenantId(null);
         setRestored(false);
         setError(null);
         setPhase('wizard');
@@ -255,7 +286,7 @@ export function App(): ReactNode {
         setBusy(false);
       }
     })();
-  }, []);
+  }, [refreshProfiles]);
 
   const onResetDemo = useCallback(() => {
     const ok = window.confirm(
@@ -271,8 +302,8 @@ export function App(): ReactNode {
         setPhase('wizard');
         return;
       }
-      await clearWebDemoSnapshot(kv);
-      await clearGuestSession(kv);
+      await clearWebDemoSnapshot(kv, { tenantId: profile.tenantId });
+      await clearGuestSession(kv, { tenantId: profile.tenantId });
       await bootFromProfile(profile, activeRoute);
     })();
   }, [activeRoute, bootFromProfile]);
@@ -280,12 +311,12 @@ export function App(): ReactNode {
   const onExportSnapshot = useCallback(() => {
     void (async () => {
       const kv = storeRef.current;
-      if (!kv) {
+      if (!kv || !tenantId) {
         window.alert('Store is not ready.');
         return;
       }
       try {
-        const json = await exportWebDemoSnapshot(kv);
+        const json = await exportWebDemoSnapshot(kv, { tenantId });
         if (!json) {
           window.alert('No demo snapshot saved yet.');
           return;
@@ -299,7 +330,7 @@ export function App(): ReactNode {
         window.alert(err instanceof Error ? err.message : 'Export failed');
       }
     })();
-  }, []);
+  }, [tenantId]);
 
   if (phase === 'booting' || (phase === 'store' && busy && !store)) {
     return (
@@ -310,7 +341,17 @@ export function App(): ReactNode {
   }
 
   if (phase === 'wizard') {
-    return <LaunchWizard busy={busy} error={error} onLaunch={onLaunch} />;
+    return (
+      <LaunchWizard
+        busy={busy}
+        error={error}
+        recentProfiles={profiles}
+        onLaunch={onLaunch}
+        onOpenProfile={(profile) => {
+          void bootFromProfile(profile);
+        }}
+      />
+    );
   }
 
   if (error && !store) {
@@ -351,6 +392,23 @@ export function App(): ReactNode {
         </span>
       </header>
       <div className="host-toolbar" data-testid="web-host-demo-toolbar">
+        {profiles.length > 0 ? (
+          <label className="host-profile-switch" data-testid="web-host-profile-switcher">
+            <span className="host-profile-switch-label">App</span>
+            <select
+              data-testid="web-host-profile-select"
+              value={tenantId ?? ''}
+              disabled={busy}
+              onChange={(event) => onSwitchProfile(event.target.value)}
+            >
+              {profiles.map((profile) => (
+                <option key={profile.tenantId} value={profile.tenantId}>
+                  {profile.businessName} ({profile.vertical})
+                </option>
+              ))}
+            </select>
+          </label>
+        ) : null}
         <button
           type="button"
           className="host-btn host-btn-new"

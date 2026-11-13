@@ -47,6 +47,7 @@ export {
   exportWebDemoSnapshot,
   parseWebDemoSnapshot,
   summarizeWebDemoSnapshot,
+  webDemoSnapshotKey,
 } from './demo/demo-snapshot.js';
 export type { WebDemoCommerceSnapshot, WebDemoSnapshotStore } from './demo/demo-snapshot.js';
 export {

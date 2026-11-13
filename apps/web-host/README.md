@@ -9,6 +9,7 @@ Runnable browser shell for `@ai-commerce/web-store` — launch any vertical stor
 ## Status
 
 Sprint 24 Task 1 — launch wizard (name + logo + app type) → durable demo store.
+Sprint 24 Task 2 — multi-profile switcher + live theme-token preview in the wizard.
 Sprint 25 Task 3 — wizard UI tinted by selected vertical brand accent.
 Sprint 26 Task 3 — Boom calls `platform-api` (`POST /v1/boom/launch`) then seeds the local demo.
 Sprint 27 Task 3 — Boot storefront from `GET /v1/tenants/:id/config` (platform-owned branding).
@@ -29,9 +30,10 @@ Optional: `VITE_PLATFORM_API_URL=http://127.0.0.1:8787` (default).
 
 Opens Vite at http://localhost:5173.
 
-1. Enter **business name**, optional **logo URL**, pick an **app type**
+1. Enter **business name**, optional **logo URL**, pick an **app type** (preview shows live theme tokens)
 2. Click **Boom — launch app**
 3. URL becomes `/t/<slug>` — shareable; `/t/<slug>/cart` opens cart
+4. **New app** keeps prior profiles — switch via toolbar **App** select or wizard **Recent apps**
 
 ### Shareable URLs
 

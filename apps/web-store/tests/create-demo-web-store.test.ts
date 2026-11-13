@@ -70,11 +70,82 @@ describe('createDemoWebStore', () => {
       now: () => '2026-09-06T02:00:00.000Z',
     });
     expect(second.restoredFromSnapshot).toBe(true);
+    expect(second.config.tenant.id).toBe(first.config.tenant.id);
 
     const restoredCart = await second.store.cartSurface.getOrCreateBySession({ sessionId });
     expect(restoredCart.lines).toHaveLength(1);
     expect(restoredCart.lines[0]?.sku).toBe('MILK-1L');
     expect(restoredCart.lines[0]?.quantity).toBe(2);
+  });
+
+  it('keeps per-tenant snapshots isolated', async () => {
+    const snapshotStore = createMemoryWebDemoSnapshotStore();
+    const grocery = await createDemoWebStore({
+      sessionId: 'sess-g',
+      snapshotStore,
+      launch: { businessName: 'G Mart', vertical: 'grocery' },
+      now: () => '2026-09-06T05:00:00.000Z',
+      createId: (() => {
+        let n = 0;
+        return () => `g-${++n}`;
+      })(),
+    });
+    const restaurant = await createDemoWebStore({
+      sessionId: 'sess-r',
+      snapshotStore,
+      launch: { businessName: 'R Kitchen', vertical: 'restaurant' },
+      now: () => '2026-09-06T05:01:00.000Z',
+      createId: (() => {
+        let n = 0;
+        return () => `r-${++n}`;
+      })(),
+    });
+    expect(grocery.config.tenant.id).not.toBe(restaurant.config.tenant.id);
+
+    const gProducts = await grocery.store.catalogSurface.listActiveProducts();
+    const gCart = await grocery.store.cartSurface.getOrCreateBySession({ sessionId: 'sess-g' });
+    await grocery.store.cartSurface.addItemFromCatalog({
+      cartId: gCart.id,
+      productId: gProducts[0]!.id,
+      variantId: gProducts[0]!.variants[0]!.id,
+    });
+
+    const rReload = await createDemoWebStore({
+      sessionId: 'sess-r',
+      snapshotStore,
+      launch: {
+        businessName: 'R Kitchen',
+        vertical: 'restaurant',
+        tenantId: restaurant.config.tenant.id,
+        slug: restaurant.config.tenant.slug,
+      },
+      now: () => '2026-09-06T05:02:00.000Z',
+      createId: (() => {
+        let n = 100;
+        return () => `r2-${++n}`;
+      })(),
+    });
+    const rCart = await rReload.store.cartSurface.getOrCreateBySession({ sessionId: 'sess-r' });
+    expect(rCart.lines).toHaveLength(0);
+
+    const gReload = await createDemoWebStore({
+      sessionId: 'sess-g',
+      snapshotStore,
+      launch: {
+        businessName: 'G Mart',
+        vertical: 'grocery',
+        tenantId: grocery.config.tenant.id,
+        slug: grocery.config.tenant.slug,
+      },
+      now: () => '2026-09-06T05:03:00.000Z',
+      createId: (() => {
+        let n = 200;
+        return () => `g2-${++n}`;
+      })(),
+    });
+    expect(gReload.restoredFromSnapshot).toBe(true);
+    const gRestored = await gReload.store.cartSurface.getOrCreateBySession({ sessionId: 'sess-g' });
+    expect(gRestored.lines).toHaveLength(1);
   });
 
   it('clear + recreate drops cart and reseeds catalog', async () => {
@@ -94,14 +165,18 @@ describe('createDemoWebStore', () => {
       variantId: products[0]!.variants[0]!.id,
     });
 
-    const exported = await exportWebDemoSnapshot(snapshotStore);
+    const exported = await exportWebDemoSnapshot(snapshotStore, {
+      tenantId: first.config.tenant.id,
+    });
     expect(exported).toBeTruthy();
     expect(summarizeWebDemoSnapshot(parseWebDemoSnapshot(exported)!).carts).toBeGreaterThanOrEqual(
       1,
     );
 
-    await clearWebDemoSnapshot(snapshotStore);
-    expect(await exportWebDemoSnapshot(snapshotStore)).toBeNull();
+    await clearWebDemoSnapshot(snapshotStore, { tenantId: first.config.tenant.id });
+    expect(
+      await exportWebDemoSnapshot(snapshotStore, { tenantId: first.config.tenant.id }),
+    ).toBeNull();
 
     const fresh = await createDemoWebStore({
       sessionId: 'reset-sess-2',

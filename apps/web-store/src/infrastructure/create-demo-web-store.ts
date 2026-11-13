@@ -19,8 +19,8 @@ import {
   type DemoLaunchVertical,
 } from '../demo/build-launch-config.js';
 import {
-  WEB_DEMO_SNAPSHOT_KEY,
   parseWebDemoSnapshot,
+  webDemoSnapshotKey,
   type WebDemoCommerceSnapshot,
   type WebDemoSnapshotStore,
 } from '../demo/demo-snapshot.js';
@@ -128,13 +128,14 @@ export async function createDemoWebStore(
     payments: paymentRepo.dump(),
   });
 
+  const snapshotKey = webDemoSnapshotKey(tenantId);
   let persistQueue: Promise<void> = Promise.resolve();
   const persist = async () => {
     if (!options.snapshotStore) {
       return;
     }
     persistQueue = persistQueue.then(async () => {
-      await options.snapshotStore!.setItem(WEB_DEMO_SNAPSHOT_KEY, JSON.stringify(buildSnapshot()));
+      await options.snapshotStore!.setItem(snapshotKey, JSON.stringify(buildSnapshot()));
     });
     await persistQueue;
   };
@@ -170,9 +171,7 @@ export async function createDemoWebStore(
   });
 
   let restoredFromSnapshot = false;
-  const raw = options.snapshotStore
-    ? await options.snapshotStore.getItem(WEB_DEMO_SNAPSHOT_KEY)
-    : null;
+  const raw = options.snapshotStore ? await options.snapshotStore.getItem(snapshotKey) : null;
   const snapshot = parseWebDemoSnapshot(raw);
 
   if (snapshot && snapshot.products.length > 0) {

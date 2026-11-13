@@ -2,7 +2,7 @@ import { useMemo, useState, type CSSProperties, type FormEvent, type ReactNode }
 
 import type { DemoLaunchVertical } from '@ai-commerce/web-store';
 
-import { LAUNCH_VERTICAL_OPTIONS } from './launch-profile.js';
+import { LAUNCH_VERTICAL_OPTIONS, type StoredLaunchProfile } from './launch-profile.js';
 
 export interface LaunchWizardSubmit {
   businessName: string;
@@ -13,14 +13,16 @@ export interface LaunchWizardSubmit {
 export interface LaunchWizardProps {
   busy?: boolean;
   error?: string | null;
+  recentProfiles?: readonly StoredLaunchProfile[];
   onLaunch: (input: LaunchWizardSubmit) => void;
+  onOpenProfile?: (profile: StoredLaunchProfile) => void;
 }
 
 /**
- * Boom launch form — live brand preview tinted by the selected vertical.
+ * Boom launch form — live brand preview tinted by the selected vertical theme tokens.
  */
 export function LaunchWizard(props: LaunchWizardProps): ReactNode {
-  const { busy = false, error, onLaunch } = props;
+  const { busy = false, error, recentProfiles = [], onLaunch, onOpenProfile } = props;
   const [businessName, setBusinessName] = useState('');
   const [logoUrl, setLogoUrl] = useState('');
   const [vertical, setVertical] = useState<DemoLaunchVertical>('grocery');
@@ -31,9 +33,15 @@ export function LaunchWizard(props: LaunchWizardProps): ReactNode {
   );
 
   const previewName = businessName.trim() || 'Your business';
-  const accent = selected.accent;
+  const theme = selected.theme;
   const pageStyle = {
-    ['--launch-accent' as string]: accent,
+    ['--launch-accent' as string]: theme.primary,
+    ['--launch-primary' as string]: theme.primary,
+    ['--launch-secondary' as string]: theme.secondary,
+    ['--launch-surface' as string]: theme.surface,
+    ['--launch-bg' as string]: theme.background,
+    ['--launch-text' as string]: theme.text,
+    ['--launch-text-muted' as string]: theme.textMuted,
   } as CSSProperties;
 
   const onSubmit = (event: FormEvent) => {
@@ -76,12 +84,46 @@ export function LaunchWizard(props: LaunchWizardProps): ReactNode {
             {previewName}
           </h1>
           <p className="launch-preview-tagline">{selected.hint}</p>
+          <div
+            className="launch-token-row"
+            data-testid="launch-theme-tokens"
+            aria-label="Theme tokens"
+          >
+            <TokenSwatch label="Primary" color={theme.primary} testId="launch-token-primary" />
+            <TokenSwatch
+              label="Secondary"
+              color={theme.secondary}
+              testId="launch-token-secondary"
+            />
+            <TokenSwatch label="Surface" color={theme.surface} testId="launch-token-surface" />
+          </div>
         </section>
 
         <form className="launch-form" onSubmit={onSubmit}>
           <p className="launch-eyebrow">CommerceOS</p>
           <h2 className="launch-title">Launch your app</h2>
           <p className="launch-sub">Name, logo, app type — then Boom.</p>
+
+          {recentProfiles.length > 0 && onOpenProfile ? (
+            <div className="launch-recent" data-testid="launch-recent-profiles">
+              <p className="launch-recent-label">Recent apps</p>
+              <div className="launch-recent-list">
+                {recentProfiles.slice(0, 6).map((profile) => (
+                  <button
+                    key={profile.tenantId}
+                    type="button"
+                    className="launch-recent-item"
+                    data-testid={`launch-recent-${profile.slug ?? profile.tenantId}`}
+                    disabled={busy}
+                    onClick={() => onOpenProfile(profile)}
+                  >
+                    <span className="launch-recent-name">{profile.businessName}</span>
+                    <span className="launch-recent-meta">{profile.vertical}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : null}
 
           <label className="launch-field">
             <span>Business name</span>
@@ -150,6 +192,18 @@ export function LaunchWizard(props: LaunchWizardProps): ReactNode {
           </button>
         </form>
       </div>
+    </div>
+  );
+}
+
+function TokenSwatch(props: { label: string; color: string; testId: string }): ReactNode {
+  return (
+    <div className="launch-token" data-testid={props.testId}>
+      <span className="launch-token-swatch" style={{ background: props.color }} aria-hidden />
+      <span className="launch-token-meta">
+        <span className="launch-token-label">{props.label}</span>
+        <span className="launch-token-value">{props.color}</span>
+      </span>
     </div>
   );
 }

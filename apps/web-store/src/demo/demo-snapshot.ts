@@ -4,7 +4,7 @@ import type { CheckoutSession } from '@ai-commerce/module-checkout';
 import type { Order } from '@ai-commerce/module-order';
 import type { PaymentIntent } from '@ai-commerce/module-payment';
 
-/** localStorage / memory key for the web demo commerce snapshot. */
+/** localStorage / memory key prefix for the web demo commerce snapshot. */
 export const WEB_DEMO_SNAPSHOT_KEY = '@ai-commerce/web-demo/snapshot/v2';
 
 export interface WebDemoSnapshotStore {
@@ -24,6 +24,12 @@ export interface WebDemoCommerceSnapshot {
   checkouts: CheckoutSession[];
   orders: Order[];
   payments: PaymentIntent[];
+}
+
+/** Per-tenant snapshot key (falls back to legacy global key when id omitted). */
+export function webDemoSnapshotKey(tenantId?: string): string {
+  const id = tenantId?.trim();
+  return id ? `${WEB_DEMO_SNAPSHOT_KEY}:${id}` : WEB_DEMO_SNAPSHOT_KEY;
 }
 
 export function createMemoryWebDemoSnapshotStore(
@@ -61,19 +67,26 @@ export function parseWebDemoSnapshot(
 }
 
 /** Remove the durable demo snapshot so the next bootstrap reseeds a fresh catalog. */
-export async function clearWebDemoSnapshot(store: WebDemoSnapshotStore): Promise<void> {
+export async function clearWebDemoSnapshot(
+  store: WebDemoSnapshotStore,
+  options?: { tenantId?: string },
+): Promise<void> {
+  const key = webDemoSnapshotKey(options?.tenantId);
   if (typeof store.removeItem === 'function') {
-    await store.removeItem(WEB_DEMO_SNAPSHOT_KEY);
+    await store.removeItem(key);
     return;
   }
-  await store.setItem(WEB_DEMO_SNAPSHOT_KEY, '');
+  await store.setItem(key, '');
 }
 
 /**
  * Pretty-printed snapshot JSON for export / share, or `null` when nothing is stored.
  */
-export async function exportWebDemoSnapshot(store: WebDemoSnapshotStore): Promise<string | null> {
-  const raw = await store.getItem(WEB_DEMO_SNAPSHOT_KEY);
+export async function exportWebDemoSnapshot(
+  store: WebDemoSnapshotStore,
+  options?: { tenantId?: string },
+): Promise<string | null> {
+  const raw = await store.getItem(webDemoSnapshotKey(options?.tenantId));
   const snapshot = parseWebDemoSnapshot(raw);
   if (!snapshot) {
     return null;

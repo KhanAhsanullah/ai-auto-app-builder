@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Multi-profile Boom switcher** (Sprint 24 Task 2) — `@ai-commerce/web-host` + web-store
+  - Persist recent apps; toolbar switcher + wizard recent list
+  - Per-tenant snapshot/session keys; live theme-token preview in launch wizard
+
 - **Staging demo runbook** (Sprint 30 Task 3) — `docs/runbooks/staging-demo.md`
   - Env vars, smoke checklist, client / published URL template
   - `infra/docker/.env.demo.example` + validate includes runbook
