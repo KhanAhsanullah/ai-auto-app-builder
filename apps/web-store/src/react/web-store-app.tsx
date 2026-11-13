@@ -1,9 +1,11 @@
 import { useCallback, useMemo, useState, type ReactNode } from 'react';
 
 import type { WebStore } from '../domain/web-store.js';
+import { WebAboutScreen } from './screens/web-about-screen.js';
 import { WebCartScreen } from './screens/web-cart-screen.js';
 import { WebCatalogScreen } from './screens/web-catalog-screen.js';
 import { WebCheckoutScreen } from './screens/web-checkout-screen.js';
+import { WebContactScreen } from './screens/web-contact-screen.js';
 import { WebHomeScreen } from './screens/web-home-screen.js';
 import { WebOrdersScreen } from './screens/web-orders-screen.js';
 import { WebPaymentConfirmScreen } from './screens/web-payment-confirm-screen.js';
@@ -170,6 +172,20 @@ function DefaultCommerceContent(props: {
         onOpenProduct={store.isCatalogAvailable() ? onOpenProduct : undefined}
       />
     );
+  }
+  if (route === 'store.about') {
+    return (
+      <WebAboutScreen
+        brandName={props.brandName}
+        tagline={props.tagline}
+        verticalLabel={props.vertical}
+        onShop={store.isCatalogAvailable() ? () => onNavigate('store.catalog') : undefined}
+        onContact={() => onNavigate('store.contact')}
+      />
+    );
+  }
+  if (route === 'store.contact') {
+    return <WebContactScreen brandName={props.brandName} tagline={props.tagline} />;
   }
   if (route === 'store.product' && store.isCatalogAvailable() && productSlug) {
     return (

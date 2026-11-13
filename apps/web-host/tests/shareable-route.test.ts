@@ -47,6 +47,19 @@ describe('shareable-route', () => {
     expect(buildShareablePath('Spice-Route')).toBe('/t/spice-route');
     expect(buildShareablePath('spice-route', 'store.cart')).toBe('/t/spice-route/cart');
     expect(buildShareablePath('spice-route', 'store.orders')).toBe('/t/spice-route/orders');
+    expect(buildShareablePath('spice-route', 'store.about')).toBe('/t/spice-route/about');
+    expect(buildShareablePath('spice-route', 'store.contact')).toBe('/t/spice-route/contact');
+  });
+
+  it('parses about and contact screens', () => {
+    expect(parseShareablePath('/t/spice-route/about')).toEqual({
+      slug: 'spice-route',
+      route: 'store.about',
+    });
+    expect(parseShareablePath('/t/spice-route/contact')).toEqual({
+      slug: 'spice-route',
+      route: 'store.contact',
+    });
   });
 
   it('normalizes store routes', () => {

@@ -85,6 +85,16 @@ export function createDefaultWebScreens(): WebScreenDefinition[] {
       description: 'Featured products and store highlights.',
     },
     {
+      route: 'store.about',
+      title: 'About',
+      description: 'Our story and what we offer.',
+    },
+    {
+      route: 'store.contact',
+      title: 'Contact',
+      description: 'Reach the store team.',
+    },
+    {
       route: 'store.catalog',
       title: 'Shop',
       description: 'Browse the catalog.',

@@ -56,6 +56,17 @@ export function WebFooter(props: WebFooterProps): ReactNode {
           </ul>
         </nav>
       ) : null}
+      <div
+        data-testid="web-footer-meta"
+        style={{
+          display: 'grid',
+          gap: '0.35rem',
+          marginBottom: props.copyrightText || props.showPoweredBy ? '0.75rem' : 0,
+        }}
+      >
+        <p style={{ margin: 0 }}>Customer care · Mon–Sat 10:00–20:00</p>
+        <p style={{ margin: 0 }}>Orders &amp; returns · in-app Orders screen</p>
+      </div>
       {props.copyrightText ? (
         <p data-testid="web-footer-copyright" style={{ margin: 0 }}>
           {props.copyrightText}

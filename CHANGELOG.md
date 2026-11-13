@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **About / Contact pages** (Sprint 31 Task 2) — `@ai-commerce/web-store` + web-host
+  - `store.about` / `store.contact` screens + footer care meta
+  - Nav/footer enrichment for Boom tenants; shareable `/t/:slug/about|contact`
+
 - **Richer storefront** (Sprint 31 Task 1) — `@ai-commerce/web-store` + web-host
   - Home trust strip + featured products; product detail (`store.product`)
   - Catalog search + broken-image fallback; header Cart + brand → home

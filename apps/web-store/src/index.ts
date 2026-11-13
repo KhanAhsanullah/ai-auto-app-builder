@@ -39,6 +39,7 @@ export type {
   CreateDemoWebStoreOptions,
   DemoWebStoreBundle,
 } from './infrastructure/create-demo-web-store.js';
+export { enrichStorefrontNav } from './demo/enrich-storefront-nav.js';
 export {
   WEB_DEMO_SNAPSHOT_KEY,
   clearWebDemoSnapshot,

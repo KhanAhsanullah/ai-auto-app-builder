@@ -1,4 +1,6 @@
 import { ConfigProvider, type ConfigLayer } from '@ai-commerce/config-runtime';
+
+import { enrichStorefrontNav } from '../demo/enrich-storefront-nav.js';
 import type { TenantConfiguration } from '@ai-commerce/config-schema';
 import { createCartModule, InMemoryCartRepository } from '@ai-commerce/module-cart';
 import { createCatalogModule, InMemoryCatalogRepository } from '@ai-commerce/module-catalog';
@@ -87,8 +89,10 @@ export async function createDemoWebStore(
 
   const built =
     !options.tenantConfig && options.launch ? buildDemoLaunchConfig(options.launch) : undefined;
+  const baseLayer =
+    (options.tenantConfig as ConfigLayer | undefined) ?? built?.tenantLayer ?? demoTenantLayer;
   const tenantLayer = withDemoSurfaceFlags(
-    (options.tenantConfig as ConfigLayer | undefined) ?? built?.tenantLayer ?? demoTenantLayer,
+    enrichStorefrontNav(baseLayer as Record<string, unknown>) as ConfigLayer,
   );
 
   const provider = new ConfigProvider({ cache: false });
@@ -203,7 +207,7 @@ export async function createDemoWebStore(
     checkout,
     orders,
     payments,
-    initialRoute: 'store.catalog',
+    initialRoute: 'store.home',
   });
 
   return {

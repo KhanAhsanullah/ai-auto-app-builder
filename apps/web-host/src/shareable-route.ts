@@ -1,6 +1,8 @@
 /** Store routes that can appear in shareable `/t/:slug/...` URLs. */
 export const SHAREABLE_STORE_ROUTES = [
   'store.home',
+  'store.about',
+  'store.contact',
   'store.catalog',
   'store.cart',
   'store.checkout',
@@ -20,6 +22,8 @@ export interface ShareablePath {
 
 const SCREEN_TO_PATH: Record<ShareableStoreRoute, string> = {
   'store.home': 'home',
+  'store.about': 'about',
+  'store.contact': 'contact',
   'store.catalog': 'catalog',
   'store.cart': 'cart',
   'store.checkout': 'checkout',

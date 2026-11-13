@@ -147,13 +147,22 @@ export function buildDemoLaunchConfig(input: DemoLaunchInput): BuiltDemoLaunch {
   webNav.primary = [
     { id: 'home', label: 'Home', route: 'store.home', icon: 'home' },
     { id: 'shop', label: shopLabel, route: 'store.catalog', icon: 'shopping-bag' },
+    { id: 'about', label: 'About', route: 'store.about', icon: 'info' },
+    { id: 'contact', label: 'Contact', route: 'store.contact', icon: 'mail' },
     { id: 'cart', label: 'Cart', route: 'store.cart', icon: 'cart' },
+  ];
+  webNav.footer = [
+    { id: 'about', label: 'About', route: 'store.about' },
+    { id: 'contact', label: 'Contact', route: 'store.contact' },
+    { id: 'shop', label: 'Shop', route: 'store.catalog' },
   ];
   navigation.web = webNav;
   const mobileNav = { ...((navigation.mobile as Record<string, unknown>) ?? {}) };
   mobileNav.primary = [
     { id: 'home', label: 'Home', route: 'store.home', icon: 'home' },
     { id: 'shop', label: shopLabel, route: 'store.catalog', icon: 'shopping-bag' },
+    { id: 'about', label: 'About', route: 'store.about', icon: 'info' },
+    { id: 'contact', label: 'Contact', route: 'store.contact', icon: 'mail' },
     { id: 'cart', label: 'Cart', route: 'store.cart', icon: 'cart' },
   ];
   navigation.mobile = mobileNav;

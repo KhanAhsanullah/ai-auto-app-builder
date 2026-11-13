@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 
 import type { WebShellViewModel } from '../domain/build-web-shell-view-model.js';
+import type { ResolvedWebNavItem } from '../types.js';
 import { WebFooter } from './web-footer.js';
 import { WebHeader } from './web-header.js';
 import { WebTopNav } from './web-top-nav.js';
@@ -70,11 +71,27 @@ export function WebShellLayout(props: WebShellLayoutProps): ReactNode {
         )}
       </main>
       <WebFooter
-        items={footerNav}
+        items={withContentFooterLinks(footerNav)}
         copyrightText={shell.branding.copyrightText}
         showPoweredBy={shell.branding.showPoweredBy}
         onNavigate={onNavigate}
       />
     </div>
   );
+}
+
+const CONTENT_FOOTER_LINKS: readonly ResolvedWebNavItem[] = [
+  { id: 'about', label: 'About', route: 'store.about' },
+  { id: 'contact', label: 'Contact', route: 'store.contact' },
+  { id: 'shop', label: 'Shop', route: 'store.catalog' },
+];
+
+function withContentFooterLinks(footerNav: readonly ResolvedWebNavItem[]): ResolvedWebNavItem[] {
+  const merged = [...footerNav];
+  for (const link of CONTENT_FOOTER_LINKS) {
+    if (!merged.some((item) => item.route === link.route)) {
+      merged.push(link);
+    }
+  }
+  return merged;
 }
