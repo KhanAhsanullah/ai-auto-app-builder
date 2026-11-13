@@ -2,6 +2,12 @@ import type { CatalogModule } from '@ai-commerce/module-catalog';
 
 import type { DemoLaunchVertical } from './build-launch-config.js';
 
+interface SeedCategory {
+  slug: string;
+  name: string;
+  sortOrder: number;
+}
+
 interface SeedProduct {
   slug: string;
   name: string;
@@ -10,7 +16,41 @@ interface SeedProduct {
   amount: number;
   /** Public demo image (Unsplash) — shown on catalog cards. */
   imageUrl: string;
+  categorySlug: string;
 }
+
+const CATEGORIES: Record<DemoLaunchVertical, readonly SeedCategory[]> = {
+  grocery: [
+    { slug: 'staples', name: 'Staples', sortOrder: 1 },
+    { slug: 'dairy', name: 'Dairy', sortOrder: 2 },
+    { slug: 'protein', name: 'Protein', sortOrder: 3 },
+  ],
+  restaurant: [
+    { slug: 'mains', name: 'Mains', sortOrder: 1 },
+    { slug: 'burgers', name: 'Burgers', sortOrder: 2 },
+    { slug: 'drinks', name: 'Drinks', sortOrder: 3 },
+  ],
+  pharmacy: [
+    { slug: 'medicine', name: 'Medicine', sortOrder: 1 },
+    { slug: 'vitamins', name: 'Vitamins', sortOrder: 2 },
+    { slug: 'hygiene', name: 'Hygiene', sortOrder: 3 },
+  ],
+  ecommerce: [
+    { slug: 'home', name: 'Home', sortOrder: 1 },
+    { slug: 'bags', name: 'Bags', sortOrder: 2 },
+    { slug: 'outdoors', name: 'Outdoors', sortOrder: 3 },
+  ],
+  fashion: [
+    { slug: 'tops', name: 'Tops', sortOrder: 1 },
+    { slug: 'bottoms', name: 'Bottoms', sortOrder: 2 },
+    { slug: 'footwear', name: 'Footwear', sortOrder: 3 },
+  ],
+  electronics: [
+    { slug: 'audio', name: 'Audio', sortOrder: 1 },
+    { slug: 'power', name: 'Power', sortOrder: 2 },
+    { slug: 'accessories', name: 'Accessories', sortOrder: 3 },
+  ],
+};
 
 const SEEDS: Record<DemoLaunchVertical, readonly SeedProduct[]> = {
   grocery: [
@@ -20,6 +60,7 @@ const SEEDS: Record<DemoLaunchVertical, readonly SeedProduct[]> = {
       sku: 'ATTA-5KG',
       title: '5kg',
       amount: 1200,
+      categorySlug: 'staples',
       imageUrl:
         'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=640&h=480&q=80',
     },
@@ -29,6 +70,7 @@ const SEEDS: Record<DemoLaunchVertical, readonly SeedProduct[]> = {
       sku: 'MILK-1L',
       title: '1L',
       amount: 280,
+      categorySlug: 'dairy',
       imageUrl:
         'https://images.unsplash.com/photo-1563636619-e9143da7973b?auto=format&fit=crop&w=640&h=480&q=80',
     },
@@ -38,6 +80,7 @@ const SEEDS: Record<DemoLaunchVertical, readonly SeedProduct[]> = {
       sku: 'EGG-12',
       title: 'Dozen',
       amount: 450,
+      categorySlug: 'protein',
       imageUrl:
         'https://images.unsplash.com/photo-1582722878920-8aa2740b54d2?auto=format&fit=crop&w=640&h=480&q=80',
     },
@@ -49,6 +92,7 @@ const SEEDS: Record<DemoLaunchVertical, readonly SeedProduct[]> = {
       sku: 'BRY-1',
       title: 'Plate',
       amount: 650,
+      categorySlug: 'mains',
       imageUrl:
         'https://images.unsplash.com/photo-1563379091339-03b544bad65d?auto=format&fit=crop&w=640&h=480&q=80',
     },
@@ -58,6 +102,7 @@ const SEEDS: Record<DemoLaunchVertical, readonly SeedProduct[]> = {
       sku: 'BRG-1',
       title: 'Single',
       amount: 890,
+      categorySlug: 'burgers',
       imageUrl:
         'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=640&h=480&q=80',
     },
@@ -67,6 +112,7 @@ const SEEDS: Record<DemoLaunchVertical, readonly SeedProduct[]> = {
       sku: 'CHAI-1',
       title: 'Cup',
       amount: 150,
+      categorySlug: 'drinks',
       imageUrl:
         'https://images.unsplash.com/photo-1571934811356-5cc061b6821f?auto=format&fit=crop&w=640&h=480&q=80',
     },
@@ -78,6 +124,7 @@ const SEEDS: Record<DemoLaunchVertical, readonly SeedProduct[]> = {
       sku: 'PCM-500',
       title: 'Pack',
       amount: 120,
+      categorySlug: 'medicine',
       imageUrl:
         'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=640&h=480&q=80',
     },
@@ -87,6 +134,7 @@ const SEEDS: Record<DemoLaunchVertical, readonly SeedProduct[]> = {
       sku: 'VITC-1',
       title: 'Bottle',
       amount: 450,
+      categorySlug: 'vitamins',
       imageUrl:
         'https://images.unsplash.com/photo-1550572017-edd951b55104?auto=format&fit=crop&w=640&h=480&q=80',
     },
@@ -96,6 +144,7 @@ const SEEDS: Record<DemoLaunchVertical, readonly SeedProduct[]> = {
       sku: 'SAN-1',
       title: '250ml',
       amount: 320,
+      categorySlug: 'hygiene',
       imageUrl:
         'https://images.unsplash.com/photo-1584744982491-665216d95f8b?auto=format&fit=crop&w=640&h=480&q=80',
     },
@@ -107,6 +156,7 @@ const SEEDS: Record<DemoLaunchVertical, readonly SeedProduct[]> = {
       sku: 'MUG-1',
       title: 'Standard',
       amount: 799,
+      categorySlug: 'home',
       imageUrl:
         'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?auto=format&fit=crop&w=640&h=480&q=80',
     },
@@ -116,6 +166,7 @@ const SEEDS: Record<DemoLaunchVertical, readonly SeedProduct[]> = {
       sku: 'BAG-1',
       title: 'One size',
       amount: 3499,
+      categorySlug: 'bags',
       imageUrl:
         'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=640&h=480&q=80',
     },
@@ -125,6 +176,7 @@ const SEEDS: Record<DemoLaunchVertical, readonly SeedProduct[]> = {
       sku: 'BTL-1',
       title: '750ml',
       amount: 1299,
+      categorySlug: 'outdoors',
       imageUrl:
         'https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=640&h=480&q=80',
     },
@@ -136,6 +188,7 @@ const SEEDS: Record<DemoLaunchVertical, readonly SeedProduct[]> = {
       sku: 'TEE-M',
       title: 'M',
       amount: 1499,
+      categorySlug: 'tops',
       imageUrl:
         'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=640&h=480&q=80',
     },
@@ -145,6 +198,7 @@ const SEEDS: Record<DemoLaunchVertical, readonly SeedProduct[]> = {
       sku: 'JNS-32',
       title: '32',
       amount: 3999,
+      categorySlug: 'bottoms',
       imageUrl:
         'https://images.unsplash.com/photo-1542272454315-4c01d7e91c1d?auto=format&fit=crop&w=640&h=480&q=80',
     },
@@ -154,6 +208,7 @@ const SEEDS: Record<DemoLaunchVertical, readonly SeedProduct[]> = {
       sku: 'SNK-42',
       title: '42',
       amount: 5499,
+      categorySlug: 'footwear',
       imageUrl:
         'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=640&h=480&q=80',
     },
@@ -165,6 +220,7 @@ const SEEDS: Record<DemoLaunchVertical, readonly SeedProduct[]> = {
       sku: 'EAR-1',
       title: 'Pair',
       amount: 4999,
+      categorySlug: 'audio',
       imageUrl:
         'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=640&h=480&q=80',
     },
@@ -174,6 +230,7 @@ const SEEDS: Record<DemoLaunchVertical, readonly SeedProduct[]> = {
       sku: 'CHG-30',
       title: '30W',
       amount: 2199,
+      categorySlug: 'power',
       imageUrl:
         'https://images.unsplash.com/photo-1583863780914-42ea22473562?auto=format&fit=crop&w=640&h=480&q=80',
     },
@@ -183,11 +240,49 @@ const SEEDS: Record<DemoLaunchVertical, readonly SeedProduct[]> = {
       sku: 'CSE-1',
       title: 'Universal',
       amount: 999,
+      categorySlug: 'accessories',
       imageUrl:
         'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?auto=format&fit=crop&w=640&h=480&q=80',
     },
   ],
 };
+
+/** Category slug for a seeded vertical product (platform hydrate path). */
+export function categorySlugForVerticalProduct(
+  vertical: DemoLaunchVertical,
+  productSlug: string,
+): string | undefined {
+  return SEEDS[vertical].find((product) => product.slug === productSlug)?.categorySlug;
+}
+
+/** Ensure vertical categories exist; returns slug → category id. */
+export async function ensureVerticalCategories(input: {
+  catalog: CatalogModule;
+  tenantId: string;
+  vertical: DemoLaunchVertical;
+}): Promise<Map<string, string>> {
+  const bySlug = new Map<string, string>();
+  const existing = await input.catalog.listCategories(input.tenantId);
+  for (const category of existing) {
+    bySlug.set(category.slug, category.id);
+  }
+
+  for (const seed of CATEGORIES[input.vertical]) {
+    const found = bySlug.get(seed.slug);
+    if (found) {
+      continue;
+    }
+    const created = await input.catalog.createCategory({
+      tenantId: input.tenantId,
+      slug: seed.slug,
+      name: seed.name,
+      sortOrder: seed.sortOrder,
+    });
+    bySlug.set(created.slug, created.id);
+  }
+
+  return bySlug;
+}
 
 /** Seed three demo catalog products for the selected vertical. */
 export async function seedVerticalDemoCatalog(input: {
@@ -195,12 +290,16 @@ export async function seedVerticalDemoCatalog(input: {
   tenantId: string;
   vertical: DemoLaunchVertical;
 }): Promise<void> {
+  const categoryIds = await ensureVerticalCategories(input);
+
   for (const product of SEEDS[input.vertical]) {
+    const categoryId = categoryIds.get(product.categorySlug);
     await input.catalog.createProduct({
       tenantId: input.tenantId,
       slug: product.slug,
       name: product.name,
       status: 'active',
+      categoryIds: categoryId ? [categoryId] : undefined,
       variants: [
         {
           sku: product.sku,

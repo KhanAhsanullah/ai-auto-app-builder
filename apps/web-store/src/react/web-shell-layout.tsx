@@ -48,6 +48,7 @@ export function WebShellLayout(props: WebShellLayoutProps): ReactNode {
         ['--web-header-bg' as string]: theme.surface,
       }}
     >
+      <style>{STOREFRONT_MOBILE_CSS}</style>
       <WebHeader
         brandName={shell.branding.displayName}
         title={activeScreen.title}
@@ -60,6 +61,7 @@ export function WebShellLayout(props: WebShellLayoutProps): ReactNode {
       <WebTopNav items={primaryNav} activeRoute={viewModel.activeRoute} onNavigate={onNavigate} />
       <main
         data-testid="web-shell-content"
+        className="web-shell-content"
         style={{ flex: 1, padding: '1.25rem', boxSizing: 'border-box' }}
       >
         {children ?? (
@@ -79,6 +81,40 @@ export function WebShellLayout(props: WebShellLayoutProps): ReactNode {
     </div>
   );
 }
+
+/** Narrow-viewport polish for header / nav / catalog grid (Sprint 31 Task 3). */
+const STOREFRONT_MOBILE_CSS = `
+@media (max-width: 640px) {
+  [data-testid="web-header"] {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    padding: 0.85rem 0.9rem !important;
+    gap: 0.65rem !important;
+  }
+  [data-testid="web-header-tagline"],
+  [data-testid="web-header-subtitle"] {
+    display: none;
+  }
+  [data-testid="web-header-title"] {
+    font-size: 1rem !important;
+  }
+  [data-testid="web-top-nav"] {
+    padding: 0.5rem 0.75rem !important;
+    gap: 0.25rem !important;
+  }
+  [data-testid="web-top-nav"] button {
+    padding: 0.4rem 0.6rem !important;
+    font-size: 0.82rem !important;
+  }
+  .web-shell-content {
+    padding: 0.9rem !important;
+  }
+  .web-catalog-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.75rem !important;
+  }
+}
+`;
 
 const CONTENT_FOOTER_LINKS: readonly ResolvedWebNavItem[] = [
   { id: 'about', label: 'About', route: 'store.about' },

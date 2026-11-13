@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
 
-import type { Product } from '@ai-commerce/module-catalog';
+import type { Category, Product } from '@ai-commerce/module-catalog';
 
 import type { WebStore } from '../../domain/web-store.js';
 
@@ -13,32 +13,40 @@ export interface WebCatalogScreenProps {
 }
 
 /**
- * Storefront catalog — searchable product cards (Sprint 31 polish).
+ * Storefront catalog — search + category chips + product cards (Sprint 31).
  */
 export function WebCatalogScreen(props: WebCatalogScreenProps): ReactNode {
   const { store, sessionId, onOpenProduct } = props;
   const [products, setProducts] = useState<Product[] | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [busySku, setBusySku] = useState<string | null>(null);
   const [query, setQuery] = useState('');
+  const [categoryId, setCategoryId] = useState<string | null>(null);
   const canAdd = Boolean(sessionId) && store.isCartAvailable();
 
   useEffect(() => {
     let cancelled = false;
     setProducts(null);
     setError(null);
+    setCategoryId(null);
 
     if (!store.isCatalogAvailable()) {
       setError('Catalog is not available for this store.');
       return;
     }
 
-    void store.catalogSurface
-      .listActiveProducts()
-      .then((list) => {
+    void Promise.all([
+      store.catalogSurface.listActiveProducts(),
+      store.catalogSurface.listCategories().catch(() => [] as Category[]),
+    ])
+      .then(([list, cats]) => {
         if (!cancelled) {
           setProducts(list);
+          setCategories(
+            [...cats].sort((a, b) => a.sortOrder - b.sortOrder || a.name.localeCompare(b.name)),
+          );
         }
       })
       .catch((err: unknown) => {
@@ -57,16 +65,20 @@ export function WebCatalogScreen(props: WebCatalogScreenProps): ReactNode {
       return null;
     }
     const q = query.trim().toLowerCase();
-    if (!q) {
-      return products;
-    }
-    return products.filter(
-      (product) =>
+    return products.filter((product) => {
+      if (categoryId && !product.categoryIds.includes(categoryId)) {
+        return false;
+      }
+      if (!q) {
+        return true;
+      }
+      return (
         product.name.toLowerCase().includes(q) ||
         product.slug.toLowerCase().includes(q) ||
-        product.variants.some((v) => v.sku.toLowerCase().includes(q)),
-    );
-  }, [products, query]);
+        product.variants.some((v) => v.sku.toLowerCase().includes(q))
+      );
+    });
+  }, [products, query, categoryId]);
 
   async function addToCart(product: Product) {
     if (!sessionId || !product.variants[0]) {
@@ -126,9 +138,26 @@ export function WebCatalogScreen(props: WebCatalogScreenProps): ReactNode {
     );
   }
 
+  const selectedCategory = categoryId
+    ? categories.find((category) => category.id === categoryId)
+    : undefined;
+  const noResultsLabel = [
+    query.trim() ? `“${query.trim()}”` : null,
+    selectedCategory ? selectedCategory.name : null,
+  ]
+    .filter(Boolean)
+    .join(' · ');
+
   return (
     <div data-testid="web-catalog-screen" data-state="ready">
-      <div style={{ marginBottom: '1rem' }}>
+      <div
+        data-testid="web-catalog-filters"
+        style={{
+          display: 'grid',
+          gap: '0.85rem',
+          marginBottom: '1rem',
+        }}
+      >
         <label
           style={{
             display: 'grid',
@@ -148,10 +177,40 @@ export function WebCatalogScreen(props: WebCatalogScreenProps): ReactNode {
               borderRadius: '0.5rem',
               padding: '0.65rem 0.75rem',
               font: 'inherit',
-              maxWidth: '24rem',
+              width: '100%',
+              maxWidth: '28rem',
+              boxSizing: 'border-box',
             }}
           />
         </label>
+        {categories.length > 0 ? (
+          <div
+            data-testid="web-catalog-category-chips"
+            role="group"
+            aria-label="Categories"
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '0.45rem',
+            }}
+          >
+            <CategoryChip
+              testId="web-catalog-category-all"
+              label="All"
+              selected={categoryId === null}
+              onClick={() => setCategoryId(null)}
+            />
+            {categories.map((category) => (
+              <CategoryChip
+                key={category.id}
+                testId={`web-catalog-category-${category.slug}`}
+                label={category.name}
+                selected={categoryId === category.id}
+                onClick={() => setCategoryId(category.id)}
+              />
+            ))}
+          </div>
+        ) : null}
       </div>
       {message ? (
         <p data-testid="web-catalog-toast" style={{ margin: '0 0 0.75rem', color: '#047857' }}>
@@ -168,18 +227,19 @@ export function WebCatalogScreen(props: WebCatalogScreenProps): ReactNode {
       ) : null}
       {filtered.length === 0 ? (
         <p data-testid="web-catalog-no-results" style={{ color: 'var(--web-text-muted, #64748b)' }}>
-          No products match “{query.trim()}”.
+          No products match {noResultsLabel || 'these filters'}.
         </p>
       ) : (
         <ul
           data-testid="web-catalog-list"
+          className="web-catalog-grid"
           style={{
             listStyle: 'none',
             margin: 0,
             padding: 0,
             display: 'grid',
             gap: '1rem',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(15rem, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 11rem), 1fr))',
           }}
         >
           {filtered.map((product) => {
@@ -266,6 +326,38 @@ export function WebCatalogScreen(props: WebCatalogScreenProps): ReactNode {
         </ul>
       )}
     </div>
+  );
+}
+
+function CategoryChip(props: {
+  testId: string;
+  label: string;
+  selected: boolean;
+  onClick: () => void;
+}): ReactNode {
+  return (
+    <button
+      type="button"
+      data-testid={props.testId}
+      data-selected={props.selected ? 'true' : 'false'}
+      aria-pressed={props.selected}
+      onClick={props.onClick}
+      style={{
+        border: props.selected
+          ? '1px solid var(--web-brand, #16a34a)'
+          : '1px solid var(--web-border, #e5e7eb)',
+        borderRadius: '0.5rem',
+        padding: '0.4rem 0.85rem',
+        background: props.selected ? 'var(--web-brand, #16a34a)' : 'var(--web-surface, #f9fafb)',
+        color: props.selected ? '#fff' : 'var(--web-text, #0f172a)',
+        cursor: 'pointer',
+        font: 'inherit',
+        fontSize: '0.85rem',
+        fontWeight: 600,
+      }}
+    >
+      {props.label}
+    </button>
   );
 }
 

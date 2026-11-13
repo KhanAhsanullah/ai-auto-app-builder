@@ -416,11 +416,11 @@ End-result focus: client demo without juggling local terminals — one compose (
 | ------ | ------ | ------------------------------------------------------------------------ |
 | Task 1 | ✅     | Home featured + trust strip, product detail, catalog search, cart header |
 | Task 2 | ✅     | About / Contact pages + richer footer content                            |
-| Task 3 | ⬜     | Search filters, category chips, mobile layout polish                     |
+| Task 3 | ✅     | Search filters, category chips, mobile layout polish                     |
 
 End-result focus: Boom store feels like a real shop, not a 3-card skeleton.
 
-**Tags:** `sprint31-task1`, `sprint31-task2`
+**Tags:** `sprint31-task1`, `sprint31-task2`, `sprint31-task3`
 
 ---
 

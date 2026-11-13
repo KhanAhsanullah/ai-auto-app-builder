@@ -6,9 +6,9 @@
 
 ## Current milestone
 
-**Sprint 31 — Richer Storefront** (Task 2 on `sprint/31/task2`).
+**Sprint 31 — Richer Storefront** ✅ complete. Next: Sprint 30 Task 3 (hosted staging runbook).
 
-Sprint 30 demo Docker (Tasks 1–2) + Sprint 31 Task 1 on `main`. See [CLIENT_DEMO.md](./CLIENT_DEMO.md).
+See [CLIENT_DEMO.md](./CLIENT_DEMO.md).
 
 ## Completed Tasks
 
@@ -17,6 +17,8 @@ Sprint 30 demo Docker (Tasks 1–2) + Sprint 31 Task 1 on `main`. See [CLIENT_DE
 | Sprint 1–29 ✅  | Foundation through merchant admin | `sprint*-task*`  |
 | Sprint 30 ✅*   | Demo Docker (Task 3 pending)      | `sprint30-task2` |
 | Sprint 31 T1 ✅ | Home / PDP / catalog search       | `sprint31-task1` |
+| Sprint 31 T2 ✅ | About / Contact + footer          | `sprint31-task2` |
+| Sprint 31 T3 ✅ | Category chips + mobile polish    | `sprint31-task3` |
 
 ## Active Tasks
 
@@ -24,17 +26,18 @@ Sprint 30 demo Docker (Tasks 1–2) + Sprint 31 Task 1 on `main`. See [CLIENT_DE
 | ---------------- | -------------------------------------------------- | ------ |
 | Sprint 31 Task 1 | Home featured + PDP + catalog search + cart header | ✅     |
 | Sprint 31 Task 2 | About / Contact + footer                           | ✅     |
-| Sprint 31 Task 3 | Filters / categories / mobile polish               | ⬜     |
+| Sprint 31 Task 3 | Filters / categories / mobile polish               | ✅     |
+| Sprint 30 Task 3 | Hosted staging runbook                             | ⬜     |
 
 ## Latest Tag
 
 ```
-sprint31-task1
+sprint31-task3
 ```
 
 ## Health Status
 
-| Area       | Status     | Notes                                   |
-| ---------- | ---------- | --------------------------------------- |
-| Repository | ✅ Healthy | Sprint 31 Task 2 in progress            |
-| Client MVP | ✅ Ready   | Boom + richer storefront pages underway |
+| Area       | Status     | Notes                              |
+| ---------- | ---------- | ---------------------------------- |
+| Repository | ✅ Healthy | Sprint 31 complete; Task 3 merging |
+| Client MVP | ✅ Ready   | Richer Boom storefront on main     |

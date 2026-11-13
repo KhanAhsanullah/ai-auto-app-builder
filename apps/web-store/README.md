@@ -14,6 +14,7 @@ Sprint 23 Task 2 — localStorage guest session + durable snapshot + reset/expor
 Sprint 24 Task 1 — Boom launch wizard (any vertical).
 Sprint 25 Task 1 — theme-driven shell + home hero + catalog product cards.
 Sprint 25 Task 2 — cart / checkout visual polish.
+Sprint 31 — richer home/PDP/search, About/Contact, category chips + mobile polish.
 
 ## Modules
 

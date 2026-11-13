@@ -191,6 +191,7 @@ export async function createDemoWebStore(
       catalog,
       tenantId,
       products: options.catalogProducts,
+      vertical: vertical === 'grocery' ? 'grocery' : vertical,
     });
   } else {
     await seedVerticalDemoCatalog({

@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Catalog filters + mobile polish** (Sprint 31 Task 3) — `@ai-commerce/web-store`
+  - Vertical category seeds + Shop category chips with search
+  - Narrow-viewport header / nav / 2-column catalog grid
+
 - **About / Contact pages** (Sprint 31 Task 2) — `@ai-commerce/web-store` + web-host
   - `store.about` / `store.contact` screens + footer care meta
   - Nav/footer enrichment for Boom tenants; shareable `/t/:slug/about|contact`

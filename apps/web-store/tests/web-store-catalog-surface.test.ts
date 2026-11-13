@@ -46,6 +46,31 @@ describe('WebStore catalog surface', () => {
     expect(bySlug.name).toBe('Fresh Milk');
   });
 
+  it('lists categories when catalog is wired', async () => {
+    const catalog = createCatalogModule({
+      now: () => '2026-09-04T04:00:00.000Z',
+      createId: (() => {
+        let n = 0;
+        return () => `id-${++n}`;
+      })(),
+    });
+    await catalog.createCategory({
+      tenantId: TENANT_ID,
+      slug: 'dairy',
+      name: 'Dairy',
+      sortOrder: 1,
+    });
+
+    const store = createWebStore({
+      config: loadResolvedTenantConfig(),
+      catalog,
+    });
+
+    const categories = await store.catalogSurface.listCategories();
+    expect(categories).toHaveLength(1);
+    expect(categories[0]?.slug).toBe('dairy');
+  });
+
   it('throws when catalog is not wired', async () => {
     const store = createWebStore({ config: loadResolvedTenantConfig() });
     expect(store.isCatalogAvailable()).toBe(false);

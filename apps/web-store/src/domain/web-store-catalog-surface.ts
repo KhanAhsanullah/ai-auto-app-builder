@@ -1,5 +1,6 @@
 import type {
   CatalogModule,
+  Category,
   ListProductsOptions,
   Product,
   SearchProductsOptions,
@@ -38,6 +39,10 @@ export class WebStoreCatalogSurface {
     options?: Omit<ListProductsOptions, 'status' | 'activeOnly'>,
   ): Promise<Product[]> {
     return this.requireCatalog().listActiveProducts(this.tenantId, options);
+  }
+
+  async listCategories(): Promise<Category[]> {
+    return this.requireCatalog().listCategories(this.tenantId);
   }
 
   async listProductsByCategory(
