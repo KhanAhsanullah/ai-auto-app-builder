@@ -18,6 +18,8 @@
     "mobile": "pnpm --filter @ai-commerce/mobile-host start",
     "web": "pnpm --filter @ai-commerce/web-host start",
     "admin": "pnpm --filter @ai-commerce/admin-host start",
+    "demo:docker": "docker compose -f infra/docker/docker-compose.demo.yml up --build",
+    "demo:docker:validate": "node infra/docker/validate-demo-compose.mjs",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,mjs,cjs,json,md,yml,yaml}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,mjs,cjs,json,md,yml,yaml}\"",
     "prepare": "husky"

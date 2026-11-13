@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Demo Docker stack** (Sprint 30 Task 1) — `infra/docker`
+  - `docker-compose.demo.yml` + Dockerfiles for platform-api + web-host
+  - `pnpm demo:docker` / `pnpm demo:docker:validate`
+
 - **Merchant catalog CRUD UI** (Sprint 29 Task 3) — `@ai-commerce/admin-host`
   - Admin Catalog screen: create / patch amount / delete via platform-api
   - Storefront reflects changes after refresh of `/t/:slug`

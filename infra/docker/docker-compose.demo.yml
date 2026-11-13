@@ -1,0 +1,51 @@
+# CommerceOS AI — client demo / staging stack (Sprint 30 Task 1)
+#
+# From repo root:
+#   docker compose -f infra/docker/docker-compose.demo.yml up --build
+#
+# Then open http://localhost:5173  (API http://127.0.0.1:8787)
+
+name: ai-commerce-demo
+
+services:
+  platform-api:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.platform-api
+    ports:
+      - '8787:8787'
+    environment:
+      HOST: 0.0.0.0
+      PORT: '8787'
+      TENANT_STORE_PATH: /data/tenants.json
+      CONFIG_STORE_PATH: /data/configs.json
+      CATALOG_STORE_PATH: /data/catalogs.json
+    volumes:
+      - platform-api-data:/data
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "fetch('http://127.0.0.1:8787/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 20s
+
+  web-host:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.web-host
+    ports:
+      - '5173:5173'
+    environment:
+      VITE_PLATFORM_API_URL: http://127.0.0.1:8787
+    depends_on:
+      platform-api:
+        condition: service_healthy
+
+volumes:
+  platform-api-data:

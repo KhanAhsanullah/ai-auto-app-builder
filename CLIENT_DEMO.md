@@ -23,6 +23,17 @@ pnpm web
 Browser: http://localhost:5173  
 (API default: http://127.0.0.1:8787)
 
+### Docker demo stack (staging-style)
+
+Docker installed ho to ek command:
+
+```bash
+pnpm demo:docker
+# same URLs: web :5173 · API :8787
+```
+
+Validate files without Docker: `pnpm demo:docker:validate`
+
 ## 3-minute demo script
 
 1. **Wizard** — business name likho (e.g. _Spice Route_), optional logo URL, vertical pick karo (Restaurant).
@@ -50,4 +61,4 @@ Mobile (optional): `pnpm mobile` (Expo) — same Boom flow; pehle platform-api o
 - Admin dashboard for merchants
 - Real payment provider
 
-Technical status: Sprint 28 complete on `main` (`sprint28-task3`).
+Technical status: Sprint 29 on `main`; Sprint 30 Task 1 demo Docker stack.

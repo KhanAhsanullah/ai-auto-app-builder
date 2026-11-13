@@ -20,4 +20,4 @@ Infrastructure supports multi-environment deployment:
 
 ## Status
 
-Foundation scaffold — IaC definitions in future sprints.
+Sprint 30 Task 1 — demo Docker Compose stack under [docker/](./docker). Terraform/K8s remain scaffold.
