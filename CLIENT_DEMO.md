@@ -29,7 +29,8 @@ Docker installed ho to ek command:
 
 ```bash
 pnpm demo:docker
-# same URLs: web :5173 · API :8787
+# web :5173 · admin :5174 · API :8787
+# shared volume = same Boom tenants in admin
 ```
 
 Validate files without Docker: `pnpm demo:docker:validate`

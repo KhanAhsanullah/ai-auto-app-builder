@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Admin in demo Docker stack** (Sprint 30 Task 2) — `infra/docker`
+  - `Dockerfile.admin-host` + compose service on `:5174`
+  - Shared `platform-api-data` volume docs (Boom + admin same tenants)
+
+- **Demo Docker admin** (Sprint 30 Task 2) — `infra/docker`
+  - `Dockerfile.admin-host` + compose service on `:5174`
+  - Shared `platform-api-data` volume documented (Boom + admin same catalog)
+
 - **Demo Docker stack** (Sprint 30 Task 1) — `infra/docker`
   - `docker-compose.demo.yml` + Dockerfiles for platform-api + web-host
   - `pnpm demo:docker` / `pnpm demo:docker:validate`

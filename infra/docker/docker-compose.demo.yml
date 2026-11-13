@@ -1,9 +1,15 @@
-# CommerceOS AI — client demo / staging stack (Sprint 30 Task 1)
+# CommerceOS AI — client demo / staging stack (Sprint 30)
 #
 # From repo root:
 #   docker compose -f infra/docker/docker-compose.demo.yml up --build
 #
-# Then open http://localhost:5173  (API http://127.0.0.1:8787)
+# URLs:
+#   Web / Boom  http://localhost:5173
+#   Admin       http://localhost:5174
+#   API         http://127.0.0.1:8787
+#
+# Shared data: volume `platform-api-data` holds tenants/configs/catalogs JSON.
+# Boom on web and catalog edits in admin both hit the same platform-api + volume.
 
 name: ai-commerce-demo
 
@@ -47,5 +53,18 @@ services:
       platform-api:
         condition: service_healthy
 
+  admin-host:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.admin-host
+    ports:
+      - '5174:5174'
+    environment:
+      VITE_PLATFORM_API_URL: http://127.0.0.1:8787
+    depends_on:
+      platform-api:
+        condition: service_healthy
+
 volumes:
   platform-api-data:
+    name: ai-commerce-demo-platform-api-data

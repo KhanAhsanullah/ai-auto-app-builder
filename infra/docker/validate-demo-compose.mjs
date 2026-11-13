@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Smoke validation for the demo docker compose stack (Sprint 30 Task 1).
+ * Smoke validation for the demo docker compose stack (Sprint 30).
  * Does not require Docker — checks files + required service keys exist.
  */
 import { readFileSync, existsSync } from 'node:fs';
@@ -14,6 +14,7 @@ const requiredFiles = [
   'infra/docker/docker-compose.demo.yml',
   'infra/docker/Dockerfile.platform-api',
   'infra/docker/Dockerfile.web-host',
+  'infra/docker/Dockerfile.admin-host',
   '.dockerignore',
 ];
 
@@ -26,17 +27,26 @@ for (const rel of requiredFiles) {
   }
 }
 
+const dockerignore = readFileSync(join(repoRoot, '.dockerignore'), 'utf8');
+if (dockerignore.split('\n').some((line) => line.trim() === 'apps/admin-host')) {
+  failures.push('.dockerignore must not exclude apps/admin-host (needed for demo admin image)');
+}
+
 const composePath = join(repoRoot, 'infra/docker/docker-compose.demo.yml');
 const compose = readFileSync(composePath, 'utf8');
 
 for (const needle of [
   'platform-api:',
   'web-host:',
+  'admin-host:',
   '8787:8787',
   '5173:5173',
+  '5174:5174',
   'Dockerfile.platform-api',
   'Dockerfile.web-host',
+  'Dockerfile.admin-host',
   'VITE_PLATFORM_API_URL',
+  'platform-api-data',
   'service_healthy',
 ]) {
   if (!compose.includes(needle)) {
@@ -59,3 +69,4 @@ if (failures.length > 0) {
 
 console.log('demo compose validation ok');
 console.log('run: docker compose -f infra/docker/docker-compose.demo.yml up --build');
+console.log('urls: web :5173 · admin :5174 · api :8787 (shared platform-api-data volume)');
