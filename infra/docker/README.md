@@ -45,7 +45,11 @@ Web Boom launch and admin catalog CRUD both talk to the **same** API + volume â€
 | `Dockerfile.admin-host`     | Vite merchant admin                  |
 | `validate-demo-compose.mjs` | File/structure smoke check           |
 
+## Env overrides
+
+See [`.env.demo.example`](./.env.demo.example). Critical for hosting: set `VITE_PLATFORM_API_URL` to a **browser-reachable** API origin (never `http://platform-api:8787`).
+
 ## Notes
 
 - Browser calls API at `http://127.0.0.1:8787` (host port), not Docker DNS names.
-- Hosted public staging URL / cloud runbook is Sprint 30 Task 3.
+- Full staging runbook (client URL, smoke checklist, public host steps): [docs/runbooks/staging-demo.md](../../docs/runbooks/staging-demo.md).

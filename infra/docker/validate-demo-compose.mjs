@@ -15,6 +15,8 @@ const requiredFiles = [
   'infra/docker/Dockerfile.platform-api',
   'infra/docker/Dockerfile.web-host',
   'infra/docker/Dockerfile.admin-host',
+  'infra/docker/.env.demo.example',
+  'docs/runbooks/staging-demo.md',
   '.dockerignore',
 ];
 
@@ -70,3 +72,4 @@ if (failures.length > 0) {
 console.log('demo compose validation ok');
 console.log('run: docker compose -f infra/docker/docker-compose.demo.yml up --build');
 console.log('urls: web :5173 · admin :5174 · api :8787 (shared platform-api-data volume)');
+console.log('runbook: docs/runbooks/staging-demo.md');

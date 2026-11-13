@@ -35,6 +35,10 @@ pnpm demo:docker
 
 Validate files without Docker: `pnpm demo:docker:validate`
 
+**Staging / client URL runbook** (env vars, smoke checklist, hosted publish steps): [docs/runbooks/staging-demo.md](./docs/runbooks/staging-demo.md).
+
+**Published staging URL (fill when live):** `_______________________________` (web) · admin / API in the runbook.
+
 ## 3-minute demo script
 
 1. **Wizard** — business name likho (e.g. _Spice Route_), optional logo URL, vertical pick karo (Restaurant).
@@ -62,4 +66,4 @@ Mobile (optional): `pnpm mobile` (Expo) — same Boom flow; pehle platform-api o
 - Admin dashboard for merchants
 - Real payment provider
 
-Technical status: Sprint 29 on `main`; Sprint 30 Task 1 demo Docker stack.
+Technical status: Sprint 31 richer storefront on `main`; Sprint 30 demo Docker + staging runbook.

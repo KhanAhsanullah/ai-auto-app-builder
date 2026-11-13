@@ -402,11 +402,11 @@ End-result focus: after Boom, merchant can change real catalog data (not only se
 | ------ | ------ | ------------------------------------------------------------------------ |
 | Task 1 | ✅     | Docker Compose demo stack — platform-api + web-host (`pnpm demo:docker`) |
 | Task 2 | ✅     | Admin host in demo compose + shared data volume docs                     |
-| Task 3 | ⬜     | Hosted staging runbook (env vars, smoke checklist, client URL)           |
+| Task 3 | ✅     | Hosted staging runbook (env vars, smoke checklist, client URL)           |
 
 End-result focus: client demo without juggling local terminals — one compose (or clear staging URL).
 
-**Tags:** `sprint30-task1`, `sprint30-task2` _(task3 pending)_
+**Tags:** `sprint30-task1`, `sprint30-task2`, `sprint30-task3`
 
 ---
 

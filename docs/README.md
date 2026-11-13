@@ -8,6 +8,7 @@ Platform documentation, architecture decisions, and vertical implementation guid
 | ------------------------------------- | ---------------------------------- |
 | [architecture/](./architecture)       | System architecture reference      |
 | [adr/](./adr)                         | Architecture Decision Records      |
+| [runbooks/](./runbooks)               | Ops / staging demo runbooks        |
 | [vertical-guides/](./vertical-guides) | Per-vertical implementation guides |
 
 ## Conventions
