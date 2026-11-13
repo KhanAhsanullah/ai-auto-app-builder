@@ -239,5 +239,5 @@ All four must pass.
 | [CHANGELOG.md](./CHANGELOG.md)                               | Version history                  |
 | [docs/architecture/README.md](./docs/architecture/README.md) | System architecture              |
 
-**Latest tag:** `sprint29-task3`
+**Latest tag:** `sprint30-task3`
 **Schema version:** v1 (`SCHEMA_VERSION`)
