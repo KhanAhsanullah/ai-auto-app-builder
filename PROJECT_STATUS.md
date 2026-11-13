@@ -6,40 +6,34 @@
 
 ## Current milestone
 
-**Sprint 30 — Staging Demo Deploy** (Task 2 on `sprint/30/task2`).
+**Sprint 31 — Richer Storefront** (in progress on `sprint/31/task1`).
 
-Sprint 29 + Task 1 demo Docker on `main`. Client Boom MVP: [CLIENT_DEMO.md](./CLIENT_DEMO.md).
+Sprint 30 demo Docker (Tasks 1–2) is on `main`. Client demo: [CLIENT_DEMO.md](./CLIENT_DEMO.md).
 
 ## Completed Tasks
 
 | Task           | Description                          | Commit Tag       |
 | -------------- | ------------------------------------ | ---------------- |
-| Sprint 1–28 ✅ | Foundation through platform catalog  | `sprint*-task*`  |
-| Sprint 28 ✅   | Catalog serving + shareable web URLs | `sprint28-task3` |
-| Sprint 29 ✅   | Merchant catalog admin writes + UI   | `sprint29-task3` |
+| Sprint 1–29 ✅ | Foundation through merchant admin    | `sprint*-task*`  |
+| Sprint 30 ✅*  | Demo Docker (Task 3 runbook pending) | `sprint30-task2` |
 
 ## Active Tasks
 
-| Task             | Description                                | Status |
-| ---------------- | ------------------------------------------ | ------ |
-| Sprint 30 Task 1 | Docker Compose demo stack (API + web)      | ✅     |
-| Sprint 30 Task 2 | Admin in demo compose + shared volume docs | ✅     |
-| Sprint 30 Task 3 | Hosted staging runbook                     | ⬜     |
-
-## Next after Sprint 30
-
-1. Real payments + domains
-2. Cloud-hosted staging URL for remote client demos
+| Task             | Description                                        | Status |
+| ---------------- | -------------------------------------------------- | ------ |
+| Sprint 31 Task 1 | Home featured + PDP + catalog search + cart header | ✅     |
+| Sprint 31 Task 2 | About / Contact + footer                           | ⬜     |
+| Sprint 31 Task 3 | Filters / categories / mobile polish               | ⬜     |
 
 ## Latest Tag
 
 ```
-sprint30-task1
+sprint30-task2
 ```
 
 ## Health Status
 
-| Area       | Status     | Notes                                  |
-| ---------- | ---------- | -------------------------------------- |
-| Repository | ✅ Healthy | Sprint 30 Task 1 on `main`; Task 2 WIP |
-| Client MVP | ✅ Ready   | `pnpm demo:docker` → web + admin + API |
+| Area       | Status     | Notes                                    |
+| ---------- | ---------- | ---------------------------------------- |
+| Repository | ✅ Healthy | Sprint 31 Task 1 in progress             |
+| Client MVP | ✅ Ready   | Boom + admin; storefront polish underway |

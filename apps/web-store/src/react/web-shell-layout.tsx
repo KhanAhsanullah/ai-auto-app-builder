@@ -10,6 +10,7 @@ export interface WebShellLayoutProps {
   onNavigate?: (route: string) => void;
   /** Optional content override; defaults to screen title placeholder. */
   children?: ReactNode;
+  showCartButton?: boolean;
 }
 
 /**
@@ -17,7 +18,7 @@ export interface WebShellLayoutProps {
  * Theme CSS variables come from resolved tenant theme (Sprint 25).
  */
 export function WebShellLayout(props: WebShellLayoutProps): ReactNode {
-  const { viewModel, onNavigate, children } = props;
+  const { viewModel, onNavigate, children, showCartButton } = props;
   const { shell, activeScreen, primaryNav, footerNav } = viewModel;
   const { theme } = shell;
 
@@ -52,6 +53,8 @@ export function WebShellLayout(props: WebShellLayoutProps): ReactNode {
         subtitle={activeScreen.description}
         tagline={shell.branding.tagline}
         logoUrl={shell.branding.logoPrimary}
+        onBrandClick={onNavigate ? () => onNavigate('store.home') : undefined}
+        onCartClick={showCartButton && onNavigate ? () => onNavigate('store.cart') : undefined}
       />
       <WebTopNav items={primaryNav} activeRoute={viewModel.activeRoute} onNavigate={onNavigate} />
       <main

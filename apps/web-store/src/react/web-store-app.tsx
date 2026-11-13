@@ -7,6 +7,7 @@ import { WebCheckoutScreen } from './screens/web-checkout-screen.js';
 import { WebHomeScreen } from './screens/web-home-screen.js';
 import { WebOrdersScreen } from './screens/web-orders-screen.js';
 import { WebPaymentConfirmScreen } from './screens/web-payment-confirm-screen.js';
+import { WebProductScreen } from './screens/web-product-screen.js';
 import { WebShellLayout } from './web-shell-layout.js';
 
 export interface WebStoreAppProps {
@@ -57,6 +58,7 @@ export function WebStoreApp(props: WebStoreAppProps): ReactNode {
   } = props;
   const [internalRoute, setInternalRoute] = useState(store.initialRoute);
   const [lastCheckoutId, setLastCheckoutId] = useState<string | undefined>();
+  const [productSlug, setProductSlug] = useState<string | undefined>();
   const activeRoute = controlledRoute ?? internalRoute;
   const checkoutId = controlledCheckoutId ?? lastCheckoutId;
 
@@ -64,10 +66,24 @@ export function WebStoreApp(props: WebStoreAppProps): ReactNode {
 
   const handleNavigate = useCallback(
     (route: string) => {
+      if (route !== 'store.product') {
+        setProductSlug(undefined);
+      }
       if (controlledRoute === undefined) {
         setInternalRoute(route);
       }
       onNavigate?.(route);
+    },
+    [controlledRoute, onNavigate],
+  );
+
+  const openProduct = useCallback(
+    (slug: string) => {
+      setProductSlug(slug);
+      if (controlledRoute === undefined) {
+        setInternalRoute('store.product');
+      }
+      onNavigate?.('store.product');
     },
     [controlledRoute, onNavigate],
   );
@@ -86,6 +102,7 @@ export function WebStoreApp(props: WebStoreAppProps): ReactNode {
       route={viewModel.activeRoute}
       sessionId={sessionId}
       checkoutId={checkoutId}
+      productSlug={productSlug}
       brandName={viewModel.shell.branding.displayName}
       tagline={viewModel.shell.branding.tagline}
       logoUrl={viewModel.shell.branding.logoPrimary}
@@ -94,6 +111,7 @@ export function WebStoreApp(props: WebStoreAppProps): ReactNode {
       description={viewModel.activeScreen.description}
       seoTitle={viewModel.shell.seo.title}
       onNavigate={handleNavigate}
+      onOpenProduct={openProduct}
       onCheckoutComplete={(id) => {
         setLastCheckoutId(id);
         handleNavigate(store.isOrderAvailable() ? 'store.payment' : 'store.orders');
@@ -102,7 +120,11 @@ export function WebStoreApp(props: WebStoreAppProps): ReactNode {
   );
 
   return (
-    <WebShellLayout viewModel={viewModel} onNavigate={handleNavigate}>
+    <WebShellLayout
+      viewModel={viewModel}
+      onNavigate={handleNavigate}
+      showCartButton={store.isCartAvailable()}
+    >
       {content}
     </WebShellLayout>
   );
@@ -113,6 +135,7 @@ function DefaultCommerceContent(props: {
   route: string;
   sessionId: string;
   checkoutId?: string;
+  productSlug?: string;
   brandName: string;
   tagline?: string;
   logoUrl?: string;
@@ -121,9 +144,19 @@ function DefaultCommerceContent(props: {
   description?: string;
   seoTitle: string;
   onNavigate: (route: string) => void;
+  onOpenProduct: (slug: string) => void;
   onCheckoutComplete: (checkoutId: string) => void;
 }): ReactNode {
-  const { store, route, sessionId, checkoutId, onNavigate, onCheckoutComplete } = props;
+  const {
+    store,
+    route,
+    sessionId,
+    checkoutId,
+    productSlug,
+    onNavigate,
+    onOpenProduct,
+    onCheckoutComplete,
+  } = props;
 
   if (route === 'store.home') {
     return (
@@ -132,12 +165,25 @@ function DefaultCommerceContent(props: {
         tagline={props.tagline}
         logoUrl={props.logoUrl}
         verticalLabel={props.vertical}
+        store={store}
         onShop={store.isCatalogAvailable() ? () => onNavigate('store.catalog') : undefined}
+        onOpenProduct={store.isCatalogAvailable() ? onOpenProduct : undefined}
+      />
+    );
+  }
+  if (route === 'store.product' && store.isCatalogAvailable() && productSlug) {
+    return (
+      <WebProductScreen
+        store={store}
+        productSlug={productSlug}
+        sessionId={sessionId}
+        onBack={() => onNavigate('store.catalog')}
+        onAddedToCart={() => onNavigate('store.cart')}
       />
     );
   }
   if (route === 'store.catalog' && store.isCatalogAvailable()) {
-    return <WebCatalogScreen store={store} sessionId={sessionId} />;
+    return <WebCatalogScreen store={store} sessionId={sessionId} onOpenProduct={onOpenProduct} />;
   }
   if (route === 'store.cart' && store.isCartAvailable()) {
     return (

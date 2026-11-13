@@ -6,6 +6,8 @@ export interface WebHeaderProps {
   subtitle?: string;
   tagline?: string;
   logoUrl?: string;
+  onBrandClick?: () => void;
+  onCartClick?: () => void;
 }
 
 /** Top header for the web storefront shell. */
@@ -23,7 +25,23 @@ export function WebHeader(props: WebHeaderProps): ReactNode {
         borderBottom: '1px solid var(--web-border, #e2e8f0)',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', minWidth: 0 }}>
+      <button
+        type="button"
+        data-testid="web-header-brand-button"
+        onClick={props.onBrandClick}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.75rem',
+          minWidth: 0,
+          border: 'none',
+          background: 'transparent',
+          padding: 0,
+          cursor: props.onBrandClick ? 'pointer' : 'default',
+          textAlign: 'left',
+          color: 'inherit',
+        }}
+      >
         {props.logoUrl ? (
           <img
             data-testid="web-header-logo"
@@ -59,25 +77,45 @@ export function WebHeader(props: WebHeaderProps): ReactNode {
             </p>
           ) : null}
         </div>
-      </div>
-      <div style={{ textAlign: 'right' }}>
-        <h1
-          data-testid="web-header-title"
-          style={{ margin: 0, fontSize: '1.15rem', fontWeight: 650 }}
-        >
-          {props.title}
-        </h1>
-        {props.subtitle ? (
-          <p
-            data-testid="web-header-subtitle"
+      </button>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <div style={{ textAlign: 'right' }}>
+          <h1
+            data-testid="web-header-title"
+            style={{ margin: 0, fontSize: '1.15rem', fontWeight: 650 }}
+          >
+            {props.title}
+          </h1>
+          {props.subtitle ? (
+            <p
+              data-testid="web-header-subtitle"
+              style={{
+                margin: '0.25rem 0 0',
+                color: 'var(--web-text-muted, #64748b)',
+                fontSize: '0.85rem',
+              }}
+            >
+              {props.subtitle}
+            </p>
+          ) : null}
+        </div>
+        {props.onCartClick ? (
+          <button
+            type="button"
+            data-testid="web-header-cart"
+            onClick={props.onCartClick}
             style={{
-              margin: '0.25rem 0 0',
-              color: 'var(--web-text-muted, #64748b)',
-              fontSize: '0.85rem',
+              border: '1px solid var(--web-border, #e2e8f0)',
+              borderRadius: '0.5rem',
+              padding: '0.45rem 0.75rem',
+              background: 'var(--web-surface, #f8fafc)',
+              cursor: 'pointer',
+              fontWeight: 600,
+              whiteSpace: 'nowrap',
             }}
           >
-            {props.subtitle}
-          </p>
+            Cart
+          </button>
         ) : null}
       </div>
     </header>
