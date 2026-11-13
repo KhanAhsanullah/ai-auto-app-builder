@@ -56,13 +56,13 @@ export function App(): ReactNode {
   const [businessName, setBusinessName] = useState<string | null>(null);
   const [vertical, setVertical] = useState<string | null>(null);
   const [tenantSlug, setTenantSlug] = useState<string | null>(null);
-  const [activeRoute, setActiveRoute] = useState<ShareableStoreRoute>('store.catalog');
+  const [activeRoute, setActiveRoute] = useState<ShareableStoreRoute>('store.home');
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [restored, setRestored] = useState(false);
 
   const bootFromLookup = useCallback(
-    async (lookup: string, preferredRoute: ShareableStoreRoute = 'store.catalog') => {
+    async (lookup: string, preferredRoute: ShareableStoreRoute = 'store.home') => {
       const kv = storeRef.current;
       if (!kv) {
         setError('Durable store is not ready.');
@@ -116,7 +116,7 @@ export function App(): ReactNode {
   );
 
   const bootFromProfile = useCallback(
-    async (profile: StoredLaunchProfile, preferredRoute: ShareableStoreRoute = 'store.catalog') => {
+    async (profile: StoredLaunchProfile, preferredRoute: ShareableStoreRoute = 'store.home') => {
       const lookup = profile.slug?.trim() || profile.tenantId;
       await bootFromLookup(lookup, preferredRoute);
     },
@@ -214,7 +214,7 @@ export function App(): ReactNode {
           };
           await saveLaunchProfile(kv, profile);
           window.history.replaceState(null, '', buildShareablePath(launched.slug));
-          await bootFromProfile(profile, 'store.catalog');
+          await bootFromProfile(profile, 'store.home');
         } catch (err: unknown) {
           setError(err instanceof Error ? err.message : 'Launch failed.');
           setPhase('wizard');

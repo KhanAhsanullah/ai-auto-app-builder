@@ -18,6 +18,7 @@ describe('WebStoreApp', () => {
 
     expect(screen.getByTestId('web-home-brand').textContent).toBe(store.shell.branding.displayName);
     expect(screen.getByTestId('web-home-tagline').textContent).toBe(store.shell.branding.tagline);
+    expect(screen.getByTestId('web-home-trust')).toBeTruthy();
     expect(screen.getByTestId('web-shell-layout').style.getPropertyValue('--web-brand')).toBe(
       store.shell.theme.primary,
     );

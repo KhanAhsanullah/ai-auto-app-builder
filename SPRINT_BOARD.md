@@ -410,6 +410,20 @@ End-result focus: client demo without juggling local terminals — one compose (
 
 ---
 
+## Sprint 31 — Richer Storefront
+
+| Task   | Status | Deliverable                                                              |
+| ------ | ------ | ------------------------------------------------------------------------ |
+| Task 1 | ✅     | Home featured + trust strip, product detail, catalog search, cart header |
+| Task 2 | ⬜     | About / Contact pages + richer footer content                            |
+| Task 3 | ⬜     | Search filters, category chips, mobile layout polish                     |
+
+End-result focus: Boom store feels like a real shop, not a 3-card skeleton.
+
+**Tags:** _(pending)_
+
+---
+
 ## Sprint Conventions
 
 - Each sprint task is committed with a Conventional Commit referencing the sprint and task number

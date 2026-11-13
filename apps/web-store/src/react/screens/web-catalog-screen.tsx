@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 
 import type { Product } from '@ai-commerce/module-catalog';
 
@@ -8,17 +8,20 @@ export interface WebCatalogScreenProps {
   store: WebStore;
   /** When set with cart wired, shows Add buttons. */
   sessionId?: string;
+  /** Open product detail for a slug. */
+  onOpenProduct?: (slug: string) => void;
 }
 
 /**
- * Storefront catalog — product cards with brand-tinted media placeholders.
+ * Storefront catalog — searchable product cards (Sprint 31 polish).
  */
 export function WebCatalogScreen(props: WebCatalogScreenProps): ReactNode {
-  const { store, sessionId } = props;
+  const { store, sessionId, onOpenProduct } = props;
   const [products, setProducts] = useState<Product[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [busySku, setBusySku] = useState<string | null>(null);
+  const [query, setQuery] = useState('');
   const canAdd = Boolean(sessionId) && store.isCartAvailable();
 
   useEffect(() => {
@@ -48,6 +51,22 @@ export function WebCatalogScreen(props: WebCatalogScreenProps): ReactNode {
       cancelled = true;
     };
   }, [store]);
+
+  const filtered = useMemo(() => {
+    if (!products) {
+      return null;
+    }
+    const q = query.trim().toLowerCase();
+    if (!q) {
+      return products;
+    }
+    return products.filter(
+      (product) =>
+        product.name.toLowerCase().includes(q) ||
+        product.slug.toLowerCase().includes(q) ||
+        product.variants.some((v) => v.sku.toLowerCase().includes(q)),
+    );
+  }, [products, query]);
 
   async function addToCart(product: Product) {
     if (!sessionId || !product.variants[0]) {
@@ -81,7 +100,7 @@ export function WebCatalogScreen(props: WebCatalogScreenProps): ReactNode {
     );
   }
 
-  if (products === null) {
+  if (products === null || filtered === null) {
     return (
       <div data-testid="web-catalog-screen" data-state="loading">
         <p
@@ -109,6 +128,31 @@ export function WebCatalogScreen(props: WebCatalogScreenProps): ReactNode {
 
   return (
     <div data-testid="web-catalog-screen" data-state="ready">
+      <div style={{ marginBottom: '1rem' }}>
+        <label
+          style={{
+            display: 'grid',
+            gap: '0.35rem',
+            fontSize: '0.85rem',
+            color: 'var(--web-text-muted, #64748b)',
+          }}
+        >
+          Search products
+          <input
+            data-testid="web-catalog-search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Name or SKU…"
+            style={{
+              border: '1px solid var(--web-border, #e5e7eb)',
+              borderRadius: '0.5rem',
+              padding: '0.65rem 0.75rem',
+              font: 'inherit',
+              maxWidth: '24rem',
+            }}
+          />
+        </label>
+      </div>
       {message ? (
         <p data-testid="web-catalog-toast" style={{ margin: '0 0 0.75rem', color: '#047857' }}>
           {message}
@@ -122,110 +166,145 @@ export function WebCatalogScreen(props: WebCatalogScreenProps): ReactNode {
           {error}
         </p>
       ) : null}
-      <ul
-        data-testid="web-catalog-list"
-        style={{
-          listStyle: 'none',
-          margin: 0,
-          padding: 0,
-          display: 'grid',
-          gap: '1rem',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(15rem, 1fr))',
-        }}
-      >
-        {products.map((product) => {
-          const price = product.variants[0]?.price;
-          const sku = product.variants[0]?.sku;
-          const imageUrl = product.variants[0]?.attributes?.imageUrl;
-          const priceLabel = price
-            ? `${price.currency} ${price.amount.toFixed(price.currency === 'PKR' ? 0 : 2)}`
-            : null;
-          return (
-            <li
-              key={product.id}
-              data-testid={`web-catalog-item-${product.slug}`}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '0.85rem',
-                padding: '0.85rem',
-                borderRadius: '0.65rem',
-                background: 'var(--web-surface, #f9fafb)',
-                border: '1px solid var(--web-border, #e5e7eb)',
-              }}
-            >
-              {imageUrl ? (
-                <img
-                  data-testid={`web-catalog-image-${product.slug}`}
-                  src={imageUrl}
-                  alt=""
-                  style={{
-                    aspectRatio: '4 / 3',
-                    width: '100%',
-                    objectFit: 'cover',
-                    borderRadius: '0.45rem',
-                    background: 'var(--web-border, #e5e7eb)',
-                  }}
-                />
-              ) : (
-                <div
-                  aria-hidden
-                  data-testid={`web-catalog-swatch-${product.slug}`}
-                  style={{
-                    aspectRatio: '4 / 3',
-                    borderRadius: '0.45rem',
-                    display: 'grid',
-                    placeItems: 'center',
-                    background: swatchBackground(product.slug),
-                    color: '#fff',
-                    fontWeight: 700,
-                    fontSize: '1.5rem',
-                    letterSpacing: '0.04em',
-                  }}
-                >
-                  {initials(product.name)}
-                </div>
-              )}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', flex: 1 }}>
-                <div style={{ fontWeight: 650, color: 'var(--web-text, #0f172a)' }}>
-                  {product.name}
-                </div>
-                {priceLabel ? (
-                  <div
-                    style={{
-                      fontSize: '0.95rem',
-                      fontWeight: 600,
-                      color: 'var(--web-brand, #16a34a)',
-                    }}
-                  >
-                    {priceLabel}
-                  </div>
-                ) : null}
-              </div>
-              {canAdd && sku ? (
+      {filtered.length === 0 ? (
+        <p data-testid="web-catalog-no-results" style={{ color: 'var(--web-text-muted, #64748b)' }}>
+          No products match “{query.trim()}”.
+        </p>
+      ) : (
+        <ul
+          data-testid="web-catalog-list"
+          style={{
+            listStyle: 'none',
+            margin: 0,
+            padding: 0,
+            display: 'grid',
+            gap: '1rem',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(15rem, 1fr))',
+          }}
+        >
+          {filtered.map((product) => {
+            const price = product.variants[0]?.price;
+            const sku = product.variants[0]?.sku;
+            const imageUrl = product.variants[0]?.attributes?.imageUrl;
+            const priceLabel = price
+              ? `${price.currency} ${price.amount.toFixed(price.currency === 'PKR' ? 0 : 2)}`
+              : null;
+            return (
+              <li
+                key={product.id}
+                data-testid={`web-catalog-item-${product.slug}`}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '0.85rem',
+                  padding: '0.85rem',
+                  borderRadius: '0.65rem',
+                  background: 'var(--web-surface, #f9fafb)',
+                  border: '1px solid var(--web-border, #e5e7eb)',
+                }}
+              >
+                <CatalogImage slug={product.slug} name={product.name} imageUrl={imageUrl} />
                 <button
                   type="button"
-                  data-testid={`web-catalog-add-${product.slug}`}
-                  disabled={busySku === sku}
-                  onClick={() => void addToCart(product)}
+                  data-testid={`web-catalog-open-${product.slug}`}
+                  onClick={() => onOpenProduct?.(product.slug)}
                   style={{
-                    padding: '0.55rem 0.75rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '0.25rem',
+                    flex: 1,
                     border: 'none',
-                    borderRadius: '0.4rem',
-                    background: 'var(--web-brand, #16a34a)',
-                    color: '#fff',
-                    cursor: 'pointer',
-                    fontWeight: 600,
-                    opacity: busySku === sku ? 0.7 : 1,
+                    background: 'transparent',
+                    padding: 0,
+                    textAlign: 'left',
+                    cursor: onOpenProduct ? 'pointer' : 'default',
                   }}
                 >
-                  {busySku === sku ? 'Adding…' : 'Add to cart'}
+                  <div style={{ fontWeight: 650, color: 'var(--web-text, #0f172a)' }}>
+                    {product.name}
+                  </div>
+                  {priceLabel ? (
+                    <div
+                      style={{
+                        fontSize: '0.95rem',
+                        fontWeight: 600,
+                        color: 'var(--web-brand, #16a34a)',
+                      }}
+                    >
+                      {priceLabel}
+                    </div>
+                  ) : null}
+                  {onOpenProduct ? (
+                    <span style={{ fontSize: '0.8rem', color: 'var(--web-text-muted, #64748b)' }}>
+                      View details →
+                    </span>
+                  ) : null}
                 </button>
-              ) : null}
-            </li>
-          );
-        })}
-      </ul>
+                {canAdd && sku ? (
+                  <button
+                    type="button"
+                    data-testid={`web-catalog-add-${product.slug}`}
+                    disabled={busySku === sku}
+                    onClick={() => void addToCart(product)}
+                    style={{
+                      padding: '0.55rem 0.75rem',
+                      border: 'none',
+                      borderRadius: '0.4rem',
+                      background: 'var(--web-brand, #16a34a)',
+                      color: '#fff',
+                      cursor: 'pointer',
+                      fontWeight: 600,
+                      opacity: busySku === sku ? 0.7 : 1,
+                    }}
+                  >
+                    {busySku === sku ? 'Adding…' : 'Add to cart'}
+                  </button>
+                ) : null}
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+function CatalogImage(props: { slug: string; name: string; imageUrl?: string }): ReactNode {
+  const [failed, setFailed] = useState(false);
+  if (props.imageUrl && !failed) {
+    return (
+      <img
+        data-testid={`web-catalog-image-${props.slug}`}
+        src={props.imageUrl}
+        alt=""
+        onError={() => setFailed(true)}
+        style={{
+          aspectRatio: '4 / 3',
+          width: '100%',
+          objectFit: 'cover',
+          borderRadius: '0.45rem',
+          background: 'var(--web-border, #e5e7eb)',
+        }}
+      />
+    );
+  }
+  return (
+    <div
+      aria-hidden
+      data-testid={`web-catalog-swatch-${props.slug}`}
+      style={{
+        aspectRatio: '4 / 3',
+        borderRadius: '0.45rem',
+        display: 'grid',
+        placeItems: 'center',
+        background: swatchBackground(props.slug),
+        color: '#fff',
+        fontWeight: 700,
+        fontSize: '1.5rem',
+        letterSpacing: '0.04em',
+      }}
+    >
+      {initials(props.name)}
     </div>
   );
 }

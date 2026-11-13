@@ -114,7 +114,7 @@ const SEEDS: Record<BoomLaunchVertical, readonly SeedProduct[]> = {
       title: '250ml',
       amount: 320,
       imageUrl:
-        'https://images.unsplash.com/photo-1583947215259-38e31be8741a?auto=format&fit=crop&w=640&h=480&q=80',
+        'https://images.unsplash.com/photo-1584744982491-665216d95f8b?auto=format&fit=crop&w=640&h=480&q=80',
     },
   ],
   ecommerce: [

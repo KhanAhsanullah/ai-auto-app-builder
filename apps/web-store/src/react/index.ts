@@ -12,6 +12,8 @@ export { WebCatalogScreen } from './screens/web-catalog-screen.js';
 export type { WebCatalogScreenProps } from './screens/web-catalog-screen.js';
 export { WebHomeScreen } from './screens/web-home-screen.js';
 export type { WebHomeScreenProps } from './screens/web-home-screen.js';
+export { WebProductScreen } from './screens/web-product-screen.js';
+export type { WebProductScreenProps } from './screens/web-product-screen.js';
 export { WebCartScreen } from './screens/web-cart-screen.js';
 export type { WebCartScreenProps } from './screens/web-cart-screen.js';
 export { WebCheckoutScreen } from './screens/web-checkout-screen.js';

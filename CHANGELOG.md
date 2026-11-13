@@ -9,13 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Richer storefront** (Sprint 31 Task 1) — `@ai-commerce/web-store` + web-host
+  - Home trust strip + featured products; product detail (`store.product`)
+  - Catalog search + broken-image fallback; header Cart + brand → home
+  - Boom boots to Home instead of bare catalog
+
 - **Admin in demo Docker stack** (Sprint 30 Task 2) — `infra/docker`
   - `Dockerfile.admin-host` + compose service on `:5174`
-  - Shared `platform-api-data` volume docs (Boom + admin same tenants)
-
-- **Demo Docker admin** (Sprint 30 Task 2) — `infra/docker`
-  - `Dockerfile.admin-host` + compose service on `:5174`
-  - Shared `platform-api-data` volume documented (Boom + admin same catalog)
+  - Shared `platform-api-data` volume (Boom + admin same tenants)
 
 - **Demo Docker stack** (Sprint 30 Task 1) — `infra/docker`
   - `docker-compose.demo.yml` + Dockerfiles for platform-api + web-host
