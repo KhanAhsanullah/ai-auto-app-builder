@@ -4,6 +4,7 @@ import {
   createPlatformApi,
   resolveCatalogStorePath,
   resolveConfigStorePath,
+  resolveOrderStorePath,
   resolveTenantStorePath,
 } from './create-platform-api.js';
 import { listenPlatformApi } from './node-http-server.js';
@@ -17,14 +18,22 @@ const configStorePath =
 const catalogStorePath =
   resolveCatalogStorePath(undefined, process.env) ??
   resolve(process.cwd(), '.data', 'catalogs.json');
+const orderStorePath =
+  resolveOrderStorePath(undefined, process.env) ?? resolve(process.cwd(), '.data', 'orders.json');
 
-const api = createPlatformApi({ tenantStorePath, configStorePath, catalogStorePath });
+const api = createPlatformApi({
+  tenantStorePath,
+  configStorePath,
+  catalogStorePath,
+  orderStorePath,
+});
 const listening = await listenPlatformApi(api, Number.isFinite(port) ? port : 8787, host);
 
 console.log(`[platform-api] listening on http://${listening.host}:${listening.port}`);
 console.log(`[platform-api] tenant store: ${tenantStorePath}`);
 console.log(`[platform-api] config store: ${configStorePath}`);
 console.log(`[platform-api] catalog store: ${catalogStorePath}`);
+console.log(`[platform-api] order store: ${orderStorePath}`);
 console.log(
-  `[platform-api] POST /v1/boom/launch  GET|POST /v1/tenants/:id/catalog/products  PATCH|DELETE .../products/:productId`,
+  `[platform-api] POST /v1/boom/launch  catalog/products  GET|POST|PATCH /v1/tenants/:id/orders`,
 );

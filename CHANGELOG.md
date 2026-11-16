@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Platform orders API** (Sprint 32 Task 1) — `@ai-commerce/platform-api`
+  - `GET|POST /v1/tenants/:id/orders`, `PATCH .../orders/:orderId` (status)
+  - Durable `ORDER_STORE_PATH` (`.data/orders.json` / Docker `/data/orders.json`)
+
 - **Multi-profile Boom switcher** (Sprint 24 Task 2) — `@ai-commerce/web-host` + web-store
   - Persist recent apps; toolbar switcher + wizard recent list
   - Per-tenant snapshot/session keys; live theme-token preview in launch wizard

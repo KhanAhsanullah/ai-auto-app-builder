@@ -15,6 +15,7 @@ Sprint 27 Task 1 — list tenants + serve registry config documents.
 Sprint 27 Task 2 — Boom launch publishes via ConfigEngine; GET config prefers published.
 Sprint 28 Task 1 — Boom seeds vertical catalog; `GET /v1/tenants/:id/catalog/products`.
 Sprint 29 Task 1 — merchant catalog writes: `POST` / `PATCH` / `DELETE` products.
+Sprint 32 Task 1 — durable merchant orders: `GET` / `POST` / `PATCH` status.
 
 Routes:
 
@@ -26,6 +27,9 @@ Routes:
 - `POST /v1/tenants/:id/catalog/products` — create product (`name`, `sku`, `title`, `amount`, optional `slug` / `currency` / `imageUrl`)
 - `PATCH /v1/tenants/:id/catalog/products/:productId` — update product fields (`:productId` = id or slug)
 - `DELETE /v1/tenants/:id/catalog/products/:productId` — remove product
+- `GET /v1/tenants/:id/orders` — list platform-owned orders
+- `POST /v1/tenants/:id/orders` — create order (`lines[]`, optional `customerName` / `note`)
+- `PATCH /v1/tenants/:id/orders/:orderId` — status (`placed` → `confirmed` → `fulfilled`, or `cancelled`)
 - `GET /health` — liveness
 
 ## Run
@@ -36,6 +40,7 @@ pnpm --filter @ai-commerce/platform-api start
 # default tenant store: .data/tenants.json (TENANT_STORE_PATH)
 # default config store: .data/configs.json (CONFIG_STORE_PATH)
 # default catalog store: .data/catalogs.json (CATALOG_STORE_PATH)
+# default order store: .data/orders.json (ORDER_STORE_PATH)
 ```
 
 Example:

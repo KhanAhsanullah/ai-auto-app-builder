@@ -8,6 +8,7 @@ import {
   createPlatformApi,
   resolveCatalogStorePath,
   resolveConfigStorePath,
+  resolveOrderStorePath,
   resolveTenantStorePath,
 } from '../src/infrastructure/create-platform-api.js';
 
@@ -44,19 +45,29 @@ describe('createPlatformApi durable store', () => {
     expect(resolved).toMatch(/catalogs\.json$/);
   });
 
+  it('resolves ORDER_STORE_PATH from env', () => {
+    const resolved = resolveOrderStorePath(undefined, {
+      ORDER_STORE_PATH: 'relative/orders.json',
+    });
+    expect(resolved).toMatch(/orders\.json$/);
+  });
+
   it('survives process restarts via file stores', async () => {
     const dir = await mkdtemp(join(tmpdir(), 'platform-api-store-'));
     dirs.push(dir);
     const tenantStorePath = join(dir, 'tenants.json');
     const configStorePath = join(dir, 'configs.json');
     const catalogStorePath = join(dir, 'catalogs.json');
+    const orderStorePath = join(dir, 'orders.json');
 
     const first = createPlatformApi({
       tenantStorePath,
       configStorePath,
       catalogStorePath,
+      orderStorePath,
       clock: () => '2026-09-10T00:00:00.000Z',
       createPublishId: () => 'durable-publish-1',
+      createOrderId: () => 'durable-order-1',
     });
     const launched = await first.launchBoom({
       businessName: 'Durable Mart',
@@ -64,8 +75,26 @@ describe('createPlatformApi durable store', () => {
       tenantId: 'cccccccc-cccc-4ccc-8ccc-cccccccccccc',
     });
     expect(launched.status).toBe('active');
+    await first.createTenantOrder(launched.tenantId, {
+      lines: [
+        {
+          sku: 'ATTA-5KG',
+          title: 'Atta Flour',
+          quantity: 1,
+          unitAmount: 1200,
+          lineAmount: 1200,
+          currency: 'PKR',
+        },
+      ],
+      currency: 'PKR',
+    });
 
-    const second = createPlatformApi({ tenantStorePath, configStorePath, catalogStorePath });
+    const second = createPlatformApi({
+      tenantStorePath,
+      configStorePath,
+      catalogStorePath,
+      orderStorePath,
+    });
     const tenant = await second.getTenant(launched.tenantId);
     expect(tenant).toMatchObject({
       tenantId: launched.tenantId,
@@ -88,5 +117,9 @@ describe('createPlatformApi durable store', () => {
     const catalog = await second.getTenantCatalog(launched.tenantId);
     expect(catalog.vertical).toBe('grocery');
     expect(catalog.products.some((p) => p.slug === 'atta')).toBe(true);
+
+    const orders = await second.listTenantOrders(launched.tenantId);
+    expect(orders.orders).toHaveLength(1);
+    expect(orders.orders[0]?.id).toBe('durable-order-1');
   });
 });

@@ -19,14 +19,18 @@ import {
 
 import { PlatformApi, type PlatformApiDeps } from '../domain/platform-api.js';
 import type { TenantCatalogRepository } from '../domain/tenant-catalog-repository.js';
+import type { TenantOrderRepository } from '../domain/tenant-order-repository.js';
 import { FileTenantCatalogRepository } from './file-tenant-catalog-repository.js';
+import { FileTenantOrderRepository } from './file-tenant-order-repository.js';
 import { InMemoryTenantCatalogRepository } from './in-memory-tenant-catalog-repository.js';
+import { InMemoryTenantOrderRepository } from './in-memory-tenant-order-repository.js';
 
 export interface CreatePlatformApiOptions extends CreateTenantProvisionerOptions {
   provisioner?: TenantProvisioner;
   configEngine?: ConfigEngine;
   configRepository?: ConfigRepository;
   catalogRepository?: TenantCatalogRepository;
+  orderRepository?: TenantOrderRepository;
   activateOnLaunch?: boolean;
   /**
    * When set, use a JSON file tenant registry.
@@ -43,10 +47,16 @@ export interface CreatePlatformApiOptions extends CreateTenantProvisionerOptions
    * Defaults from `CATALOG_STORE_PATH` in the process server entry.
    */
   catalogStorePath?: string;
+  /**
+   * When set, use a JSON file order store.
+   * Defaults from `ORDER_STORE_PATH` in the process server entry.
+   */
+  orderStorePath?: string;
   /** Forwarded to createConfigEngine when configEngine is not injected. */
   now?: CreateConfigEngineOptions['now'];
   createPublishId?: CreateConfigEngineOptions['createPublishId'];
   onPublish?: CreateConfigEngineOptions['onPublish'];
+  createOrderId?: PlatformApiDeps['createOrderId'];
 }
 
 /** Resolve the durable tenant store path (empty → in-memory). */
@@ -71,6 +81,14 @@ export function resolveCatalogStorePath(
   env: NodeJS.ProcessEnv = process.env,
 ): string | undefined {
   return resolveOptionalPath(explicit, env.CATALOG_STORE_PATH);
+}
+
+/** Resolve the durable order store path (empty → in-memory). */
+export function resolveOrderStorePath(
+  explicit?: string,
+  env: NodeJS.ProcessEnv = process.env,
+): string | undefined {
+  return resolveOptionalPath(explicit, env.ORDER_STORE_PATH);
 }
 
 function resolveOptionalPath(explicit?: string, fromEnv?: string): string | undefined {
@@ -118,7 +136,18 @@ function createCatalogRepository(options: CreatePlatformApiOptions): TenantCatal
   return new InMemoryTenantCatalogRepository();
 }
 
-/** Wire PlatformApi with TenantProvisioner + ConfigEngine + catalog store. */
+function createOrderRepository(options: CreatePlatformApiOptions): TenantOrderRepository {
+  if (options.orderRepository) {
+    return options.orderRepository;
+  }
+  const storePath = resolveOrderStorePath(options.orderStorePath);
+  if (storePath) {
+    return new FileTenantOrderRepository({ filePath: storePath });
+  }
+  return new InMemoryTenantOrderRepository();
+}
+
+/** Wire PlatformApi with TenantProvisioner + ConfigEngine + catalog/order stores. */
 export function createPlatformApi(options: CreatePlatformApiOptions = {}): PlatformApi {
   const repository = createTenantRepository(options);
   const clock = options.clock ?? options.now;
@@ -146,8 +175,10 @@ export function createPlatformApi(options: CreatePlatformApiOptions = {}): Platf
     provisioner,
     configEngine,
     catalogRepository: createCatalogRepository(options),
+    orderRepository: createOrderRepository(options),
     activateOnLaunch: options.activateOnLaunch,
     now: options.now ?? options.clock,
+    createOrderId: options.createOrderId,
   };
 
   return new PlatformApi(deps);

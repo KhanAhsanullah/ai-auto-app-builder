@@ -424,6 +424,20 @@ End-result focus: Boom store feels like a real shop, not a 3-card skeleton.
 
 ---
 
+## Sprint 32 — Merchant Order Loop
+
+| Task   | Status | Deliverable                                          |
+| ------ | ------ | ---------------------------------------------------- |
+| Task 1 | ✅     | Platform durable orders API (list / create / status) |
+| Task 2 | ⬜     | Storefront publishes orders to platform on create    |
+| Task 3 | ⬜     | Admin host wires `admin.orders` + confirm/fulfill    |
+
+End-result focus: shop → platform orders → merchant confirm/fulfill in admin (same tenant).
+
+**Tags:** `sprint32-task1`
+
+---
+
 ## Sprint Conventions
 
 - Each sprint task is committed with a Conventional Commit referencing the sprint and task number

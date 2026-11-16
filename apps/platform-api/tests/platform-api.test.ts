@@ -11,6 +11,7 @@ import { createPlatformApi } from '../src/infrastructure/create-platform-api.js'
 import { TenantNotFoundException } from '../src/errors.js';
 import { PlatformApi } from '../src/domain/platform-api.js';
 import { InMemoryTenantCatalogRepository } from '../src/infrastructure/in-memory-tenant-catalog-repository.js';
+import { InMemoryTenantOrderRepository } from '../src/infrastructure/in-memory-tenant-order-repository.js';
 import { createTenantProvisioner } from '@ai-commerce/tenant-provisioner';
 
 describe('PlatformApi', () => {
@@ -83,6 +84,7 @@ describe('PlatformApi', () => {
       provisioner,
       configEngine,
       catalogRepository: new InMemoryTenantCatalogRepository(),
+      orderRepository: new InMemoryTenantOrderRepository(),
       now: () => '2026-09-09T00:00:00.000Z',
     });
 
@@ -133,6 +135,7 @@ describe('PlatformApi', () => {
       provisioner,
       configEngine,
       catalogRepository: new InMemoryTenantCatalogRepository(),
+      orderRepository: new InMemoryTenantOrderRepository(),
       activateOnLaunch: true,
       now: () => '2026-09-09T00:00:00.000Z',
     });

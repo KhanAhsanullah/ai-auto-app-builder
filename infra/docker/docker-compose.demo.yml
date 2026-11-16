@@ -26,6 +26,7 @@ services:
       TENANT_STORE_PATH: /data/tenants.json
       CONFIG_STORE_PATH: /data/configs.json
       CATALOG_STORE_PATH: /data/catalogs.json
+      ORDER_STORE_PATH: /data/orders.json
     volumes:
       - platform-api-data:/data
     healthcheck:

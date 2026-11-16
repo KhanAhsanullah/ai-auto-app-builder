@@ -78,6 +78,7 @@ Copy [infra/docker/.env.demo.example](../../infra/docker/.env.demo.example) when
 | `TENANT_STORE_PATH`  | `/data/tenants.json`  | Durable tenants file          |
 | `CONFIG_STORE_PATH`  | `/data/configs.json`  | Durable tenant configs        |
 | `CATALOG_STORE_PATH` | `/data/catalogs.json` | Durable catalogs              |
+| `ORDER_STORE_PATH`   | `/data/orders.json`   | Durable merchant orders       |
 
 CORS is open (`*`) for demo — fine for staging, not production hardening.
 

@@ -10,12 +10,18 @@ import type {
   CatalogProductCreateInput,
   CatalogProductDto,
   CatalogProductPatchInput,
+  PlatformOrderCreateInput,
+  PlatformOrderDto,
+  PlatformOrderPatchInput,
   TenantCatalogResponse,
   TenantConfigResponse,
+  TenantOrdersResponse,
   TenantSummary,
 } from '../types.js';
 import { toProvisioningRequest } from './map-boom-launch.js';
+import { assertOrderStatusTransition } from './map-platform-order.js';
 import type { TenantCatalogRepository } from './tenant-catalog-repository.js';
+import type { TenantOrderRepository, TenantOrdersRecord } from './tenant-order-repository.js';
 import {
   buildVerticalCatalogRecord,
   type PlatformCatalogProduct,
@@ -26,10 +32,13 @@ export interface PlatformApiDeps {
   provisioner: TenantProvisioner;
   configEngine: ConfigEngine;
   catalogRepository: TenantCatalogRepository;
+  orderRepository: TenantOrderRepository;
   /** When true (default), activate the tenant after provision. */
   activateOnLaunch?: boolean;
   /** Clock for catalog timestamps (defaults to Date ISO). */
   now?: () => string;
+  /** Id factory for new platform orders. */
+  createOrderId?: () => string;
 }
 
 /**
@@ -39,10 +48,17 @@ export interface PlatformApiDeps {
 export class PlatformApi {
   private readonly activateOnLaunch: boolean;
   private readonly now: () => string;
+  private readonly createOrderId: () => string;
 
   constructor(private readonly deps: PlatformApiDeps) {
     this.activateOnLaunch = deps.activateOnLaunch ?? true;
     this.now = deps.now ?? (() => new Date().toISOString());
+    this.createOrderId =
+      deps.createOrderId ??
+      (() =>
+        typeof globalThis.crypto?.randomUUID === 'function'
+          ? globalThis.crypto.randomUUID()
+          : `order-${Date.now().toString(36)}`);
   }
 
   /** Health probe for HTTP / process monitors. */
@@ -224,6 +240,98 @@ export class PlatformApi {
       products,
       updatedAt: this.now(),
     });
+  }
+
+  /** List platform-owned orders for a tenant (newest first). */
+  async listTenantOrders(tenantId: string): Promise<TenantOrdersResponse> {
+    const record = await this.requireOrders(tenantId);
+    const orders = [...record.orders].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+    return {
+      tenantId: record.tenantId,
+      updatedAt: record.updatedAt,
+      orders,
+    };
+  }
+
+  /** Create a platform-owned order (storefront → merchant loop). */
+  async createTenantOrder(
+    tenantId: string,
+    input: PlatformOrderCreateInput,
+  ): Promise<PlatformOrderDto> {
+    const bucket = await this.requireOrders(tenantId);
+    const orderId = input.id?.trim() || this.createOrderId();
+    if (bucket.orders.some((order) => order.id === orderId)) {
+      throw new PlatformApiException(`Order '${orderId}' already exists.`, 409);
+    }
+
+    const timestamp = this.now();
+    const subtotalAmount = input.lines.reduce((sum, line) => sum + line.lineAmount, 0);
+    const order: PlatformOrderDto = {
+      id: orderId,
+      tenantId: bucket.tenantId,
+      status: 'placed',
+      currency: input.currency,
+      lines: input.lines,
+      subtotalAmount,
+      totalAmount: subtotalAmount,
+      customerName: input.customerName,
+      note: input.note,
+      createdAt: timestamp,
+      updatedAt: timestamp,
+    };
+    const next: TenantOrdersRecord = {
+      tenantId: bucket.tenantId,
+      orders: [...bucket.orders, order],
+      updatedAt: timestamp,
+    };
+    await this.deps.orderRepository.save(next);
+    return order;
+  }
+
+  /** Patch order status (placed → confirmed → fulfilled, or cancel). */
+  async updateTenantOrderStatus(
+    tenantId: string,
+    orderId: string,
+    input: PlatformOrderPatchInput,
+  ): Promise<PlatformOrderDto> {
+    const bucket = await this.requireOrders(tenantId);
+    const index = bucket.orders.findIndex((order) => order.id === orderId.trim());
+    if (index < 0) {
+      throw new PlatformApiException(`Order '${orderId}' not found.`, 404);
+    }
+    const current = bucket.orders[index]!;
+    assertOrderStatusTransition(current.status, input.status);
+
+    const timestamp = this.now();
+    const updated: PlatformOrderDto = {
+      ...current,
+      status: input.status,
+      updatedAt: timestamp,
+      confirmedAt: input.status === 'confirmed' ? timestamp : current.confirmedAt,
+      fulfilledAt: input.status === 'fulfilled' ? timestamp : current.fulfilledAt,
+      cancelledAt: input.status === 'cancelled' ? timestamp : current.cancelledAt,
+    };
+    const orders = bucket.orders.slice();
+    orders[index] = updated;
+    await this.deps.orderRepository.save({
+      tenantId: bucket.tenantId,
+      orders,
+      updatedAt: timestamp,
+    });
+    return updated;
+  }
+
+  private async requireOrders(tenantId: string): Promise<TenantOrdersRecord> {
+    const record = await this.requireTenant(tenantId);
+    const existing = await this.deps.orderRepository.findByTenantId(record.tenantId);
+    if (existing) {
+      return existing;
+    }
+    return {
+      tenantId: record.tenantId,
+      orders: [],
+      updatedAt: this.now(),
+    };
   }
 
   private async requireCatalog(tenantId: string): Promise<TenantCatalogRecord> {

@@ -6,35 +6,35 @@
 
 ## Current milestone
 
-**Sprint 24 Task 2** on `sprint/24/task2` — multi-profile switcher + live theme preview.
+**Sprint 32 — Merchant Order Loop** (Task 1 complete; Task 2 next).
 
 See [CLIENT_DEMO.md](./CLIENT_DEMO.md) + [docs/runbooks/staging-demo.md](./docs/runbooks/staging-demo.md).
 
 ## Completed Tasks
 
-| Task            | Description                      | Commit Tag       |
-| --------------- | -------------------------------- | ---------------- |
-| Sprint 1–23 ✅  | Foundation through web shareable | `sprint*-task*`  |
-| Sprint 24 T1/T3 | Boom wizard web + mobile         | `sprint24-task3` |
-| Sprint 25–29 ✅ | Polish → merchant admin          | `sprint29-task3` |
-| Sprint 30 ✅    | Demo Docker + staging runbook    | `sprint30-task3` |
-| Sprint 31 ✅    | Richer storefront                | `sprint31-task3` |
+| Task            | Description                          | Commit Tag       |
+| --------------- | ------------------------------------ | ---------------- |
+| Sprint 1–31 ✅  | Foundation through richer storefront | `sprint*-task*`  |
+| Sprint 24 T2 ✅ | Multi-profile Boom switcher          | `sprint24-task2` |
+| Sprint 32 T1 ✅ | Platform durable orders API          | `sprint32-task1` |
 
 ## Active Tasks
 
-| Task             | Description                                        | Status |
-| ---------------- | -------------------------------------------------- | ------ |
-| Sprint 24 Task 2 | Persist multi-profile switcher / live theme tokens | ✅     |
+| Task             | Description                         | Status |
+| ---------------- | ----------------------------------- | ------ |
+| Sprint 32 Task 1 | Platform durable orders API         | ✅     |
+| Sprint 32 Task 2 | Storefront → platform order publish | ⬜     |
+| Sprint 32 Task 3 | Admin orders confirm/fulfill        | ⬜     |
 
 ## Latest Tag
 
 ```
-sprint24-task2
+sprint32-task1
 ```
 
 ## Health Status
 
-| Area       | Status     | Notes                                       |
-| ---------- | ---------- | ------------------------------------------- |
-| Repository | ✅ Healthy | Sprint 24 Task 2 complete                   |
-| Client MVP | ✅ Ready   | Multi-app switcher + richer Boom storefront |
+| Area       | Status     | Notes                             |
+| ---------- | ---------- | --------------------------------- |
+| Repository | ✅ Healthy | Sprint 32 Task 1 merging          |
+| Client MVP | ✅ Ready   | Next: storefront publishes orders |

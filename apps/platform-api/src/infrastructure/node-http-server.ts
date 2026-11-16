@@ -6,12 +6,18 @@ import {
   parseCatalogProductCreateBody,
   parseCatalogProductPatchBody,
 } from '../domain/map-catalog-product.js';
+import {
+  parsePlatformOrderCreateBody,
+  parsePlatformOrderPatchBody,
+} from '../domain/map-platform-order.js';
 import { PlatformApiException } from '../errors.js';
 import type {
   BoomLaunchHttpBody,
   CatalogProductCreateHttpBody,
   CatalogProductPatchHttpBody,
   PlatformApiListenResult,
+  PlatformOrderCreateHttpBody,
+  PlatformOrderPatchHttpBody,
 } from '../types.js';
 
 export interface CreatePlatformHttpServerOptions {
@@ -74,6 +80,22 @@ function matchTenantCatalogProduct(
   return {
     tenantId: decodeURIComponent(match[1]),
     productId: decodeURIComponent(match[2]),
+  };
+}
+
+function matchTenantOrdersCollection(pathname: string): string | undefined {
+  const match = /^\/v1\/tenants\/([^/]+)\/orders\/?$/.exec(pathname);
+  return match?.[1] ? decodeURIComponent(match[1]) : undefined;
+}
+
+function matchTenantOrder(pathname: string): { tenantId: string; orderId: string } | undefined {
+  const match = /^\/v1\/tenants\/([^/]+)\/orders\/([^/]+)\/?$/.exec(pathname);
+  if (!match?.[1] || !match[2]) {
+    return undefined;
+  }
+  return {
+    tenantId: decodeURIComponent(match[1]),
+    orderId: decodeURIComponent(match[2]),
   };
 }
 
@@ -162,6 +184,31 @@ async function handleRequest(
         const input = parseCatalogProductCreateBody(body);
         const product = await api.createCatalogProduct(catalogTenantId, input);
         sendJson(res, 201, { product });
+        return;
+      }
+    }
+
+    const orderItem = matchTenantOrder(pathname);
+    if (orderItem && method === 'PATCH') {
+      const body = (await readJsonBody(req)) as PlatformOrderPatchHttpBody;
+      const input = parsePlatformOrderPatchBody(body);
+      const order = await api.updateTenantOrderStatus(orderItem.tenantId, orderItem.orderId, input);
+      sendJson(res, 200, { order });
+      return;
+    }
+
+    const ordersTenantId = matchTenantOrdersCollection(pathname);
+    if (ordersTenantId) {
+      if (method === 'GET') {
+        const orders = await api.listTenantOrders(ordersTenantId);
+        sendJson(res, 200, orders);
+        return;
+      }
+      if (method === 'POST') {
+        const body = (await readJsonBody(req)) as PlatformOrderCreateHttpBody;
+        const input = parsePlatformOrderCreateBody(body);
+        const order = await api.createTenantOrder(ordersTenantId, input);
+        sendJson(res, 201, { order });
         return;
       }
     }

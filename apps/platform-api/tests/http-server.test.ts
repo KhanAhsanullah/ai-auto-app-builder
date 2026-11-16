@@ -219,4 +219,58 @@ describe('platform-api HTTP', () => {
     const afterBody = (await after.json()) as { products: Array<{ slug: string }> };
     expect(afterBody.products.map((p) => p.slug)).not.toContain('olive-oil');
   });
+
+  it('creates, lists, and patches tenant orders over HTTP', async () => {
+    const api = createPlatformApi({
+      clock: () => '2026-11-14T12:00:00.000Z',
+      createOrderId: () => 'http-order-1',
+    });
+    const listening = await listenPlatformApi(api, 0);
+    closers.push(listening.close);
+
+    const launch = await fetch(`http://127.0.0.1:${listening.port}/v1/boom/launch`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        businessName: 'Order Hub',
+        vertical: 'restaurant',
+        tenantId: '22222222-2222-4222-8222-222222222222',
+      }),
+    });
+    const launched = (await launch.json()) as { tenantId: string };
+
+    const created = await fetch(
+      `http://127.0.0.1:${listening.port}/v1/tenants/${launched.tenantId}/orders`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          lines: [{ sku: 'BRY-1', title: 'Biryani', quantity: 1, unitAmount: 650 }],
+          customerName: 'Noor',
+        }),
+      },
+    );
+    expect(created.status).toBe(201);
+    const createdBody = (await created.json()) as { order: { id: string; status: string } };
+    expect(createdBody.order).toMatchObject({ id: 'http-order-1', status: 'placed' });
+
+    const listed = await fetch(
+      `http://127.0.0.1:${listening.port}/v1/tenants/${launched.tenantId}/orders`,
+    );
+    expect(listed.status).toBe(200);
+    const listBody = (await listed.json()) as { orders: Array<{ id: string }> };
+    expect(listBody.orders.map((o) => o.id)).toContain('http-order-1');
+
+    const patched = await fetch(
+      `http://127.0.0.1:${listening.port}/v1/tenants/${launched.tenantId}/orders/http-order-1`,
+      {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'confirmed' }),
+      },
+    );
+    expect(patched.status).toBe(200);
+    const patchedBody = (await patched.json()) as { order: { status: string } };
+    expect(patchedBody.order.status).toBe('confirmed');
+  });
 });

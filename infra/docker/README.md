@@ -32,6 +32,7 @@ Volume **`ai-commerce-demo-platform-api-data`** (`platform-api-data` in compose)
 | `TENANT_STORE_PATH`  | `/data/tenants.json`  |
 | `CONFIG_STORE_PATH`  | `/data/configs.json`  |
 | `CATALOG_STORE_PATH` | `/data/catalogs.json` |
+| `ORDER_STORE_PATH`   | `/data/orders.json`   |
 
 Web Boom launch and admin catalog CRUD both talk to the **same** API + volume — edits persist across container restarts until you `docker volume rm ai-commerce-demo-platform-api-data`.
 

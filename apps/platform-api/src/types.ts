@@ -119,3 +119,69 @@ export interface CatalogProductPatchInput {
   currency?: string;
   imageUrl?: string;
 }
+
+/** Order lifecycle for platform-owned merchant demo orders. */
+export type PlatformOrderStatus = 'placed' | 'confirmed' | 'fulfilled' | 'cancelled';
+
+/** Line on a platform order. */
+export interface PlatformOrderLineDto {
+  sku: string;
+  title: string;
+  quantity: number;
+  unitAmount: number;
+  lineAmount: number;
+  currency: string;
+}
+
+/** Order row returned by order endpoints. */
+export interface PlatformOrderDto {
+  id: string;
+  tenantId: string;
+  status: PlatformOrderStatus;
+  currency: string;
+  lines: PlatformOrderLineDto[];
+  subtotalAmount: number;
+  totalAmount: number;
+  customerName?: string;
+  note?: string;
+  createdAt: string;
+  updatedAt: string;
+  confirmedAt?: string;
+  fulfilledAt?: string;
+  cancelledAt?: string;
+}
+
+/** Catalog-style payload for GET /v1/tenants/:id/orders. */
+export interface TenantOrdersResponse {
+  tenantId: string;
+  updatedAt: string;
+  orders: PlatformOrderDto[];
+}
+
+/** JSON body for POST /v1/tenants/:id/orders. */
+export interface PlatformOrderCreateHttpBody {
+  lines?: unknown;
+  currency?: unknown;
+  customerName?: unknown;
+  note?: unknown;
+  id?: unknown;
+}
+
+/** Validated create-order input. */
+export interface PlatformOrderCreateInput {
+  lines: PlatformOrderLineDto[];
+  currency: string;
+  customerName?: string;
+  note?: string;
+  id?: string;
+}
+
+/** JSON body for PATCH /v1/tenants/:id/orders/:orderId. */
+export interface PlatformOrderPatchHttpBody {
+  status?: unknown;
+}
+
+/** Validated patch-order input. */
+export interface PlatformOrderPatchInput {
+  status: PlatformOrderStatus;
+}
